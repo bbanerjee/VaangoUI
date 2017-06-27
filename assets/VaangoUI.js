@@ -7827,7 +7827,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/home/banerjee/Simo/VaangoUI/vaango_ui/views/VaangoMainPanel.vue"
+	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/views/VaangoMainPanel.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 
@@ -7838,9 +7838,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!hotAPI.compatible) return
 	  module.hot.accept()
 	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-12b36638", __vue_options__)
+	    hotAPI.createRecord("data-v-0dcb052d", __vue_options__)
 	  } else {
-	    hotAPI.reload("data-v-12b36638", __vue_options__)
+	    hotAPI.reload("data-v-0dcb052d", __vue_options__)
 	  }
 	})()}
 	if (__vue_options__.functional) {console.error("[vue-loader] VaangoMainPanel.vue: functional components are not supported and should be defined in plain js files using render functions.")}
@@ -7865,8 +7865,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-12b36638!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./VaangoMainPanel.vue", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-12b36638!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./VaangoMainPanel.vue");
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-0dcb052d!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./VaangoMainPanel.vue", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-0dcb052d!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./VaangoMainPanel.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -8651,7 +8651,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (false) {
 	  module.hot.accept()
 	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-12b36638", module.exports)
+	     require("vue-hot-reload-api").rerender("data-v-0dcb052d", module.exports)
 	  }
 	}
 
@@ -8681,7 +8681,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/home/banerjee/Simo/VaangoUI/vaango_ui/views/MainMenubar.vue"
+	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/views/MainMenubar.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 
@@ -8692,9 +8692,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!hotAPI.compatible) return
 	  module.hot.accept()
 	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-2447aa68", __vue_options__)
+	    hotAPI.createRecord("data-v-79870bdd", __vue_options__)
 	  } else {
-	    hotAPI.reload("data-v-2447aa68", __vue_options__)
+	    hotAPI.reload("data-v-79870bdd", __vue_options__)
 	  }
 	})()}
 	if (__vue_options__.functional) {console.error("[vue-loader] MainMenubar.vue: functional components are not supported and should be defined in plain js files using render functions.")}
@@ -8719,8 +8719,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-2447aa68!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./MainMenubar.vue", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-2447aa68!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./MainMenubar.vue");
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-79870bdd!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./MainMenubar.vue", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-79870bdd!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./MainMenubar.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -9076,7 +9076,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (false) {
 	  module.hot.accept()
 	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-2447aa68", module.exports)
+	     require("vue-hot-reload-api").rerender("data-v-79870bdd", module.exports)
 	  }
 	}
 
@@ -9106,7 +9106,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/home/banerjee/Simo/VaangoUI/vaango_ui/views/Sidebar.vue"
+	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/views/Sidebar.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 
@@ -9117,9 +9117,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!hotAPI.compatible) return
 	  module.hot.accept()
 	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-e7d78d2e", __vue_options__)
+	    hotAPI.createRecord("data-v-d27ec544", __vue_options__)
 	  } else {
-	    hotAPI.reload("data-v-e7d78d2e", __vue_options__)
+	    hotAPI.reload("data-v-d27ec544", __vue_options__)
 	  }
 	})()}
 	if (__vue_options__.functional) {console.error("[vue-loader] Sidebar.vue: functional components are not supported and should be defined in plain js files using render functions.")}
@@ -9144,8 +9144,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-e7d78d2e!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Sidebar.vue", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-e7d78d2e!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Sidebar.vue");
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-d27ec544!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Sidebar.vue", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-d27ec544!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Sidebar.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -9245,7 +9245,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (false) {
 	  module.hot.accept()
 	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-e7d78d2e", module.exports)
+	     require("vue-hot-reload-api").rerender("data-v-d27ec544", module.exports)
 	  }
 	}
 
@@ -9275,7 +9275,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/home/banerjee/Simo/VaangoUI/vaango_ui/views/VaangoInputsSidebar.vue"
+	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/views/VaangoInputsSidebar.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 
@@ -9286,9 +9286,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!hotAPI.compatible) return
 	  module.hot.accept()
 	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-d9548dc0", __vue_options__)
+	    hotAPI.createRecord("data-v-2a2a54d6", __vue_options__)
 	  } else {
-	    hotAPI.reload("data-v-d9548dc0", __vue_options__)
+	    hotAPI.reload("data-v-2a2a54d6", __vue_options__)
 	  }
 	})()}
 	if (__vue_options__.functional) {console.error("[vue-loader] VaangoInputsSidebar.vue: functional components are not supported and should be defined in plain js files using render functions.")}
@@ -9313,8 +9313,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-d9548dc0!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./VaangoInputsSidebar.vue", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-d9548dc0!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./VaangoInputsSidebar.vue");
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-2a2a54d6!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./VaangoInputsSidebar.vue", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-2a2a54d6!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./VaangoInputsSidebar.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -9409,7 +9409,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (false) {
 	  module.hot.accept()
 	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-d9548dc0", module.exports)
+	     require("vue-hot-reload-api").rerender("data-v-2a2a54d6", module.exports)
 	  }
 	}
 
@@ -9436,7 +9436,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/home/banerjee/Simo/VaangoUI/vaango_ui/views/MainTextPanel.vue"
+	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/views/MainTextPanel.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 
@@ -9447,9 +9447,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!hotAPI.compatible) return
 	  module.hot.accept()
 	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-9ff3572a", __vue_options__)
+	    hotAPI.createRecord("data-v-9a19a6c0", __vue_options__)
 	  } else {
-	    hotAPI.reload("data-v-9ff3572a", __vue_options__)
+	    hotAPI.reload("data-v-9a19a6c0", __vue_options__)
 	  }
 	})()}
 	if (__vue_options__.functional) {console.error("[vue-loader] MainTextPanel.vue: functional components are not supported and should be defined in plain js files using render functions.")}
@@ -9515,7 +9515,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (false) {
 	  module.hot.accept()
 	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-9ff3572a", module.exports)
+	     require("vue-hot-reload-api").rerender("data-v-9a19a6c0", module.exports)
 	  }
 	}
 
@@ -9542,7 +9542,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/home/banerjee/Simo/VaangoUI/vaango_ui/views/ThreeGraphicsPanel.vue"
+	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/views/ThreeGraphicsPanel.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 
@@ -9553,9 +9553,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!hotAPI.compatible) return
 	  module.hot.accept()
 	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-37271c84", __vue_options__)
+	    hotAPI.createRecord("data-v-73911aae", __vue_options__)
 	  } else {
-	    hotAPI.reload("data-v-37271c84", __vue_options__)
+	    hotAPI.reload("data-v-73911aae", __vue_options__)
 	  }
 	})()}
 	if (__vue_options__.functional) {console.error("[vue-loader] ThreeGraphicsPanel.vue: functional components are not supported and should be defined in plain js files using render functions.")}
@@ -9635,24 +9635,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        z: 5
 	      }
 	    }
-	  }), _vm._v(" "), _c('three-sphere', {
-	    attrs: {
-	      "center": {
-	        x: -0.5,
-	        y: 0.0,
-	        z: 0.0
-	      },
-	      "radius": 0.5
-	    }
-	  }), _vm._v(" "), _c('three-sphere', {
-	    attrs: {
-	      "center": {
-	        x: 0.5,
-	        y: 0.0,
-	        z: 0.0
-	      },
-	      "radius": 0.5
-	    }
 	  }), _vm._v(" "), _c('three-ellipsoid-particles')], 1)], 1)], 1)])])
 	},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
 	  return _c('div', {
@@ -9665,7 +9647,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (false) {
 	  module.hot.accept()
 	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-37271c84", module.exports)
+	     require("vue-hot-reload-api").rerender("data-v-73911aae", module.exports)
 	  }
 	}
 
@@ -9692,7 +9674,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/home/banerjee/Simo/VaangoUI/vaango_ui/views/VtkGraphicsPanel.vue"
+	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/views/VtkGraphicsPanel.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 
@@ -9703,9 +9685,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!hotAPI.compatible) return
 	  module.hot.accept()
 	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-63ef36e2", __vue_options__)
+	    hotAPI.createRecord("data-v-35e4a43a", __vue_options__)
 	  } else {
-	    hotAPI.reload("data-v-63ef36e2", __vue_options__)
+	    hotAPI.reload("data-v-35e4a43a", __vue_options__)
 	  }
 	})()}
 	if (__vue_options__.functional) {console.error("[vue-loader] VtkGraphicsPanel.vue: functional components are not supported and should be defined in plain js files using render functions.")}
@@ -9801,7 +9783,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (false) {
 	  module.hot.accept()
 	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-63ef36e2", module.exports)
+	     require("vue-hot-reload-api").rerender("data-v-35e4a43a", module.exports)
 	  }
 	}
 
@@ -9828,7 +9810,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/home/banerjee/Simo/VaangoUI/vaango_ui/views/GeneralInputPanel.vue"
+	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/views/GeneralInputPanel.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 
@@ -9839,9 +9821,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!hotAPI.compatible) return
 	  module.hot.accept()
 	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-ccf1bfa2", __vue_options__)
+	    hotAPI.createRecord("data-v-2d32d5e4", __vue_options__)
 	  } else {
-	    hotAPI.reload("data-v-ccf1bfa2", __vue_options__)
+	    hotAPI.reload("data-v-2d32d5e4", __vue_options__)
 	  }
 	})()}
 	if (__vue_options__.functional) {console.error("[vue-loader] GeneralInputPanel.vue: functional components are not supported and should be defined in plain js files using render functions.")}
@@ -9931,7 +9913,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (false) {
 	  module.hot.accept()
 	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-ccf1bfa2", module.exports)
+	     require("vue-hot-reload-api").rerender("data-v-2d32d5e4", module.exports)
 	  }
 	}
 
@@ -9958,7 +9940,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/home/banerjee/Simo/VaangoUI/vaango_ui/views/MPMInputPanel.vue"
+	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/views/MPMInputPanel.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 
@@ -9969,9 +9951,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!hotAPI.compatible) return
 	  module.hot.accept()
 	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-0b8b8171", __vue_options__)
+	    hotAPI.createRecord("data-v-0e7859a6", __vue_options__)
 	  } else {
-	    hotAPI.reload("data-v-0b8b8171", __vue_options__)
+	    hotAPI.reload("data-v-0e7859a6", __vue_options__)
 	  }
 	})()}
 	if (__vue_options__.functional) {console.error("[vue-loader] MPMInputPanel.vue: functional components are not supported and should be defined in plain js files using render functions.")}
@@ -10017,167 +9999,279 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return _vm._m(0)
 	},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
 	  return _c('div', {
+	    staticStyle: {
+	      "font-size": "0.75rem"
+	    },
 	    attrs: {
 	      "id": "mpm-input-container"
 	    }
 	  }, [_c('form', {
 	    staticClass: "uk-form-horizontal"
 	  }, [_c('div', {
-	    staticClass: "uk-margin"
-	  }, [_c('label', {
-	    staticClass: "uk-form-label",
+	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+	  }, [_c('span', {
+	    staticClass: "uk-form-label"
+	  }, [_vm._v("Dimensions")]), _vm._v(" "), _c('div', {
+	    staticClass: "uk-form-controls uk-form-controls-text"
+	  }, [_c('label', [_c('input', {
+	    staticClass: "uk-radio",
 	    attrs: {
-	      "for": "form-h-text"
+	      "type": "radio",
+	      "name": "dimensions"
 	    }
-	  }, [_vm._v("Text")]), _vm._v(" "), _c('div', {
-	    staticClass: "uk-form-controls"
-	  }, [_c('input', {
-	    staticClass: "uk-input uk-form-width-large",
+	  }), _vm._v(" 3D")]), _vm._v(" "), _c('label', [_c('input', {
+	    staticClass: "uk-radio",
 	    attrs: {
-	      "id": "form-h-text",
-	      "type": "text",
-	      "placeholder": "Some text..."
+	      "type": "radio",
+	      "name": "dimensions"
 	    }
-	  })])]), _vm._v(" "), _c('div', {
-	    staticClass: "uk-margin"
+	  }), _vm._v(" 2D Axisymmetric")])])]), _vm._v(" "), _c('div', {
+	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
 	  }, [_c('label', {
 	    staticClass: "uk-form-label",
 	    attrs: {
 	      "for": "form-h-select"
 	    }
-	  }, [_vm._v("Select")]), _vm._v(" "), _c('div', {
+	  }, [_vm._v("Time integration")]), _vm._v(" "), _c('div', {
 	    staticClass: "uk-form-controls"
 	  }, [_c('select', {
-	    staticClass: "uk-select uk-form-width-large",
+	    staticClass: "uk-select uk-form-width-xsmall",
 	    attrs: {
 	      "id": "form-h-select"
 	    }
-	  }, [_c('option', [_vm._v("Option 01")]), _vm._v(" "), _c('option', [_vm._v("Option 02")])])])]), _vm._v(" "), _c('div', {
-	    staticClass: "uk-margin"
+	  }, [_c('option', [_vm._v("Explicit")]), _vm._v(" "), _c('option', [_vm._v("Explicit: Fracture")]), _vm._v(" "), _c('option', [_vm._v("Implicit")])])])]), _vm._v(" "), _c('div', {
+	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
 	  }, [_c('label', {
 	    staticClass: "uk-form-label",
 	    attrs: {
-	      "for": "form-h-textarea"
+	      "for": "form-h-select"
 	    }
-	  }, [_vm._v("Textarea")]), _vm._v(" "), _c('div', {
+	  }, [_vm._v("MPM interpolation")]), _vm._v(" "), _c('div', {
 	    staticClass: "uk-form-controls"
-	  }, [_c('textarea', {
-	    staticClass: "uk-textarea uk-form-width-large",
+	  }, [_c('select', {
+	    staticClass: "uk-select uk-form-width-xsmall",
 	    attrs: {
-	      "id": "form-h-textarea",
-	      "rows": "5",
-	      "placeholder": "Some text..."
+	      "id": "form-h-select"
 	    }
-	  })])]), _vm._v(" "), _c('div', {
-	    staticClass: "uk-margin"
-	  }, [_c('span', {
-	    staticClass: "uk-form-label"
-	  }, [_vm._v("Radio")]), _vm._v(" "), _c('div', {
-	    staticClass: "uk-form-controls uk-form-controls-text"
-	  }, [_c('label', [_c('input', {
-	    staticClass: "uk-radio",
-	    attrs: {
-	      "type": "radio",
-	      "name": "radio1"
-	    }
-	  }), _vm._v(" Option 01")]), _c('br'), _vm._v(" "), _c('label', [_c('input', {
-	    staticClass: "uk-radio",
-	    attrs: {
-	      "type": "radio",
-	      "name": "radio1"
-	    }
-	  }), _vm._v(" Option 02")]), _vm._v(" "), _c('div', {
-	    staticClass: "uk-margin uk-grid-small uk-child-width-auto",
-	    attrs: {
-	      "uk-grid": ""
-	    }
-	  }, [_c('label', [_c('input', {
-	    staticClass: "uk-radio",
-	    attrs: {
-	      "type": "radio",
-	      "name": "radio2"
-	    }
-	  }), _vm._v(" A")]), _vm._v(" "), _c('label', [_c('input', {
-	    staticClass: "uk-radio",
-	    attrs: {
-	      "type": "radio",
-	      "name": "radio2"
-	    }
-	  }), _vm._v(" B")]), _vm._v(" "), _c('label', [_c('input', {
-	    staticClass: "uk-radio",
-	    attrs: {
-	      "type": "radio",
-	      "name": "radio2"
-	    }
-	  }), _vm._v(" C")]), _vm._v(" "), _c('label', [_c('input', {
-	    staticClass: "uk-radio",
-	    attrs: {
-	      "type": "radio",
-	      "name": "radio2"
-	    }
-	  }), _vm._v(" D")])])])]), _vm._v(" "), _c('div', {
-	    staticClass: "uk-margin"
-	  }, [_c('span', {
-	    staticClass: "uk-form-label"
-	  }, [_vm._v("Checkbox")]), _vm._v(" "), _c('div', {
-	    staticClass: "uk-form-controls uk-form-controls-text"
-	  }, [_c('label', [_c('input', {
-	    staticClass: "uk-checkbox",
-	    attrs: {
-	      "type": "checkbox"
-	    }
-	  }), _vm._v(" Option 01")]), _c('br'), _vm._v(" "), _c('label', [_c('input', {
-	    staticClass: "uk-checkbox",
-	    attrs: {
-	      "type": "checkbox"
-	    }
-	  }), _vm._v(" Option 02")]), _vm._v(" "), _c('div', {
-	    staticClass: "uk-margin uk-grid-small uk-child-width-auto",
-	    attrs: {
-	      "uk-grid": ""
-	    }
-	  }, [_c('label', [_c('input', {
-	    staticClass: "uk-checkbox",
-	    attrs: {
-	      "type": "checkbox"
-	    }
-	  }), _vm._v(" A")]), _vm._v(" "), _c('label', [_c('input', {
-	    staticClass: "uk-checkbox",
-	    attrs: {
-	      "type": "checkbox"
-	    }
-	  }), _vm._v(" B")]), _vm._v(" "), _c('label', [_c('input', {
-	    staticClass: "uk-checkbox",
-	    attrs: {
-	      "type": "checkbox"
-	    }
-	  }), _vm._v(" C")]), _vm._v(" "), _c('label', [_c('input', {
-	    staticClass: "uk-checkbox",
-	    attrs: {
-	      "type": "checkbox"
-	    }
-	  }), _vm._v(" D")])])])]), _vm._v(" "), _c('div', {
-	    staticClass: "uk-margin"
+	  }, [_c('option', [_vm._v("Linear")]), _vm._v(" "), _c('option', [_vm._v("GIMP")]), _vm._v(" "), _c('option', [_vm._v("ThirdOrderBS")]), _vm._v(" "), _c('option', [_vm._v("CPDI")]), _vm._v(" "), _c('option', [_vm._v("CPTI")])])])]), _vm._v(" "), _c('div', {
+	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
 	  }, [_c('label', {
 	    staticClass: "uk-form-label",
 	    attrs: {
 	      "for": "form-h-multiple"
 	    }
-	  }, [_vm._v("Multiple")]), _vm._v(" "), _c('div', {
+	  }, [_vm._v("MPM Options")]), _vm._v(" "), _c('div', {
 	    staticClass: "uk-form-controls"
 	  }, [_c('select', {
-	    staticClass: "uk-select uk-form-width-large",
+	    staticClass: "uk-select uk-form-width-small",
 	    attrs: {
 	      "id": "form-h-multiple",
 	      "multiple": ""
 	    }
-	  }, [_c('option', [_vm._v("Option 01")]), _vm._v(" "), _c('option', [_vm._v("Option 02")]), _vm._v(" "), _c('option', [_vm._v("Option 03")]), _vm._v(" "), _c('option', [_vm._v("Option 04")])])])])])])
+	  }, [_c('option', [_vm._v("Do not reset grid")]), _vm._v(" "), _c('option', [_vm._v("Add particle colors")]), _vm._v(" "), _c('option', [_vm._v("Use artificial viscosity")]), _vm._v(" "), _c('option', [_vm._v("Do pressure stabilization")]), _vm._v(" "), _c('option', [_vm._v("Do explicit heat conduction")]), _vm._v(" "), _c('option', [_vm._v("Do thermal expansion")]), _vm._v(" "), _c('option', [_vm._v("Do viscous heating")]), _vm._v(" "), _c('option', [_vm._v("Do contact friction heating")]), _vm._v(" "), _c('option', [_vm._v("Use load curves")]), _vm._v(" "), _c('option', [_vm._v("Use exact deformation")]), _vm._v(" "), _c('option', [_vm._v("Use CBDI boundary condition")]), _vm._v(" "), _c('option', [_vm._v("Use cohesive zones")]), _vm._v(" "), _c('option', [_vm._v("Create new particles")]), _vm._v(" "), _c('option', [_vm._v("Allow adding new material")]), _vm._v(" "), _c('option', [_vm._v("Manually add new material")]), _vm._v(" "), _c('option', [_vm._v("Allow particle insertion")]), _vm._v(" "), _c('option', [_vm._v("Delete rogue particles")])])])]), _vm._v(" "), _c('div', {
+	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+	  }, [_c('label', {
+	    staticClass: "uk-form-label",
+	    attrs: {
+	      "for": "form-h-text"
+	    }
+	  }, [_vm._v("Minimum particle mass")]), _vm._v(" "), _c('div', {
+	    staticClass: "uk-form-controls"
+	  }, [_c('input', {
+	    staticClass: "uk-input uk-form-width-xsmall",
+	    attrs: {
+	      "id": "form-h-text",
+	      "type": "text",
+	      "placeholder": "1.0e-16"
+	    }
+	  })])]), _vm._v(" "), _c('div', {
+	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+	  }, [_c('label', {
+	    staticClass: "uk-form-label",
+	    attrs: {
+	      "for": "form-h-text"
+	    }
+	  }, [_vm._v("Maximum particle velocity")]), _vm._v(" "), _c('div', {
+	    staticClass: "uk-form-controls"
+	  }, [_c('input', {
+	    staticClass: "uk-input uk-form-width-xsmall",
+	    attrs: {
+	      "id": "form-h-text",
+	      "type": "text",
+	      "placeholder": "1.0e16"
+	    }
+	  })])]), _vm._v(" "), _c('div', {
+	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+	  }, [_c('label', {
+	    staticClass: "uk-form-label",
+	    attrs: {
+	      "for": "form-h-text"
+	    }
+	  }, [_vm._v("Artificial viscosity (C1)")]), _vm._v(" "), _c('div', {
+	    staticClass: "uk-form-controls"
+	  }, [_c('input', {
+	    staticClass: "uk-input uk-form-width-xsmall",
+	    attrs: {
+	      "id": "form-h-text",
+	      "type": "text",
+	      "placeholder": "0.2"
+	    }
+	  })])]), _vm._v(" "), _c('div', {
+	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+	  }, [_c('label', {
+	    staticClass: "uk-form-label",
+	    attrs: {
+	      "for": "form-h-text"
+	    }
+	  }, [_vm._v("Artificial viscosity (C2)")]), _vm._v(" "), _c('div', {
+	    staticClass: "uk-form-controls"
+	  }, [_c('input', {
+	    staticClass: "uk-input uk-form-width-xsmall",
+	    attrs: {
+	      "id": "form-h-text",
+	      "type": "text",
+	      "placeholder": "0.05"
+	    }
+	  })])]), _vm._v(" "), _c('div', {
+	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+	  }, [_c('p', [_c('span', {
+	    staticClass: "uk-form-label"
+	  }, [_vm._v("Deformation gradient")])])]), _vm._v(" "), _c('div', {
+	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+	  }, [_c('label', {
+	    staticClass: "uk-form-label"
+	  }, [_vm._v("Algorithm")]), _vm._v(" "), _c('div', {
+	    staticClass: "uk-form-controls"
+	  }, [_c('select', {
+	    staticClass: "uk-select uk-form-width-xsmall",
+	    attrs: {
+	      "id": "form-h-select"
+	    }
+	  }, [_c('option', [_vm._v("Prescribed")]), _vm._v(" "), _c('option', [_vm._v("Linear")]), _vm._v(" "), _c('option', [_vm._v("Taylor series")]), _vm._v(" "), _c('option', [_vm._v("Subcycling")])])])]), _vm._v(" "), _c('div', {
+	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+	  }, [_c('label', {
+	    staticClass: "uk-form-label",
+	    attrs: {
+	      "for": "form-h-text"
+	    }
+	  }, [_vm._v("Prescribed def.grad. file")]), _vm._v(" "), _c('div', {
+	    staticClass: "uk-form-controls"
+	  }, [_c('input', {
+	    staticClass: "uk-input uk-form-width-xsmall",
+	    attrs: {
+	      "id": "form-h-text",
+	      "type": "text",
+	      "placeholder": "None"
+	    }
+	  })])]), _vm._v(" "), _c('div', {
+	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+	  }, [_c('label', {
+	    staticClass: "uk-form-label",
+	    attrs: {
+	      "for": "form-h-text"
+	    }
+	  }, [_vm._v("# Taylor terms")]), _vm._v(" "), _c('div', {
+	    staticClass: "uk-form-controls"
+	  }, [_c('input', {
+	    staticClass: "uk-input uk-form-width-xsmall",
+	    attrs: {
+	      "id": "form-h-text",
+	      "type": "text",
+	      "placeholder": "5"
+	    }
+	  })])]), _vm._v(" "), _c('div', {
+	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+	  }, [_c('div', {
+	    staticClass: "uk-form-controls uk-form-controls-text"
+	  }, [_c('label', [_vm._v("Gradient-enhanced velocity projection "), _c('input', {
+	    staticClass: "uk-checkbox",
+	    attrs: {
+	      "type": "checkbox",
+	      "name": "do_vel_proj"
+	    }
+	  })])])]), _vm._v(" "), _c('div', {
+	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+	  }, [_c('label', {
+	    staticClass: "uk-form-label"
+	  }, [_vm._v("Rotating coordinate system")]), _vm._v(" "), _c('input', {
+	    staticClass: "uk-checkbox",
+	    attrs: {
+	      "type": "checkbox",
+	      "name": "do_rot_coord"
+	    }
+	  })]), _vm._v(" "), _c('div', {
+	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+	  }, [_c('label', {
+	    staticClass: "uk-form-label",
+	    attrs: {
+	      "for": "form-rot-cen"
+	    }
+	  }, [_vm._v("Rotation center")]), _vm._v(" "), _c('div', {
+	    staticClass: "uk-form-controls"
+	  }, [_c('input', {
+	    staticClass: "uk-input uk-form-width-xsmall",
+	    attrs: {
+	      "id": "form-rot-cen",
+	      "type": "text",
+	      "placeholder": "[0, 0, 0]"
+	    }
+	  })])]), _vm._v(" "), _c('div', {
+	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+	  }, [_c('label', {
+	    staticClass: "uk-form-label",
+	    attrs: {
+	      "for": "form-rot-axis"
+	    }
+	  }, [_vm._v("Rotation axis")]), _vm._v(" "), _c('div', {
+	    staticClass: "uk-form-controls"
+	  }, [_c('input', {
+	    staticClass: "uk-input uk-form-width-xsmall",
+	    attrs: {
+	      "id": "form-rot-axis",
+	      "type": "text",
+	      "placeholder": "[0, 0, 0]"
+	    }
+	  })])]), _vm._v(" "), _c('div', {
+	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+	  }, [_c('label', {
+	    staticClass: "uk-form-label",
+	    attrs: {
+	      "for": "form-rot-vel"
+	    }
+	  }, [_vm._v("Angular velocity")]), _vm._v(" "), _c('div', {
+	    staticClass: "uk-form-controls"
+	  }, [_c('input', {
+	    staticClass: "uk-input uk-form-width-xsmall",
+	    attrs: {
+	      "id": "form-rot-vel",
+	      "type": "text",
+	      "placeholder": "[0, 0, 0]"
+	    }
+	  })])]), _vm._v(" "), _c('div', {
+	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+	  }, [_c('p', [_c('span', {
+	    staticClass: "uk-form-label"
+	  }, [_vm._v("Adaptive refinement")])]), _vm._v(" "), _c('div', {
+	    staticClass: "uk-form-controls uk-form-controls-text"
+	  }, [_c('label', [_c('input', {
+	    staticClass: "uk-checkbox",
+	    attrs: {
+	      "type": "checkbox",
+	      "name": "do_grid_amr"
+	    }
+	  }), _vm._v(" Do grid refinement")]), _vm._v(" "), _c('br'), _vm._v(" "), _c('label', [_c('input', {
+	    staticClass: "uk-checkbox",
+	    attrs: {
+	      "type": "checkbox",
+	      "name": "do_part_amr"
+	    }
+	  }), _vm._v(" Do particle refinement")])])])])])
 	}]}
 	module.exports.render._withStripped = true
 	if (false) {
 	  module.hot.accept()
 	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-0b8b8171", module.exports)
+	     require("vue-hot-reload-api").rerender("data-v-0e7859a6", module.exports)
 	  }
 	}
 
@@ -10204,7 +10298,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/home/banerjee/Simo/VaangoUI/vaango_ui/views/TimeInputPanel.vue"
+	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/views/TimeInputPanel.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 
@@ -10215,9 +10309,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!hotAPI.compatible) return
 	  module.hot.accept()
 	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-b056d9ec", __vue_options__)
+	    hotAPI.createRecord("data-v-0282c175", __vue_options__)
 	  } else {
-	    hotAPI.reload("data-v-b056d9ec", __vue_options__)
+	    hotAPI.reload("data-v-0282c175", __vue_options__)
 	  }
 	})()}
 	if (__vue_options__.functional) {console.error("[vue-loader] TimeInputPanel.vue: functional components are not supported and should be defined in plain js files using render functions.")}
@@ -10532,7 +10626,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (false) {
 	  module.hot.accept()
 	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-b056d9ec", module.exports)
+	     require("vue-hot-reload-api").rerender("data-v-0282c175", module.exports)
 	  }
 	}
 
@@ -10559,7 +10653,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/home/banerjee/Simo/VaangoUI/vaango_ui/graphics/Ocean.vue"
+	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/graphics/Ocean.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 
@@ -10570,9 +10664,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!hotAPI.compatible) return
 	  module.hot.accept()
 	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-82df9e08", __vue_options__)
+	    hotAPI.createRecord("data-v-09704ba7", __vue_options__)
 	  } else {
-	    hotAPI.reload("data-v-82df9e08", __vue_options__)
+	    hotAPI.reload("data-v-09704ba7", __vue_options__)
 	  }
 	})()}
 	if (__vue_options__.functional) {console.error("[vue-loader] Ocean.vue: functional components are not supported and should be defined in plain js files using render functions.")}
@@ -54083,7 +54177,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (false) {
 	  module.hot.accept()
 	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-82df9e08", module.exports)
+	     require("vue-hot-reload-api").rerender("data-v-09704ba7", module.exports)
 	  }
 	}
 
@@ -54110,7 +54204,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/home/banerjee/Simo/VaangoUI/vaango_ui/graphics/ThreeRenderer.vue"
+	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/graphics/ThreeRenderer.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 
@@ -54121,9 +54215,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!hotAPI.compatible) return
 	  module.hot.accept()
 	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-58fdf602", __vue_options__)
+	    hotAPI.createRecord("data-v-3b5d44aa", __vue_options__)
 	  } else {
-	    hotAPI.reload("data-v-58fdf602", __vue_options__)
+	    hotAPI.reload("data-v-3b5d44aa", __vue_options__)
 	  }
 	})()}
 	if (__vue_options__.functional) {console.error("[vue-loader] ThreeRenderer.vue: functional components are not supported and should be defined in plain js files using render functions.")}
@@ -54653,7 +54747,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (false) {
 	  module.hot.accept()
 	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-58fdf602", module.exports)
+	     require("vue-hot-reload-api").rerender("data-v-3b5d44aa", module.exports)
 	  }
 	}
 
@@ -54680,7 +54774,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/home/banerjee/Simo/VaangoUI/vaango_ui/graphics/ThreeScene.vue"
+	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/graphics/ThreeScene.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 
@@ -54691,9 +54785,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!hotAPI.compatible) return
 	  module.hot.accept()
 	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-23c5ec80", __vue_options__)
+	    hotAPI.createRecord("data-v-26b2c4b5", __vue_options__)
 	  } else {
-	    hotAPI.reload("data-v-23c5ec80", __vue_options__)
+	    hotAPI.reload("data-v-26b2c4b5", __vue_options__)
 	  }
 	})()}
 	if (__vue_options__.functional) {console.error("[vue-loader] ThreeScene.vue: functional components are not supported and should be defined in plain js files using render functions.")}
@@ -54795,7 +54889,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (false) {
 	  module.hot.accept()
 	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-23c5ec80", module.exports)
+	     require("vue-hot-reload-api").rerender("data-v-26b2c4b5", module.exports)
 	  }
 	}
 
@@ -54822,7 +54916,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/home/banerjee/Simo/VaangoUI/vaango_ui/graphics/ThreeCamera.vue"
+	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/graphics/ThreeCamera.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 
@@ -54833,9 +54927,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!hotAPI.compatible) return
 	  module.hot.accept()
 	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-63a5ff61", __vue_options__)
+	    hotAPI.createRecord("data-v-8357a468", __vue_options__)
 	  } else {
-	    hotAPI.reload("data-v-63a5ff61", __vue_options__)
+	    hotAPI.reload("data-v-8357a468", __vue_options__)
 	  }
 	})()}
 	if (__vue_options__.functional) {console.error("[vue-loader] ThreeCamera.vue: functional components are not supported and should be defined in plain js files using render functions.")}
@@ -54946,7 +55040,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (false) {
 	  module.hot.accept()
 	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-63a5ff61", module.exports)
+	     require("vue-hot-reload-api").rerender("data-v-8357a468", module.exports)
 	  }
 	}
 
@@ -54973,7 +55067,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/home/banerjee/Simo/VaangoUI/vaango_ui/graphics/ThreeSphere.vue"
+	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/graphics/ThreeSphere.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 
@@ -54984,9 +55078,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!hotAPI.compatible) return
 	  module.hot.accept()
 	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-51121009", __vue_options__)
+	    hotAPI.createRecord("data-v-a87f8318", __vue_options__)
 	  } else {
-	    hotAPI.reload("data-v-51121009", __vue_options__)
+	    hotAPI.reload("data-v-a87f8318", __vue_options__)
 	  }
 	})()}
 	if (__vue_options__.functional) {console.error("[vue-loader] ThreeSphere.vue: functional components are not supported and should be defined in plain js files using render functions.")}
@@ -55083,7 +55177,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (false) {
 	  module.hot.accept()
 	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-51121009", module.exports)
+	     require("vue-hot-reload-api").rerender("data-v-a87f8318", module.exports)
 	  }
 	}
 
@@ -55110,7 +55204,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/home/banerjee/Simo/VaangoUI/vaango_ui/graphics/ThreeEllipsoidParticles.vue"
+	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/graphics/ThreeEllipsoidParticles.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 
@@ -55121,9 +55215,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!hotAPI.compatible) return
 	  module.hot.accept()
 	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-0f9da2a6", __vue_options__)
+	    hotAPI.createRecord("data-v-113a8891", __vue_options__)
 	  } else {
-	    hotAPI.reload("data-v-0f9da2a6", __vue_options__)
+	    hotAPI.reload("data-v-113a8891", __vue_options__)
 	  }
 	})()}
 	if (__vue_options__.functional) {console.error("[vue-loader] ThreeEllipsoidParticles.vue: functional components are not supported and should be defined in plain js files using render functions.")}
@@ -55248,7 +55342,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (false) {
 	  module.hot.accept()
 	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-0f9da2a6", module.exports)
+	     require("vue-hot-reload-api").rerender("data-v-113a8891", module.exports)
 	  }
 	}
 
@@ -55275,7 +55369,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/home/banerjee/Simo/VaangoUI/vaango_ui/graphics/VtkSphere.vue"
+	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/graphics/VtkSphere.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 
@@ -55286,9 +55380,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!hotAPI.compatible) return
 	  module.hot.accept()
 	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-086882d0", __vue_options__)
+	    hotAPI.createRecord("data-v-4e788bc3", __vue_options__)
 	  } else {
-	    hotAPI.reload("data-v-086882d0", __vue_options__)
+	    hotAPI.reload("data-v-4e788bc3", __vue_options__)
 	  }
 	})()}
 	if (__vue_options__.functional) {console.error("[vue-loader] VtkSphere.vue: functional components are not supported and should be defined in plain js files using render functions.")}
@@ -77002,7 +77096,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (false) {
 	  module.hot.accept()
 	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-086882d0", module.exports)
+	     require("vue-hot-reload-api").rerender("data-v-4e788bc3", module.exports)
 	  }
 	}
 
@@ -77029,7 +77123,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/home/banerjee/Simo/VaangoUI/vaango_ui/graphics/VtkEllipsoidParticles.vue"
+	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/graphics/VtkEllipsoidParticles.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 
@@ -77040,9 +77134,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!hotAPI.compatible) return
 	  module.hot.accept()
 	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-931a1a96", __vue_options__)
+	    hotAPI.createRecord("data-v-63565760", __vue_options__)
 	  } else {
-	    hotAPI.reload("data-v-931a1a96", __vue_options__)
+	    hotAPI.reload("data-v-63565760", __vue_options__)
 	  }
 	})()}
 	if (__vue_options__.functional) {console.error("[vue-loader] VtkEllipsoidParticles.vue: functional components are not supported and should be defined in plain js files using render functions.")}
@@ -77145,7 +77239,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (false) {
 	  module.hot.accept()
 	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-931a1a96", module.exports)
+	     require("vue-hot-reload-api").rerender("data-v-63565760", module.exports)
 	  }
 	}
 
@@ -77172,7 +77266,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/home/banerjee/Simo/VaangoUI/vaango_ui/graphics/VtkRenderer.vue"
+	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/graphics/VtkRenderer.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 
@@ -77183,9 +77277,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!hotAPI.compatible) return
 	  module.hot.accept()
 	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-92ed6864", __vue_options__)
+	    hotAPI.createRecord("data-v-11377a39", __vue_options__)
 	  } else {
-	    hotAPI.reload("data-v-92ed6864", __vue_options__)
+	    hotAPI.reload("data-v-11377a39", __vue_options__)
 	  }
 	})()}
 	if (__vue_options__.functional) {console.error("[vue-loader] VtkRenderer.vue: functional components are not supported and should be defined in plain js files using render functions.")}
@@ -86857,7 +86951,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (false) {
 	  module.hot.accept()
 	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-92ed6864", module.exports)
+	     require("vue-hot-reload-api").rerender("data-v-11377a39", module.exports)
 	  }
 	}
 

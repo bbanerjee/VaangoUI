@@ -1,68 +1,163 @@
 <template>
-  <div id='mpm-input-container'>
+  <div id='mpm-input-container' style="font-size:0.75rem;">
     <form class="uk-form-horizontal">
 
-      <div class="uk-margin">
-        <label class="uk-form-label" for="form-h-text">Text</label>
-        <div class="uk-form-controls">
-          <input class="uk-input uk-form-width-large" id="form-h-text" type="text" placeholder="Some text...">
+      <!-- 3D or axisymmetric -->
+      <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
+        <span class="uk-form-label">Dimensions</span>
+        <div class="uk-form-controls uk-form-controls-text">
+          <label><input class="uk-radio" type="radio" name="dimensions"> 3D</label>
+          <label><input class="uk-radio" type="radio" name="dimensions"> 2D Axisymmetric</label>
         </div>
       </div>
 
-      <div class="uk-margin">
-        <label class="uk-form-label" for="form-h-select">Select</label>
+      <!-- Integration type -->
+      <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
+        <label class="uk-form-label" for="form-h-select">Time integration</label>
         <div class="uk-form-controls">
-          <select class="uk-select uk-form-width-large" id="form-h-select">
-                                    <option>Option 01</option>
-                                    <option>Option 02</option>
+          <select class="uk-select uk-form-width-xsmall" id="form-h-select">
+                                    <option>Explicit</option>
+                                    <option>Explicit: Fracture</option>
+                                    <option>Implicit</option>
                                 </select>
         </div>
       </div>
 
-      <div class="uk-margin">
-        <label class="uk-form-label" for="form-h-textarea">Textarea</label>
+      <!-- Interpolation type -->
+      <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
+        <label class="uk-form-label" for="form-h-select">MPM interpolation</label>
         <div class="uk-form-controls">
-          <textarea class="uk-textarea uk-form-width-large" id="form-h-textarea" rows="5" placeholder="Some text..."></textarea>
-        </div>
-      </div>
-
-      <div class="uk-margin">
-        <span class="uk-form-label">Radio</span>
-        <div class="uk-form-controls uk-form-controls-text">
-          <label><input class="uk-radio" type="radio" name="radio1"> Option 01</label><br>
-          <label><input class="uk-radio" type="radio" name="radio1"> Option 02</label>
-          <div class="uk-margin uk-grid-small uk-child-width-auto" uk-grid>
-            <label><input class="uk-radio" type="radio" name="radio2"> A</label>
-            <label><input class="uk-radio" type="radio" name="radio2"> B</label>
-            <label><input class="uk-radio" type="radio" name="radio2"> C</label>
-            <label><input class="uk-radio" type="radio" name="radio2"> D</label>
-          </div>
-        </div>
-      </div>
-
-      <div class="uk-margin">
-        <span class="uk-form-label">Checkbox</span>
-        <div class="uk-form-controls uk-form-controls-text">
-          <label><input class="uk-checkbox" type="checkbox"> Option 01</label><br>
-          <label><input class="uk-checkbox" type="checkbox"> Option 02</label>
-          <div class="uk-margin uk-grid-small uk-child-width-auto" uk-grid>
-            <label><input class="uk-checkbox" type="checkbox"> A</label>
-            <label><input class="uk-checkbox" type="checkbox"> B</label>
-            <label><input class="uk-checkbox" type="checkbox"> C</label>
-            <label><input class="uk-checkbox" type="checkbox"> D</label>
-          </div>
-        </div>
-      </div>
-
-      <div class="uk-margin">
-        <label class="uk-form-label" for="form-h-multiple">Multiple</label>
-        <div class="uk-form-controls">
-          <select class="uk-select uk-form-width-large" id="form-h-multiple" multiple>
-                                    <option>Option 01</option>
-                                    <option>Option 02</option>
-                                    <option>Option 03</option>
-                                    <option>Option 04</option>
+          <select class="uk-select uk-form-width-xsmall" id="form-h-select">
+                                    <option>Linear</option>
+                                    <option>GIMP</option>
+                                    <option>ThirdOrderBS</option>
+                                    <option>CPDI</option>
+                                    <option>CPTI</option>
                                 </select>
+        </div>
+      </div>
+
+      <!-- Flags -->
+      <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
+        <label class="uk-form-label" for="form-h-multiple">MPM Options</label>
+        <div class="uk-form-controls">
+          <select class="uk-select uk-form-width-small" id="form-h-multiple" multiple>
+                                    <option>Do not reset grid</option>
+                                    <option>Add particle colors</option>
+                                    <option>Use artificial viscosity</option>
+                                    <option>Do pressure stabilization</option>
+                                    <option>Do explicit heat conduction</option>
+                                    <option>Do thermal expansion</option>
+                                    <option>Do viscous heating</option>
+                                    <option>Do contact friction heating</option>
+                                    <option>Use load curves</option>
+                                    <option>Use exact deformation</option>
+                                    <option>Use CBDI boundary condition</option>
+                                    <option>Use cohesive zones</option>
+                                    <option>Create new particles</option>
+                                    <option>Allow adding new material</option>
+                                    <option>Manually add new material</option>
+                                    <option>Allow particle insertion</option>
+                                    <option>Delete rogue particles</option>
+                                </select>
+        </div>
+      </div>
+
+      <!-- Simulation limits -->
+      <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
+        <label class="uk-form-label" for="form-h-text">Minimum particle mass</label>
+        <div class="uk-form-controls">
+          <input class="uk-input uk-form-width-xsmall" id="form-h-text" type="text" placeholder="1.0e-16">
+        </div>
+      </div>
+      <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
+        <label class="uk-form-label" for="form-h-text">Maximum particle velocity</label>
+        <div class="uk-form-controls">
+          <input class="uk-input uk-form-width-xsmall" id="form-h-text" type="text" placeholder="1.0e16">
+        </div>
+      </div>
+
+      <!-- Artificial viscosity flags -->
+      <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
+        <label class="uk-form-label" for="form-h-text">Artificial viscosity (C1)</label>
+        <div class="uk-form-controls">
+          <input class="uk-input uk-form-width-xsmall" id="form-h-text" type="text" placeholder="0.2">
+        </div>
+      </div>
+      <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
+        <label class="uk-form-label" for="form-h-text">Artificial viscosity (C2)</label>
+        <div class="uk-form-controls">
+          <input class="uk-input uk-form-width-xsmall" id="form-h-text" type="text" placeholder="0.05">
+        </div>
+      </div>
+
+      <!-- Gradient computation -->
+      <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
+          <p>
+            <span class="uk-form-label">Deformation gradient</span>
+          </p>
+      </div>
+      <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
+        <label class="uk-form-label">Algorithm</label>
+        <div class="uk-form-controls">
+          <select class="uk-select uk-form-width-xsmall" id="form-h-select">
+                                    <option>Prescribed</option>
+                                    <option>Linear</option>
+                                    <option>Taylor series</option>
+                                    <option>Subcycling</option>
+                                </select>
+        </div>
+      </div>
+      <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
+        <label class="uk-form-label" for="form-h-text">Prescribed def.grad. file</label>
+        <div class="uk-form-controls">
+          <input class="uk-input uk-form-width-xsmall" id="form-h-text" type="text" placeholder="None">
+        </div>
+      </div>
+      <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
+        <label class="uk-form-label" for="form-h-text"># Taylor terms</label>
+        <div class="uk-form-controls">
+          <input class="uk-input uk-form-width-xsmall" id="form-h-text" type="text" placeholder="5">
+        </div>
+      </div>
+      <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
+        <div class="uk-form-controls uk-form-controls-text">
+          <label>Gradient-enhanced velocity projection <input class="uk-checkbox" type="checkbox" name="do_vel_proj"></label>
+        </div>
+      </div>
+
+      <!-- Rotating coord system -->
+      <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
+        <label class="uk-form-label">Rotating coordinate system</label>
+        <input class="uk-checkbox" type="checkbox" name="do_rot_coord">
+      </div>
+      <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
+        <label class="uk-form-label" for="form-rot-cen">Rotation center</label>
+        <div class="uk-form-controls">
+          <input class="uk-input uk-form-width-xsmall" id="form-rot-cen" type="text" placeholder="[0, 0, 0]">
+        </div>
+      </div>
+      <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
+        <label class="uk-form-label" for="form-rot-axis">Rotation axis</label>
+        <div class="uk-form-controls">
+          <input class="uk-input uk-form-width-xsmall" id="form-rot-axis" type="text" placeholder="[0, 0, 0]">
+        </div>
+      </div>
+      <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
+        <label class="uk-form-label" for="form-rot-vel">Angular velocity</label>
+        <div class="uk-form-controls">
+          <input class="uk-input uk-form-width-xsmall" id="form-rot-vel" type="text" placeholder="[0, 0, 0]">
+        </div>
+      </div>
+
+      <!-- AMR -->
+      <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
+        <p>
+        <span class="uk-form-label">Adaptive refinement</span>
+        </p>
+        <div class="uk-form-controls uk-form-controls-text">
+          <label><input class="uk-checkbox" type="checkbox" name="do_grid_amr"> Do grid refinement</label> <br>
+          <label><input class="uk-checkbox" type="checkbox" name="do_part_amr"> Do particle refinement</label>
         </div>
       </div>
 
