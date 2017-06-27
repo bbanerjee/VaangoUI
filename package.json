@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "author": "Biswajit Banerjee (http://parresianz.com)",
   "main": "VaangoUI.js",
-  "repository": "git://github.com/bbanerjee/ParSim",
+  "repository": "git://github.com/bbanerjee/VaangoUI.git",
   "dependencies": {
     "av-ts": ">=0.6.1",
     "babel": "^6.23.0",
