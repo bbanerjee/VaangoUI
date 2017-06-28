@@ -132,3 +132,18 @@
   margin-top: 2px;
   float: left;
 }
+
+.uk-form-label-large {
+  color: #333;
+  width: 150px;
+  margin-top: 2px;
+  float: left;
+}
+
+.uk-form-width-small {
+  width: 100px
+}
+
+.uk-form-width-medium {
+  width: 150px
+}

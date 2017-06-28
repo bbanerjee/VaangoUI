@@ -9980,6 +9980,38 @@ return /******/ (function(modules) { // webpackBootstrap
 	        super(...arguments);
 	        this.id = "MPMInputPanel";
 	        this.sidebarTabIndex = 0;
+	        this.threeD = true;
+	        this.twoD = false;
+	        this.integrationType = "explicit";
+	        this.interpolationType = "gimp";
+	        this.mpmFlags = ["resetGrid",
+	            "colors",
+	            "artVisc",
+	            "pressStab"];
+	        this.minPartMass = 1.0e-16;
+	        this.maxPartVel = 1.0e16;
+	        this.artViscC1 = 0.0;
+	        this.artViscC2 = 0.0;
+	        this.defGradAlgo = "taylor";
+	        this.defGradFile = "none";
+	        this.defGradTaylorTerms = 1;
+	        this.doVelProj = false;
+	        this.doRotCoord = false;
+	        this.rotCen = [0, 0, 0];
+	        this.rotAxis = [0, 0, 0];
+	        this.rotVel = [0, 0, 0];
+	        this.doGridAMR = false;
+	        this.doPartAMR = false;
+	    }
+	    printMPMParameters() {
+	        console.log("MPM Flags = " + this.mpmFlags);
+	        var xmlDoc = document.implementation.createDocument(null, "main", null);
+	        var root = xmlDoc.createElement("MPM");
+	        var node = xmlDoc.createTextNode("artificial_viscosity");
+	        node.nodeValue = this.artViscC1.toString();
+	        root.appendChild(node);
+	        var xmlText = new XMLSerializer().serializeToString(root);
+	        console.log("XML = " + xmlText);
 	    }
 	};
 	MPMInputPanel = __decorate([
@@ -9996,8 +10028,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-	  return _vm._m(0)
-	},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
 	  return _c('div', {
 	    staticStyle: {
 	      "font-size": "0.75rem"
@@ -10014,190 +10044,428 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, [_vm._v("Dimensions")]), _vm._v(" "), _c('div', {
 	    staticClass: "uk-form-controls uk-form-controls-text"
 	  }, [_c('label', [_c('input', {
+	    directives: [{
+	      name: "model",
+	      rawName: "v-model",
+	      value: (_vm.threeD),
+	      expression: "threeD"
+	    }],
 	    staticClass: "uk-radio",
 	    attrs: {
 	      "type": "radio",
 	      "name": "dimensions"
+	    },
+	    domProps: {
+	      "checked": _vm._q(_vm.threeD, null)
+	    },
+	    on: {
+	      "click": function($event) {
+	        _vm.threeD = null
+	      }
 	    }
 	  }), _vm._v(" 3D")]), _vm._v(" "), _c('label', [_c('input', {
+	    directives: [{
+	      name: "model",
+	      rawName: "v-model",
+	      value: (_vm.twoD),
+	      expression: "twoD"
+	    }],
 	    staticClass: "uk-radio",
 	    attrs: {
 	      "type": "radio",
 	      "name": "dimensions"
+	    },
+	    domProps: {
+	      "checked": _vm._q(_vm.twoD, null)
+	    },
+	    on: {
+	      "click": function($event) {
+	        _vm.twoD = null
+	      }
 	    }
 	  }), _vm._v(" 2D Axisymmetric")])])]), _vm._v(" "), _c('div', {
 	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
 	  }, [_c('label', {
 	    staticClass: "uk-form-label",
 	    attrs: {
-	      "for": "form-h-select"
+	      "for": "integration-type"
 	    }
 	  }, [_vm._v("Time integration")]), _vm._v(" "), _c('div', {
 	    staticClass: "uk-form-controls"
 	  }, [_c('select', {
-	    staticClass: "uk-select uk-form-width-xsmall",
+	    directives: [{
+	      name: "model",
+	      rawName: "v-model",
+	      value: (_vm.integrationType),
+	      expression: "integrationType"
+	    }],
+	    staticClass: "uk-select uk-form-width-small",
 	    attrs: {
-	      "id": "form-h-select"
+	      "id": "integration-type"
+	    },
+	    on: {
+	      "change": function($event) {
+	        _vm.integrationType = Array.prototype.filter.call($event.target.options, function(o) {
+	          return o.selected
+	        }).map(function(o) {
+	          var val = "_value" in o ? o._value : o.value;
+	          return val
+	        })[0]
+	      }
 	    }
 	  }, [_c('option', [_vm._v("Explicit")]), _vm._v(" "), _c('option', [_vm._v("Explicit: Fracture")]), _vm._v(" "), _c('option', [_vm._v("Implicit")])])])]), _vm._v(" "), _c('div', {
 	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
 	  }, [_c('label', {
 	    staticClass: "uk-form-label",
 	    attrs: {
-	      "for": "form-h-select"
+	      "for": "interpolation-type"
 	    }
 	  }, [_vm._v("MPM interpolation")]), _vm._v(" "), _c('div', {
 	    staticClass: "uk-form-controls"
 	  }, [_c('select', {
-	    staticClass: "uk-select uk-form-width-xsmall",
+	    directives: [{
+	      name: "model",
+	      rawName: "v-model",
+	      value: (_vm.interpolationType),
+	      expression: "interpolationType"
+	    }],
+	    staticClass: "uk-select uk-form-width-small",
 	    attrs: {
-	      "id": "form-h-select"
+	      "id": "interpolation-type"
+	    },
+	    on: {
+	      "change": function($event) {
+	        _vm.interpolationType = Array.prototype.filter.call($event.target.options, function(o) {
+	          return o.selected
+	        }).map(function(o) {
+	          var val = "_value" in o ? o._value : o.value;
+	          return val
+	        })[0]
+	      }
 	    }
 	  }, [_c('option', [_vm._v("Linear")]), _vm._v(" "), _c('option', [_vm._v("GIMP")]), _vm._v(" "), _c('option', [_vm._v("ThirdOrderBS")]), _vm._v(" "), _c('option', [_vm._v("CPDI")]), _vm._v(" "), _c('option', [_vm._v("CPTI")])])])]), _vm._v(" "), _c('div', {
 	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
 	  }, [_c('label', {
 	    staticClass: "uk-form-label",
 	    attrs: {
-	      "for": "form-h-multiple"
+	      "for": "mpm-flags"
 	    }
 	  }, [_vm._v("MPM Options")]), _vm._v(" "), _c('div', {
 	    staticClass: "uk-form-controls"
 	  }, [_c('select', {
-	    staticClass: "uk-select uk-form-width-small",
+	    directives: [{
+	      name: "model",
+	      rawName: "v-model",
+	      value: (_vm.mpmFlags),
+	      expression: "mpmFlags"
+	    }],
+	    staticClass: "uk-select uk-form-width-medium",
 	    attrs: {
-	      "id": "form-h-multiple",
+	      "id": "mpm-flags",
 	      "multiple": ""
+	    },
+	    on: {
+	      "change": function($event) {
+	        _vm.mpmFlags = Array.prototype.filter.call($event.target.options, function(o) {
+	          return o.selected
+	        }).map(function(o) {
+	          var val = "_value" in o ? o._value : o.value;
+	          return val
+	        })
+	      }
 	    }
-	  }, [_c('option', [_vm._v("Do not reset grid")]), _vm._v(" "), _c('option', [_vm._v("Add particle colors")]), _vm._v(" "), _c('option', [_vm._v("Use artificial viscosity")]), _vm._v(" "), _c('option', [_vm._v("Do pressure stabilization")]), _vm._v(" "), _c('option', [_vm._v("Do explicit heat conduction")]), _vm._v(" "), _c('option', [_vm._v("Do thermal expansion")]), _vm._v(" "), _c('option', [_vm._v("Do viscous heating")]), _vm._v(" "), _c('option', [_vm._v("Do contact friction heating")]), _vm._v(" "), _c('option', [_vm._v("Use load curves")]), _vm._v(" "), _c('option', [_vm._v("Use exact deformation")]), _vm._v(" "), _c('option', [_vm._v("Use CBDI boundary condition")]), _vm._v(" "), _c('option', [_vm._v("Use cohesive zones")]), _vm._v(" "), _c('option', [_vm._v("Create new particles")]), _vm._v(" "), _c('option', [_vm._v("Allow adding new material")]), _vm._v(" "), _c('option', [_vm._v("Manually add new material")]), _vm._v(" "), _c('option', [_vm._v("Allow particle insertion")]), _vm._v(" "), _c('option', [_vm._v("Delete rogue particles")])])])]), _vm._v(" "), _c('div', {
+	  }, [_c('option', [_vm._v("Do not reset grid")]), _vm._v(" "), _c('option', [_vm._v("Add particle colors")]), _vm._v(" "), _c('option', [_vm._v("Use artificial viscosity")]), _vm._v(" "), _c('option', [_vm._v("Do pressure stabilization")]), _vm._v(" "), _c('option', [_vm._v("Do explicit heat conduction")]), _vm._v(" "), _c('option', [_vm._v("Do thermal expansion")]), _vm._v(" "), _c('option', [_vm._v("Do viscous heating")]), _vm._v(" "), _c('option', [_vm._v("Do contact friction heating")]), _vm._v(" "), _c('option', [_vm._v("Use load curves")]), _vm._v(" "), _c('option', [_vm._v("Use exact deformation")]), _vm._v(" "), _c('option', [_vm._v("Use CBDI boundary condition")]), _vm._v(" "), _c('option', [_vm._v("Use cohesive zones")]), _vm._v(" "), _c('option', [_vm._v("Create new particles")]), _vm._v(" "), _c('option', [_vm._v("Allow adding new material")]), _vm._v(" "), _c('option', [_vm._v("Manually add new material")]), _vm._v(" "), _c('option', [_vm._v("Allow particle insertion")]), _vm._v(" "), _c('option', [_vm._v("Delete rogue particles")])])])]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
+	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+	  }, [_vm._v("\n      Simulation limits\n    ")]), _vm._v(" "), _c('div', {
 	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
 	  }, [_c('label', {
-	    staticClass: "uk-form-label",
+	    staticClass: "uk-form-label-large",
 	    attrs: {
-	      "for": "form-h-text"
+	      "for": "min-part-mass"
 	    }
 	  }, [_vm._v("Minimum particle mass")]), _vm._v(" "), _c('div', {
 	    staticClass: "uk-form-controls"
 	  }, [_c('input', {
-	    staticClass: "uk-input uk-form-width-xsmall",
+	    directives: [{
+	      name: "model",
+	      rawName: "v-model",
+	      value: (_vm.minPartMass),
+	      expression: "minPartMass"
+	    }],
+	    staticClass: "uk-input uk-form-width-small",
 	    attrs: {
-	      "id": "form-h-text",
+	      "id": "min-part-mass",
 	      "type": "text",
 	      "placeholder": "1.0e-16"
+	    },
+	    domProps: {
+	      "value": _vm._s(_vm.minPartMass)
+	    },
+	    on: {
+	      "input": function($event) {
+	        if ($event.target.composing) { return; }
+	        _vm.minPartMass = $event.target.value
+	      }
 	    }
 	  })])]), _vm._v(" "), _c('div', {
 	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
 	  }, [_c('label', {
-	    staticClass: "uk-form-label",
+	    staticClass: "uk-form-label-large",
 	    attrs: {
-	      "for": "form-h-text"
+	      "for": "max-part-vel"
 	    }
 	  }, [_vm._v("Maximum particle velocity")]), _vm._v(" "), _c('div', {
 	    staticClass: "uk-form-controls"
 	  }, [_c('input', {
-	    staticClass: "uk-input uk-form-width-xsmall",
+	    directives: [{
+	      name: "model",
+	      rawName: "v-model",
+	      value: (_vm.maxPartVel),
+	      expression: "maxPartVel"
+	    }],
+	    staticClass: "uk-input uk-form-width-small",
 	    attrs: {
-	      "id": "form-h-text",
+	      "id": "max-part-vel",
 	      "type": "text",
 	      "placeholder": "1.0e16"
+	    },
+	    domProps: {
+	      "value": _vm._s(_vm.maxPartVel)
+	    },
+	    on: {
+	      "input": function($event) {
+	        if ($event.target.composing) { return; }
+	        _vm.maxPartVel = $event.target.value
+	      }
 	    }
-	  })])]), _vm._v(" "), _c('div', {
+	  })])]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
+	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+	  }, [_vm._v("\n      Artificial viscosity parameters \n    ")]), _vm._v(" "), _c('div', {
 	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
 	  }, [_c('label', {
 	    staticClass: "uk-form-label",
 	    attrs: {
-	      "for": "form-h-text"
+	      "for": "c1"
 	    }
-	  }, [_vm._v("Artificial viscosity (C1)")]), _vm._v(" "), _c('div', {
+	  }, [_vm._v("C1")]), _vm._v(" "), _c('div', {
 	    staticClass: "uk-form-controls"
 	  }, [_c('input', {
-	    staticClass: "uk-input uk-form-width-xsmall",
+	    directives: [{
+	      name: "model",
+	      rawName: "v-model",
+	      value: (_vm.artViscC1),
+	      expression: "artViscC1"
+	    }],
+	    staticClass: "uk-input uk-form-width-small",
 	    attrs: {
-	      "id": "form-h-text",
+	      "id": "c1",
 	      "type": "text",
 	      "placeholder": "0.2"
+	    },
+	    domProps: {
+	      "value": _vm._s(_vm.artViscC1)
+	    },
+	    on: {
+	      "input": function($event) {
+	        if ($event.target.composing) { return; }
+	        _vm.artViscC1 = $event.target.value
+	      }
 	    }
 	  })])]), _vm._v(" "), _c('div', {
 	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
 	  }, [_c('label', {
 	    staticClass: "uk-form-label",
 	    attrs: {
-	      "for": "form-h-text"
+	      "for": "c2"
 	    }
-	  }, [_vm._v("Artificial viscosity (C2)")]), _vm._v(" "), _c('div', {
+	  }, [_vm._v("C2")]), _vm._v(" "), _c('div', {
 	    staticClass: "uk-form-controls"
 	  }, [_c('input', {
-	    staticClass: "uk-input uk-form-width-xsmall",
+	    directives: [{
+	      name: "model",
+	      rawName: "v-model",
+	      value: (_vm.artViscC2),
+	      expression: "artViscC2"
+	    }],
+	    staticClass: "uk-input uk-form-width-small",
 	    attrs: {
-	      "id": "form-h-text",
+	      "id": "c2",
 	      "type": "text",
 	      "placeholder": "0.05"
+	    },
+	    domProps: {
+	      "value": _vm._s(_vm.artViscC2)
+	    },
+	    on: {
+	      "input": function($event) {
+	        if ($event.target.composing) { return; }
+	        _vm.artViscC2 = $event.target.value
+	      }
 	    }
-	  })])]), _vm._v(" "), _c('div', {
+	  })])]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
 	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-	  }, [_c('p', [_c('span', {
-	    staticClass: "uk-form-label"
-	  }, [_vm._v("Deformation gradient")])])]), _vm._v(" "), _c('div', {
+	  }, [_vm._v("\n      Deformation gradient\n    ")]), _vm._v(" "), _c('div', {
 	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
 	  }, [_c('label', {
 	    staticClass: "uk-form-label"
 	  }, [_vm._v("Algorithm")]), _vm._v(" "), _c('div', {
 	    staticClass: "uk-form-controls"
 	  }, [_c('select', {
-	    staticClass: "uk-select uk-form-width-xsmall",
+	    directives: [{
+	      name: "model",
+	      rawName: "v-model",
+	      value: (_vm.defGradAlgo),
+	      expression: "defGradAlgo"
+	    }],
+	    staticClass: "uk-select uk-form-width-small",
 	    attrs: {
-	      "id": "form-h-select"
+	      "id": "def-grad-algo"
+	    },
+	    on: {
+	      "change": function($event) {
+	        _vm.defGradAlgo = Array.prototype.filter.call($event.target.options, function(o) {
+	          return o.selected
+	        }).map(function(o) {
+	          var val = "_value" in o ? o._value : o.value;
+	          return val
+	        })[0]
+	      }
 	    }
 	  }, [_c('option', [_vm._v("Prescribed")]), _vm._v(" "), _c('option', [_vm._v("Linear")]), _vm._v(" "), _c('option', [_vm._v("Taylor series")]), _vm._v(" "), _c('option', [_vm._v("Subcycling")])])])]), _vm._v(" "), _c('div', {
 	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
 	  }, [_c('label', {
 	    staticClass: "uk-form-label",
 	    attrs: {
-	      "for": "form-h-text"
+	      "for": "def-grad-file"
 	    }
 	  }, [_vm._v("Prescribed def.grad. file")]), _vm._v(" "), _c('div', {
 	    staticClass: "uk-form-controls"
 	  }, [_c('input', {
-	    staticClass: "uk-input uk-form-width-xsmall",
+	    directives: [{
+	      name: "model",
+	      rawName: "v-model",
+	      value: (_vm.defGradFile),
+	      expression: "defGradFile"
+	    }],
+	    staticClass: "uk-input uk-form-width-small",
 	    attrs: {
-	      "id": "form-h-text",
+	      "id": "def-grad-file",
 	      "type": "text",
 	      "placeholder": "None"
+	    },
+	    domProps: {
+	      "value": _vm._s(_vm.defGradFile)
+	    },
+	    on: {
+	      "input": function($event) {
+	        if ($event.target.composing) { return; }
+	        _vm.defGradFile = $event.target.value
+	      }
 	    }
 	  })])]), _vm._v(" "), _c('div', {
 	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
 	  }, [_c('label', {
 	    staticClass: "uk-form-label",
 	    attrs: {
-	      "for": "form-h-text"
+	      "for": "def-grad-taylor-terms"
 	    }
 	  }, [_vm._v("# Taylor terms")]), _vm._v(" "), _c('div', {
 	    staticClass: "uk-form-controls"
 	  }, [_c('input', {
-	    staticClass: "uk-input uk-form-width-xsmall",
+	    directives: [{
+	      name: "model",
+	      rawName: "v-model",
+	      value: (_vm.defGradTaylorTerms),
+	      expression: "defGradTaylorTerms"
+	    }],
+	    staticClass: "uk-input uk-form-width-small",
 	    attrs: {
-	      "id": "form-h-text",
+	      "id": "def-grad-taylor-terms",
 	      "type": "text",
 	      "placeholder": "5"
+	    },
+	    domProps: {
+	      "value": _vm._s(_vm.defGradTaylorTerms)
+	    },
+	    on: {
+	      "input": function($event) {
+	        if ($event.target.composing) { return; }
+	        _vm.defGradTaylorTerms = $event.target.value
+	      }
 	    }
 	  })])]), _vm._v(" "), _c('div', {
 	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
 	  }, [_c('div', {
 	    staticClass: "uk-form-controls uk-form-controls-text"
 	  }, [_c('label', [_vm._v("Gradient-enhanced velocity projection "), _c('input', {
+	    directives: [{
+	      name: "model",
+	      rawName: "v-model",
+	      value: (_vm.doVelProj),
+	      expression: "doVelProj"
+	    }],
 	    staticClass: "uk-checkbox",
 	    attrs: {
 	      "type": "checkbox",
 	      "name": "do_vel_proj"
+	    },
+	    domProps: {
+	      "checked": Array.isArray(_vm.doVelProj) ? _vm._i(_vm.doVelProj, null) > -1 : (_vm.doVelProj)
+	    },
+	    on: {
+	      "click": function($event) {
+	        var $$a = _vm.doVelProj,
+	          $$el = $event.target,
+	          $$c = $$el.checked ? (true) : (false);
+	        if (Array.isArray($$a)) {
+	          var $$v = null,
+	            $$i = _vm._i($$a, $$v);
+	          if ($$c) {
+	            $$i < 0 && (_vm.doVelProj = $$a.concat($$v))
+	          } else {
+	            $$i > -1 && (_vm.doVelProj = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+	          }
+	        } else {
+	          _vm.doVelProj = $$c
+	        }
+	      }
 	    }
-	  })])])]), _vm._v(" "), _c('div', {
+	  })])])]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
 	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
 	  }, [_c('label', {
-	    staticClass: "uk-form-label"
-	  }, [_vm._v("Rotating coordinate system")]), _vm._v(" "), _c('input', {
+	    staticClass: "uk-form-label-large"
+	  }, [_vm._v("Use rotating coordinate system")]), _vm._v(" "), _c('input', {
+	    directives: [{
+	      name: "model",
+	      rawName: "v-model",
+	      value: (_vm.doRotCoord),
+	      expression: "doRotCoord"
+	    }],
 	    staticClass: "uk-checkbox",
 	    attrs: {
 	      "type": "checkbox",
 	      "name": "do_rot_coord"
+	    },
+	    domProps: {
+	      "checked": Array.isArray(_vm.doRotCoord) ? _vm._i(_vm.doRotCoord, null) > -1 : (_vm.doRotCoord)
+	    },
+	    on: {
+	      "click": function($event) {
+	        var $$a = _vm.doRotCoord,
+	          $$el = $event.target,
+	          $$c = $$el.checked ? (true) : (false);
+	        if (Array.isArray($$a)) {
+	          var $$v = null,
+	            $$i = _vm._i($$a, $$v);
+	          if ($$c) {
+	            $$i < 0 && (_vm.doRotCoord = $$a.concat($$v))
+	          } else {
+	            $$i > -1 && (_vm.doRotCoord = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+	          }
+	        } else {
+	          _vm.doRotCoord = $$c
+	        }
+	      }
 	    }
 	  })]), _vm._v(" "), _c('div', {
 	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
@@ -10209,11 +10477,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, [_vm._v("Rotation center")]), _vm._v(" "), _c('div', {
 	    staticClass: "uk-form-controls"
 	  }, [_c('input', {
-	    staticClass: "uk-input uk-form-width-xsmall",
+	    directives: [{
+	      name: "model",
+	      rawName: "v-model",
+	      value: (_vm.rotCen),
+	      expression: "rotCen"
+	    }],
+	    staticClass: "uk-input uk-form-width-small",
 	    attrs: {
 	      "id": "form-rot-cen",
 	      "type": "text",
-	      "placeholder": "[0, 0, 0]"
+	      "placeholder": "0, 0, 0"
+	    },
+	    domProps: {
+	      "value": _vm._s(_vm.rotCen)
+	    },
+	    on: {
+	      "input": function($event) {
+	        if ($event.target.composing) { return; }
+	        _vm.rotCen = $event.target.value
+	      }
 	    }
 	  })])]), _vm._v(" "), _c('div', {
 	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
@@ -10225,11 +10508,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, [_vm._v("Rotation axis")]), _vm._v(" "), _c('div', {
 	    staticClass: "uk-form-controls"
 	  }, [_c('input', {
-	    staticClass: "uk-input uk-form-width-xsmall",
+	    directives: [{
+	      name: "model",
+	      rawName: "v-model",
+	      value: (_vm.rotAxis),
+	      expression: "rotAxis"
+	    }],
+	    staticClass: "uk-input uk-form-width-small",
 	    attrs: {
 	      "id": "form-rot-axis",
 	      "type": "text",
-	      "placeholder": "[0, 0, 0]"
+	      "placeholder": "0, 0, 0"
+	    },
+	    domProps: {
+	      "value": _vm._s(_vm.rotAxis)
+	    },
+	    on: {
+	      "input": function($event) {
+	        if ($event.target.composing) { return; }
+	        _vm.rotAxis = $event.target.value
+	      }
 	    }
 	  })])]), _vm._v(" "), _c('div', {
 	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
@@ -10241,32 +10539,106 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, [_vm._v("Angular velocity")]), _vm._v(" "), _c('div', {
 	    staticClass: "uk-form-controls"
 	  }, [_c('input', {
-	    staticClass: "uk-input uk-form-width-xsmall",
+	    directives: [{
+	      name: "model",
+	      rawName: "v-model",
+	      value: (_vm.rotVel),
+	      expression: "rotVel"
+	    }],
+	    staticClass: "uk-input uk-form-width-small",
 	    attrs: {
 	      "id": "form-rot-vel",
 	      "type": "text",
-	      "placeholder": "[0, 0, 0]"
+	      "placeholder": "0, 0, 0"
+	    },
+	    domProps: {
+	      "value": _vm._s(_vm.rotVel)
+	    },
+	    on: {
+	      "input": function($event) {
+	        if ($event.target.composing) { return; }
+	        _vm.rotVel = $event.target.value
+	      }
 	    }
-	  })])]), _vm._v(" "), _c('div', {
+	  })])]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
 	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-	  }, [_c('p', [_c('span', {
-	    staticClass: "uk-form-label"
-	  }, [_vm._v("Adaptive refinement")])]), _vm._v(" "), _c('div', {
+	  }, [_vm._v("\n      Adaptive refinement\n    ")]), _vm._v(" "), _c('div', {
+	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+	  }, [_c('div', {
 	    staticClass: "uk-form-controls uk-form-controls-text"
 	  }, [_c('label', [_c('input', {
+	    directives: [{
+	      name: "model",
+	      rawName: "v-model",
+	      value: (_vm.doGridAMR),
+	      expression: "doGridAMR"
+	    }],
 	    staticClass: "uk-checkbox",
 	    attrs: {
 	      "type": "checkbox",
 	      "name": "do_grid_amr"
+	    },
+	    domProps: {
+	      "checked": Array.isArray(_vm.doGridAMR) ? _vm._i(_vm.doGridAMR, null) > -1 : (_vm.doGridAMR)
+	    },
+	    on: {
+	      "click": function($event) {
+	        var $$a = _vm.doGridAMR,
+	          $$el = $event.target,
+	          $$c = $$el.checked ? (true) : (false);
+	        if (Array.isArray($$a)) {
+	          var $$v = null,
+	            $$i = _vm._i($$a, $$v);
+	          if ($$c) {
+	            $$i < 0 && (_vm.doGridAMR = $$a.concat($$v))
+	          } else {
+	            $$i > -1 && (_vm.doGridAMR = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+	          }
+	        } else {
+	          _vm.doGridAMR = $$c
+	        }
+	      }
 	    }
 	  }), _vm._v(" Do grid refinement")]), _vm._v(" "), _c('br'), _vm._v(" "), _c('label', [_c('input', {
+	    directives: [{
+	      name: "model",
+	      rawName: "v-model",
+	      value: (_vm.doPartAMR),
+	      expression: "doPartAMR"
+	    }],
 	    staticClass: "uk-checkbox",
 	    attrs: {
 	      "type": "checkbox",
 	      "name": "do_part_amr"
+	    },
+	    domProps: {
+	      "checked": Array.isArray(_vm.doPartAMR) ? _vm._i(_vm.doPartAMR, null) > -1 : (_vm.doPartAMR)
+	    },
+	    on: {
+	      "click": function($event) {
+	        var $$a = _vm.doPartAMR,
+	          $$el = $event.target,
+	          $$c = $$el.checked ? (true) : (false);
+	        if (Array.isArray($$a)) {
+	          var $$v = null,
+	            $$i = _vm._i($$a, $$v);
+	          if ($$c) {
+	            $$i < 0 && (_vm.doPartAMR = $$a.concat($$v))
+	          } else {
+	            $$i > -1 && (_vm.doPartAMR = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+	          }
+	        } else {
+	          _vm.doPartAMR = $$c
+	        }
+	      }
 	    }
-	  }), _vm._v(" Do particle refinement")])])])])])
-	}]}
+	  }), _vm._v(" Do particle refinement")])])])]), _vm._v(" "), _c('button', {
+	    staticClass: "uk-button uk-button-default",
+	    on: {
+	      "click": _vm.printMPMParameters
+	    }
+	  }, [_vm._v("Print")])])
+	},staticRenderFns: []}
 	module.exports.render._withStripped = true
 	if (false) {
 	  module.hot.accept()
@@ -10367,13 +10739,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
 	  return _c('div', {
+	    staticStyle: {
+	      "font-size": "0.75rem"
+	    },
 	    attrs: {
 	      "id": "time-control-container"
 	    }
 	  }, [_c('form', {
-	    staticClass: "uk-form-stacked"
+	    staticClass: "uk-form-horizontal"
 	  }, [_c('div', {
-	    staticClass: "uk-margin"
+	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
 	  }, [_c('label', {
 	    staticClass: "uk-form-label",
 	    attrs: {
@@ -10388,7 +10763,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      value: (_vm.initTime),
 	      expression: "initTime"
 	    }],
-	    staticClass: "uk-input uk-form-small",
+	    staticClass: "uk-input uk-form-width-small",
 	    attrs: {
 	      "id": "init-time-entry",
 	      "type": "text",
@@ -10404,7 +10779,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 	  })])]), _vm._v(" "), _c('div', {
-	    staticClass: "uk-margin"
+	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
 	  }, [_c('label', {
 	    staticClass: "uk-form-label",
 	    attrs: {
@@ -10419,7 +10794,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      value: (_vm.maxTime),
 	      expression: "maxTime"
 	    }],
-	    staticClass: "uk-input uk-form-small",
+	    staticClass: "uk-input uk-form-width-small",
 	    attrs: {
 	      "id": "max-time-entry",
 	      "type": "text",
@@ -10435,7 +10810,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 	  })])]), _vm._v(" "), _c('div', {
-	    staticClass: "uk-margin"
+	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
 	  }, [_c('label', {
 	    staticClass: "uk-form-label",
 	    attrs: {
@@ -10450,7 +10825,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      value: (_vm.maxNumSteps),
 	      expression: "maxNumSteps"
 	    }],
-	    staticClass: "uk-input uk-form-small",
+	    staticClass: "uk-input uk-form-width-small",
 	    attrs: {
 	      "id": "max-num-steps-entry",
 	      "type": "text",
@@ -10466,7 +10841,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 	  })])]), _vm._v(" "), _c('div', {
-	    staticClass: "uk-margin"
+	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
 	  }, [_c('label', {
 	    staticClass: "uk-form-label",
 	    attrs: {
@@ -10481,7 +10856,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      value: (_vm.deltInit),
 	      expression: "deltInit"
 	    }],
-	    staticClass: "uk-input uk-form-small",
+	    staticClass: "uk-input uk-form-width-small",
 	    attrs: {
 	      "id": "delt-init-entry",
 	      "type": "text",
@@ -10497,9 +10872,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 	  })])]), _vm._v(" "), _c('div', {
-	    staticClass: "uk-margin"
+	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
 	  }, [_c('label', {
-	    staticClass: "uk-form-label",
+	    staticClass: "uk-form-label-large",
 	    attrs: {
 	      "for": "delt-min-entry"
 	    }
@@ -10512,7 +10887,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      value: (_vm.deltMin),
 	      expression: "deltMin"
 	    }],
-	    staticClass: "uk-input uk-form-small",
+	    staticClass: "uk-input uk-form-width-small",
 	    attrs: {
 	      "id": "delt-min-entry",
 	      "type": "text",
@@ -10528,9 +10903,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 	  })])]), _vm._v(" "), _c('div', {
-	    staticClass: "uk-margin"
+	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
 	  }, [_c('label', {
-	    staticClass: "uk-form-label",
+	    staticClass: "uk-form-label-large",
 	    attrs: {
 	      "for": "delt-max-entry"
 	    }
@@ -10543,7 +10918,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      value: (_vm.deltMax),
 	      expression: "deltMax"
 	    }],
-	    staticClass: "uk-input uk-form-small",
+	    staticClass: "uk-input uk-form-width-small",
 	    attrs: {
 	      "id": "delt-max-entry",
 	      "type": "text",
@@ -10559,9 +10934,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 	  })])]), _vm._v(" "), _c('div', {
-	    staticClass: "uk-margin"
+	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
 	  }, [_c('label', {
-	    staticClass: "uk-form-label",
+	    staticClass: "uk-form-label-large",
 	    attrs: {
 	      "for": "max-delt-inc-entry"
 	    }
@@ -10574,7 +10949,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      value: (_vm.maxDeltInc),
 	      expression: "maxDeltInc"
 	    }],
-	    staticClass: "uk-input uk-form-small",
+	    staticClass: "uk-input uk-form-width-small",
 	    attrs: {
 	      "id": "max-delt-inc-entry",
 	      "type": "text",
@@ -10590,9 +10965,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 	  })])]), _vm._v(" "), _c('div', {
-	    staticClass: "uk-margin"
+	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
 	  }, [_c('label', {
-	    staticClass: "uk-form-label",
+	    staticClass: "uk-form-label-large",
 	    attrs: {
 	      "for": "delt-multiplier-entry"
 	    }
@@ -10605,7 +10980,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      value: (_vm.deltMultiplier),
 	      expression: "deltMultiplier"
 	    }],
-	    staticClass: "uk-input uk-form-small",
+	    staticClass: "uk-input uk-form-width-small",
 	    attrs: {
 	      "id": "delt-multiplier-entry",
 	      "type": "text",

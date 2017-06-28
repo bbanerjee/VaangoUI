@@ -6,16 +6,16 @@
       <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
         <span class="uk-form-label">Dimensions</span>
         <div class="uk-form-controls uk-form-controls-text">
-          <label><input class="uk-radio" type="radio" name="dimensions"> 3D</label>
-          <label><input class="uk-radio" type="radio" name="dimensions"> 2D Axisymmetric</label>
+          <label><input v-model="threeD" class="uk-radio" type="radio" name="dimensions"> 3D</label>
+          <label><input v-model="twoD" class="uk-radio" type="radio" name="dimensions"> 2D Axisymmetric</label>
         </div>
       </div>
 
       <!-- Integration type -->
       <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
-        <label class="uk-form-label" for="form-h-select">Time integration</label>
+        <label class="uk-form-label" for="integration-type">Time integration</label>
         <div class="uk-form-controls">
-          <select class="uk-select uk-form-width-xsmall" id="form-h-select">
+          <select v-model="integrationType" class="uk-select uk-form-width-small" id="integration-type">
                                     <option>Explicit</option>
                                     <option>Explicit: Fracture</option>
                                     <option>Implicit</option>
@@ -25,9 +25,9 @@
 
       <!-- Interpolation type -->
       <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
-        <label class="uk-form-label" for="form-h-select">MPM interpolation</label>
+        <label class="uk-form-label" for="interpolation-type">MPM interpolation</label>
         <div class="uk-form-controls">
-          <select class="uk-select uk-form-width-xsmall" id="form-h-select">
+          <select v-model="interpolationType" class="uk-select uk-form-width-small" id="interpolation-type">
                                     <option>Linear</option>
                                     <option>GIMP</option>
                                     <option>ThirdOrderBS</option>
@@ -39,9 +39,9 @@
 
       <!-- Flags -->
       <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
-        <label class="uk-form-label" for="form-h-multiple">MPM Options</label>
+        <label class="uk-form-label" for="mpm-flags">MPM Options</label>
         <div class="uk-form-controls">
-          <select class="uk-select uk-form-width-small" id="form-h-multiple" multiple>
+          <select v-model="mpmFlags" class="uk-select uk-form-width-medium" id="mpm-flags" multiple>
                                     <option>Do not reset grid</option>
                                     <option>Add particle colors</option>
                                     <option>Use artificial viscosity</option>
@@ -64,43 +64,50 @@
       </div>
 
       <!-- Simulation limits -->
+      <hr>
       <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
-        <label class="uk-form-label" for="form-h-text">Minimum particle mass</label>
+        Simulation limits
+      </div>
+      <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
+        <label class="uk-form-label-large" for="min-part-mass">Minimum particle mass</label>
         <div class="uk-form-controls">
-          <input class="uk-input uk-form-width-xsmall" id="form-h-text" type="text" placeholder="1.0e-16">
+          <input v-model="minPartMass" class="uk-input uk-form-width-small" id="min-part-mass" type="text" placeholder="1.0e-16">
         </div>
       </div>
       <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
-        <label class="uk-form-label" for="form-h-text">Maximum particle velocity</label>
+        <label class="uk-form-label-large" for="max-part-vel">Maximum particle velocity</label>
         <div class="uk-form-controls">
-          <input class="uk-input uk-form-width-xsmall" id="form-h-text" type="text" placeholder="1.0e16">
+          <input v-model="maxPartVel" class="uk-input uk-form-width-small" id="max-part-vel" type="text" placeholder="1.0e16">
         </div>
       </div>
 
       <!-- Artificial viscosity flags -->
+      <hr>
       <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
-        <label class="uk-form-label" for="form-h-text">Artificial viscosity (C1)</label>
+        Artificial viscosity parameters 
+      </div>
+      <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
+        <label class="uk-form-label" for="c1">C1</label>
         <div class="uk-form-controls">
-          <input class="uk-input uk-form-width-xsmall" id="form-h-text" type="text" placeholder="0.2">
+          <input v-model="artViscC1" class="uk-input uk-form-width-small" id="c1" type="text" placeholder="0.2">
         </div>
       </div>
       <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
-        <label class="uk-form-label" for="form-h-text">Artificial viscosity (C2)</label>
+        <label class="uk-form-label" for="c2">C2</label>
         <div class="uk-form-controls">
-          <input class="uk-input uk-form-width-xsmall" id="form-h-text" type="text" placeholder="0.05">
+          <input v-model="artViscC2" class="uk-input uk-form-width-small" id="c2" type="text" placeholder="0.05">
         </div>
       </div>
 
       <!-- Gradient computation -->
+      <hr>
       <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
-          <p>
-            <span class="uk-form-label">Deformation gradient</span>
-          </p>
+        Deformation gradient
       </div>
       <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
         <label class="uk-form-label">Algorithm</label>
         <div class="uk-form-controls">
-          <select class="uk-select uk-form-width-xsmall" id="form-h-select">
+          <select v-model="defGradAlgo" class="uk-select uk-form-width-small" id="def-grad-algo">
                                     <option>Prescribed</option>
                                     <option>Linear</option>
                                     <option>Taylor series</option>
@@ -109,59 +116,62 @@
         </div>
       </div>
       <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
-        <label class="uk-form-label" for="form-h-text">Prescribed def.grad. file</label>
+        <label class="uk-form-label" for="def-grad-file">Prescribed def.grad. file</label>
         <div class="uk-form-controls">
-          <input class="uk-input uk-form-width-xsmall" id="form-h-text" type="text" placeholder="None">
+          <input v-model="defGradFile" class="uk-input uk-form-width-small" id="def-grad-file" type="text" placeholder="None">
         </div>
       </div>
       <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
-        <label class="uk-form-label" for="form-h-text"># Taylor terms</label>
+        <label class="uk-form-label" for="def-grad-taylor-terms"># Taylor terms</label>
         <div class="uk-form-controls">
-          <input class="uk-input uk-form-width-xsmall" id="form-h-text" type="text" placeholder="5">
+          <input v-model="defGradTaylorTerms" class="uk-input uk-form-width-small" id="def-grad-taylor-terms" type="text" placeholder="5">
         </div>
       </div>
       <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
         <div class="uk-form-controls uk-form-controls-text">
-          <label>Gradient-enhanced velocity projection <input class="uk-checkbox" type="checkbox" name="do_vel_proj"></label>
+          <label>Gradient-enhanced velocity projection <input v-model="doVelProj" class="uk-checkbox" type="checkbox" name="do_vel_proj"></label>
         </div>
       </div>
 
       <!-- Rotating coord system -->
+      <hr>
       <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
-        <label class="uk-form-label">Rotating coordinate system</label>
-        <input class="uk-checkbox" type="checkbox" name="do_rot_coord">
+        <label class="uk-form-label-large">Use rotating coordinate system</label>
+        <input v-model="doRotCoord" class="uk-checkbox" type="checkbox" name="do_rot_coord">
       </div>
       <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
         <label class="uk-form-label" for="form-rot-cen">Rotation center</label>
         <div class="uk-form-controls">
-          <input class="uk-input uk-form-width-xsmall" id="form-rot-cen" type="text" placeholder="[0, 0, 0]">
+          <input v-model="rotCen" class="uk-input uk-form-width-small" id="form-rot-cen" type="text" placeholder="0, 0, 0">
         </div>
       </div>
       <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
         <label class="uk-form-label" for="form-rot-axis">Rotation axis</label>
         <div class="uk-form-controls">
-          <input class="uk-input uk-form-width-xsmall" id="form-rot-axis" type="text" placeholder="[0, 0, 0]">
+          <input v-model="rotAxis" class="uk-input uk-form-width-small" id="form-rot-axis" type="text" placeholder="0, 0, 0">
         </div>
       </div>
       <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
         <label class="uk-form-label" for="form-rot-vel">Angular velocity</label>
         <div class="uk-form-controls">
-          <input class="uk-input uk-form-width-xsmall" id="form-rot-vel" type="text" placeholder="[0, 0, 0]">
+          <input v-model="rotVel" class="uk-input uk-form-width-small" id="form-rot-vel" type="text" placeholder="0, 0, 0">
         </div>
       </div>
 
       <!-- AMR -->
+      <hr>
       <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
-        <p>
-        <span class="uk-form-label">Adaptive refinement</span>
-        </p>
+        Adaptive refinement
+      </div>
+      <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
         <div class="uk-form-controls uk-form-controls-text">
-          <label><input class="uk-checkbox" type="checkbox" name="do_grid_amr"> Do grid refinement</label> <br>
-          <label><input class="uk-checkbox" type="checkbox" name="do_part_amr"> Do particle refinement</label>
+          <label><input v-model="doGridAMR" class="uk-checkbox" type="checkbox" name="do_grid_amr"> Do grid refinement</label> <br>
+          <label><input v-model="doPartAMR" class="uk-checkbox" type="checkbox" name="do_part_amr"> Do particle refinement</label>
         </div>
       </div>
 
     </form>
+    <button @click="printMPMParameters" class="uk-button uk-button-default">Print</button>
   </div>
 </template>
 
