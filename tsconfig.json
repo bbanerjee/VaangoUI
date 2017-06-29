@@ -9,15 +9,15 @@
         "module": "commonjs",
         "allowJs": true,
         "rootDirs": [
-           "vaango_ui"
+           "src"
         ],
         "experimentalDecorators": true
     },
     "include": [
-        "vaango_ui/VaangoUI.ts",
-        "vaango_ui/views/**/*",
-        "vaango_ui/vuex/**/*",
-        "vaango_ui/graphics/**/*"
+        "src/VaangoUI.ts",
+        "src/views/**/*",
+        "src/vuex/**/*",
+        "src/graphics/**/*"
     ],
     "exclude": [
         "node_modules",

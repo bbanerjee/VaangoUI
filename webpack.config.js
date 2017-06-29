@@ -4,7 +4,7 @@ var webpack = require("webpack");
 module.exports = {
   cache: true,
   entry: {
-    "VaangoUI": "./vaango_ui/VaangoUI.ts"
+    "VaangoUI": "./src/VaangoUI.ts"
   },
   output: {
     path: path.join(__dirname, "/assets/"),
