@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+        "baseUrl": ".",
         "outDir": "./assets/src",
         "sourceMap": false,
         "noImplicitAny": true,
@@ -9,7 +10,6 @@
         "allowJs": true,
         "rootDirs": [
            "vaango_ui"
-           //"tests"
         ],
         "experimentalDecorators": true
     },
@@ -18,8 +18,6 @@
         "vaango_ui/views/**/*",
         "vaango_ui/vuex/**/*",
         "vaango_ui/graphics/**/*"
-        //"vaango_ui/**/*" 
-        //"tests/**/*"
     ],
     "exclude": [
         "node_modules",

@@ -1,5 +1,6 @@
 import * as Vue from "vue";
 import {Component} from "av-ts";
+import * as vkbeautify from "vkbeautify";
 
 @Component({
   name: 'mpm-input-panel'
@@ -42,12 +43,17 @@ export default class MPMInputPanel extends Vue {
   printMPMParameters() {
     console.log("MPM Flags = " + this.mpmFlags);
 
-    var xmlDoc = document.implementation.createDocument(null, "main", null);
-    var root = xmlDoc.createElement("MPM");
-    var node = xmlDoc.createTextNode("artificial_viscosity");
-    node.nodeValue = this.artViscC1.toString();
-    root.appendChild(node);
-    var xmlText = new XMLSerializer().serializeToString(root);
+    var xmlDoc = document.implementation.createDocument("", "", null);
+    var mpmElement = xmlDoc.createElement("MPM");
+    var artVisc = xmlDoc.createElement("artificial_viscosity");
+    var artViscVal = xmlDoc.createTextNode(this.artViscC1.toString());
+    artVisc.appendChild(artViscVal);
+    console.log("art visc = " + this.artViscC1 + "," + artVisc.nodeValue);
+    mpmElement.appendChild(artVisc);
+    xmlDoc.appendChild(mpmElement);
+    var formatter = new vkbeautify();
+    var xmlText = formatter.xml(new XMLSerializer().serializeToString(xmlDoc));
+    //var xmlText = new XMLSerializer().serializeToString(xmlDoc);
 
     console.log("XML = " + xmlText);
 

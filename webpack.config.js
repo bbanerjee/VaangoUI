@@ -59,6 +59,7 @@ module.exports = {
       // Bind version of jquery
       //"lodash": "libs/lodash",
       'vtk.js': path.resolve('./node_modules/vtk.js'),
+      'vkbeautify': path.resolve('./node_modules/vkbeautify'),
     },
     extensions: ['', '.vue', '.ts', '.js']//,
     //root: path.join(__dirname, "src/scripts/")
