@@ -14,6 +14,7 @@ var GeneralInputPanel = require("./views/GeneralInputPanel.vue").default;
 var MPMInputPanel = require("./views/MPMInputPanel.vue").default;
 var TimeInputPanel = require("./views/TimeInputPanel.vue").default;
 
+Vue.component('vaango-main-panel', VaangoMainPanel);
 Vue.component('main-menubar', MainMenubar);
 Vue.component('sidebar', Sidebar);
 Vue.component('vaango-inputs-sidebar', VaangoInputsSidebar);

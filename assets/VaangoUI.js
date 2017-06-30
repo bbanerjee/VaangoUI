@@ -76,6 +76,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var MPMInputPanel = __webpack_require__(55).default;
 	var TimeInputPanel = __webpack_require__(59).default;
 
+	Vue.component('vaango-main-panel', VaangoMainPanel);
 	Vue.component('main-menubar', MainMenubar);
 	Vue.component('sidebar', Sidebar);
 	Vue.component('vaango-inputs-sidebar', VaangoInputsSidebar);
@@ -9759,7 +9760,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	class vkbeautify {
 	    constructor() {
 	        this.step = '\t'; // 4 spaces
-	        this.shift = createShiftArr(this.step);
+	        this.shift = this.createShiftArr(this.step);
 	    }
 
 	    xml(text, step) {
@@ -10018,7 +10019,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        const shift = ['\n']; // array of shifts
-	        for (ix = 0; ix < 100; ix++) {
+	        for (let ix = 0; ix < 100; ix++) {
 	            shift.push(shift[ix] + space);
 	        }
 	        return shift;
@@ -10087,7 +10088,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	}
 
-	exports = vkbeautify;
+	module.exports = vkbeautify;
 
 
 /***/ },
