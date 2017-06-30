@@ -72,6 +72,6 @@
   </div>
 </template>
 
-<script src="./TimeInputPanel.ts">
+<script src="./TimeInputPanel.js">
 
 </script>

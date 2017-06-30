@@ -3,4 +3,4 @@
         <slot></slot>
     </div>
 </template>
-<script src="./ThreeScene.ts"> </script>
+<script src="./ThreeScene.js"> </script>

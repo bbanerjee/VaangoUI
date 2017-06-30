@@ -8,7 +8,7 @@
   </div>
 </template>
 
-<script src="./VaangoInputsSidebar.ts"> </script>
+<script src="./VaangoInputsSidebar.js"> </script>
 
 <style>
 </style>

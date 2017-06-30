@@ -7,7 +7,7 @@
 		exports["VaangoUI"] = factory(require("jQuery"));
 	else
 		root["VaangoUI"] = factory(root["jQuery"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_41__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_31__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -56,18 +56,26 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 
-	const Vue = __webpack_require__(1);
-	const Store_1 = __webpack_require__(3);
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	//  This is the entry routine for Vaango UI
+
+	var Vue = __webpack_require__(1);
+	var Store = __webpack_require__(3).default;
+
 	var VaangoMainPanel = __webpack_require__(20).default;
-	var MainMenubar = __webpack_require__(37).default;
-	var Sidebar = __webpack_require__(43).default;
-	var VaangoInputsSidebar = __webpack_require__(48).default;
-	var MainTextPanel = __webpack_require__(53).default;
-	var ThreeGraphicsPanel = __webpack_require__(56).default;
-	var VtkGraphicsPanel = __webpack_require__(59).default;
-	var GeneralInputPanel = __webpack_require__(62).default;
-	var MPMInputPanel = __webpack_require__(65).default;
-	var TimeInputPanel = __webpack_require__(69).default;
+	var MainMenubar = __webpack_require__(27).default;
+	var Sidebar = __webpack_require__(33).default;
+	var VaangoInputsSidebar = __webpack_require__(38).default;
+	var MainTextPanel = __webpack_require__(43).default;
+	var ThreeGraphicsPanel = __webpack_require__(46).default;
+	var VtkGraphicsPanel = __webpack_require__(49).default;
+	var GeneralInputPanel = __webpack_require__(52).default;
+	var MPMInputPanel = __webpack_require__(55).default;
+	var TimeInputPanel = __webpack_require__(59).default;
+
 	Vue.component('main-menubar', MainMenubar);
 	Vue.component('sidebar', Sidebar);
 	Vue.component('vaango-inputs-sidebar', VaangoInputsSidebar);
@@ -77,26 +85,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	Vue.component('general-input-panel', GeneralInputPanel);
 	Vue.component('mpm-input-panel', MPMInputPanel);
 	Vue.component('time-input-panel', TimeInputPanel);
-	var ThreeOcean = __webpack_require__(72).default;
-	var ThreeRenderer = __webpack_require__(79).default;
-	var ThreeScene = __webpack_require__(83).default;
-	var ThreeCamera = __webpack_require__(86).default;
-	var ThreeSphere = __webpack_require__(89).default;
-	var ThreeEllipsoidParticles = __webpack_require__(92).default;
-	Vue.component('ocean', ThreeOcean);
+
+	var ThreeRenderer = __webpack_require__(62).default;
+	var ThreeScene = __webpack_require__(67).default;
+	var ThreeCamera = __webpack_require__(70).default;
+	var ThreeSphere = __webpack_require__(74).default;
+	var ThreeEllipsoidParticles = __webpack_require__(77).default;
+
 	Vue.component('three-renderer', ThreeRenderer);
 	Vue.component('three-scene', ThreeScene);
 	Vue.component('three-camera', ThreeCamera);
 	Vue.component('three-sphere', ThreeSphere);
 	Vue.component('three-ellipsoid-particles', ThreeEllipsoidParticles);
-	var VtkSphere = __webpack_require__(95).default;
-	var VtkEllipsoidParticles = __webpack_require__(208).default;
-	var VtkRenderer = __webpack_require__(211).default;
+
+	var VtkSphere = __webpack_require__(80).default;
+	var VtkEllipsoidParticles = __webpack_require__(193).default;
+	var VtkRenderer = __webpack_require__(196).default;
+
 	Vue.component('vtk-sphere', VtkSphere);
 	Vue.component('vtk-ellipsoid-particles', VtkEllipsoidParticles);
 	Vue.component('vtk-renderer', VtkRenderer);
+
 	// import ParticleList = vaango_ui.ParticleList;
-	class VaangoUI {
+
+	var VaangoUI = function () {
+
 	    /*
 	    private d_partList : ParticleList = null;
 	    private uintahInputPanel : UintahInputPanel = null;
@@ -108,21 +121,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	    public static OPEN : number = 1;
 	    public static SAVE : number = 2;
 	    */
-	    constructor() {
+
+	    function VaangoUI() {
+	        _classCallCheck(this, VaangoUI);
+
 	        this.ui_vm = new Vue({
-	            store: Store_1.default,
+	            store: Store,
 	            el: '#vaango-main-panel',
 	            components: {
 	                'vaango-main-panel': VaangoMainPanel
 	            },
-	            render: h => {
+	            render: function render(h) {
 	                return h('vaango-main-panel');
 	            }
 	        });
+
 	        this.events_vm = new Vue();
+
 	        //this.d_partList = new ParticleList();
 	    }
-	    initUI() {
+
+	    _createClass(VaangoUI, [{
+	        key: "initUI",
+	        value: function initUI() {}
+
 	        /*
 	        var menuListener : VaangoUI.MenuListener = new VaangoUI.MenuListener(this);
 	        var menuBar : JMenuBar = new JMenuBar();
@@ -156,13 +178,103 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var tabListener : VaangoUI.TabListener = new VaangoUI.TabListener(this);
 	        this.mainTabbedPane.addChangeListener(tabListener);
 	        */
-	    }
-	}
+
+
+	        /*
+	        public updatePanels() {
+	            VaangoUI.mainFrame.pack();
+	        }
+	         getFileName(option : number) : File {
+	            var fc : JFileChooser = new JFileChooser(new File(".."));
+	            if(this.oldFile != null) fc.setSelectedFile(this.oldFile);
+	            var returnVal : number = 0;
+	            if(option === VaangoUI.OPEN) {
+	                returnVal = fc.showOpenDialog(this);
+	            } else {
+	                returnVal = fc.showSaveDialog(this);
+	            }
+	            if(returnVal === JFileChooser.APPROVE_OPTION) {
+	                var file : File = fc.getSelectedFile();
+	                this.oldFile = file;
+	                return file;
+	            } else return null;
+	        }
+	         writeUintah(outputFile : File) {
+	            try {
+	                var fw : FileWriter = new FileWriter(outputFile);
+	                var pw : PrintWriter = new PrintWriter(fw);
+	                this.uintahInputPanel.writeUintah(pw);
+	                pw.close();
+	                fw.close();
+	            } catch(event) {
+	                console.info("Could not write to file " + outputFile.getName());
+	            };
+	        }
+	         public static setConstraints(c? : any, fill? : any, wx? : any, wy? : any, gx? : any, gy? : any, gw? : any, gh? : any, ins? : any) : any {
+	            if(((c != null && c instanceof java.awt.GridBagConstraints) || c === null) && ((typeof fill === 'number') || fill === null) && ((typeof wx === 'number') || wx === null) && ((typeof wy === 'number') || wy === null) && ((typeof gx === 'number') || gx === null) && ((typeof gy === 'number') || gy === null) && ((typeof gw === 'number') || gw === null) && ((typeof gh === 'number') || gh === null) && ((typeof ins === 'number') || ins === null)) {
+	                return <any>(() => {
+	                    c.fill = fill;
+	                    c.weightx = <number>wx;
+	                    c.weighty = <number>wy;
+	                    c.gridx = gx;
+	                    c.gridy = gy;
+	                    c.gridwidth = gw;
+	                    c.gridheight = gh;
+	                    var insets : Insets = new Insets(ins, ins, ins, ins);
+	                    c.insets = insets;
+	                })();
+	            } else if(((c != null && c instanceof java.awt.GridBagConstraints) || c === null) && ((typeof fill === 'number') || fill === null) && ((typeof wx === 'number') || wx === null) && ((typeof wy === 'number') || wy === null) && ((typeof gx === 'number') || gx === null) && ((typeof gy === 'number') || gy === null) && gw === undefined && gh === undefined && ins === undefined) {
+	                return <any>vaango_ui.VaangoUI.setConstraints$java_awt_GridBagConstraints$int$int$int$int$int(c, fill, wx, wy, gx, gy);
+	            } else if(((c != null && c instanceof java.awt.GridBagConstraints) || c === null) && ((typeof fill === 'number') || fill === null) && ((typeof wx === 'number') || wx === null) && ((typeof wy === 'number') || wy === null) && gx === undefined && gy === undefined && gw === undefined && gh === undefined && ins === undefined) {
+	                return <any>vaango_ui.VaangoUI.setConstraints$java_awt_GridBagConstraints$int$int$int(c, fill, wx, wy);
+	            } else if(((c != null && c instanceof java.awt.GridBagConstraints) || c === null) && ((typeof fill === 'number') || fill === null) && ((typeof wx === 'number') || wx === null) && wy === undefined && gx === undefined && gy === undefined && gw === undefined && gh === undefined && ins === undefined) {
+	                return <any>vaango_ui.VaangoUI.setConstraints$java_awt_GridBagConstraints$int$int(c, fill, wx);
+	            } else throw new Error('invalid overload');
+	        }
+	         public static setConstraints$java_awt_GridBagConstraints$int$int(c : GridBagConstraints, col : number, row : number) {
+	            c.fill = GridBagConstraints.NONE;
+	            c.weightx = 1.0;
+	            c.weighty = 1.0;
+	            c.gridx = col;
+	            c.gridy = row;
+	            c.gridwidth = 1;
+	            c.gridheight = 1;
+	            var insets : Insets = new Insets(5, 5, 5, 5);
+	            c.insets = insets;
+	        }
+	         public static setConstraints$java_awt_GridBagConstraints$int$int$int(c : GridBagConstraints, fill : number, col : number, row : number) {
+	            c.fill = fill;
+	            c.weightx = 1.0;
+	            c.weighty = 1.0;
+	            c.gridx = col;
+	            c.gridy = row;
+	            c.gridwidth = 1;
+	            c.gridheight = 1;
+	            var insets : Insets = new Insets(5, 5, 5, 5);
+	            c.insets = insets;
+	        }
+	         public static setConstraints$java_awt_GridBagConstraints$int$int$int$int$int(c : GridBagConstraints, fill : number, xinset : number, yinset : number, col : number, row : number) {
+	            c.fill = fill;
+	            c.weightx = 1.0;
+	            c.weighty = 1.0;
+	            c.gridx = col;
+	            c.gridy = row;
+	            c.gridwidth = 1;
+	            c.gridheight = 1;
+	            var insets : Insets = new Insets(yinset, xinset, yinset, xinset);
+	            c.insets = insets;
+	        } */
+
+	    }]);
+
+	    return VaangoUI;
+	}();
+
 	module.exports = VaangoUI;
+
 	/*
 	export namespace VaangoUI {
-
-	    export class MenuListener implements ActionListener {
+	     export class MenuListener implements ActionListener {
 	        public __parent: any;
 	        public actionPerformed(e : ActionEvent) {
 	            var source : JMenuItem = <JMenuItem>(e.getSource());
@@ -183,14 +295,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	                this.__parent.helpAboutFrame.setVisible(true);
 	            }
 	        }
-
-	        constructor(__parent: any) {
+	         constructor(__parent: any) {
 	            Object.defineProperty(this, '__interfaces', { configurable: true, value: ["java.util.EventListener","java.awt.event.ActionListener"] });
 	            this.__parent = __parent;
 	        }
 	    }
-
-	    export class TabListener implements ChangeListener {
+	     export class TabListener implements ChangeListener {
 	        public __parent: any;
 	        public stateChanged(e : ChangeEvent) {
 	            var curTab : number = this.__parent.mainTabbedPane.getSelectedIndex();
@@ -201,19 +311,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	                this.__parent.uintahInputPanel.setVisibleDisplayFrame(false);
 	            }
 	        }
-
-	        constructor(__parent: any) {
+	         constructor(__parent: any) {
 	            Object.defineProperty(this, '__interfaces', { configurable: true, value: ["java.util.EventListener","javax.swing.event.ChangeListener"] });
 	            this.__parent = __parent;
 	        }
 	    }
-
-	    export class VaangoUI$0 extends WindowAdapter {
+	     export class VaangoUI$0 extends WindowAdapter {
 	        public windowClosing(e : WindowEvent) {
 	            java.lang.System.exit(0);
 	        }
-
-	        constructor() {
+	         constructor() {
 	            super();
 	            Object.defineProperty(this, '__interfaces', { configurable: true, value: ["java.util.EventListener","java.awt.event.WindowListener","java.awt.event.WindowFocusListener","java.awt.event.WindowStateListener"] });
 	        }
@@ -6628,18 +6735,22 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 
-	const Vue = __webpack_require__(1);
-	const Vuex = __webpack_require__(4);
-	const ThreeGraphicsModule_1 = __webpack_require__(5);
-	const VTKGraphicsModule_1 = __webpack_require__(10);
-	const ParticleModule_1 = __webpack_require__(15);
+	var Vue = __webpack_require__(1);
+	var Vuex = __webpack_require__(4);
+
+	var ThreeGraphicsModule = __webpack_require__(5).default;
+	var VTKGraphicsModule = __webpack_require__(10).default;
+	var ParticleModule = __webpack_require__(15).default;
+
 	Vue.use(Vuex);
+
 	Object.defineProperty(exports, "__esModule", { value: true });
+
 	exports.default = new Vuex.Store({
 	    modules: {
-	        threeGraphics: new ThreeGraphicsModule_1.ThreeGraphicsModule(),
-	        vtkGraphics: new VTKGraphicsModule_1.VTKGraphicsModule(),
-	        particles: new ParticleModule_1.ParticleModule()
+	        threeGraphics: new ThreeGraphicsModule(),
+	        vtkGraphics: new VTKGraphicsModule(),
+	        particles: new ParticleModule()
 	    }
 	});
 
@@ -7415,21 +7526,25 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 
-	const ThreeGraphicsState_1 = __webpack_require__(6);
-	const ThreeGraphicsGetters_1 = __webpack_require__(7);
-	const ThreeGraphicsActions_1 = __webpack_require__(8);
-	const ThreeGraphicsMutations_1 = __webpack_require__(9);
-	class ThreeGraphicsModule {
-	    constructor() {
-	        this.mutations = ThreeGraphicsMutations_1.default;
-	        this.getters = ThreeGraphicsGetters_1.default;
-	        this.actions = ThreeGraphicsActions_1.default;
-	        let w = 500;
-	        let h = 500;
-	        this.state = new ThreeGraphicsState_1.ThreeGraphicsState(w, h);
-	    }
-	}
-	exports.ThreeGraphicsModule = ThreeGraphicsModule;
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var ThreeGraphicsState = __webpack_require__(6).default;
+	var ThreeGraphicsGetters = __webpack_require__(7);
+	var ThreeGraphicsActions = __webpack_require__(8);
+	var ThreeGraphicsMutations = __webpack_require__(9);
+
+	var ThreeGraphicsModule = function ThreeGraphicsModule() {
+	    _classCallCheck(this, ThreeGraphicsModule);
+
+	    this.mutations = ThreeGraphicsMutations.default;
+	    this.getters = ThreeGraphicsGetters.default;
+	    this.actions = ThreeGraphicsActions.default;
+	    var w = 300;
+	    var h = 300;
+	    this.state = new ThreeGraphicsState(w, h);
+	};
+
+	exports.default = ThreeGraphicsModule;
 
 /***/ },
 /* 6 */
@@ -7437,15 +7552,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 
-	class ThreeGraphicsState {
-	    constructor(w, h) {
-	        this.scene = null;
-	        this.camera = null;
-	        this.areThreeObjectsCreated = false;
-	    }
-	}
-	exports.ThreeGraphicsState = ThreeGraphicsState;
-	;
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var ThreeGraphicsState = function ThreeGraphicsState(w, h) {
+	    _classCallCheck(this, ThreeGraphicsState);
+
+	    this.scene = null;
+	    this.camera = null;
+	    this.areThreeObjectsCreated = false;
+	};
+
+	exports.default = ThreeGraphicsState;
 
 /***/ },
 /* 7 */
@@ -7457,19 +7574,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return ThreeGraphicsState.scene;
 	}
 	exports.scene = scene;
+
 	function camera(ThreeGraphicsState) {
 	    return ThreeGraphicsState.camera;
 	}
 	exports.camera = camera;
+
 	function areThreeObjectsCreated(state) {
 	    return state.areThreeObjectsCreated;
 	}
 	exports.areThreeObjectsCreated = areThreeObjectsCreated;
+
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.default = {
-	    scene,
-	    camera,
-	    areThreeObjectsCreated
+	    scene: scene,
+	    camera: camera,
+	    areThreeObjectsCreated: areThreeObjectsCreated
 	};
 
 /***/ },
@@ -7481,41 +7601,42 @@ return /******/ (function(modules) { // webpackBootstrap
 	function setScene(store) {
 	    store.commit('SET_SCENE');
 	}
+
 	exports.setScene = setScene;
-	;
+
 	function setCamera(store) {
 	    store.commit('SET_CAMERA');
 	}
 	exports.setCamera = setCamera;
-	;
+
 	function deleteScene(store) {
 	    store.commit('DELETE_SCENE');
 	}
 	exports.deleteScene = deleteScene;
-	;
+
 	function deleteCamera(store) {
 	    store.commit('DELETE_CAMERA');
 	}
 	exports.deleteCamera = deleteCamera;
-	;
+
 	function addObject(store) {
 	    store.commit('ADD_THREE_OBJECT');
 	}
 	exports.addObject = addObject;
-	;
+
 	function updateThreeObjectsCreatedFlag(store) {
 	    store.commit('THREE_OBJECTS_CREATED');
 	}
 	exports.updateThreeObjectsCreatedFlag = updateThreeObjectsCreatedFlag;
-	;
+
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.default = {
-	    setScene,
-	    setCamera,
-	    deleteScene,
-	    deleteCamera,
-	    addObject,
-	    updateThreeObjectsCreatedFlag
+	    setScene: setScene,
+	    setCamera: setCamera,
+	    deleteScene: deleteScene,
+	    deleteCamera: deleteCamera,
+	    addObject: addObject,
+	    updateThreeObjectsCreatedFlag: updateThreeObjectsCreatedFlag
 	};
 
 /***/ },
@@ -7529,39 +7650,45 @@ return /******/ (function(modules) { // webpackBootstrap
 	    console.log("set scene");
 	}
 	exports.SET_SCENE = SET_SCENE;
+
 	function SET_CAMERA(state, camera) {
 	    state.camera = camera;
 	    console.log("set camera");
 	}
 	exports.SET_CAMERA = SET_CAMERA;
+
 	function DELETE_SCENE(state, message) {
 	    state.scene = null;
 	    console.log("deleted scene" + message);
 	}
 	exports.DELETE_SCENE = DELETE_SCENE;
+
 	function DELETE_CAMERA(state, message) {
 	    state.camera = null;
 	    console.log("deleted camera" + message);
 	}
 	exports.DELETE_CAMERA = DELETE_CAMERA;
+
 	function ADD_THREE_OBJECT(state, object) {
 	    state.scene.add(object);
-	    //console.log("Added object");
+	    console.log("Added object");
 	}
 	exports.ADD_THREE_OBJECT = ADD_THREE_OBJECT;
+
 	function THREE_OBJECTS_CREATED(state, value) {
 	    state.areThreeObjectsCreated = value;
 	    console.log("Three graphics state updated");
 	}
 	exports.THREE_OBJECTS_CREATED = THREE_OBJECTS_CREATED;
+
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.default = {
-	    SET_SCENE,
-	    SET_CAMERA,
-	    DELETE_SCENE,
-	    DELETE_CAMERA,
-	    ADD_THREE_OBJECT,
-	    THREE_OBJECTS_CREATED
+	    SET_SCENE: SET_SCENE,
+	    SET_CAMERA: SET_CAMERA,
+	    DELETE_SCENE: DELETE_SCENE,
+	    DELETE_CAMERA: DELETE_CAMERA,
+	    ADD_THREE_OBJECT: ADD_THREE_OBJECT,
+	    THREE_OBJECTS_CREATED: THREE_OBJECTS_CREATED
 	};
 
 /***/ },
@@ -7570,37 +7697,42 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 
-	const VTKGraphicsState_1 = __webpack_require__(11);
-	const VTKGraphicsGetters_1 = __webpack_require__(12);
-	const VTKGraphicsActions_1 = __webpack_require__(13);
-	const VTKGraphicsMutations_1 = __webpack_require__(14);
-	class VTKGraphicsModule {
-	    constructor() {
-	        this.mutations = VTKGraphicsMutations_1.default;
-	        this.getters = VTKGraphicsGetters_1.default;
-	        this.actions = VTKGraphicsActions_1.default;
-	        this.state = new VTKGraphicsState_1.VTKGraphicsState();
-	    }
-	}
-	exports.VTKGraphicsModule = VTKGraphicsModule;
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var VTKGraphicsState = __webpack_require__(11).default;
+	var VTKGraphicsGetters = __webpack_require__(12);
+	var VTKGraphicsActions = __webpack_require__(13);
+	var VTKGraphicsMutations = __webpack_require__(14);
+
+	var VTKGraphicsModule = function VTKGraphicsModule() {
+	    _classCallCheck(this, VTKGraphicsModule);
+
+	    this.mutations = VTKGraphicsMutations.default;
+	    this.getters = VTKGraphicsGetters.default;
+	    this.actions = VTKGraphicsActions.default;
+	    this.state = new VTKGraphicsState();
+	};
+
+	exports.default = VTKGraphicsModule;
 
 /***/ },
 /* 11 */
 /***/ function(module, exports) {
 
-	//import * as vtkActor from 'vtk.js/Sources/Rendering/Core/Actor';
 	"use strict";
 
-	class VTKGraphicsState {
-	    constructor() {
-	        this.actors = [];
-	        this.sources = [];
-	        this.mappers = [];
-	        this.areVTKActorsCreated = false;
-	    }
-	}
-	exports.VTKGraphicsState = VTKGraphicsState;
-	;
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var VTKGraphicsState = function VTKGraphicsState() {
+	    _classCallCheck(this, VTKGraphicsState);
+
+	    this.actors = [];
+	    this.sources = [];
+	    this.mappers = [];
+	    this.areVTKActorsCreated = false;
+	};
+
+	exports.default = VTKGraphicsState;
 
 /***/ },
 /* 12 */
@@ -7612,24 +7744,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return state.actors;
 	}
 	exports.actors = actors;
+
 	function sources(state) {
 	    return state.sources;
 	}
 	exports.sources = sources;
+
 	function mappers(state) {
 	    return state.mappers;
 	}
 	exports.mappers = mappers;
+
 	function areVTKActorsCreated(state) {
 	    return state.areVTKActorsCreated;
 	}
 	exports.areVTKActorsCreated = areVTKActorsCreated;
+
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.default = {
-	    actors,
-	    sources,
-	    mappers,
-	    areVTKActorsCreated
+	    actors: actors,
+	    sources: sources,
+	    mappers: mappers,
+	    areVTKActorsCreated: areVTKActorsCreated
 	};
 
 /***/ },
@@ -7642,28 +7778,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	    store.commit('ADD_VTK_ACTOR');
 	}
 	exports.addActor = addActor;
-	;
+
 	function addSource(store) {
 	    store.commit('ADD_VTK_SOURCE');
 	}
 	exports.addSource = addSource;
-	;
+
 	function addMapper(store) {
 	    store.commit('ADD_VTK_MAPPER');
 	}
 	exports.addMapper = addMapper;
-	;
+
 	function updateVTKActorsCreatedFlag(store) {
 	    store.commit('VTK_ACTORS_CREATED');
 	}
 	exports.updateVTKActorsCreatedFlag = updateVTKActorsCreatedFlag;
-	;
+
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.default = {
-	    addActor,
-	    addSource,
-	    addMapper,
-	    updateVTKActorsCreatedFlag
+	    addActor: addActor,
+	    addSource: addSource,
+	    addMapper: addMapper,
+	    updateVTKActorsCreatedFlag: updateVTKActorsCreatedFlag
 	};
 
 /***/ },
@@ -7677,27 +7813,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	    console.log("Added VTK actor object");
 	}
 	exports.ADD_VTK_ACTOR = ADD_VTK_ACTOR;
+
 	function ADD_VTK_SOURCE(state, source) {
 	    state.sources.push(source);
 	    console.log("Added VTK source object");
 	}
 	exports.ADD_VTK_SOURCE = ADD_VTK_SOURCE;
+
 	function ADD_VTK_MAPPER(state, mapper) {
 	    state.mappers.push(mapper);
 	    console.log("Added VTK mapper object");
 	}
 	exports.ADD_VTK_MAPPER = ADD_VTK_MAPPER;
+
 	function VTK_ACTORS_CREATED(state, value) {
 	    state.areVTKActorsCreated = value;
 	    console.log("VTK graphics state updated");
 	}
 	exports.VTK_ACTORS_CREATED = VTK_ACTORS_CREATED;
+
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.default = {
-	    ADD_VTK_ACTOR,
-	    ADD_VTK_SOURCE,
-	    ADD_VTK_MAPPER,
-	    VTK_ACTORS_CREATED
+	    ADD_VTK_ACTOR: ADD_VTK_ACTOR,
+	    ADD_VTK_SOURCE: ADD_VTK_SOURCE,
+	    ADD_VTK_MAPPER: ADD_VTK_MAPPER,
+	    VTK_ACTORS_CREATED: VTK_ACTORS_CREATED
 	};
 
 /***/ },
@@ -7706,19 +7846,23 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 
-	const ParticleState_1 = __webpack_require__(16);
-	const ParticleGetters_1 = __webpack_require__(17);
-	const ParticleActions_1 = __webpack_require__(18);
-	const ParticleMutations_1 = __webpack_require__(19);
-	class ParticleModule {
-	    constructor() {
-	        this.mutations = ParticleMutations_1.default;
-	        this.getters = ParticleGetters_1.default;
-	        this.actions = ParticleActions_1.default;
-	        this.state = new ParticleState_1.ParticleState();
-	    }
-	}
-	exports.ParticleModule = ParticleModule;
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var ParticleState = __webpack_require__(16).default;
+	var ParticleGetters = __webpack_require__(17);
+	var ParticleActions = __webpack_require__(18);
+	var ParticleMutations = __webpack_require__(19);
+
+	var ParticleModule = function ParticleModule() {
+	    _classCallCheck(this, ParticleModule);
+
+	    this.mutations = ParticleMutations.default;
+	    this.getters = ParticleGetters.default;
+	    this.actions = ParticleActions.default;
+	    this.state = new ParticleState();
+	};
+
+	exports.default = ParticleModule;
 
 /***/ },
 /* 16 */
@@ -7726,14 +7870,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 
-	class ParticleState {
-	    constructor() {
-	        this.particleData = {};
-	        this.isParticleReadComplete = false;
-	    }
-	}
-	exports.ParticleState = ParticleState;
-	;
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var ParticleState = function ParticleState() {
+	    _classCallCheck(this, ParticleState);
+
+	    this.particleData = {};
+	    this.isParticleReadComplete = false;
+	};
+
+	exports.default = ParticleState;
 
 /***/ },
 /* 17 */
@@ -7745,14 +7891,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return state.particleData;
 	}
 	exports.particleData = particleData;
+
 	function isParticleReadComplete(state) {
 	    return state.isParticleReadComplete;
 	}
 	exports.isParticleReadComplete = isParticleReadComplete;
+
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.default = {
-	    particleData,
-	    isParticleReadComplete
+	    particleData: particleData,
+	    isParticleReadComplete: isParticleReadComplete
 	};
 
 /***/ },
@@ -7761,20 +7909,21 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 
-	function setParticleData(store, particleData) {
-	    store.commit('SET_PARTICLE_DATA', particleData);
+	function setParticleData(store) {
+	    store.commit('SET_PARTICLE_DATA');
 	}
+
 	exports.setParticleData = setParticleData;
-	;
+
 	function deleteParticleData(store) {
-	    store.commit('DELETE_PARTICLE_DATA', 'Deleting all particles');
+	    store.commit('DELETE_PARTICLE_DATA');
 	}
 	exports.deleteParticleData = deleteParticleData;
-	;
+
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.default = {
-	    setParticleData,
-	    deleteParticleData
+	    setParticleData: setParticleData,
+	    deleteParticleData: deleteParticleData
 	};
 
 /***/ },
@@ -7789,16 +7938,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	    console.log("Set particleData");
 	}
 	exports.SET_PARTICLE_DATA = SET_PARTICLE_DATA;
+
 	function DELETE_PARTICLE_DATA(state, message) {
 	    state.particleData = null;
 	    state.isParticleReadComplete = false;
 	    console.log("Deleted particle data" + message);
 	}
 	exports.DELETE_PARTICLE_DATA = DELETE_PARTICLE_DATA;
+
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.default = {
-	    SET_PARTICLE_DATA,
-	    DELETE_PARTICLE_DATA
+	    SET_PARTICLE_DATA: SET_PARTICLE_DATA,
+	    DELETE_PARTICLE_DATA: DELETE_PARTICLE_DATA
 	};
 
 /***/ },
@@ -7815,7 +7966,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	__vue_exports__ = __webpack_require__(25)
 
 	/* template */
-	var __vue_template__ = __webpack_require__(36)
+	var __vue_template__ = __webpack_require__(26)
 	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
 	if (
 	  typeof __vue_exports__.default === "object" ||
@@ -7827,7 +7978,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/views/VaangoMainPanel.vue"
+	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/src/views/VaangoMainPanel.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 
@@ -7838,9 +7989,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!hotAPI.compatible) return
 	  module.hot.accept()
 	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-0dcb052d", __vue_options__)
+	    hotAPI.createRecord("data-v-f44e0e44", __vue_options__)
 	  } else {
-	    hotAPI.reload("data-v-0dcb052d", __vue_options__)
+	    hotAPI.reload("data-v-f44e0e44", __vue_options__)
 	  }
 	})()}
 	if (__vue_options__.functional) {console.error("[vue-loader] VaangoMainPanel.vue: functional components are not supported and should be defined in plain js files using render functions.")}
@@ -7865,8 +8016,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-0dcb052d!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./VaangoMainPanel.vue", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-0dcb052d!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./VaangoMainPanel.vue");
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-f44e0e44!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./VaangoMainPanel.vue", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-f44e0e44!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./VaangoMainPanel.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -8171,446 +8322,33 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
 	const Vue = __webpack_require__(1);
-	const av_ts_1 = __webpack_require__(26);
-	let VaangoMainPanel = class VaangoMainPanel extends Vue {
-	    constructor() {
-	        super(...arguments);
-	        this.id = "VaangoMainPanel";
-	        this.sidebarTabIndex = 0;
-	        this.sidebarTabName = "";
-	    }
-	    updateActiveTab(index, name) {
-	        console.log("Updating sidebarTabIndex to " + index + " " + name);
-	        this.sidebarTabIndex = index;
-	        this.sidebarTabName = name;
-	    }
-	};
-	VaangoMainPanel = __decorate([
-	    av_ts_1.Component({
-	        name: 'vaango-main-panel',
-	    })
-	], VaangoMainPanel);
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.default = VaangoMainPanel;
 
+	let VaangoMainPanel = Vue.extend({
+	  name: 'vaango-main-panel',
+
+	  data() {
+	    return {
+	      id: "VaangoMainPanel",
+	      sidebarTabIndex: 0,
+	      sidebarTabName: "",
+	      size: { x: 500, y: 500 }
+	    };
+	  },
+
+	  methods: {
+	    updateActiveTab(index, name) {
+	      console.log("Updating sidebarTabIndex to " + index + " " + name);
+	      this.sidebarTabIndex = index;
+	      this.sidebarTabName = name;
+	    }
+	  }
+	});
+
+	exports.default = VaangoMainPanel;
 
 /***/ },
 /* 26 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	function __export(m) {
-	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-	}
-	var Vue = __webpack_require__(1);
-	exports.Vue = Vue;
-	var core_1 = __webpack_require__(27);
-	exports.Component = core_1.Component;
-	var lifecycle_1 = __webpack_require__(29);
-	exports.Lifecycle = lifecycle_1.Lifecycle;
-	var prop_1 = __webpack_require__(30);
-	exports.Prop = prop_1.Prop;
-	exports.p = prop_1.p;
-	var render_1 = __webpack_require__(31);
-	exports.Render = render_1.Render;
-	var transition_1 = __webpack_require__(32);
-	exports.Transition = transition_1.Transition;
-	var watch_1 = __webpack_require__(33);
-	exports.Watch = watch_1.Watch;
-	var data_1 = __webpack_require__(34);
-	exports.Data = data_1.Data;
-	__export(__webpack_require__(35));
-
-
-/***/ },
-/* 27 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * The basic idea behind Component is marking on prototype
-	 * and then process these marks to collect options and modify class/instance.
-	 *
-	 * A decorator will mark `internalKey` on prototypes, storgin meta information
-	 * Then register `DecoratorProcessor` on Component, which will be called in `Component` decorator
-	 * `DecoratorProcessor` can execute custom logic based on meta information stored before
-	 *
-	 * For non-annotated fields, `Component` will treat them as `methods` and `computed` in `option`
-	 * instance variable is treated as the return value of `data()` in `option`
-	 *
-	 * So a `DecoratorProcessor` may delete fields on prototype and instance,
-	 * preventing meta properties like lifecycle and prop to pollute `method` and `data`
-	 */
-	"use strict";
-	var Vue = __webpack_require__(1);
-	var util_1 = __webpack_require__(28);
-	// option is a full-blown Vue compatible option
-	// meta is vue.ts specific type for annotation, a subset of option
-	function makeOptionsFromMeta(meta, name) {
-	    meta.name = name;
-	    for (var _i = 0, _a = ['props', 'computed', 'watch', 'methods']; _i < _a.length; _i++) {
-	        var key = _a[_i];
-	        if (!util_1.hasOwn(meta, key)) {
-	            meta[key] = {};
-	        }
-	    }
-	    return meta;
-	}
-	// given a vue class' prototype, return its internalKeys and normalKeys
-	// internalKeys are for decorators' use, like $$Prop, $$Lifecycle
-	// normalKeys are for methods / computed property
-	function getKeys(proto) {
-	    var protoKeys = Object.getOwnPropertyNames(proto);
-	    var internalKeys = [];
-	    var normalKeys = [];
-	    for (var _i = 0, protoKeys_1 = protoKeys; _i < protoKeys_1.length; _i++) {
-	        var key = protoKeys_1[_i];
-	        if (key === 'constructor') {
-	            continue;
-	        }
-	        else if (key.substr(0, 2) === '$$') {
-	            internalKeys.push(key);
-	        }
-	        else {
-	            normalKeys.push(key);
-	        }
-	    }
-	    return {
-	        internalKeys: internalKeys, normalKeys: normalKeys
-	    };
-	}
-	var registeredProcessors = util_1.createMap();
-	// delegate to processor
-	function collectInternalProp(propKey, proto, instance, optionsToWrite) {
-	    var processor = registeredProcessors[propKey];
-	    if (!processor) {
-	        return;
-	    }
-	    processor(proto, instance, optionsToWrite);
-	}
-	// un-annotated and undeleted methods/getters are handled as `methods` and `computed`
-	function collectMethodsAndComputed(propKey, proto, optionsToWrite) {
-	    var descriptor = Object.getOwnPropertyDescriptor(proto, propKey);
-	    if (!descriptor) {
-	        return;
-	    }
-	    if (typeof descriptor.value === 'function') {
-	        optionsToWrite.methods[propKey] = descriptor.value;
-	    }
-	    else if (descriptor.get || descriptor.set) {
-	        optionsToWrite.computed[propKey] = {
-	            get: descriptor.get,
-	            set: descriptor.set,
-	        };
-	    }
-	}
-	var VUE_KEYS = Object.keys(new Vue);
-	// find all undeleted instance property as the return value of data()
-	// need to remove Vue keys to avoid cyclic references
-	function collectData(cls, keys, optionsToWrite) {
-	    // already implemented by @Data
-	    if (optionsToWrite.data)
-	        return;
-	    // what a closure! :(
-	    optionsToWrite.data = function () {
-	        var selfData = {};
-	        var vm = this;
-	        // _init is the only method required for `cls` call
-	        // for not data property, set as a readonly prop
-	        // so @Prop does not rewrite it to undefined
-	        cls.prototype._init = function () {
-	            var _loop_1 = function (key) {
-	                if (keys.indexOf(key) >= 0)
-	                    return "continue";
-	                Object.defineProperty(this_1, key, {
-	                    get: function () { return vm[key]; },
-	                    set: util_1.NOOP
-	                });
-	            };
-	            var this_1 = this;
-	            for (var _i = 0, _a = Object.keys(vm); _i < _a.length; _i++) {
-	                var key = _a[_i];
-	                _loop_1(key);
-	            }
-	        };
-	        var proxy = new cls();
-	        for (var _i = 0, keys_1 = keys; _i < keys_1.length; _i++) {
-	            var key = keys_1[_i];
-	            if (VUE_KEYS.indexOf(key) === -1) {
-	                selfData[key] = proxy[key];
-	            }
-	        }
-	        return selfData;
-	    };
-	}
-	// find proto's superclass' constructor to correctly extend
-	function findSuper(proto) {
-	    // prototype:   {}  -> VueInst -> ParentInst, aka. proto
-	    // constructor: Vue -> Parent  -> Child
-	    var superProto = Object.getPrototypeOf(proto);
-	    var Super = superProto instanceof Vue
-	        ? superProto.constructor // TS does not setup constructor :(
-	        : Vue;
-	    return Super;
-	}
-	function Component_(meta) {
-	    if (meta === void 0) { meta = {}; }
-	    function decorate(cls) {
-	        Component.inDefinition = true;
-	        // let instance = Object.create(cls.prototype)
-	        // Object.defineProperty(instance, '_init', {
-	        //   value: NOOP, enumerable: false
-	        // })
-	        cls.prototype._init = util_1.NOOP;
-	        var instance = null;
-	        try {
-	            instance = new cls();
-	        }
-	        finally {
-	            Component.inDefinition = false;
-	        }
-	        delete cls.prototype._init;
-	        var proto = cls.prototype;
-	        var options = makeOptionsFromMeta(meta, cls['name']);
-	        var _a = getKeys(proto), internalKeys = _a.internalKeys, normalKeys = _a.normalKeys;
-	        for (var _i = 0, internalKeys_1 = internalKeys; _i < internalKeys_1.length; _i++) {
-	            var protoKey = internalKeys_1[_i];
-	            collectInternalProp(protoKey, proto, instance, options);
-	        }
-	        for (var _b = 0, normalKeys_1 = normalKeys; _b < normalKeys_1.length; _b++) {
-	            var protoKey = normalKeys_1[_b];
-	            collectMethodsAndComputed(protoKey, proto, options);
-	        }
-	        // everything on instance is packed into data
-	        collectData(cls, Object.keys(instance), options);
-	        var Super = findSuper(proto);
-	        return Super.extend(options);
-	    }
-	    return decorate;
-	}
-	function Component(target) {
-	    if (typeof target === 'function') {
-	        return Component_()(target);
-	    }
-	    return Component_(target);
-	}
-	exports.Component = Component;
-	(function (Component) {
-	    function register(key, logic) {
-	        registeredProcessors[key] = logic;
-	    }
-	    Component.register = register;
-	    Component.inDefinition = false;
-	})(Component = exports.Component || (exports.Component = {}));
-
-
-/***/ },
-/* 28 */
-/***/ function(module, exports) {
-
-	"use strict";
-	function NOOP() { }
-	exports.NOOP = NOOP;
-	function getReflectType(target, key) {
-	    if (typeof Reflect === "object" && typeof Reflect.getMetadata === "function") {
-	        return Reflect.getMetadata('design:type', target, key);
-	    }
-	    return null;
-	}
-	exports.getReflectType = getReflectType;
-	function createMap() {
-	    var ret = Object.create(null);
-	    ret["__"] = undefined;
-	    delete ret["__"];
-	    return ret;
-	}
-	exports.createMap = createMap;
-	function hasOwn(obj, key) {
-	    return Object.prototype.hasOwnProperty.call(obj, key);
-	}
-	exports.hasOwn = hasOwn;
-
-
-/***/ },
-/* 29 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var core_1 = __webpack_require__(27);
-	var util_1 = __webpack_require__(28);
-	var LIFECYCLE_KEY = '$$Lifecycle';
-	function Lifecycle(target, life, _) {
-	    var lifecycles = target[LIFECYCLE_KEY] = target[LIFECYCLE_KEY] || util_1.createMap();
-	    lifecycles[life] = true;
-	}
-	exports.Lifecycle = Lifecycle;
-	core_1.Component.register(LIFECYCLE_KEY, function (proto, instance, options) {
-	    var lifecycles = proto[LIFECYCLE_KEY];
-	    for (var lifecycle in lifecycles) {
-	        // lifecycles must be on proto because internalKeys is processed before method
-	        var handler = proto[lifecycle];
-	        delete proto[lifecycle];
-	        options[lifecycle] = handler;
-	    }
-	});
-
-
-/***/ },
-/* 30 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var core_1 = __webpack_require__(27);
-	var util_1 = __webpack_require__(28);
-	var PROP_KEY = '$$Prop';
-	function Prop(target, key) {
-	    var propKeys = target[PROP_KEY] = target[PROP_KEY] || [];
-	    propKeys.push(key);
-	}
-	exports.Prop = Prop;
-	core_1.Component.register(PROP_KEY, function (proto, instance, options) {
-	    var propKeys = proto[PROP_KEY];
-	    var props = options.props = options.props || util_1.createMap();
-	    for (var _i = 0, propKeys_1 = propKeys; _i < propKeys_1.length; _i++) {
-	        var key = propKeys_1[_i];
-	        var prop = {};
-	        if (instance[key] != null) {
-	            prop = instance[key];
-	            delete instance[key];
-	        }
-	        // refill type if not existing, do we need this?
-	        if (!prop.type) {
-	            prop.type = util_1.getReflectType(proto, key);
-	        }
-	        props[key] = prop;
-	    }
-	    options.props = props;
-	});
-	function p(confOrType) {
-	    if (!core_1.Component.inDefinition) {
-	        return undefined;
-	    }
-	    if (typeof confOrType === 'function') {
-	        var tpe = confOrType;
-	        return { type: tpe };
-	    }
-	    var conf = confOrType;
-	    if (conf.type === Function) {
-	        conf.default = conf.defaultFunc;
-	        // TODO: evaluate copying a config rather than delete prop
-	        delete conf.defaultFunc;
-	    }
-	    return conf;
-	}
-	exports.p = p;
-
-
-/***/ },
-/* 31 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var core_1 = __webpack_require__(27);
-	var RENDER_KEY = '$$Render';
-	var RENDER = 'render';
-	function Render(target, key, _) {
-	    target[RENDER_KEY] = true;
-	}
-	exports.Render = Render;
-	core_1.Component.register(RENDER_KEY, function (proto, instance, options) {
-	    if (proto[RENDER_KEY]) {
-	        options[RENDER] = proto[RENDER];
-	        delete proto[RENDER];
-	    }
-	});
-
-
-/***/ },
-/* 32 */
-/***/ function(module, exports) {
-
-	"use strict";
-	// for type checking only
-	function Transition(target, key, _) {
-	}
-	exports.Transition = Transition;
-
-
-/***/ },
-/* 33 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var core_1 = __webpack_require__(27);
-	var util_1 = __webpack_require__(28);
-	var WATCH_PROP = '$$Watch';
-	function Watch(keyOrPath, opt) {
-	    if (opt === void 0) { opt = {}; }
-	    var key = Array.isArray(keyOrPath) ? keyOrPath.join('.') : keyOrPath;
-	    return function (target, method) {
-	        var watchedProps = target[WATCH_PROP] = target[WATCH_PROP] || util_1.createMap();
-	        opt['handler'] = target[method];
-	        opt['originalMethod'] = method;
-	        watchedProps[key] = opt;
-	    };
-	}
-	exports.Watch = Watch;
-	core_1.Component.register(WATCH_PROP, function (target, instance, optionsToWrite) {
-	    var watchedProps = target[WATCH_PROP];
-	    var watch = optionsToWrite.watch;
-	    for (var key in watchedProps) {
-	        watch[key] = watchedProps[key];
-	        delete target[watchedProps[key]['originalMethod']];
-	    }
-	});
-
-
-/***/ },
-/* 34 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var core_1 = __webpack_require__(27);
-	var DATA_KEY = '$$data';
-	function Data(target, key, _) {
-	    target[DATA_KEY] = target[key];
-	}
-	exports.Data = Data;
-	core_1.Component.register(DATA_KEY, function (proto, instance, options) {
-	    var dataFunc = proto['data'];
-	    options.data = function () {
-	        return dataFunc.call(this);
-	    };
-	    delete proto['data'];
-	});
-
-
-/***/ },
-/* 35 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	function Mixin(parent) {
-	    var traits = [];
-	    for (var _i = 1; _i < arguments.length; _i++) {
-	        traits[_i - 1] = arguments[_i];
-	    }
-	    return parent.extend({ mixins: traits });
-	}
-	exports.Mixin = Mixin;
-	var core_1 = __webpack_require__(27);
-	exports.Trait = core_1.Component;
-
-
-/***/ },
-/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -8651,25 +8389,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (false) {
 	  module.hot.accept()
 	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-0dcb052d", module.exports)
+	     require("vue-hot-reload-api").rerender("data-v-f44e0e44", module.exports)
 	  }
 	}
 
 /***/ },
-/* 37 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_exports__, __vue_options__
 	var __vue_styles__ = {}
 
 	/* styles */
-	__webpack_require__(38)
+	__webpack_require__(28)
 
 	/* script */
-	__vue_exports__ = __webpack_require__(40)
+	__vue_exports__ = __webpack_require__(30)
 
 	/* template */
-	var __vue_template__ = __webpack_require__(42)
+	var __vue_template__ = __webpack_require__(32)
 	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
 	if (
 	  typeof __vue_exports__.default === "object" ||
@@ -8681,7 +8419,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/views/MainMenubar.vue"
+	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/src/views/MainMenubar.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 
@@ -8692,9 +8430,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!hotAPI.compatible) return
 	  module.hot.accept()
 	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-79870bdd", __vue_options__)
+	    hotAPI.createRecord("data-v-2ebc800e", __vue_options__)
 	  } else {
-	    hotAPI.reload("data-v-79870bdd", __vue_options__)
+	    hotAPI.reload("data-v-2ebc800e", __vue_options__)
 	  }
 	})()}
 	if (__vue_options__.functional) {console.error("[vue-loader] MainMenubar.vue: functional components are not supported and should be defined in plain js files using render functions.")}
@@ -8704,13 +8442,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 38 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(39);
+	var content = __webpack_require__(29);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(24)(content, {});
@@ -8719,8 +8457,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-79870bdd!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./MainMenubar.vue", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-79870bdd!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./MainMenubar.vue");
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-2ebc800e!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./MainMenubar.vue", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-2ebc800e!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./MainMenubar.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -8730,7 +8468,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 39 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(23)();
@@ -8744,242 +8482,235 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 40 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
 	const Vue = __webpack_require__(1);
-	const $ = __webpack_require__(41);
-	const av_ts_1 = __webpack_require__(26);
-	const Store_1 = __webpack_require__(3);
-	let MainMenubar = class MainMenubar extends Vue {
-	    constructor() {
-	        super(...arguments);
-	        this.id = "MainMenubar";
-	        this.menuItems = [
-	            "Read VTK XML particle file",
-	            "Read generated particle file",
-	            "Read Vaango input file",
-	            "Save Vaango input file",
-	            "About",
-	            "Exit"
-	        ];
-	        this.selectedMenuIndex = 0;
-	    }
-	    created() {
-	        this.selectedMenuIndex = 0;
-	        this.menuVisible = false;
-	        this.itemIsActive = [];
-	        for (let item = 0; item < this.menuItems.length; item++) {
-	            this.itemIsActive[item] = false;
-	        }
-	        ;
-	    }
-	    selectMenu(menuItem, menuIndex) {
-	        for (let item = 0; item < this.menuItems.length; item++) {
-	            this.itemIsActive[item] = false;
-	        }
-	        ;
-	        console.log("Menu item " + menuItem + " index  " + menuIndex + " selected.");
-	        this.selectedMenuIndex = menuIndex;
-	        this.itemIsActive[menuIndex] = true;
-	    }
-	    addToggleMenu(menuItem, menuIndex) {
-	        console.log("add menuVisible", this.menuVisible);
-	        if (!this.menuVisible) {
-	            console.log("Added menu");
-	            $("#main-menubar-dropdown-menu").addClass("uk-open");
-	            $("#main-menubar-dropdown-icon").addClass("uk-open");
-	            this.menuVisible = true;
-	        }
-	    }
-	    removeToggleMenu(menuItem, menuIndex) {
-	        // Handle the exit option
-	        console.log("remove menuVisible", this.menuVisible);
-	        if (this.menuVisible) {
-	            if (menuItem === "Exit") {
-	                console.log("Removed menu");
-	                $("#main-menubar-dropdown-menu").removeClass("uk-open");
-	                $("#main-menubar-dropdown-icon").removeClass("uk-open");
-	                this.menuVisible = false;
-	            }
-	        }
-	    }
-	    removeMenu() {
-	        // Handle the exit option
-	        console.log("remove menuVisible", this.menuVisible);
-	        if (this.menuVisible) {
-	            $("#main-menubar-dropdown-menu").removeClass("uk-open");
-	            $("#main-menubar-dropdown-icon").removeClass("uk-open");
-	            this.menuVisible = false;
-	        }
-	    }
+	const $ = __webpack_require__(31);
+
+	const Store = __webpack_require__(3).default;
+
+	let MainMenubar = Vue.extend({
+	  name: 'main-menubar',
+
+	  data() {
+	    return {
+	      id: "MainMenubar",
+	      menuItems: ["Read VTK XML particle file", "Read generated particle file", "Read Vaango input file", "Save Vaango input file", "About", "Exit"],
+	      selectedMenuIndex: 0,
+	      itemIsActive: [],
+	      menuVisible: true,
+	      d_xmlDoc: null
+	    };
+	  },
+
+	  computed: {
 	    // Make selectedMenuIndex a computed property
-	    get getSelectedMenuIndex() {
+	    getSelectedMenuIndex: {
+	      get() {
 	        return this.selectedMenuIndex;
+	      }
 	    }
+	  },
+
+	  created() {
+	    this.selectedMenuIndex = 0;
+	    this.menuVisible = false;
+	    this.itemIsActive = [];
+	    for (let item = 0; item < this.menuItems.length; item++) {
+	      this.itemIsActive[item] = false;
+	    };
+	  },
+
+	  methods: {
+	    selectMenu(menuItem, menuIndex) {
+	      for (let item = 0; item < this.menuItems.length; item++) {
+	        this.itemIsActive[item] = false;
+	      }
+
+	      console.log("Menu item " + menuItem + " index  " + menuIndex + " selected.");
+	      this.selectedMenuIndex = menuIndex;
+	      this.itemIsActive[menuIndex] = true;
+	    },
+
+	    addToggleMenu(menuItem, menuIndex) {
+	      console.log("add menuVisible", this.menuVisible);
+	      if (!this.menuVisible) {
+	        console.log("Added menu");
+	        $("#main-menubar-dropdown-menu").addClass("uk-open");
+	        $("#main-menubar-dropdown-icon").addClass("uk-open");
+	        this.menuVisible = true;
+	      }
+	    },
+
+	    removeToggleMenu(menuItem, menuIndex) {
+	      // Handle the exit option
+	      console.log("remove menuVisible", this.menuVisible);
+	      if (this.menuVisible) {
+	        if (menuItem === "Exit") {
+	          console.log("Removed menu");
+	          $("#main-menubar-dropdown-menu").removeClass("uk-open");
+	          $("#main-menubar-dropdown-icon").removeClass("uk-open");
+	          this.menuVisible = false;
+	        }
+	      }
+	    },
+
+	    removeMenu() {
+	      // Handle the exit option
+	      console.log("remove menuVisible", this.menuVisible);
+	      if (this.menuVisible) {
+	        $("#main-menubar-dropdown-menu").removeClass("uk-open");
+	        $("#main-menubar-dropdown-icon").removeClass("uk-open");
+	        this.menuVisible = false;
+	      }
+	    },
+
 	    isActive(menuIndex) {
-	        console.log("isActive called: " + this.itemIsActive[menuIndex]);
-	        return this.itemIsActive[menuIndex];
-	    }
+	      console.log("isActive called: " + this.itemIsActive[menuIndex]);
+	      return this.itemIsActive[menuIndex];
+	    },
+
 	    readVTKXMLParticleFile(event) {
-	        console.log("Reading VTK XML file");
-	        // Choose first file in selected list
-	        let file = event.target.files[0];
-	        console.log(file);
-	        // Read the file as text and store data
-	        this.readXMLFile(file, "vtk-xml");
-	    }
+	      console.log("Reading VTK XML file");
+
+	      // Choose first file in selected list
+	      let file = event.target.files[0];
+	      console.log(file);
+
+	      // Read the file as text and store data
+	      this.readXMLFile(file, "vtk-xml");
+	    },
+
 	    readGeneratedParticleFile(e) {
-	        console.log("Read Generated Particle file not implemented yet.");
-	    }
+	      console.log("Read Generated Particle file not implemented yet.");
+	    },
+
 	    readVaangoInputFile(event) {
-	        console.log("Reading Vaango XML file");
-	        // Choose first file in selected list
-	        let file = event.target.files[0];
-	        console.log(file);
-	        // Read the file as text and store data
-	        this.readXMLFile(file, "vaango-xml");
-	    }
+	      console.log("Reading Vaango XML file");
+
+	      // Choose first file in selected list
+	      let file = event.target.files[0];
+	      console.log(file);
+
+	      // Read the file as text and store data
+	      this.readXMLFile(file, "vaango-xml");
+	    },
+
 	    saveVaangoInputFile(e) {
-	        console.log("Save Vaango input file not implemented yet.");
-	    }
+	      console.log("Save Vaango input file not implemented yet.");
+	    },
+
 	    readXMLFile(file, type) {
-	        if (file) {
-	            console.log("Found file");
-	            let reader = new FileReader();
-	            reader.readAsText(file);
-	            //console.log(reader.error);
-	            // Use a closure to capture the file information
-	            var xmlDoc = null;
-	            reader.onload = (function (theFile, fileType, storeXMLDoc) {
-	                return function (event) {
-	                    let contents = event.target.result;
-	                    console.log("Reading file " + theFile.name +
-	                        "size = " + theFile.size +
-	                        "starts with: " +
-	                        contents.substr(1, contents.indexOf("n")));
-	                    let xmlData = reader.result;
-	                    console.log(xmlData);
-	                    let xmlDoc = $.parseXML(xmlData);
-	                    console.log(xmlDoc);
-	                    storeXMLDoc(fileType, xmlDoc);
-	                };
-	            })(file, type, this.storeXMLDoc);
-	        }
-	        else {
-	            console.log("Unable to load file ", file.name);
-	        }
-	    }
+
+	      if (file) {
+	        console.log("Found file");
+	        let reader = new FileReader();
+	        reader.readAsText(file);
+	        //console.log(reader.error);
+
+	        // Use a closure to capture the file information
+	        var xmlDoc = null;
+	        reader.onload = function (theFile, fileType, storeXMLDoc) {
+	          return function (event) {
+	            let contents = event.target.result;
+	            console.log("Reading file " + theFile.name + "size = " + theFile.size + "starts with: " + contents.substr(1, contents.indexOf("n")));
+	            let xmlData = reader.result;
+	            console.log(xmlData);
+	            let xmlDoc = $.parseXML(xmlData);
+	            console.log(xmlDoc);
+	            storeXMLDoc(fileType, xmlDoc);
+	          };
+	        }(file, type, this.storeXMLDoc);
+	      } else {
+	        console.log("Unable to load file ", file.name);
+	      }
+	    },
+
 	    storeXMLDoc(fileType, xmlDoc) {
-	        console.log("Calling store xml doc");
-	        this.d_xmlDoc = xmlDoc;
-	        if (fileType === "vtk-xml") {
-	            this.parseAndSaveVTKXML();
-	        }
-	        else if (fileType === "vaango-xml") {
-	            this.parseAndSaveVaangoXML();
-	        }
-	        this.removeMenu();
-	    }
+	      console.log("Calling store xml doc");
+	      this.d_xmlDoc = xmlDoc;
+	      if (fileType === "vtk-xml") {
+	        this.parseAndSaveVTKXML();
+	      } else if (fileType === "vaango-xml") {
+	        this.parseAndSaveVaangoXML();
+	      }
+	      this.removeMenu();
+	    },
+
 	    parseAndSaveVTKXML() {
-	        console.log("Parsing VTK XML");
-	        let $xml = $(this.d_xmlDoc);
-	        let fileType = $xml.find("VTKFile").attr('type');
-	        if (fileType != "UnstructuredGrid") {
-	            console.log("Invalid file type" + fileType);
-	        }
-	        // Read time point
-	        var time = $xml.find("FieldData")
-	            .find("DataArray").text().trim();
-	        console.log("Time = " + parseFloat(time));
-	        // Read the number of points in the data set
-	        var numPts = $xml.find("Piece").attr('NumberOfPoints').trim();
-	        console.log("Number of points = " + parseFloat(numPts));
-	        // Read the state data
-	        var pointData = {};
-	        $($xml.find("PointData")
-	            .find("DataArray"))
-	            .each(function () {
-	            let data = $(this);
-	            let key = data.attr("Name");
-	            let type = data.attr("type");
-	            let numComponents = data.attr("NumberOfComponents");
-	            console.log("Found " + key);
-	            console.log("numComponents " + numComponents);
-	            if (numComponents) {
-	                let numComp = parseFloat(numComponents);
-	                let dataArray = data.text().trim()
-	                    .replace(/\s\s+/g, ' ')
-	                    .replace(/(\r\n|\n|\r)/gm, " ")
-	                    .split(" ")
-	                    .map(parseFloat);
-	                let arrayOfVec = [];
-	                while (dataArray.length) {
-	                    arrayOfVec.push(dataArray.splice(0, numComp));
-	                }
-	                pointData[key] = arrayOfVec;
-	            }
-	            else {
-	                pointData[key] = data.text().trim()
-	                    .replace(/\s\s+/g, ' ')
-	                    .replace(/(\r\n|\n|\r)/gm, " ")
-	                    .split(" ")
-	                    .map(parseFloat);
-	            }
-	        });
-	        // Read the position data
-	        let points = $xml.find("Points")
-	            .find("DataArray");
-	        let numComponents = points.attr("NumberOfComponents");
-	        let dataArray = points.text().trim()
-	            .replace(/\s\s+/g, ' ')
-	            .replace(/(\r\n|\n|\r)/gm, " ")
-	            .split(" ")
-	            .map(parseFloat);
-	        let numComp = parseFloat(numComponents);
-	        let arrayOfVec = [];
-	        while (dataArray.length) {
+	      console.log("Parsing VTK XML");
+	      let $xml = $(this.d_xmlDoc);
+	      let fileType = $xml.find("VTKFile").attr('type');
+	      if (fileType != "UnstructuredGrid") {
+	        console.log("Invalid file type" + fileType);
+	      }
+
+	      // Read time point
+	      var time = $xml.find("FieldData").find("DataArray").text().trim();
+	      console.log("Time = " + parseFloat(time));
+
+	      // Read the number of points in the data set
+	      var numPts = $xml.find("Piece").attr('NumberOfPoints').trim();
+	      console.log("Number of points = " + parseFloat(numPts));
+
+	      // Read the state data
+	      var pointData = {};
+	      $($xml.find("PointData").find("DataArray")).each(function () {
+	        let data = $(this);
+	        let key = data.attr("Name");
+	        let type = data.attr("type");
+	        let numComponents = data.attr("NumberOfComponents");
+	        console.log("Found " + key);
+	        console.log("numComponents " + numComponents);
+	        if (numComponents) {
+	          let numComp = parseFloat(numComponents);
+	          let dataArray = data.text().trim().replace(/\s\s+/g, ' ').replace(/(\r\n|\n|\r)/gm, " ").split(" ").map(parseFloat);
+	          let arrayOfVec = [];
+	          while (dataArray.length) {
 	            arrayOfVec.push(dataArray.splice(0, numComp));
+	          }
+	          pointData[key] = arrayOfVec;
+	        } else {
+	          pointData[key] = data.text().trim().replace(/\s\s+/g, ' ').replace(/(\r\n|\n|\r)/gm, " ").split(" ").map(parseFloat);
 	        }
-	        pointData["Position"] = arrayOfVec;
-	        console.log(pointData);
-	        // Save the data
-	        Store_1.default.commit('SET_PARTICLE_DATA', pointData);
-	    }
+	      });
+
+	      // Read the position data
+	      let points = $xml.find("Points").find("DataArray");
+	      let numComponents = points.attr("NumberOfComponents");
+	      let dataArray = points.text().trim().replace(/\s\s+/g, ' ').replace(/(\r\n|\n|\r)/gm, " ").split(" ").map(parseFloat);
+	      let numComp = parseFloat(numComponents);
+	      let arrayOfVec = [];
+	      while (dataArray.length) {
+	        arrayOfVec.push(dataArray.splice(0, numComp));
+	      }
+	      pointData["Position"] = arrayOfVec;
+	      console.log(pointData);
+
+	      // Save the data
+	      Store.commit('SET_PARTICLE_DATA', pointData);
+	    },
+
 	    parseAndSaveVaangoXML() {
-	        console.log("Parsing VaangoTK XML");
-	        let $xml = $(this.d_xmlDoc);
-	        let simType = $xml.find("SimulationComponent").attr('type');
-	        console.log(simType);
+	      console.log("Parsing VaangoTK XML");
+	      let $xml = $(this.d_xmlDoc);
+	      let simType = $xml.find("SimulationComponent").attr('type');
+	      console.log(simType);
 	    }
-	};
-	__decorate([
-	    av_ts_1.Lifecycle
-	], MainMenubar.prototype, "created", null);
-	MainMenubar = __decorate([
-	    av_ts_1.Component({
-	        name: 'main-menubar'
-	    })
-	], MainMenubar);
-	Object.defineProperty(exports, "__esModule", { value: true });
+	  }
+	});
+
 	exports.default = MainMenubar;
 
-
 /***/ },
-/* 41 */
+/* 31 */
 /***/ function(module, exports) {
 
-	module.exports = __WEBPACK_EXTERNAL_MODULE_41__;
+	module.exports = __WEBPACK_EXTERNAL_MODULE_31__;
 
 /***/ },
-/* 42 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -9076,25 +8807,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (false) {
 	  module.hot.accept()
 	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-79870bdd", module.exports)
+	     require("vue-hot-reload-api").rerender("data-v-2ebc800e", module.exports)
 	  }
 	}
 
 /***/ },
-/* 43 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_exports__, __vue_options__
 	var __vue_styles__ = {}
 
 	/* styles */
-	__webpack_require__(44)
+	__webpack_require__(34)
 
 	/* script */
-	__vue_exports__ = __webpack_require__(46)
+	__vue_exports__ = __webpack_require__(36)
 
 	/* template */
-	var __vue_template__ = __webpack_require__(47)
+	var __vue_template__ = __webpack_require__(37)
 	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
 	if (
 	  typeof __vue_exports__.default === "object" ||
@@ -9106,7 +8837,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/views/Sidebar.vue"
+	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/src/views/Sidebar.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 
@@ -9117,9 +8848,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!hotAPI.compatible) return
 	  module.hot.accept()
 	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-d27ec544", __vue_options__)
+	    hotAPI.createRecord("data-v-65f1d20f", __vue_options__)
 	  } else {
-	    hotAPI.reload("data-v-d27ec544", __vue_options__)
+	    hotAPI.reload("data-v-65f1d20f", __vue_options__)
 	  }
 	})()}
 	if (__vue_options__.functional) {console.error("[vue-loader] Sidebar.vue: functional components are not supported and should be defined in plain js files using render functions.")}
@@ -9129,13 +8860,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 44 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(45);
+	var content = __webpack_require__(35);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(24)(content, {});
@@ -9144,8 +8875,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-d27ec544!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Sidebar.vue", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-d27ec544!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Sidebar.vue");
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-65f1d20f!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Sidebar.vue", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-65f1d20f!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Sidebar.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -9155,7 +8886,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 45 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(23)();
@@ -9169,39 +8900,32 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 46 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
 	const Vue = __webpack_require__(1);
-	const av_ts_1 = __webpack_require__(26);
-	let Sidebar = class Sidebar extends Vue {
-	    constructor() {
-	        super(...arguments);
-	        this.id = "Sidebar";
-	    }
+
+	let Sidebar = Vue.extend({
+	  name: 'sidebar',
+
+	  data() {
+	    return {
+	      id: "Sidebar"
+	    };
+	  },
+
+	  methods: {
 	    propagateActiveTab(index, name) {
-	        console.log("Propagating active tab " + index + " " + name);
-	        this.$emit('propagateActiveTab', index, name);
+	      console.log("Propagating active tab " + index + " " + name);
+	      this.$emit('propagateActiveTab', index, name);
 	    }
-	};
-	Sidebar = __decorate([
-	    av_ts_1.Component({
-	        name: 'sidebar'
-	    })
-	], Sidebar);
-	Object.defineProperty(exports, "__esModule", { value: true });
+	  }
+	});
+
 	exports.default = Sidebar;
 
-
 /***/ },
-/* 47 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -9245,25 +8969,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (false) {
 	  module.hot.accept()
 	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-d27ec544", module.exports)
+	     require("vue-hot-reload-api").rerender("data-v-65f1d20f", module.exports)
 	  }
 	}
 
 /***/ },
-/* 48 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_exports__, __vue_options__
 	var __vue_styles__ = {}
 
 	/* styles */
-	__webpack_require__(49)
+	__webpack_require__(39)
 
 	/* script */
-	__vue_exports__ = __webpack_require__(51)
+	__vue_exports__ = __webpack_require__(41)
 
 	/* template */
-	var __vue_template__ = __webpack_require__(52)
+	var __vue_template__ = __webpack_require__(42)
 	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
 	if (
 	  typeof __vue_exports__.default === "object" ||
@@ -9275,7 +8999,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/views/VaangoInputsSidebar.vue"
+	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/src/views/VaangoInputsSidebar.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 
@@ -9286,9 +9010,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!hotAPI.compatible) return
 	  module.hot.accept()
 	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-2a2a54d6", __vue_options__)
+	    hotAPI.createRecord("data-v-02f4ee74", __vue_options__)
 	  } else {
-	    hotAPI.reload("data-v-2a2a54d6", __vue_options__)
+	    hotAPI.reload("data-v-02f4ee74", __vue_options__)
 	  }
 	})()}
 	if (__vue_options__.functional) {console.error("[vue-loader] VaangoInputsSidebar.vue: functional components are not supported and should be defined in plain js files using render functions.")}
@@ -9298,13 +9022,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 49 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(50);
+	var content = __webpack_require__(40);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(24)(content, {});
@@ -9313,8 +9037,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-2a2a54d6!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./VaangoInputsSidebar.vue", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-2a2a54d6!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./VaangoInputsSidebar.vue");
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-02f4ee74!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./VaangoInputsSidebar.vue", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-02f4ee74!./../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./VaangoInputsSidebar.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -9324,7 +9048,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 50 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(23)();
@@ -9338,50 +9062,34 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 51 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
 	const Vue = __webpack_require__(1);
-	const av_ts_1 = __webpack_require__(26);
-	let VaangoInputsSidebar = class VaangoInputsSidebar extends Vue {
-	    constructor() {
-	        super(...arguments);
-	        this.id = "VaangoInputsSidebar";
-	        this.tabNames = [
-	            "Simulation type",
-	            "Timestep controls",
-	            "Geometry",
-	            "MPM Parameters",
-	            "MPM Materials",
-	            "ICE Parameters",
-	            "ICE Materials",
-	            "Exchange",
-	            "Grid and BC"
-	        ];
-	    }
+
+	let VaangoInputsSidebar = Vue.extend({
+	  name: 'vaango-inputs-sidebar',
+
+	  data() {
+	    return {
+	      id: "VaangoInputsSidebar",
+	      tabNames: ["Simulation type", "Timestep controls", "Geometry", "MPM Parameters", "MPM Materials", "ICE Parameters", "ICE Materials", "Exchange", "Grid and BC"]
+	    };
+	  },
+
+	  methods: {
+
 	    activateSidebarTab(tabIndex, tabName) {
-	        console.log("Activated sidebar tab: " + tabIndex + " " + tabName);
-	        this.$emit('activateSidebarTab', tabIndex, tabName);
+	      console.log("Activated sidebar tab: " + tabIndex + " " + tabName);
+	      this.$emit('activateSidebarTab', tabIndex, tabName);
 	    }
-	};
-	VaangoInputsSidebar = __decorate([
-	    av_ts_1.Component({
-	        name: 'vaango-inputs-sidebar'
-	    })
-	], VaangoInputsSidebar);
-	Object.defineProperty(exports, "__esModule", { value: true });
+	  }
+	});
+
 	exports.default = VaangoInputsSidebar;
 
-
 /***/ },
-/* 52 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -9409,22 +9117,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (false) {
 	  module.hot.accept()
 	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-2a2a54d6", module.exports)
+	     require("vue-hot-reload-api").rerender("data-v-02f4ee74", module.exports)
 	  }
 	}
 
 /***/ },
-/* 53 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_exports__, __vue_options__
 	var __vue_styles__ = {}
 
 	/* script */
-	__vue_exports__ = __webpack_require__(54)
+	__vue_exports__ = __webpack_require__(44)
 
 	/* template */
-	var __vue_template__ = __webpack_require__(55)
+	var __vue_template__ = __webpack_require__(45)
 	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
 	if (
 	  typeof __vue_exports__.default === "object" ||
@@ -9436,7 +9144,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/views/MainTextPanel.vue"
+	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/src/views/MainTextPanel.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 
@@ -9447,9 +9155,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!hotAPI.compatible) return
 	  module.hot.accept()
 	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-9a19a6c0", __vue_options__)
+	    hotAPI.createRecord("data-v-1ec74ede", __vue_options__)
 	  } else {
-	    hotAPI.reload("data-v-9a19a6c0", __vue_options__)
+	    hotAPI.reload("data-v-1ec74ede", __vue_options__)
 	  }
 	})()}
 	if (__vue_options__.functional) {console.error("[vue-loader] MainTextPanel.vue: functional components are not supported and should be defined in plain js files using render functions.")}
@@ -9459,39 +9167,38 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 54 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
 	const Vue = __webpack_require__(1);
-	const av_ts_1 = __webpack_require__(26);
-	let MainTextPanel = class MainTextPanel extends Vue {
-	    constructor() {
-	        super(...arguments);
-	        this.id = "MainTextPanel";
+
+	let MainTextPanel = Vue.extend({
+	  name: 'main-text-panel',
+
+	  props: {
+	    sidebarTabIndex: {
+	      default() {
+	        return 0;
+	      }
+	    },
+	    sidebarTabName: {
+	      default() {
+	        return "None";
+	      }
 	    }
-	};
-	MainTextPanel = __decorate([
-	    av_ts_1.Component({
-	        name: 'main-text-panel',
-	        props: {
-	            sidebarTabIndex: Number,
-	            sidebarTabName: String
-	        }
-	    })
-	], MainTextPanel);
-	Object.defineProperty(exports, "__esModule", { value: true });
+	  },
+
+	  data() {
+	    return {
+	      id: "MainTextPanel"
+	    };
+	  }
+	});
+
 	exports.default = MainTextPanel;
 
-
 /***/ },
-/* 55 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -9515,22 +9222,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (false) {
 	  module.hot.accept()
 	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-9a19a6c0", module.exports)
+	     require("vue-hot-reload-api").rerender("data-v-1ec74ede", module.exports)
 	  }
 	}
 
 /***/ },
-/* 56 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_exports__, __vue_options__
 	var __vue_styles__ = {}
 
 	/* script */
-	__vue_exports__ = __webpack_require__(57)
+	__vue_exports__ = __webpack_require__(47)
 
 	/* template */
-	var __vue_template__ = __webpack_require__(58)
+	var __vue_template__ = __webpack_require__(48)
 	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
 	if (
 	  typeof __vue_exports__.default === "object" ||
@@ -9542,7 +9249,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/views/ThreeGraphicsPanel.vue"
+	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/src/views/ThreeGraphicsPanel.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 
@@ -9553,9 +9260,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!hotAPI.compatible) return
 	  module.hot.accept()
 	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-73911aae", __vue_options__)
+	    hotAPI.createRecord("data-v-b45dd550", __vue_options__)
 	  } else {
-	    hotAPI.reload("data-v-73911aae", __vue_options__)
+	    hotAPI.reload("data-v-b45dd550", __vue_options__)
 	  }
 	})()}
 	if (__vue_options__.functional) {console.error("[vue-loader] ThreeGraphicsPanel.vue: functional components are not supported and should be defined in plain js files using render functions.")}
@@ -9565,45 +9272,36 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 57 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
 	const Vue = __webpack_require__(1);
-	const av_ts_1 = __webpack_require__(26);
-	let ThreeGraphicsPanel = class ThreeGraphicsPanel extends Vue {
-	    constructor() {
-	        super(...arguments);
-	        this.id = "ThreeGraphicsPanel";
-	        this.size = {
-	            w: 200,
-	            h: 200
-	        };
-	        /*
-	        stopAnimation(event: any) {
-	          console.log(event);
-	          console.log("Click detected in main graphics panel");
-	        }
-	        */
+
+	let ThreeGraphicsPanel = Vue.extend({
+
+	  name: 'three-graphics-panel',
+
+	  data() {
+	    return {
+	      id: "ThreeGraphicsPanel",
+	      size: { w: 200, h: 200 }
+	    };
+	  },
+
+	  methods: {
+	    /*
+	    stopAnimation(event: any) {
+	      console.log(event);
+	      console.log("Click detected in main graphics panel");
 	    }
-	};
-	ThreeGraphicsPanel = __decorate([
-	    av_ts_1.Component({
-	        name: 'three-graphics-panel'
-	    })
-	], ThreeGraphicsPanel);
-	Object.defineProperty(exports, "__esModule", { value: true });
+	    */
+	  }
+	});
+
 	exports.default = ThreeGraphicsPanel;
 
-
 /***/ },
-/* 58 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -9647,22 +9345,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (false) {
 	  module.hot.accept()
 	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-73911aae", module.exports)
+	     require("vue-hot-reload-api").rerender("data-v-b45dd550", module.exports)
 	  }
 	}
 
 /***/ },
-/* 59 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_exports__, __vue_options__
 	var __vue_styles__ = {}
 
 	/* script */
-	__vue_exports__ = __webpack_require__(60)
+	__vue_exports__ = __webpack_require__(50)
 
 	/* template */
-	var __vue_template__ = __webpack_require__(61)
+	var __vue_template__ = __webpack_require__(51)
 	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
 	if (
 	  typeof __vue_exports__.default === "object" ||
@@ -9674,7 +9372,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/views/VtkGraphicsPanel.vue"
+	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/src/views/VtkGraphicsPanel.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 
@@ -9685,9 +9383,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!hotAPI.compatible) return
 	  module.hot.accept()
 	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-35e4a43a", __vue_options__)
+	    hotAPI.createRecord("data-v-80d5b2ae", __vue_options__)
 	  } else {
-	    hotAPI.reload("data-v-35e4a43a", __vue_options__)
+	    hotAPI.reload("data-v-80d5b2ae", __vue_options__)
 	  }
 	})()}
 	if (__vue_options__.functional) {console.error("[vue-loader] VtkGraphicsPanel.vue: functional components are not supported and should be defined in plain js files using render functions.")}
@@ -9697,47 +9395,35 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 60 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
 	const Vue = __webpack_require__(1);
-	const av_ts_1 = __webpack_require__(26);
-	//import vtk = require("vtk.js");
-	let VtkGraphicsPanel = class VtkGraphicsPanel extends Vue {
-	    //import vtk = require("vtk.js");
-	    constructor() {
-	        super(...arguments);
-	        this.id = "VtkGraphicsPanel";
-	        this.size = {
-	            w: 500,
-	            h: 500
-	        };
-	        /*
-	        stopAnimation(event: any) {
-	          console.log(event);
-	          console.log("Click detected in main graphics panel");
-	        }
-	        */
+
+	let VtkGraphicsPanel = Vue.extend({
+	  name: 'vtk-graphics-panel',
+
+	  data() {
+	    return {
+	      id: "VtkGraphicsPanel",
+	      size: { w: 500, h: 500 }
+	    };
+	  },
+
+	  methods: {
+	    /*
+	    stopAnimation(event: any) {
+	    console.log(event);
+	    console.log("Click detected in main graphics panel");
 	    }
-	};
-	VtkGraphicsPanel = __decorate([
-	    av_ts_1.Component({
-	        name: 'vtk-graphics-panel'
-	    })
-	], VtkGraphicsPanel);
-	Object.defineProperty(exports, "__esModule", { value: true });
+	    */
+	  }
+	});
+
 	exports.default = VtkGraphicsPanel;
 
-
 /***/ },
-/* 61 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -9783,22 +9469,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (false) {
 	  module.hot.accept()
 	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-35e4a43a", module.exports)
+	     require("vue-hot-reload-api").rerender("data-v-80d5b2ae", module.exports)
 	  }
 	}
 
 /***/ },
-/* 62 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_exports__, __vue_options__
 	var __vue_styles__ = {}
 
 	/* script */
-	__vue_exports__ = __webpack_require__(63)
+	__vue_exports__ = __webpack_require__(53)
 
 	/* template */
-	var __vue_template__ = __webpack_require__(64)
+	var __vue_template__ = __webpack_require__(54)
 	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
 	if (
 	  typeof __vue_exports__.default === "object" ||
@@ -9810,7 +9496,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/views/GeneralInputPanel.vue"
+	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/src/views/GeneralInputPanel.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 
@@ -9821,9 +9507,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!hotAPI.compatible) return
 	  module.hot.accept()
 	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-2d32d5e4", __vue_options__)
+	    hotAPI.createRecord("data-v-4cdabd56", __vue_options__)
 	  } else {
-	    hotAPI.reload("data-v-2d32d5e4", __vue_options__)
+	    hotAPI.reload("data-v-4cdabd56", __vue_options__)
 	  }
 	})()}
 	if (__vue_options__.functional) {console.error("[vue-loader] GeneralInputPanel.vue: functional components are not supported and should be defined in plain js files using render functions.")}
@@ -9833,35 +9519,25 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 63 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
 	const Vue = __webpack_require__(1);
-	const av_ts_1 = __webpack_require__(26);
-	let GeneralInputPanel = class GeneralInputPanel extends Vue {
-	    constructor() {
-	        super(...arguments);
-	        this.id = "GeneralInputPanel";
-	    }
-	};
-	GeneralInputPanel = __decorate([
-	    av_ts_1.Component({
-	        name: 'general-input-panel'
-	    })
-	], GeneralInputPanel);
-	Object.defineProperty(exports, "__esModule", { value: true });
+
+	let GeneralInputPanel = Vue.extend({
+	  name: 'general-input-panel',
+
+	  data() {
+	    return {
+	      id: "GeneralInputPanel"
+	    };
+	  }
+	});
+
 	exports.default = GeneralInputPanel;
 
-
 /***/ },
-/* 64 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -9913,22 +9589,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (false) {
 	  module.hot.accept()
 	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-2d32d5e4", module.exports)
+	     require("vue-hot-reload-api").rerender("data-v-4cdabd56", module.exports)
 	  }
 	}
 
 /***/ },
-/* 65 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_exports__, __vue_options__
 	var __vue_styles__ = {}
 
 	/* script */
-	__vue_exports__ = __webpack_require__(66)
+	__vue_exports__ = __webpack_require__(56)
 
 	/* template */
-	var __vue_template__ = __webpack_require__(68)
+	var __vue_template__ = __webpack_require__(58)
 	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
 	if (
 	  typeof __vue_exports__.default === "object" ||
@@ -9940,7 +9616,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/views/MPMInputPanel.vue"
+	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/src/views/MPMInputPanel.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 
@@ -9951,9 +9627,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!hotAPI.compatible) return
 	  module.hot.accept()
 	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-0e7859a6", __vue_options__)
+	    hotAPI.createRecord("data-v-4c218597", __vue_options__)
 	  } else {
-	    hotAPI.reload("data-v-0e7859a6", __vue_options__)
+	    hotAPI.reload("data-v-4c218597", __vue_options__)
 	  }
 	})()}
 	if (__vue_options__.functional) {console.error("[vue-loader] MPMInputPanel.vue: functional components are not supported and should be defined in plain js files using render functions.")}
@@ -9963,74 +9639,76 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 66 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
 	const Vue = __webpack_require__(1);
-	const av_ts_1 = __webpack_require__(26);
-	const vkbeautify = __webpack_require__(67);
-	let MPMInputPanel = class MPMInputPanel extends Vue {
-	    constructor() {
-	        super(...arguments);
-	        this.id = "MPMInputPanel";
-	        this.sidebarTabIndex = 0;
-	        this.threeD = true;
-	        this.twoD = false;
-	        this.integrationType = "explicit";
-	        this.interpolationType = "gimp";
-	        this.mpmFlags = ["resetGrid",
-	            "colors",
-	            "artVisc",
-	            "pressStab"];
-	        this.minPartMass = 1.0e-16;
-	        this.maxPartVel = 1.0e16;
-	        this.artViscC1 = 0.0;
-	        this.artViscC2 = 0.0;
-	        this.defGradAlgo = "taylor";
-	        this.defGradFile = "none";
-	        this.defGradTaylorTerms = 1;
-	        this.doVelProj = false;
-	        this.doRotCoord = false;
-	        this.rotCen = [0, 0, 0];
-	        this.rotAxis = [0, 0, 0];
-	        this.rotVel = [0, 0, 0];
-	        this.doGridAMR = false;
-	        this.doPartAMR = false;
-	    }
+	const vkbeautify = __webpack_require__(57);
+
+	let MPMInputPanel = Vue.extend({
+	  name: 'mpm-input-panel',
+
+	  data() {
+	    return {
+	      id: "MPMInputPanel",
+	      sidebarTabIndex: 0,
+
+	      threeD: true,
+	      twoD: false,
+
+	      integrationType: "explicit",
+	      interpolationType: "gimp",
+
+	      mpmFlags: ["resetGrid", "colors", "artVisc", "pressStab"],
+
+	      minPartMass: 1.0e-16,
+	      maxPartVel: 1.0e16,
+
+	      artViscC1: 0.0,
+	      artViscC2: 0.0,
+
+	      defGradAlgo: "taylor",
+	      defGradFile: "none",
+	      defGradTaylorTerms: 1,
+	      doVelProj: false,
+
+	      doRotCoord: false,
+	      rotCen: [0, 0, 0],
+	      rotAxis: [0, 0, 0],
+	      rotVel: [0, 0, 0],
+
+	      doGridAMR: false,
+	      doPartAMR: false
+	    };
+	  },
+
+	  methods: {
+
 	    printMPMParameters() {
-	        console.log("MPM Flags = " + this.mpmFlags);
-	        var xmlDoc = document.implementation.createDocument("", "", null);
-	        var mpmElement = xmlDoc.createElement("MPM");
-	        var artVisc = xmlDoc.createElement("artificial_viscosity");
-	        var artViscVal = xmlDoc.createTextNode(this.artViscC1.toString());
-	        artVisc.appendChild(artViscVal);
-	        console.log("art visc = " + this.artViscC1 + "," + artVisc.nodeValue);
-	        mpmElement.appendChild(artVisc);
-	        xmlDoc.appendChild(mpmElement);
-	        var formatter = new vkbeautify();
-	        var xmlText = formatter.xml(new XMLSerializer().serializeToString(xmlDoc));
-	        //var xmlText = new XMLSerializer().serializeToString(xmlDoc);
-	        console.log("XML = " + xmlText);
+	      console.log("MPM Flags = " + this.mpmFlags);
+
+	      var xmlDoc = document.implementation.createDocument("", "", null);
+	      var mpmElement = xmlDoc.createElement("MPM");
+	      var artVisc = xmlDoc.createElement("artificial_viscosity");
+	      var artViscVal = xmlDoc.createTextNode(this.artViscC1.toString());
+	      artVisc.appendChild(artViscVal);
+	      console.log("art visc = " + this.artViscC1 + "," + artVisc.nodeValue);
+	      mpmElement.appendChild(artVisc);
+	      xmlDoc.appendChild(mpmElement);
+	      var formatter = new vkbeautify();
+	      var xmlText = formatter.xml(new XMLSerializer().serializeToString(xmlDoc));
+	      //var xmlText = new XMLSerializer().serializeToString(xmlDoc);
+
+	      console.log("XML = " + xmlText);
 	    }
-	};
-	MPMInputPanel = __decorate([
-	    av_ts_1.Component({
-	        name: 'mpm-input-panel'
-	    })
-	], MPMInputPanel);
-	Object.defineProperty(exports, "__esModule", { value: true });
+
+	  }
+	});
+
 	exports.default = MPMInputPanel;
 
-
 /***/ },
-/* 67 */
+/* 57 */
 /***/ function(module, exports) {
 
 	/**
@@ -10413,7 +10091,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 68 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -11032,22 +10710,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (false) {
 	  module.hot.accept()
 	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-0e7859a6", module.exports)
+	     require("vue-hot-reload-api").rerender("data-v-4c218597", module.exports)
 	  }
 	}
 
 /***/ },
-/* 69 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_exports__, __vue_options__
 	var __vue_styles__ = {}
 
 	/* script */
-	__vue_exports__ = __webpack_require__(70)
+	__vue_exports__ = __webpack_require__(60)
 
 	/* template */
-	var __vue_template__ = __webpack_require__(71)
+	var __vue_template__ = __webpack_require__(61)
 	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
 	if (
 	  typeof __vue_exports__.default === "object" ||
@@ -11059,7 +10737,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/views/TimeInputPanel.vue"
+	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/src/views/TimeInputPanel.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 
@@ -11070,9 +10748,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!hotAPI.compatible) return
 	  module.hot.accept()
 	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-0282c175", __vue_options__)
+	    hotAPI.createRecord("data-v-79ff13a4", __vue_options__)
 	  } else {
-	    hotAPI.reload("data-v-0282c175", __vue_options__)
+	    hotAPI.reload("data-v-79ff13a4", __vue_options__)
 	  }
 	})()}
 	if (__vue_options__.functional) {console.error("[vue-loader] TimeInputPanel.vue: functional components are not supported and should be defined in plain js files using render functions.")}
@@ -11082,48 +10760,42 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 70 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
 	const Vue = __webpack_require__(1);
-	const av_ts_1 = __webpack_require__(26);
-	let TimeInputPanel = class TimeInputPanel extends Vue {
-	    constructor() {
-	        super(...arguments);
-	        this.id = "TimeInputPanel";
-	        this.initTime = 0.0;
-	        this.maxTime = 1.0;
-	        this.maxNumSteps = 99999;
-	        this.deltInit = 1.0e-6;
-	        this.deltMin = 0.001;
-	        this.deltMax = 0.01;
-	        this.maxDeltInc = 1.0;
-	        this.deltMultiplier = 0.3;
-	    }
+
+	let TimeInputPanel = Vue.extend({
+	  name: 'time-input-panel',
+
+	  data() {
+	    return {
+	      id: "TimeInputPanel",
+	      initTime: 0.0,
+	      maxTime: 1.0,
+	      maxNumSteps: 99999,
+	      deltInit: 1.0e-6,
+	      deltMin: 0.001,
+	      deltMax: 0.01,
+	      maxDeltInc: 1.0,
+	      deltMultiplier: 0.3
+	    };
+	  },
+
+	  methods: {
+
 	    updateInitTime(time) {
-	        console.log("Before " + this.initTime);
-	        this.initTime = time;
-	        console.log("After " + this.initTime);
+	      console.log("Before " + this.initTime);
+	      this.initTime = time;
+	      console.log("After " + this.initTime);
 	    }
-	};
-	TimeInputPanel = __decorate([
-	    av_ts_1.Component({
-	        name: 'time-input-panel',
-	    })
-	], TimeInputPanel);
-	Object.defineProperty(exports, "__esModule", { value: true });
+	  }
+	});
+
 	exports.default = TimeInputPanel;
 
-
 /***/ },
-/* 71 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -11390,22 +11062,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (false) {
 	  module.hot.accept()
 	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-0282c175", module.exports)
+	     require("vue-hot-reload-api").rerender("data-v-79ff13a4", module.exports)
 	  }
 	}
 
 /***/ },
-/* 72 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_exports__, __vue_options__
 	var __vue_styles__ = {}
 
 	/* script */
-	__vue_exports__ = __webpack_require__(73)
+	__vue_exports__ = __webpack_require__(63)
 
 	/* template */
-	var __vue_template__ = __webpack_require__(78)
+	var __vue_template__ = __webpack_require__(66)
 	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
 	if (
 	  typeof __vue_exports__.default === "object" ||
@@ -11417,7 +11089,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/graphics/Ocean.vue"
+	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/src/graphics/ThreeRenderer.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 
@@ -11428,89 +11100,212 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!hotAPI.compatible) return
 	  module.hot.accept()
 	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-09704ba7", __vue_options__)
+	    hotAPI.createRecord("data-v-75e471ce", __vue_options__)
 	  } else {
-	    hotAPI.reload("data-v-09704ba7", __vue_options__)
+	    hotAPI.reload("data-v-75e471ce", __vue_options__)
 	  }
 	})()}
-	if (__vue_options__.functional) {console.error("[vue-loader] Ocean.vue: functional components are not supported and should be defined in plain js files using render functions.")}
+	if (__vue_options__.functional) {console.error("[vue-loader] ThreeRenderer.vue: functional components are not supported and should be defined in plain js files using render functions.")}
 
 	exports.__esModule = true;
 	exports["default"] = __vue_exports__
 
 
 /***/ },
-/* 73 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
 	const Vue = __webpack_require__(1);
-	const THREE = __webpack_require__(74);
-	const av_ts_1 = __webpack_require__(26);
-	const ThreeObject3D_1 = __webpack_require__(75);
-	const Store_1 = __webpack_require__(3);
-	let Ocean = class Ocean extends Vue {
-	    created() {
-	        //debugger;
-	        this.animate = this.animate.bind(this);
-	        this.clock = new THREE.Clock();
-	        this._obj = this.createOcean();
-	    }
-	    mounted() {
-	        //debugger;
-	        Store_1.default.commit('ADD_OBJECT', this._obj);
-	        this.animate();
-	    }
-	    //methods: {
-	    createOcean() {
-	        //debugger;
-	        const geometry = new THREE.PlaneGeometry(10000, 10000, 40, 40);
-	        geometry.rotateX(-Math.PI / 2);
-	        for (let i = 0, l = geometry.vertices.length; i < l; i++) {
-	            geometry.vertices[i].y = 50.0 * Math.sin(i / 2);
-	        }
-	        const texture = new THREE.TextureLoader().load(__webpack_require__(77));
-	        texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-	        texture.repeat.set(5, 5);
-	        const material = new THREE.MeshBasicMaterial({ color: 0x0044ff, map: texture });
-	        const mesh = new THREE.Mesh(geometry, material);
-	        mesh.name = 'Ocean';
-	        return mesh;
-	    }
-	    animate() {
-	        //debugger;
-	        requestAnimationFrame(this.animate);
-	        const time = this.clock.getElapsedTime() * 5;
-	        for (let i = 0, l = this._obj.geometry.vertices.length; i < l; i++) {
-	            this._obj.geometry.vertices[i].y = 10 * Math.sin(i / 5 + (time + i) / 7);
-	        }
-	        this._obj.geometry.verticesNeedUpdate = true;
-	    }
-	};
-	__decorate([
-	    av_ts_1.Lifecycle
-	], Ocean.prototype, "created", null);
-	__decorate([
-	    av_ts_1.Lifecycle
-	], Ocean.prototype, "mounted", null);
-	Ocean = __decorate([
-	    av_ts_1.Component({
-	        name: 'Ocean',
-	        mixins: [ThreeObject3D_1.default]
-	    })
-	], Ocean);
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.default = Ocean;
+	const THREE = __webpack_require__(64);
+	const ThreeTrackball = __webpack_require__(65);
 
+	const Store = __webpack_require__(3).default;
+
+	let ThreeRenderer = Vue.extend({
+	  name: 'ThreeRenderer',
+
+	  props: {
+	    size: {
+	      type: Object, // { w, h }
+	      required: true
+	    },
+
+	    renderer: {
+	      type: THREE.WebGLRenderer
+	    }
+	  },
+
+	  data() {
+
+	    return {
+	      d_renderer: null,
+	      d_controls: null,
+	      d_testCamera: null,
+	      d_cameraHelper: null,
+
+	      d_pointer: { x: 0, y: 0 },
+	      d_pointerOld: { x: 0, y: 0 },
+	      d_size: { left: 0, top: 0, width: 0, height: 0 }
+	    };
+	  },
+
+	  created() {
+	    this.d_renderer = this.renderer;
+	    if (!(this.d_renderer instanceof THREE.WebGLRenderer)) {
+	      this.d_renderer = new THREE.WebGLRenderer({ antialias: true });
+	    }
+	    let w = this.size.w;
+	    let h = this.size.h;
+	    this.d_size = { left: 0, top: 0, width: w, height: w };
+	    this.d_renderer.setSize(w, h);
+	    this.d_renderer.setClearColor(0x52576e);
+	    this.d_testCamera = new THREE.PerspectiveCamera(30, w / h, 100, 200);
+	    this.d_cameraHelper = new THREE.CameraHelper(this.d_testCamera);
+	    this.d_pointer = { x: 0, y: 0 };
+	    this.d_pointerOld = { x: 0, y: 0 };
+	    console.log("Created THREE renderer");
+	  },
+
+	  computed: {
+	    getScene() {
+	      return Store.getters.scene;
+	    },
+
+	    getCamera() {
+	      return Store.getters.camera;
+	    },
+
+	    getTrackballControls() {
+	      return this.d_controls;
+	    }
+	  },
+
+	  mounted() {
+	    console.log("Mounted THREE renderer");
+	    console.log(this.$refs);
+	    console.log(this.d_renderer.domElement);
+	    this.d_renderer.domElement.setAttribute("id", "three-graphics-canvas");
+	    if (this.$refs["three-graphics-container"]) {
+	      console.log("Graphics container created");
+	      let el = this.$refs["three-graphics-container"];
+	      el.appendChild(this.d_renderer.domElement);
+
+	      // Update based on actual screen size
+	      this.setActualScreenSize(this.d_renderer.domElement);
+	      this.d_renderer.setSize(this.d_size.width, this.d_size.height);
+	      let camera = Store.getters.camera;
+	      camera.aspect = this.d_size.width / this.d_size.height;
+	      camera.updateProjectionMatrix();
+	      Store.commit('SET_CAMERA', camera);
+
+	      this.d_controls = new ThreeTrackball(Store.getters.camera, this.d_renderer.domElement);
+	      console.log("TrackballControls: mounted + created");
+	      this.d_controls.rotateSpeed = 10.0;
+	      this.d_controls.zoomSpeed = 1.2;
+	      this.d_controls.panSpeed = 0.8;
+	      this.d_controls.noZoom = false;
+	      this.d_controls.noPan = false;
+	      this.d_controls.staticMoving = true;
+	      this.d_controls.dynamicDampingFactor = 0.3;
+	      this.d_controls.keys = [65, 83, 68];
+	      console.log("Added trackball controls");
+
+	      let scene = Store.getters.scene;
+	      scene.add(this.d_cameraHelper);
+	      Store.commit('SET_SCENE', scene);
+	    }
+	    this.animate();
+	  },
+
+	  // It's good to clean up event listeners before
+	  // a component is destroyed.
+	  // http://rc.vuejs.org/guide/migration.html#ready-deprecated
+	  beforeDestroy() {
+	    Store.commit('DELETE_SCENE');
+	    Store.commit('DELETE_CAMERA');
+	  },
+
+	  methods: {
+	    setActualScreenSize(domElement) {
+	      let box = domElement.getBoundingClientRect();
+	      let d = domElement.ownerDocument.documentElement;
+	      this.d_size.left = box.left + window.pageXOffset - d.clientLeft;
+	      this.d_size.top = box.top + window.pageYOffset - d.clientTop;
+	      this.d_size.width = box.width;
+	      this.d_size.height = box.height;
+	    },
+
+	    animate() {
+	      requestAnimationFrame(this.animate);
+	      this.render();
+	    },
+
+	    render() {
+	      this.d_renderer.render(Store.getters.scene, Store.getters.camera);
+	      //console.log("Done rendering");
+	    },
+
+	    startRotation(event) {
+	      console.log("drag started");
+	      let pointerOld = this.getMousePosition(event.clientX, event.clientY);
+	      this.d_pointerOld.x = pointerOld[0];
+	      this.d_pointerOld.y = pointerOld[1];
+	    },
+
+	    endRotation(event) {
+	      console.log("drag ended");
+	      let pointer = this.getMousePosition(event.clientX, event.clientY);
+	      this.d_pointer.x = pointer[0];
+	      this.d_pointer.y = pointer[1];
+	      console.log(this.d_pointerOld.x + "," + this.d_pointerOld.y + "," + this.d_pointer.x + ", " + this.d_pointer.y);
+	      console.log(this.d_renderer.domElement.getBoundingClientRect());
+	    },
+
+	    getMousePosition(x, y) {
+	      let rect = this.d_renderer.domElement.getBoundingClientRect();
+	      return [(x - rect.left) / rect.width, (y - rect.top) / rect.height];
+	    },
+
+	    keydown(event) {
+	      this.d_controls.keydown(event);
+	    },
+
+	    keyup(event) {
+	      this.d_controls.keyup(event);
+	    },
+
+	    mousedown(event) {
+	      event.preventDefault();
+	      this.d_controls.mousedown(event);
+	    },
+
+	    mousemove(event) {
+	      event.preventDefault();
+	      this.d_controls.mousemove(event);
+	    },
+
+	    mouseup(event) {
+	      event.preventDefault();
+	      this.d_controls.mouseup(event);
+	      Store.commit('SET_CAMERA', this.d_controls.camera);
+	    },
+
+	    mousewheel(event) {
+	      event.preventDefault();
+	      this.d_controls.mousewheel(event);
+	      Store.commit('SET_CAMERA', this.d_controls.camera);
+	    },
+
+	    contextmenu(event) {
+	      event.preventDefault();
+	    }
+	  }
+	});
+
+	exports.default = ThreeRenderer;
 
 /***/ },
-/* 74 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function (global, factory) {
@@ -54816,654 +54611,351 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 75 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
-	var __decorate = this && this.__decorate || function (decorators, target, key, desc) {
-	    var c = arguments.length,
-	        r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
-	        d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	const Vue = __webpack_require__(1);
-	const THREE = __webpack_require__(74);
-	const av_ts_1 = __webpack_require__(26);
-	const util_1 = __webpack_require__(76);
-	let ThreeObject3D = class ThreeObject3D extends Vue {
-	    constructor() {
-	        super(...arguments);
-	        this.obj = av_ts_1.p({
-	            type: THREE.Object3D
-	        });
-	        this.position = av_ts_1.p({
-	            type: Object // { x, y, z }
-	        });
-	        this.rotation = av_ts_1.p({
-	            type: Object // { x, y, z }
-	        });
-	        // This is the instance variable in the data() method
-	        this._obj = null;
-	        this.parent = null;
-	    }
-	    // Watch handlers
-	    updatePosition(v) {
-	        //debugger;
-	        console.log("Updating position");
-	        if (v) util_1.default(this._obj.position, v);
-	    }
-	    updateRotation(v) {
-	        //debugger;
-	        if (v) util_1.default(this._obj.rotation, v);
-	    }
-	    // Lifecycle
-	    created() {
-	        //debugger;
-	        // fix vue 2.0 `Avoid mutating a prop directly since the value will be overwritten
-	        // whenever the parent component re-renders. Instead, use a data or computed
-	        // property based on the prop's value.`
-	        // https://dotdev.co/peeking-into-vue-js-2-part-1-b457e60c88c6#.918arzkow
-	        this._obj = this.obj;
-	        // this.obj = new Object3D() // holder
-	        if (!(this._obj instanceof THREE.Object3D)) {
-	            this._obj = new THREE.Object3D();
-	        }
-	        // fix vue 2.0 `this.constructor.name` becomes `VueComponent`
-	        // this._obj.name = this._obj.name || this.constructor.name
-	        this._obj.name = this._obj.name || this._obj.type;
-	    }
-	    // ready => mounted + (nextTick?)
-	    // http://rc.vuejs.org/guide/migration.html#ready-deprecated
-	    mounted() {
-	        if (this.position) util_1.default(this._obj.position, this.position);
-	        if (this.rotation) util_1.default(this._obj.rotation, this.rotation);
-	        if (this.parent) this.parent.add(this._obj);
-	    }
-	    // detached => destroyed + (nextTick?)
-	    // http://rc.vuejs.org/guide/migration.html#detached-deprecated
-	    // but we use beforeDestroy to clean up
-	    beforeDestroy() {
-	        //debugger;
-	        if (this.parent) this.parent.remove(this._obj);
-	    }
-	};
-	__decorate([av_ts_1.Prop], ThreeObject3D.prototype, "obj", void 0);
-	__decorate([av_ts_1.Prop], ThreeObject3D.prototype, "position", void 0);
-	__decorate([av_ts_1.Prop], ThreeObject3D.prototype, "rotation", void 0);
-	__decorate([av_ts_1.Watch('position')], ThreeObject3D.prototype, "updatePosition", null);
-	__decorate([av_ts_1.Watch('rotation')], ThreeObject3D.prototype, "updateRotation", null);
-	__decorate([av_ts_1.Lifecycle], ThreeObject3D.prototype, "created", null);
-	__decorate([av_ts_1.Lifecycle], ThreeObject3D.prototype, "mounted", null);
-	__decorate([av_ts_1.Lifecycle], ThreeObject3D.prototype, "beforeDestroy", null);
-	ThreeObject3D = __decorate([av_ts_1.Component({
-	    name: 'ThreeObject3D'
-	})], ThreeObject3D);
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.default = ThreeObject3D;
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-/***/ },
-/* 76 */
-/***/ function(module, exports) {
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	"use strict";
-	// implements Object.assign
-	// fix `Cannot resolve module 'babel-runtime/core-js/object/assign'`
-	// https://github.com/babel/babel/issues/2780
+	var THREE = __webpack_require__(64);
 
-	function assign(dest, ...srcs) {
-	    srcs.reverse().forEach(src => {
-	        for (const k in src) {
-	            if (src.hasOwnProperty(k)) {
-	                dest[k] = src[k];
-	            }
-	        }
-	    });
-	}
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.default = assign;
+	var ThreeTrackball = function () {
 
-/***/ },
-/* 77 */
-/***/ function(module, exports) {
+	  // Constructor
+	  function ThreeTrackball(camera, domElement) {
+	    _classCallCheck(this, ThreeTrackball);
 
-	module.exports = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/4QCURXhpZgAASUkqAAgAAAACADsBAgASAAAAJgAAAJiCAgBUAAAAOAAAAAAAAABNaXRjaCBGZWF0aGVyc3RvbgBUaGlzIHdvcmsgaXMgbGljZW5zZWQgdG8gdGhlIHB1YmxpYyB1bmRlciB0aGUgQ3JlYXRpdmUgQ29tbW9ucyBBdHRyaWJ1dGlvbiBMaWNlbnNlLgD/4Qu1aHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLwA8P3hwYWNrZXQgYmVnaW49J++7vycgaWQ9J1c1TTBNcENlaGlIenJlU3pOVGN6a2M5ZCc/Pgo8eDp4bXBtZXRhIHhtbG5zOng9J2Fkb2JlOm5zOm1ldGEvJz4KPHJkZjpSREYgeG1sbnM6cmRmPSdodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjJz4KCiA8cmRmOkRlc2NyaXB0aW9uIHhtbG5zOnRpZmY9J2h0dHA6Ly9ucy5hZG9iZS5jb20vdGlmZi8xLjAvJz4KICA8dGlmZjpJbWFnZVdpZHRoPjUxMjwvdGlmZjpJbWFnZVdpZHRoPgogIDx0aWZmOkltYWdlTGVuZ3RoPjUxMjwvdGlmZjpJbWFnZUxlbmd0aD4KICA8dGlmZjpYUmVzb2x1dGlvbj43Mi4wMDAwMDA8L3RpZmY6WFJlc29sdXRpb24+CiAgPHRpZmY6WVJlc29sdXRpb24+NzIuMDAwMDAwPC90aWZmOllSZXNvbHV0aW9uPgogIDx0aWZmOk5hdGl2ZURpZ2VzdD4yNTYsMjU3LDI1OCwyNTksMjYyLDI3NCwyNzcsMjg0LDUzMCw1MzEsMjgyLDI4MywyOTYsMzAxLDMxOCwzMTksNTI5LDUzMiwzMDYsMjcwLDI3MSwyNzIsMzA1LDMxNSwzMzQzMjs4MjczODJEMUE4Nzc1RkFFODZDMUQxRTU1MjY1MzZDQjwvdGlmZjpOYXRpdmVEaWdlc3Q+CiAgPHRpZmY6Qml0c1BlclNhbXBsZT4KICAgPHJkZjpTZXE+CiAgICA8cmRmOmxpPjg8L3JkZjpsaT4KICAgIDxyZGY6bGk+ODwvcmRmOmxpPgogICAgPHJkZjpsaT44PC9yZGY6bGk+CiAgIDwvcmRmOlNlcT4KICA8L3RpZmY6Qml0c1BlclNhbXBsZT4KIDwvcmRmOkRlc2NyaXB0aW9uPgoKIDxyZGY6RGVzY3JpcHRpb24geG1sbnM6cGhvdG9zaG9wPSdodHRwOi8vbnMuYWRvYmUuY29tL3Bob3Rvc2hvcC8xLjAvJz4KICA8cGhvdG9zaG9wOkNvbG9yTW9kZT4zPC9waG90b3Nob3A6Q29sb3JNb2RlPgogIDxwaG90b3Nob3A6SUNDUHJvZmlsZT5zUkdCIElFQzYxOTY2LTIuMTwvcGhvdG9zaG9wOklDQ1Byb2ZpbGU+CiAgPHBob3Rvc2hvcDpIaXN0b3J5PjwvcGhvdG9zaG9wOkhpc3Rvcnk+CiAgPHBob3Rvc2hvcDpIZWFkbGluZT5UaGlzIEltYWdlIGlzIEZyZWUuPC9waG90b3Nob3A6SGVhZGxpbmU+CiAgPHBob3Rvc2hvcDpJbnN0cnVjdGlvbnM+U2hhcmUgdGhpcyBJbWFnZS48L3Bob3Rvc2hvcDpJbnN0cnVjdGlvbnM+CiA8L3JkZjpEZXNjcmlwdGlvbj4KCiA8cmRmOkRlc2NyaXB0aW9uIHhtbG5zOmRjPSdodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyc+CiAgPGRjOnJpZ2h0cz4KICAgPHJkZjpBbHQ+CiAgICA8cmRmOmxpIHhtbDpsYW5nPSd4LWRlZmF1bHQnPlRoaXMgd29yayBpcyBsaWNlbnNlZCB0byB0aGUgcHVibGljIHVuZGVyIHRoZSBDcmVhdGl2ZSBDb21tb25zIEF0dHJpYnV0aW9uIExpY2Vuc2UuPC9yZGY6bGk+CiAgIDwvcmRmOkFsdD4KICA8L2RjOnJpZ2h0cz4KICA8ZGM6Y3JlYXRvcj4KICAgPHJkZjpTZXE+CiAgICA8cmRmOmxpPk1pdGNoIEZlYXRoZXJzdG9uPC9yZGY6bGk+CiAgIDwvcmRmOlNlcT4KICA8L2RjOmNyZWF0b3I+CiAgPGRjOnN1YmplY3Q+CiAgIDxyZGY6QmFnPgogICAgPHJkZjpsaT5DcmVhdGl2ZSBDb21tb25zIEF0dHJpYnV0aW9uPC9yZGY6bGk+CiAgIDwvcmRmOkJhZz4KICA8L2RjOnN1YmplY3Q+CiA8L3JkZjpEZXNjcmlwdGlvbj4KCiA8cmRmOkRlc2NyaXB0aW9uIHhtbG5zOnhtcD0naHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyc+CiAgPHhtcDpDcmVhdGVEYXRlPjIwMDUtMDctMDZUMTI6MTg6NTMtMDQ6MDA8L3htcDpDcmVhdGVEYXRlPgogIDx4bXA6TWV0YWRhdGFEYXRlPjIwMDctMDQtMjNUMTQ6NDI6MTktMDQ6MDA8L3htcDpNZXRhZGF0YURhdGU+CiA8L3JkZjpEZXNjcmlwdGlvbj4KCiA8cmRmOkRlc2NyaXB0aW9uIHhtbG5zOnhtcFJpZ2h0cz0naHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3JpZ2h0cy8nPgogIDx4bXBSaWdodHM6TWFya2VkPlRydWU8L3htcFJpZ2h0czpNYXJrZWQ+CiAgPHhtcFJpZ2h0czpXZWJTdGF0ZW1lbnQgcmRmOnJlc291cmNlPSdodHRwOi8vY3JlYXRpdmVjb21tb25zLm9yZy9saWNlbnNlcy9ieS8yLjUvJyAvPgogPC9yZGY6RGVzY3JpcHRpb24+CgogPHJkZjpEZXNjcmlwdGlvbiB4bWxuczpjYz0naHR0cDovL3dlYi5yZXNvdXJjZS5vcmcvY2MvJz4KICA8Y2M6bGljZW5zZSByZGY6cmVzb3VyY2U9J2h0dHA6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LzIuNS8nIC8+CiA8L3JkZjpEZXNjcmlwdGlvbj4KCiA8cmRmOkRlc2NyaXB0aW9uIHhtbG5zOklwdGM0eG1wQ29yZT0naHR0cDovL2lwdGMub3JnL3N0ZC9JcHRjNHhtcENvcmUvMS4wL3htbG5zLyc+CiAgPElwdGM0eG1wQ29yZTpDcmVhdG9yQ29udGFjdEluZm8gcmRmOnBhcnNlVHlwZT0nUmVzb3VyY2UnPgogIDwvSXB0YzR4bXBDb3JlOkNyZWF0b3JDb250YWN0SW5mbz4KIDwvcmRmOkRlc2NyaXB0aW9uPgoKIDxyZGY6RGVzY3JpcHRpb24geG1sbnM6ZXhpZj0naHR0cDovL25zLmFkb2JlLmNvbS9leGlmLzEuMC8nPgogIDxleGlmOk5hdGl2ZURpZ2VzdD4zNjg2NCw0MDk2MCw0MDk2MSwzNzEyMSwzNzEyMiw0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"
+	    this.camera = camera;
+	    this.domElement = domElement;
 
-/***/ },
-/* 78 */
-/***/ function(module, exports, __webpack_require__) {
+	    this.enabled = true;
+	    this.screen = { left: 0, top: 0, width: 0, height: 0 };
+	    this.rotateSpeed = 1.0;
+	    this.zoomSpeed = 1.2;
+	    this.panSpeed = 0.3;
+	    this.noRotate = false;
+	    this.noZoom = false;
+	    this.noPan = false;
+	    this.staticMoving = false;
+	    this.dynamicDampingFactor = 0.2;
+	    this.minDistance = 0;
+	    this.maxDistance = Infinity;
+	    this.keys = [65 /*A*/, 83 /*S*/, 68 /*D*/];
 
-	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-	  return _c("div")
-	},staticRenderFns: []}
-	module.exports.render._withStripped = true
-	if (false) {
-	  module.hot.accept()
-	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-09704ba7", module.exports)
+	    this.d_target = new THREE.Vector3();
+	    this.d_lastPosition = new THREE.Vector3();
+	    this.d_state = ThreeTrackball.STATE.NONE;
+	    this.d_prevState = ThreeTrackball.STATE.NONE;
+	    this.d_eye = new THREE.Vector3();
+	    this.d_movePrev = new THREE.Vector2();
+	    this.d_moveCurr = new THREE.Vector2();
+	    this.d_lastAxis = new THREE.Vector3();
+	    this.d_lastAngle = 0;
+	    this.d_zoomStart = new THREE.Vector2();
+	    this.d_zoomEnd = new THREE.Vector2();
+	    this.d_touchZoomDistanceStart = 0;
+	    this.d_touchZoomDistanceEnd = 0;
+	    this.d_panStart = new THREE.Vector2();
+	    this.d_panEnd = new THREE.Vector2();
+
+	    this.d_target0 = this.d_target.clone();
+	    this.d_position0 = this.camera.position.clone();
+	    this.d_up0 = this.camera.up.clone();
+
+	    this.changeEvent = { type: 'change' };
+	    this.startEvent = { type: 'start' };
+	    this.endEvent = { type: 'end' };
+
+	    this.vector = new THREE.Vector2();
+	    this.axis = new THREE.Vector3();
+	    this.quaternion = new THREE.Quaternion();
+	    this.eyeDirection = new THREE.Vector3();
+	    this.objectUpDirection = new THREE.Vector3();
+	    this.objectSidewaysDirection = new THREE.Vector3();
+	    this.moveDirection = new THREE.Vector3();
+	    this.angle = 0.0;
+	    this.mouseChange = new THREE.Vector2();
+	    this.objectUp = new THREE.Vector3();
+	    this.pan = new THREE.Vector3();
+
+	    this.handleResize();
+	    this.update();
 	  }
-	}
 
-/***/ },
-/* 79 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __vue_exports__, __vue_options__
-	var __vue_styles__ = {}
-
-	/* script */
-	__vue_exports__ = __webpack_require__(80)
-
-	/* template */
-	var __vue_template__ = __webpack_require__(82)
-	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
-	if (
-	  typeof __vue_exports__.default === "object" ||
-	  typeof __vue_exports__.default === "function"
-	) {
-	if (Object.keys(__vue_exports__).some(function (key) { return key !== "default" && key !== "__esModule" })) {console.error("named exports are not supported in *.vue files.")}
-	__vue_options__ = __vue_exports__ = __vue_exports__.default
-	}
-	if (typeof __vue_options__ === "function") {
-	  __vue_options__ = __vue_options__.options
-	}
-	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/graphics/ThreeRenderer.vue"
-	__vue_options__.render = __vue_template__.render
-	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
-
-	/* hot reload */
-	if (false) {(function () {
-	  var hotAPI = require("vue-hot-reload-api")
-	  hotAPI.install(require("vue"), false)
-	  if (!hotAPI.compatible) return
-	  module.hot.accept()
-	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-3b5d44aa", __vue_options__)
-	  } else {
-	    hotAPI.reload("data-v-3b5d44aa", __vue_options__)
-	  }
-	})()}
-	if (__vue_options__.functional) {console.error("[vue-loader] ThreeRenderer.vue: functional components are not supported and should be defined in plain js files using render functions.")}
-
-	exports.__esModule = true;
-	exports["default"] = __vue_exports__
-
-
-/***/ },
-/* 80 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	const Vue = __webpack_require__(1);
-	const THREE = __webpack_require__(74);
-	const ThreeTrackball = __webpack_require__(81);
-	const av_ts_1 = __webpack_require__(26);
-	const Store_1 = __webpack_require__(3);
-	let ThreeRenderer = class ThreeRenderer extends Vue {
-	    constructor() {
-	        super(...arguments);
-	        this.size = av_ts_1.p({
-	            type: Object,
-	            required: true
-	        });
-	        this.renderer = av_ts_1.p({
-	            type: THREE.WebGLRenderer
-	        });
+	  _createClass(ThreeTrackball, [{
+	    key: 'handleResize',
+	    value: function handleResize() {
+	      var box = this.domElement.getBoundingClientRect();
+	      // adjustments come from similar code in the jquery offset() function
+	      var d = this.domElement.ownerDocument.documentElement;
+	      this.screen.left = box.left + window.pageXOffset - d.clientLeft;
+	      this.screen.top = box.top + window.pageYOffset - d.clientTop;
+	      this.screen.width = box.width;
+	      this.screen.height = box.height;
 	    }
-	    created() {
-	        this.d_renderer = this.renderer;
-	        if (!(this.d_renderer instanceof THREE.WebGLRenderer)) {
-	            this.d_renderer = new THREE.WebGLRenderer({ antialias: true });
+	  }, {
+	    key: 'getMouseOnScreen',
+	    value: function getMouseOnScreen(pageX, pageY) {
+	      this.vector.set((pageX - this.screen.left) / this.screen.width, (pageY - this.screen.top) / this.screen.height);
+	      return this.vector;
+	    }
+	  }, {
+	    key: 'getMouseOnCircle',
+	    value: function getMouseOnCircle(pageX, pageY) {
+	      this.vector.set((pageX - this.screen.width * 0.5 - this.screen.left) / (this.screen.width * 0.5), (this.screen.height + 2 * (this.screen.top - pageY)) / this.screen.width);
+	      return this.vector;
+	    }
+	  }, {
+	    key: 'rotateCamera',
+	    value: function rotateCamera() {
+	      this.moveDirection.set(this.d_moveCurr.x - this.d_movePrev.x, this.d_moveCurr.y - this.d_movePrev.y, 0);
+	      this.angle = this.moveDirection.length();
+	      //console.log("Rotate camera: move dir" +  this.angle)
+	      if (this.angle) {
+	        this.d_eye.copy(this.camera.position).sub(this.d_target);
+	        this.eyeDirection.copy(this.d_eye).normalize();
+	        this.objectUpDirection.copy(this.camera.up).normalize();
+	        this.objectSidewaysDirection.crossVectors(this.objectUpDirection, this.eyeDirection).normalize();
+	        this.objectUpDirection.setLength(this.d_moveCurr.y - this.d_movePrev.y);
+	        this.objectSidewaysDirection.setLength(this.d_moveCurr.x - this.d_movePrev.x);
+	        this.moveDirection.copy(this.objectUpDirection.add(this.objectSidewaysDirection));
+	        this.axis.crossVectors(this.moveDirection, this.d_eye).normalize();
+	        this.angle *= this.rotateSpeed;
+	        this.quaternion.setFromAxisAngle(this.axis, this.angle);
+	        this.d_eye.applyQuaternion(this.quaternion);
+	        this.camera.up.applyQuaternion(this.quaternion);
+	        this.d_lastAxis.copy(this.axis);
+	        this.d_lastAngle = this.angle;
+	      } else if (!this.staticMoving && this.d_lastAngle) {
+	        this.d_lastAngle *= Math.sqrt(1.0 - this.dynamicDampingFactor);
+	        this.d_eye.copy(this.camera.position).sub(this.d_target);
+	        this.quaternion.setFromAxisAngle(this.d_lastAxis, this.d_lastAngle);
+	        this.d_eye.applyQuaternion(this.quaternion);
+	        this.camera.up.applyQuaternion(this.quaternion);
+	      }
+	      this.d_movePrev.copy(this.d_moveCurr);
+	    }
+	  }, {
+	    key: 'zoomCamera',
+	    value: function zoomCamera() {
+	      var factor;
+	      if (this.d_state === ThreeTrackball.STATE.TOUCH_ZOOM_PAN) {
+	        factor = this.d_touchZoomDistanceStart / this.d_touchZoomDistanceEnd;
+	        this.d_touchZoomDistanceStart = this.d_touchZoomDistanceEnd;
+	        this.d_eye.multiplyScalar(factor);
+	      } else {
+	        factor = 1.0 + (this.d_zoomEnd.y - this.d_zoomStart.y) * this.zoomSpeed;
+	        if (factor !== 1.0 && factor > 0.0) {
+	          this.d_eye.multiplyScalar(factor);
 	        }
-	        let w = this.size.w;
-	        let h = this.size.h;
-	        this.d_size = { left: 0, top: 0, width: w, height: w };
-	        this.d_renderer.setSize(w, h);
-	        this.d_renderer.setClearColor(0x52576e);
-	        this.d_testCamera = new THREE.PerspectiveCamera(30, w / h, 100, 200);
-	        this.d_cameraHelper = new THREE.CameraHelper(this.d_testCamera);
-	        this.d_pointer = { x: 0, y: 0 };
-	        this.d_pointerOld = { x: 0, y: 0 };
-	        console.log("Created THREE renderer");
-	    }
-	    get getScene() {
-	        return Store_1.default.getters.scene;
-	    }
-	    get getCamera() {
-	        return Store_1.default.getters.camera;
-	    }
-	    get getTrackballControls() {
-	        return this.d_controls;
-	    }
-	    mounted() {
-	        console.log("Mounted THREE renderer");
-	        console.log(this.$refs);
-	        console.log(this.d_renderer.domElement);
-	        this.d_renderer.domElement.setAttribute("id", "three-graphics-canvas");
-	        if ((this.$refs)["three-graphics-container"]) {
-	            console.log("Graphics container created");
-	            let el = (this.$refs)["three-graphics-container"];
-	            el.appendChild(this.d_renderer.domElement);
-	            // Update based on actual screen size
-	            this.setActualScreenSize(this.d_renderer.domElement);
-	            this.d_renderer.setSize(this.d_size.width, this.d_size.height);
-	            let camera = Store_1.default.getters.camera;
-	            camera.aspect = this.d_size.width / this.d_size.height;
-	            camera.updateProjectionMatrix();
-	            Store_1.default.commit('SET_CAMERA', camera);
-	            this.d_controls = new ThreeTrackball(Store_1.default.getters.camera, this.d_renderer.domElement);
-	            console.log("TrackballControls: mounted + created");
-	            this.d_controls.rotateSpeed = 10.0;
-	            this.d_controls.zoomSpeed = 1.2;
-	            this.d_controls.panSpeed = 0.8;
-	            this.d_controls.noZoom = false;
-	            this.d_controls.noPan = false;
-	            this.d_controls.staticMoving = true;
-	            this.d_controls.dynamicDampingFactor = 0.3;
-	            this.d_controls.keys = [65, 83, 68];
-	            console.log("Added trackball controls");
-	            let scene = Store_1.default.getters.scene;
-	            scene.add(this.d_cameraHelper);
-	            Store_1.default.commit('SET_SCENE', scene);
-	        }
-	        this.animate();
-	    }
-	    setActualScreenSize(domElement) {
-	        let box = domElement.getBoundingClientRect();
-	        let d = domElement.ownerDocument.documentElement;
-	        this.d_size.left = box.left + window.pageXOffset - d.clientLeft;
-	        this.d_size.top = box.top + window.pageYOffset - d.clientTop;
-	        this.d_size.width = box.width;
-	        this.d_size.height = box.height;
-	    }
-	    // It's good to clean up event listeners before
-	    // a component is destroyed.
-	    // http://rc.vuejs.org/guide/migration.html#ready-deprecated
-	    beforeDestroy() {
-	        Store_1.default.commit('DELETE_SCENE');
-	        Store_1.default.commit('DELETE_CAMERA');
-	    }
-	    animate() {
-	        requestAnimationFrame(this.animate);
-	        this.render();
-	    }
-	    render() {
-	        this.d_renderer.render(Store_1.default.getters.scene, Store_1.default.getters.camera);
-	        //console.log("Done rendering");
-	    }
-	    startRotation(event) {
-	        console.log("drag started");
-	        let pointerOld = this.getMousePosition(event.clientX, event.clientY);
-	        this.d_pointerOld.x = pointerOld[0];
-	        this.d_pointerOld.y = pointerOld[1];
-	    }
-	    endRotation(event) {
-	        console.log("drag ended");
-	        let pointer = this.getMousePosition(event.clientX, event.clientY);
-	        this.d_pointer.x = pointer[0];
-	        this.d_pointer.y = pointer[1];
-	        console.log(this.d_pointerOld.x + "," + this.d_pointerOld.y + "," +
-	            this.d_pointer.x + ", " + this.d_pointer.y);
-	        console.log(this.d_renderer.domElement.getBoundingClientRect());
-	    }
-	    getMousePosition(x, y) {
-	        let rect = this.d_renderer.domElement.getBoundingClientRect();
-	        return [(x - rect.left) / rect.width, (y - rect.top) / rect.height];
-	    }
-	    keydown(event) {
-	        this.d_controls.keydown(event);
-	    }
-	    keyup(event) {
-	        this.d_controls.keyup(event);
-	    }
-	    mousedown(event) {
-	        event.preventDefault();
-	        this.d_controls.mousedown(event);
-	    }
-	    mousemove(event) {
-	        event.preventDefault();
-	        this.d_controls.mousemove(event);
-	    }
-	    mouseup(event) {
-	        event.preventDefault();
-	        this.d_controls.mouseup(event);
-	        Store_1.default.commit('SET_CAMERA', this.d_controls.camera);
-	    }
-	    mousewheel(event) {
-	        event.preventDefault();
-	        this.d_controls.mousewheel(event);
-	        Store_1.default.commit('SET_CAMERA', this.d_controls.camera);
-	    }
-	    contextmenu(event) {
-	        event.preventDefault();
-	    }
-	};
-	__decorate([
-	    av_ts_1.Prop
-	], ThreeRenderer.prototype, "size", void 0);
-	__decorate([
-	    av_ts_1.Prop
-	], ThreeRenderer.prototype, "renderer", void 0);
-	__decorate([
-	    av_ts_1.Lifecycle
-	], ThreeRenderer.prototype, "created", null);
-	__decorate([
-	    av_ts_1.Lifecycle
-	], ThreeRenderer.prototype, "mounted", null);
-	__decorate([
-	    av_ts_1.Lifecycle
-	], ThreeRenderer.prototype, "beforeDestroy", null);
-	ThreeRenderer = __decorate([
-	    av_ts_1.Component({
-	        name: 'ThreeRenderer'
-	    })
-	], ThreeRenderer);
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.default = ThreeRenderer;
-
-
-/***/ },
-/* 81 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	const THREE = __webpack_require__(74);
-	class ThreeTrackball {
-	    // Constructor
-	    constructor(camera, domElement) {
-	        this.d_lastAngle = 0;
-	        this.d_touchZoomDistanceStart = 0;
-	        this.d_touchZoomDistanceEnd = 0;
-	        this.camera = camera;
-	        this.domElement = domElement;
-	        this.enabled = true;
-	        this.screen = { left: 0, top: 0, width: 0, height: 0 };
-	        this.rotateSpeed = 1.0;
-	        this.zoomSpeed = 1.2;
-	        this.panSpeed = 0.3;
-	        this.noRotate = false;
-	        this.noZoom = false;
-	        this.noPan = false;
-	        this.staticMoving = false;
-	        this.dynamicDampingFactor = 0.2;
-	        this.minDistance = 0;
-	        this.maxDistance = Infinity;
-	        this.keys = [65 /*A*/, 83 /*S*/, 68 /*D*/];
-	        this.d_target = new THREE.Vector3();
-	        this.d_lastPosition = new THREE.Vector3();
-	        this.d_state = ThreeTrackball.STATE.NONE;
-	        this.d_prevState = ThreeTrackball.STATE.NONE;
-	        this.d_eye = new THREE.Vector3();
-	        this.d_movePrev = new THREE.Vector2();
-	        this.d_moveCurr = new THREE.Vector2();
-	        this.d_lastAxis = new THREE.Vector3();
-	        this.d_lastAngle = 0;
-	        this.d_zoomStart = new THREE.Vector2();
-	        this.d_zoomEnd = new THREE.Vector2();
-	        this.d_touchZoomDistanceStart = 0;
-	        this.d_touchZoomDistanceEnd = 0;
-	        this.d_panStart = new THREE.Vector2();
-	        this.d_panEnd = new THREE.Vector2();
-	        this.d_target0 = this.d_target.clone();
-	        this.d_position0 = this.camera.position.clone();
-	        this.d_up0 = this.camera.up.clone();
-	        this.changeEvent = { type: 'change' };
-	        this.startEvent = { type: 'start' };
-	        this.endEvent = { type: 'end' };
-	        this.vector = new THREE.Vector2();
-	        this.axis = new THREE.Vector3();
-	        this.quaternion = new THREE.Quaternion();
-	        this.eyeDirection = new THREE.Vector3();
-	        this.objectUpDirection = new THREE.Vector3();
-	        this.objectSidewaysDirection = new THREE.Vector3();
-	        this.moveDirection = new THREE.Vector3();
-	        this.angle = 0.0;
-	        this.mouseChange = new THREE.Vector2();
-	        this.objectUp = new THREE.Vector3();
-	        this.pan = new THREE.Vector3();
-	        this.handleResize();
-	        this.update();
-	    }
-	    handleResize() {
-	        let box = this.domElement.getBoundingClientRect();
-	        // adjustments come from similar code in the jquery offset() function
-	        let d = this.domElement.ownerDocument.documentElement;
-	        this.screen.left = box.left + window.pageXOffset - d.clientLeft;
-	        this.screen.top = box.top + window.pageYOffset - d.clientTop;
-	        this.screen.width = box.width;
-	        this.screen.height = box.height;
-	    }
-	    getMouseOnScreen(pageX, pageY) {
-	        this.vector.set((pageX - this.screen.left) / this.screen.width, (pageY - this.screen.top) / this.screen.height);
-	        return this.vector;
-	    }
-	    getMouseOnCircle(pageX, pageY) {
-	        this.vector.set((pageX - this.screen.width * 0.5 - this.screen.left) / (this.screen.width * 0.5), (this.screen.height + 2 * (this.screen.top - pageY)) / this.screen.width);
-	        return this.vector;
-	    }
-	    rotateCamera() {
-	        this.moveDirection.set(this.d_moveCurr.x - this.d_movePrev.x, this.d_moveCurr.y - this.d_movePrev.y, 0);
-	        this.angle = this.moveDirection.length();
-	        //console.log("Rotate camera: move dir" +  this.angle)
-	        if (this.angle) {
-	            this.d_eye.copy(this.camera.position).sub(this.d_target);
-	            this.eyeDirection.copy(this.d_eye).normalize();
-	            this.objectUpDirection.copy(this.camera.up).normalize();
-	            this.objectSidewaysDirection.crossVectors(this.objectUpDirection, this.eyeDirection).normalize();
-	            this.objectUpDirection.setLength(this.d_moveCurr.y - this.d_movePrev.y);
-	            this.objectSidewaysDirection.setLength(this.d_moveCurr.x - this.d_movePrev.x);
-	            this.moveDirection.copy(this.objectUpDirection.add(this.objectSidewaysDirection));
-	            this.axis.crossVectors(this.moveDirection, this.d_eye).normalize();
-	            this.angle *= this.rotateSpeed;
-	            this.quaternion.setFromAxisAngle(this.axis, this.angle);
-	            this.d_eye.applyQuaternion(this.quaternion);
-	            this.camera.up.applyQuaternion(this.quaternion);
-	            this.d_lastAxis.copy(this.axis);
-	            this.d_lastAngle = this.angle;
-	        } else if (!this.staticMoving && this.d_lastAngle) {
-	            this.d_lastAngle *= Math.sqrt(1.0 - this.dynamicDampingFactor);
-	            this.d_eye.copy(this.camera.position).sub(this.d_target);
-	            this.quaternion.setFromAxisAngle(this.d_lastAxis, this.d_lastAngle);
-	            this.d_eye.applyQuaternion(this.quaternion);
-	            this.camera.up.applyQuaternion(this.quaternion);
-	        }
-	        this.d_movePrev.copy(this.d_moveCurr);
-	    }
-	    zoomCamera() {
-	        var factor;
-	        if (this.d_state === ThreeTrackball.STATE.TOUCH_ZOOM_PAN) {
-	            factor = this.d_touchZoomDistanceStart / this.d_touchZoomDistanceEnd;
-	            this.d_touchZoomDistanceStart = this.d_touchZoomDistanceEnd;
-	            this.d_eye.multiplyScalar(factor);
+	        if (this.staticMoving) {
+	          this.d_zoomStart.copy(this.d_zoomEnd);
 	        } else {
-	            factor = 1.0 + (this.d_zoomEnd.y - this.d_zoomStart.y) * this.zoomSpeed;
-	            if (factor !== 1.0 && factor > 0.0) {
-	                this.d_eye.multiplyScalar(factor);
-	            }
-	            if (this.staticMoving) {
-	                this.d_zoomStart.copy(this.d_zoomEnd);
-	            } else {
-	                this.d_zoomStart.y += (this.d_zoomEnd.y - this.d_zoomStart.y) * this.dynamicDampingFactor;
-	            }
+	          this.d_zoomStart.y += (this.d_zoomEnd.y - this.d_zoomStart.y) * this.dynamicDampingFactor;
 	        }
+	      }
 	    }
-	    panCamera() {
-	        this.mouseChange.copy(this.d_panEnd).sub(this.d_panStart);
-	        //console.log("Panning: Mouse movement = " + this.mouseChange.lengthSq());
-	        if (this.mouseChange.lengthSq()) {
-	            this.mouseChange.multiplyScalar(this.d_eye.length() * this.panSpeed);
-	            this.pan.copy(this.d_eye).cross(this.camera.up).setLength(this.mouseChange.x);
-	            this.pan.add(this.objectUp.copy(this.camera.up).setLength(this.mouseChange.y));
-	            this.camera.position.add(this.pan);
-	            this.d_target.add(this.pan);
-	            if (this.staticMoving) {
-	                //console.log("panning static");
-	                this.d_panStart.copy(this.d_panEnd);
-	            } else {
-	                //console.log("panning dynamic");
-	                this.d_panStart.add(this.mouseChange.subVectors(this.d_panEnd, this.d_panStart).multiplyScalar(this.dynamicDampingFactor));
-	            }
+	  }, {
+	    key: 'panCamera',
+	    value: function panCamera() {
+	      this.mouseChange.copy(this.d_panEnd).sub(this.d_panStart);
+	      //console.log("Panning: Mouse movement = " + this.mouseChange.lengthSq());
+	      if (this.mouseChange.lengthSq()) {
+	        this.mouseChange.multiplyScalar(this.d_eye.length() * this.panSpeed);
+	        this.pan.copy(this.d_eye).cross(this.camera.up).setLength(this.mouseChange.x);
+	        this.pan.add(this.objectUp.copy(this.camera.up).setLength(this.mouseChange.y));
+	        this.camera.position.add(this.pan);
+	        this.d_target.add(this.pan);
+	        if (this.staticMoving) {
+	          //console.log("panning static");
+	          this.d_panStart.copy(this.d_panEnd);
+	        } else {
+	          //console.log("panning dynamic");
+	          this.d_panStart.add(this.mouseChange.subVectors(this.d_panEnd, this.d_panStart).multiplyScalar(this.dynamicDampingFactor));
 	        }
+	      }
 	    }
-	    checkDistances() {
-	        if (!this.noZoom || !this.noPan) {
-	            if (this.d_eye.lengthSq() > this.maxDistance * this.maxDistance) {
-	                this.camera.position.addVectors(this.d_target, this.d_eye.setLength(this.maxDistance));
-	                this.d_zoomStart.copy(this.d_zoomEnd);
-	            }
-	            if (this.d_eye.lengthSq() < this.minDistance * this.minDistance) {
-	                this.camera.position.addVectors(this.d_target, this.d_eye.setLength(this.minDistance));
-	                this.d_zoomStart.copy(this.d_zoomEnd);
-	            }
+	  }, {
+	    key: 'checkDistances',
+	    value: function checkDistances() {
+	      if (!this.noZoom || !this.noPan) {
+	        if (this.d_eye.lengthSq() > this.maxDistance * this.maxDistance) {
+	          this.camera.position.addVectors(this.d_target, this.d_eye.setLength(this.maxDistance));
+	          this.d_zoomStart.copy(this.d_zoomEnd);
 	        }
+	        if (this.d_eye.lengthSq() < this.minDistance * this.minDistance) {
+	          this.camera.position.addVectors(this.d_target, this.d_eye.setLength(this.minDistance));
+	          this.d_zoomStart.copy(this.d_zoomEnd);
+	        }
+	      }
 	    }
-	    update() {
-	        this.d_eye.subVectors(this.camera.position, this.d_target);
-	        if (!this.noRotate) {
-	            this.rotateCamera();
-	        }
-	        if (!this.noZoom) {
-	            this.zoomCamera();
-	        }
-	        if (!this.noPan) {
-	            this.panCamera();
-	        }
-	        this.camera.position.addVectors(this.d_target, this.d_eye);
-	        this.checkDistances();
-	        this.camera.lookAt(this.d_target);
-	        if (this.d_lastPosition.distanceToSquared(this.camera.position) > ThreeTrackball.EPS) {
-	            this.d_lastPosition.copy(this.camera.position);
-	        }
-	    }
-	    reset() {
-	        this.d_state = ThreeTrackball.STATE.NONE;
-	        this.d_prevState = ThreeTrackball.STATE.NONE;
-	        this.d_target.copy(this.d_target0);
-	        this.camera.position.copy(this.d_position0);
-	        this.camera.up.copy(this.d_up0);
-	        this.d_eye.subVectors(this.camera.position, this.d_target);
-	        this.camera.lookAt(this.d_target);
+	  }, {
+	    key: 'update',
+	    value: function update() {
+	      this.d_eye.subVectors(this.camera.position, this.d_target);
+	      if (!this.noRotate) {
+	        this.rotateCamera();
+	      }
+	      if (!this.noZoom) {
+	        this.zoomCamera();
+	      }
+	      if (!this.noPan) {
+	        this.panCamera();
+	      }
+	      this.camera.position.addVectors(this.d_target, this.d_eye);
+	      this.checkDistances();
+	      this.camera.lookAt(this.d_target);
+	      if (this.d_lastPosition.distanceToSquared(this.camera.position) > ThreeTrackball.EPS) {
 	        this.d_lastPosition.copy(this.camera.position);
+	      }
 	    }
+	  }, {
+	    key: 'reset',
+	    value: function reset() {
+	      this.d_state = ThreeTrackball.STATE.NONE;
+	      this.d_prevState = ThreeTrackball.STATE.NONE;
+	      this.d_target.copy(this.d_target0);
+	      this.camera.position.copy(this.d_position0);
+	      this.camera.up.copy(this.d_up0);
+	      this.d_eye.subVectors(this.camera.position, this.d_target);
+	      this.camera.lookAt(this.d_target);
+	      this.d_lastPosition.copy(this.camera.position);
+	    }
+
 	    // listeners
-	    keydown(event) {
-	        if (this.enabled === false) return;
-	        this.d_prevState = this.d_state;
-	        if (this.d_state !== ThreeTrackball.STATE.NONE) {
-	            return;
-	        } else if (event.keyCode === this.keys[ThreeTrackball.STATE.ROTATE] && !this.noRotate) {
-	            this.noZoom = true;
-	            this.noPan = true;
-	            this.d_state = ThreeTrackball.STATE.ROTATE;
-	        } else if (event.keyCode === this.keys[ThreeTrackball.STATE.ZOOM] && !this.noZoom) {
-	            this.noRotate = true;
-	            this.noPan = true;
-	            this.d_state = ThreeTrackball.STATE.ZOOM;
-	        } else if (event.keyCode === this.keys[ThreeTrackball.STATE.PAN] && !this.noPan) {
-	            this.noRotate = true;
-	            this.noZoom = true;
-	            this.d_state = ThreeTrackball.STATE.PAN;
-	        }
-	    }
-	    keyup(event) {
-	        if (this.enabled === false) return;
-	        this.d_state = this.d_prevState;
-	    }
-	    mousedown(event) {
-	        event.preventDefault();
-	        event.stopPropagation();
-	        //console.log("Button = " + event.button);
-	        if (this.enabled === false) return;
-	        if (this.d_state === ThreeTrackball.STATE.NONE) {
-	            this.d_state = event.button;
-	        }
-	        if (this.d_state === ThreeTrackball.STATE.ROTATE && !this.noRotate) {
-	            this.noZoom = true;
-	            this.noPan = true;
-	            this.d_moveCurr.copy(this.getMouseOnCircle(event.pageX, event.pageY));
-	            this.d_movePrev.copy(this.d_moveCurr);
-	        } else if (this.d_state === ThreeTrackball.STATE.ZOOM && !this.noZoom) {
-	            this.noRotate = true;
-	            this.noPan = true;
-	            this.d_zoomStart.copy(this.getMouseOnScreen(event.pageX, event.pageY));
-	            this.d_zoomEnd.copy(this.d_zoomStart);
-	        } else if (this.d_state === ThreeTrackball.STATE.PAN && !this.noPan) {
-	            this.noRotate = true;
-	            this.noZoom = true;
-	            //console.log("State = " + this.d_state);
-	            //console.log("Location = " + event.pageX + ", " + event.pageY);
-	            this.d_panStart.copy(this.getMouseOnScreen(event.pageX, event.pageY));
-	            this.d_panEnd.copy(this.d_panStart);
-	        }
-	    }
-	    mousemove(event) {
-	        event.preventDefault();
-	        event.stopPropagation();
-	        if (this.enabled === false) return;
-	        if (this.d_state === ThreeTrackball.STATE.ROTATE && !this.noRotate) {
-	            this.d_movePrev.copy(this.d_moveCurr);
-	            this.d_moveCurr.copy(this.getMouseOnCircle(event.pageX, event.pageY));
-	        } else if (this.d_state === ThreeTrackball.STATE.ZOOM && !this.noZoom) {
-	            this.d_zoomEnd.copy(this.getMouseOnScreen(event.pageX, event.pageY));
-	        } else if (this.d_state === ThreeTrackball.STATE.PAN && !this.noPan) {
-	            //console.log("Move State = " + this.d_state);
-	            //console.log("Move Location = " + event.pageX + ", " + event.pageY);
-	            this.d_panEnd.copy(this.getMouseOnScreen(event.pageX, event.pageY));
-	        }
-	        this.update();
-	    }
-	    mouseup(event) {
-	        if (this.enabled === false) return;
-	        event.preventDefault();
-	        event.stopPropagation();
-	        this.update();
-	        this.noRotate = false;
-	        this.noZoom = false;
-	        this.noPan = false;
-	        this.d_state = ThreeTrackball.STATE.NONE;
-	    }
-	    mousewheel(event) {
-	        if (this.enabled === false) return;
-	        event.preventDefault();
-	        event.stopPropagation();
+
+	  }, {
+	    key: 'keydown',
+	    value: function keydown(event) {
+	      if (this.enabled === false) return;
+	      this.d_prevState = this.d_state;
+	      if (this.d_state !== ThreeTrackball.STATE.NONE) {
+	        return;
+	      } else if (event.keyCode === this.keys[ThreeTrackball.STATE.ROTATE] && !this.noRotate) {
+	        this.noZoom = true;
+	        this.noPan = true;
+	        this.d_state = ThreeTrackball.STATE.ROTATE;
+	      } else if (event.keyCode === this.keys[ThreeTrackball.STATE.ZOOM] && !this.noZoom) {
 	        this.noRotate = true;
 	        this.noPan = true;
-	        switch (event.deltaMode) {
-	            case 2:
-	                // Zoom in pages
-	                this.d_zoomStart.y -= event.deltaY * 0.025;
-	                break;
-	            case 1:
-	                // Zoom in lines
-	                this.d_zoomStart.y -= event.deltaY * 0.01;
-	                break;
-	            default:
-	                // undefined, 0, assume pixels
-	                this.d_zoomStart.y -= event.deltaY * 0.00025;
-	                break;
-	        }
-	        this.update();
-	        this.noRotate = false;
-	        this.noZoom = false;
-	        this.noPan = false;
-	        this.d_state = ThreeTrackball.STATE.NONE;
+	        this.d_state = ThreeTrackball.STATE.ZOOM;
+	      } else if (event.keyCode === this.keys[ThreeTrackball.STATE.PAN] && !this.noPan) {
+	        this.noRotate = true;
+	        this.noZoom = true;
+	        this.d_state = ThreeTrackball.STATE.PAN;
+	      }
 	    }
-	}
+	  }, {
+	    key: 'keyup',
+	    value: function keyup(event) {
+	      if (this.enabled === false) return;
+	      this.d_state = this.d_prevState;
+	    }
+	  }, {
+	    key: 'mousedown',
+	    value: function mousedown(event) {
+	      event.preventDefault();
+	      event.stopPropagation();
+	      //console.log("Button = " + event.button);
+	      if (this.enabled === false) return;
+	      if (this.d_state === ThreeTrackball.STATE.NONE) {
+	        this.d_state = event.button;
+	      }
+	      if (this.d_state === ThreeTrackball.STATE.ROTATE && !this.noRotate) {
+	        this.noZoom = true;
+	        this.noPan = true;
+	        this.d_moveCurr.copy(this.getMouseOnCircle(event.pageX, event.pageY));
+	        this.d_movePrev.copy(this.d_moveCurr);
+	      } else if (this.d_state === ThreeTrackball.STATE.ZOOM && !this.noZoom) {
+	        this.noRotate = true;
+	        this.noPan = true;
+	        this.d_zoomStart.copy(this.getMouseOnScreen(event.pageX, event.pageY));
+	        this.d_zoomEnd.copy(this.d_zoomStart);
+	      } else if (this.d_state === ThreeTrackball.STATE.PAN && !this.noPan) {
+	        this.noRotate = true;
+	        this.noZoom = true;
+	        //console.log("State = " + this.d_state);
+	        //console.log("Location = " + event.pageX + ", " + event.pageY);
+	        this.d_panStart.copy(this.getMouseOnScreen(event.pageX, event.pageY));
+	        this.d_panEnd.copy(this.d_panStart);
+	      }
+	    }
+	  }, {
+	    key: 'mousemove',
+	    value: function mousemove(event) {
+	      event.preventDefault();
+	      event.stopPropagation();
+	      if (this.enabled === false) return;
+	      if (this.d_state === ThreeTrackball.STATE.ROTATE && !this.noRotate) {
+	        this.d_movePrev.copy(this.d_moveCurr);
+	        this.d_moveCurr.copy(this.getMouseOnCircle(event.pageX, event.pageY));
+	      } else if (this.d_state === ThreeTrackball.STATE.ZOOM && !this.noZoom) {
+	        this.d_zoomEnd.copy(this.getMouseOnScreen(event.pageX, event.pageY));
+	      } else if (this.d_state === ThreeTrackball.STATE.PAN && !this.noPan) {
+	        //console.log("Move State = " + this.d_state);
+	        //console.log("Move Location = " + event.pageX + ", " + event.pageY);
+	        this.d_panEnd.copy(this.getMouseOnScreen(event.pageX, event.pageY));
+	      }
+	      this.update();
+	    }
+	  }, {
+	    key: 'mouseup',
+	    value: function mouseup(event) {
+	      if (this.enabled === false) return;
+	      event.preventDefault();
+	      event.stopPropagation();
+	      this.update();
+	      this.noRotate = false;
+	      this.noZoom = false;
+	      this.noPan = false;
+	      this.d_state = ThreeTrackball.STATE.NONE;
+	    }
+	  }, {
+	    key: 'mousewheel',
+	    value: function mousewheel(event) {
+	      if (this.enabled === false) return;
+	      event.preventDefault();
+	      event.stopPropagation();
+	      this.noRotate = true;
+	      this.noPan = true;
+	      switch (event.deltaMode) {
+	        case 2:
+	          // Zoom in pages
+	          this.d_zoomStart.y -= event.deltaY * 0.025;
+	          break;
+	        case 1:
+	          // Zoom in lines
+	          this.d_zoomStart.y -= event.deltaY * 0.01;
+	          break;
+	        default:
+	          // undefined, 0, assume pixels
+	          this.d_zoomStart.y -= event.deltaY * 0.00025;
+	          break;
+	      }
+	      this.update();
+	      this.noRotate = false;
+	      this.noZoom = false;
+	      this.noPan = false;
+	      this.d_state = ThreeTrackball.STATE.NONE;
+	    }
+	  }]);
+
+	  return ThreeTrackball;
+	}();
+
 	// Constants
+
+
 	ThreeTrackball.STATE = { NONE: -1, ROTATE: 0, ZOOM: 1, PAN: 2, TOUCH_ROTATE: 3, TOUCH_ZOOM_PAN: 4 };
 	ThreeTrackball.EPS = 0.000001;
+
 	module.exports = ThreeTrackball;
 
 /***/ },
-/* 82 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -55511,22 +55003,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (false) {
 	  module.hot.accept()
 	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-3b5d44aa", module.exports)
+	     require("vue-hot-reload-api").rerender("data-v-75e471ce", module.exports)
 	  }
 	}
 
 /***/ },
-/* 83 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_exports__, __vue_options__
 	var __vue_styles__ = {}
 
 	/* script */
-	__vue_exports__ = __webpack_require__(84)
+	__vue_exports__ = __webpack_require__(68)
 
 	/* template */
-	var __vue_template__ = __webpack_require__(85)
+	var __vue_template__ = __webpack_require__(69)
 	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
 	if (
 	  typeof __vue_exports__.default === "object" ||
@@ -55538,7 +55030,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/graphics/ThreeScene.vue"
+	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/src/graphics/ThreeScene.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 
@@ -55549,9 +55041,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!hotAPI.compatible) return
 	  module.hot.accept()
 	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-26b2c4b5", __vue_options__)
+	    hotAPI.createRecord("data-v-645bf0a6", __vue_options__)
 	  } else {
-	    hotAPI.reload("data-v-26b2c4b5", __vue_options__)
+	    hotAPI.reload("data-v-645bf0a6", __vue_options__)
 	  }
 	})()}
 	if (__vue_options__.functional) {console.error("[vue-loader] ThreeScene.vue: functional components are not supported and should be defined in plain js files using render functions.")}
@@ -55561,85 +55053,73 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 84 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
 	const Vue = __webpack_require__(1);
-	const THREE = __webpack_require__(74);
-	const av_ts_1 = __webpack_require__(26);
-	const Store_1 = __webpack_require__(3);
-	let ThreeScene = class ThreeScene extends Vue {
-	    constructor() {
-	        super(...arguments);
-	        this.size = av_ts_1.p({
-	            type: Object,
-	        });
+	const THREE = __webpack_require__(64);
+
+	const Store = __webpack_require__(3).default;
+
+	let ThreeScene = Vue.extend({
+	  name: 'ThreeScene',
+
+	  props: {
+	    size: {
+	      type: Object }
+	  },
+
+	  created() {
+
+	    // Create the scene
+	    let scene = Store.getters.scene;
+	    if (!scene) {
+	      scene = new THREE.Scene();
+	      console.log("Created scene");
+
+	      // Add the lights
+	      let dirLight = new THREE.DirectionalLight(0xffffff);
+	      dirLight.position.set(1, 1, 1);
+	      scene.add(dirLight);
+	      dirLight = new THREE.DirectionalLight(0x002288);
+	      dirLight.position.set(-1, -1, -1);
+	      scene.add(dirLight);
+	      let ambLight = new THREE.AmbientLight(0x222222);
+	      scene.add(ambLight);
+	      console.log("Added lights");
+
+	      // Update the scene
+	      Store.commit('SET_SCENE', scene);
 	    }
-	    created() {
-	        // Create the scene
-	        let scene = Store_1.default.getters.scene;
-	        if (!scene) {
-	            scene = new THREE.Scene();
-	            console.log("Created scene");
-	            // Add the lights
-	            let dirLight = new THREE.DirectionalLight(0xffffff);
-	            dirLight.position.set(1, 1, 1);
-	            scene.add(dirLight);
-	            dirLight = new THREE.DirectionalLight(0x002288);
-	            dirLight.position.set(-1, -1, -1);
-	            scene.add(dirLight);
-	            let ambLight = new THREE.AmbientLight(0x222222);
-	            scene.add(ambLight);
-	            console.log("Added lights");
-	            // Update the scene
-	            Store_1.default.commit('SET_SCENE', scene);
-	        }
+	  },
+
+	  mounted() {
+
+	    // Get the scene and the camera
+	    let scene = Store.getters.scene;
+	    let camera = Store.getters.camera;
+	    console.log("Got camera");
+
+	    // Add the camera to the scene
+	    if (camera) {
+	      scene.add(camera);
+	      console.log("Added camera to scene");
+	      console.log(camera.position);
+
+	      // Update the scene
+	      Store.commit('SET_SCENE', scene);
+	      //console.log("Set the scene");
+	    } else {
+	      console.log("Camera has not been created yet");
 	    }
-	    mounted() {
-	        // Get the scene and the camera
-	        let scene = Store_1.default.getters.scene;
-	        let camera = Store_1.default.getters.camera;
-	        console.log("Got camera");
-	        // Add the camera to the scene
-	        if (camera) {
-	            scene.add(camera);
-	            console.log("Added camera to scene");
-	            console.log(camera.position);
-	            // Update the scene
-	            Store_1.default.commit('SET_SCENE', scene);
-	        }
-	        else {
-	            console.log("Camera has not been created yet");
-	        }
-	    }
-	};
-	__decorate([
-	    av_ts_1.Prop
-	], ThreeScene.prototype, "size", void 0);
-	__decorate([
-	    av_ts_1.Lifecycle
-	], ThreeScene.prototype, "created", null);
-	__decorate([
-	    av_ts_1.Lifecycle
-	], ThreeScene.prototype, "mounted", null);
-	ThreeScene = __decorate([
-	    av_ts_1.Component({
-	        name: 'ThreeScene',
-	    })
-	], ThreeScene);
-	Object.defineProperty(exports, "__esModule", { value: true });
+	  }
+
+	});
+
 	exports.default = ThreeScene;
 
-
 /***/ },
-/* 85 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -55653,22 +55133,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (false) {
 	  module.hot.accept()
 	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-26b2c4b5", module.exports)
+	     require("vue-hot-reload-api").rerender("data-v-645bf0a6", module.exports)
 	  }
 	}
 
 /***/ },
-/* 86 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_exports__, __vue_options__
 	var __vue_styles__ = {}
 
 	/* script */
-	__vue_exports__ = __webpack_require__(87)
+	__vue_exports__ = __webpack_require__(71)
 
 	/* template */
-	var __vue_template__ = __webpack_require__(88)
+	var __vue_template__ = __webpack_require__(73)
 	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
 	if (
 	  typeof __vue_exports__.default === "object" ||
@@ -55680,7 +55160,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/graphics/ThreeCamera.vue"
+	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/src/graphics/ThreeCamera.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 
@@ -55691,9 +55171,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!hotAPI.compatible) return
 	  module.hot.accept()
 	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-8357a468", __vue_options__)
+	    hotAPI.createRecord("data-v-35d07ffb", __vue_options__)
 	  } else {
-	    hotAPI.reload("data-v-8357a468", __vue_options__)
+	    hotAPI.reload("data-v-35d07ffb", __vue_options__)
 	  }
 	})()}
 	if (__vue_options__.functional) {console.error("[vue-loader] ThreeCamera.vue: functional components are not supported and should be defined in plain js files using render functions.")}
@@ -55703,98 +55183,108 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 87 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
 	const Vue = __webpack_require__(1);
-	const THREE = __webpack_require__(74);
-	const av_ts_1 = __webpack_require__(26);
-	const Store_1 = __webpack_require__(3);
-	const util_1 = __webpack_require__(76);
-	let Camera = class Camera extends Vue {
-	    constructor() {
-	        super(...arguments);
-	        // prop
-	        this.size = av_ts_1.p({
-	            type: Object,
-	        });
-	        this.position = av_ts_1.p({
-	            type: Object // { x, y, z }
-	        });
+	const THREE = __webpack_require__(64);
+	const Store = __webpack_require__(3).default;
+	const util = __webpack_require__(72);
+
+	let Camera = Vue.extend({
+	  name: 'Camera',
+
+	  props: {
+	    size: {
+	      type: Object },
+	    position: {
+	      type: Object // { x, y, z }
 	    }
-	    created() {
-	        // Keep local copies of the properties in case we need to modify them
-	        this.d_size = this.size;
-	        this.d_position = this.position;
-	        let camera = Store_1.default.getters.camera;
-	        if (!camera) {
-	            let w = this.size.w;
-	            let h = this.size.h;
-	            camera = new THREE.PerspectiveCamera(75, w / h, 0.1, 1000);
-	            console.log("Created camera");
-	            // Update the position if the template specifies that
-	            console.log(this.position);
-	            if (this.position) {
-	                this.updateCameraPosition(camera, this.position);
-	                camera.updateProjectionMatrix();
-	            }
-	            Store_1.default.commit('SET_CAMERA', camera);
-	            console.log(Store_1.default.getters.camera.position);
-	        }
+	  },
+
+	  data() {
+
+	    return {
+	      d_size: { w: 0, h: 0 },
+	      d_position: { x: 0, y: 0, z: 0 }
+	    };
+	  },
+
+	  created() {
+
+	    // Keep local copies of the properties in case we need to modify them
+	    this.d_size = this.size;
+	    this.d_position = this.position;
+
+	    let camera = Store.getters.camera;
+	    if (!camera) {
+	      let w = this.size.w;
+	      let h = this.size.h;
+	      camera = new THREE.PerspectiveCamera(75, w / h, 0.1, 1000);
+	      console.log("Created camera");
+
+	      // Update the position if the template specifies that
+	      console.log(this.position);
+	      if (this.position) {
+	        this.updateCameraPosition(camera, this.position);
+	        camera.updateProjectionMatrix();
+	      }
+	      Store.commit('SET_CAMERA', camera);
+	      console.log(Store.getters.camera.position);
 	    }
-	    mounted() {
-	        // Update the position if the template specifies that
-	        /*
-	        console.log(this.position);
-	        let camera = Store.getters.camera;
-	        if (this.position) {
-	          this.updateCameraPosition(camera, this.position);
-	        }
-	        Store.commit('SET_CAMERA', camera);
-	        console.log(Store.getters.camera.position);
-	        */
-	    }
+	  },
+
+	  mounted() {
+
+	    // Update the position if the template specifies that
 	    /*
-	    get getCamera() {
-	      return Store.getters.camera;
+	    console.log(this.position);
+	    let camera = Store.getters.camera;
+	    if (this.position) {
+	      this.updateCameraPosition(camera, this.position);
 	    }
+	    Store.commit('SET_CAMERA', camera);
+	    console.log(Store.getters.camera.position);
 	    */
+	  },
+
+	  methods: {
 	    updateCameraPosition(camera, pos) {
-	        console.log(pos);
-	        util_1.default(camera.position, pos);
-	        //camera.lookAt(new THREE.Vector3(0.0, 0.0, 0.0));
+	      console.log(pos);
+	      util.assign(camera.position, pos);
+	      //camera.lookAt(new THREE.Vector3(0.0, 0.0, 0.0));
 	    }
-	};
-	__decorate([
-	    av_ts_1.Prop
-	], Camera.prototype, "size", void 0);
-	__decorate([
-	    av_ts_1.Prop
-	], Camera.prototype, "position", void 0);
-	__decorate([
-	    av_ts_1.Lifecycle
-	], Camera.prototype, "created", null);
-	__decorate([
-	    av_ts_1.Lifecycle
-	], Camera.prototype, "mounted", null);
-	Camera = __decorate([
-	    av_ts_1.Component({
-	        name: 'Camera',
-	    })
-	], Camera);
-	Object.defineProperty(exports, "__esModule", { value: true });
+	  }
+	});
+
 	exports.default = Camera;
 
+/***/ },
+/* 72 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	// implements Object.assign
+	// fix `Cannot resolve module 'babel-runtime/core-js/object/assign'`
+	// https://github.com/babel/babel/issues/2780
+	function assign(dest) {
+	  for (var _len = arguments.length, srcs = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	    srcs[_key - 1] = arguments[_key];
+	  }
+
+	  srcs.reverse().forEach(function (src) {
+	    for (var k in src) {
+	      if (src.hasOwnProperty(k)) {
+	        dest[k] = src[k];
+	      }
+	    }
+	  });
+	}
+	exports.assign = assign;
 
 /***/ },
-/* 88 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -55804,22 +55294,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (false) {
 	  module.hot.accept()
 	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-8357a468", module.exports)
+	     require("vue-hot-reload-api").rerender("data-v-35d07ffb", module.exports)
 	  }
 	}
 
 /***/ },
-/* 89 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_exports__, __vue_options__
 	var __vue_styles__ = {}
 
 	/* script */
-	__vue_exports__ = __webpack_require__(90)
+	__vue_exports__ = __webpack_require__(75)
 
 	/* template */
-	var __vue_template__ = __webpack_require__(91)
+	var __vue_template__ = __webpack_require__(76)
 	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
 	if (
 	  typeof __vue_exports__.default === "object" ||
@@ -55831,7 +55321,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/graphics/ThreeSphere.vue"
+	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/src/graphics/ThreeSphere.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 
@@ -55842,9 +55332,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!hotAPI.compatible) return
 	  module.hot.accept()
 	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-a87f8318", __vue_options__)
+	    hotAPI.createRecord("data-v-233c90a3", __vue_options__)
 	  } else {
-	    hotAPI.reload("data-v-a87f8318", __vue_options__)
+	    hotAPI.reload("data-v-233c90a3", __vue_options__)
 	  }
 	})()}
 	if (__vue_options__.functional) {console.error("[vue-loader] ThreeSphere.vue: functional components are not supported and should be defined in plain js files using render functions.")}
@@ -55854,84 +55344,71 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 90 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	const THREE = __webpack_require__(74);
+	const THREE = __webpack_require__(64);
 	const Vue = __webpack_require__(1);
-	const av_ts_1 = __webpack_require__(26);
-	const Store_1 = __webpack_require__(3);
-	let ThreeSphere = class ThreeSphere extends Vue {
-	    constructor() {
-	        super(...arguments);
-	        this.center = av_ts_1.p({
-	            type: Object,
-	            required: true
-	        });
-	        this.radius = av_ts_1.p({
-	            type: Number,
-	            required: true
-	        });
+
+	const Store = __webpack_require__(3).default;
+
+	let ThreeSphere = Vue.extend({
+	  name: 'ThreeSphere',
+
+	  props: {
+	    center: {
+	      type: Object, // {x : ?, y: ?, z: ?}
+	      required: true
+	    },
+	    radius: {
+	      type: Number,
+	      required: true
 	    }
-	    created() {
-	        let radius = this.radius;
-	        let center = this.center;
-	        this.createThreeSphere(radius, center);
-	        Store_1.default.commit('ADD_THREE_OBJECT', this.d_sphere);
-	        console.log("Added sphere to scene");
-	    }
-	    mounted() {
-	    }
-	    beforeDestroy() {
-	    }
+	  },
+
+	  data() {
+	    return {
+	      d_geometry: null,
+	      d_material: null,
+	      d_sphere: null
+	    };
+	  },
+
+	  created() {
+	    let radius = this.radius;
+	    let center = this.center;
+	    this.createThreeSphere(radius, center);
+	    Store.commit('ADD_THREE_OBJECT', this.d_sphere);
+	    console.log("Added sphere to scene");
+	  },
+
+	  mounted() {},
+
+	  beforeDestroy() {},
+
+	  methods: {
 	    createThreeSphere(radius, center) {
-	        // Create the sphere
-	        this.d_geometry = new THREE.SphereBufferGeometry(radius, 10, 10);
-	        this.d_geometry.translate(center.x, center.y, center.z);
-	        this.d_material = new THREE.MeshPhongMaterial({
-	            color: 0xffaa00,
-	            emissive: 0x072534,
-	            side: THREE.DoubleSide,
-	            shading: THREE.SmoothShading,
-	            wireframe: false
-	        });
-	        this.d_sphere = new THREE.Mesh(this.d_geometry, this.d_material);
-	        console.log("Created THREE.SphereBuffer");
+
+	      // Create the sphere
+	      this.d_geometry = new THREE.SphereBufferGeometry(radius, 10, 10);
+	      this.d_geometry.translate(center.x, center.y, center.z);
+
+	      this.d_material = new THREE.MeshPhongMaterial({
+	        color: 0xffaa00,
+	        emissive: 0x072534,
+	        side: THREE.DoubleSide,
+	        shading: THREE.SmoothShading,
+	        wireframe: false });
+	      this.d_sphere = new THREE.Mesh(this.d_geometry, this.d_material);
+	      console.log("Created THREE.SphereBuffer");
 	    }
-	};
-	__decorate([
-	    av_ts_1.Prop
-	], ThreeSphere.prototype, "center", void 0);
-	__decorate([
-	    av_ts_1.Prop
-	], ThreeSphere.prototype, "radius", void 0);
-	__decorate([
-	    av_ts_1.Lifecycle
-	], ThreeSphere.prototype, "created", null);
-	__decorate([
-	    av_ts_1.Lifecycle
-	], ThreeSphere.prototype, "mounted", null);
-	__decorate([
-	    av_ts_1.Lifecycle
-	], ThreeSphere.prototype, "beforeDestroy", null);
-	ThreeSphere = __decorate([
-	    av_ts_1.Component({
-	        name: 'ThreeSphere',
-	    })
-	], ThreeSphere);
-	Object.defineProperty(exports, "__esModule", { value: true });
+	  }
+	});
+
 	exports.default = ThreeSphere;
 
-
 /***/ },
-/* 91 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -55941,22 +55418,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (false) {
 	  module.hot.accept()
 	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-a87f8318", module.exports)
+	     require("vue-hot-reload-api").rerender("data-v-233c90a3", module.exports)
 	  }
 	}
 
 /***/ },
-/* 92 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_exports__, __vue_options__
 	var __vue_styles__ = {}
 
 	/* script */
-	__vue_exports__ = __webpack_require__(93)
+	__vue_exports__ = __webpack_require__(78)
 
 	/* template */
-	var __vue_template__ = __webpack_require__(94)
+	var __vue_template__ = __webpack_require__(79)
 	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
 	if (
 	  typeof __vue_exports__.default === "object" ||
@@ -55968,7 +55445,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/graphics/ThreeEllipsoidParticles.vue"
+	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/src/graphics/ThreeEllipsoidParticles.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 
@@ -55979,9 +55456,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!hotAPI.compatible) return
 	  module.hot.accept()
 	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-113a8891", __vue_options__)
+	    hotAPI.createRecord("data-v-1e4be780", __vue_options__)
 	  } else {
-	    hotAPI.reload("data-v-113a8891", __vue_options__)
+	    hotAPI.reload("data-v-1e4be780", __vue_options__)
 	  }
 	})()}
 	if (__vue_options__.functional) {console.error("[vue-loader] ThreeEllipsoidParticles.vue: functional components are not supported and should be defined in plain js files using render functions.")}
@@ -55991,112 +55468,115 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 93 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
 	const Vue = __webpack_require__(1);
-	const av_ts_1 = __webpack_require__(26);
-	const THREE = __webpack_require__(74);
-	const Store_1 = __webpack_require__(3);
-	let ThreeEllipsoidParticles = class ThreeEllipsoidParticles extends Vue {
-	    created() {
-	        var self = this;
-	        Store_1.default.watch(function () {
-	            return Store_1.default.getters.isParticleReadComplete;
-	        }, function () {
-	            if (Store_1.default.getters.isParticleReadComplete)
-	                self.createThreeParticles();
-	        });
-	    }
-	    mounted() {
-	    }
+	const THREE = __webpack_require__(64);
+
+	const Store = __webpack_require__(3).default;
+
+	let ThreeEllipsoidParticles = Vue.extend({
+	  name: 'ThreeEllipsoidParticles',
+
+	  created() {
+	    var self = this;
+	    Store.watch(function () {
+	      return Store.getters.isParticleReadComplete;
+	    }, function () {
+	      if (Store.getters.isParticleReadComplete) self.createThreeParticles();
+	    });
+	  },
+
+	  mounted() {},
+
+	  methods: {
+
 	    createThreeParticles() {
-	        console.log("Called create Three particles");
-	        // Get the particle data
-	        let particles = Store_1.default.getters.particleData;
-	        // Extract the radius and center
-	        let radii = particles["Radius"];
-	        let centers = particles["Position"];
-	        let axes_a = particles["Axis a"];
-	        let axes_b = particles["Axis b"];
-	        let axes_c = particles["Axis c"];
-	        // Loop through particles
-	        var self = this;
-	        radii.map(function (radius, index) {
-	            // Get the radius ratios
-	            let ratio = [1.0, radius[1] / radius[0], radius[2] / radius[0]];
-	            // Get the axes into vectors and compute rotation matrix
-	            let axis_a = new THREE.Vector3(Math.cos(axes_a[index][0]), Math.cos(axes_a[index][1]), Math.cos(axes_a[index][2]));
-	            let axis_b = new THREE.Vector3(Math.cos(axes_b[index][0]), Math.cos(axes_b[index][1]), Math.cos(axes_b[index][2]));
-	            let axis_c = new THREE.Vector3(Math.cos(axes_c[index][0]), Math.cos(axes_c[index][1]), Math.cos(axes_c[index][2]));
-	            let rotMatrix = new THREE.Matrix4();
-	            rotMatrix.set(axis_a.x, axis_b.x, axis_c.y, 0, axis_a.y, axis_b.y, axis_c.y, 0, axis_a.z, axis_b.z, axis_c.z, 0, 0, 0, 0, 1);
-	            //let rotMatrix = self.computeRotationMatrix(axis_a, axis_b, axis_c);
-	            // Create the sphere geometry
-	            const sph_geometry = new THREE.SphereGeometry(radius[0], 32, 16);
-	            // Rotate sphere 
-	            sph_geometry.applyMatrix(rotMatrix);
-	            // Convert into ellipsoid
-	            sph_geometry.applyMatrix(new THREE.Matrix4().makeScale(ratio[0], ratio[1], ratio[2]));
-	            // Translate the geometry
-	            let center = new THREE.Vector3(centers[index][0], centers[index][1], centers[index][2]);
-	            sph_geometry.translate(center.x, center.y, center.z);
-	            // Convert into buffer geometry
-	            const geometry = new THREE.BufferGeometry().fromGeometry(sph_geometry);
-	            console.log("THREE.SphereBuffer geometry created");
-	            const material = new THREE.MeshPhongMaterial({
-	                color: 0xffaa00,
-	                emissive: 0x072534,
-	                side: THREE.DoubleSide,
-	                shading: THREE.SmoothShading,
-	                wireframe: false
-	            });
-	            const sphere = new THREE.Mesh(geometry, material);
-	            // Save the data
-	            Store_1.default.commit('ADD_THREE_OBJECT', sphere);
+
+	      console.log("Called create Three particles");
+
+	      // Get the particle data
+	      let particles = Store.getters.particleData;
+
+	      // Extract the radius and center
+	      let radii = particles["Radius"];
+	      let centers = particles["Position"];
+	      let axes_a = particles["Axis a"];
+	      let axes_b = particles["Axis b"];
+	      let axes_c = particles["Axis c"];
+
+	      // Loop through particles
+	      var self = this;
+	      radii.map(function (radius, index) {
+
+	        // Get the radius ratios
+	        let ratio = [1.0, radius[1] / radius[0], radius[2] / radius[0]];
+
+	        // Get the axes into vectors and compute rotation matrix
+	        let axis_a = new THREE.Vector3(Math.cos(axes_a[index][0]), Math.cos(axes_a[index][1]), Math.cos(axes_a[index][2]));
+	        let axis_b = new THREE.Vector3(Math.cos(axes_b[index][0]), Math.cos(axes_b[index][1]), Math.cos(axes_b[index][2]));
+	        let axis_c = new THREE.Vector3(Math.cos(axes_c[index][0]), Math.cos(axes_c[index][1]), Math.cos(axes_c[index][2]));
+	        let rotMatrix = new THREE.Matrix4();
+	        rotMatrix.set(axis_a.x, axis_b.x, axis_c.y, 0, axis_a.y, axis_b.y, axis_c.y, 0, axis_a.z, axis_b.z, axis_c.z, 0, 0, 0, 0, 1);
+	        //let rotMatrix = self.computeRotationMatrix(axis_a, axis_b, axis_c);
+
+	        // Create the sphere geometry
+	        const sph_geometry = new THREE.SphereGeometry(radius[0], 32, 16);
+
+	        // Rotate sphere 
+	        sph_geometry.applyMatrix(rotMatrix);
+
+	        // Convert into ellipsoid
+	        sph_geometry.applyMatrix(new THREE.Matrix4().makeScale(ratio[0], ratio[1], ratio[2]));
+
+	        // Translate the geometry
+	        let center = new THREE.Vector3(centers[index][0], centers[index][1], centers[index][2]);
+	        sph_geometry.translate(center.x, center.y, center.z);
+
+	        // Convert into buffer geometry
+	        const geometry = new THREE.BufferGeometry().fromGeometry(sph_geometry);
+	        console.log("THREE.SphereBuffer geometry created");
+
+	        const material = new THREE.MeshPhongMaterial({
+	          color: 0xffaa00,
+	          emissive: 0x072534,
+	          side: THREE.DoubleSide,
+	          shading: THREE.SmoothShading,
+	          wireframe: false
 	        });
-	        Store_1.default.commit('THREE_OBJECTS_CREATED', true);
-	    }
+	        const sphere = new THREE.Mesh(geometry, material);
+
+	        // Save the data
+	        Store.commit('ADD_THREE_OBJECT', sphere);
+	      });
+
+	      Store.commit('THREE_OBJECTS_CREATED', true);
+	    },
+
 	    computeRotationMatrix(axis_a, axis_b, axis_c) {
-	        // Normalize
-	        axis_a = axis_a.normalize();
-	        axis_b = axis_b.normalize();
-	        axis_c = axis_c.normalize();
-	        // Get the lab axes
-	        let x_axis = new THREE.Vector3(1.0, 0.0, 0.0);
-	        let y_axis = new THREE.Vector3(0.0, 1.0, 0.0);
-	        let z_axis = new THREE.Vector3(0.0, 0.0, 1.0);
-	        // Create the rotation matrix in homogeneous coordinates
-	        let rot_mat = new THREE.Matrix4();
-	        rot_mat.set(x_axis.dot(axis_a), x_axis.dot(axis_b), x_axis.dot(axis_c), 0.0, y_axis.dot(axis_a), y_axis.dot(axis_b), y_axis.dot(axis_c), 0.0, z_axis.dot(axis_a), z_axis.dot(axis_b), z_axis.dot(axis_c), 0.0, 0.0, 0.0, 0.0, 1.0);
-	        // TODO: Check ortho
-	        return rot_mat;
+	      // Normalize
+	      axis_a = axis_a.normalize();
+	      axis_b = axis_b.normalize();
+	      axis_c = axis_c.normalize();
+
+	      // Get the lab axes
+	      let x_axis = new THREE.Vector3(1.0, 0.0, 0.0);
+	      let y_axis = new THREE.Vector3(0.0, 1.0, 0.0);
+	      let z_axis = new THREE.Vector3(0.0, 0.0, 1.0);
+
+	      // Create the rotation matrix in homogeneous coordinates
+	      let rot_mat = new THREE.Matrix4();
+	      rot_mat.set(x_axis.dot(axis_a), x_axis.dot(axis_b), x_axis.dot(axis_c), 0.0, y_axis.dot(axis_a), y_axis.dot(axis_b), y_axis.dot(axis_c), 0.0, z_axis.dot(axis_a), z_axis.dot(axis_b), z_axis.dot(axis_c), 0.0, 0.0, 0.0, 0.0, 1.0);
+	      // TODO: Check ortho
+	      return rot_mat;
 	    }
-	};
-	__decorate([
-	    av_ts_1.Lifecycle
-	], ThreeEllipsoidParticles.prototype, "created", null);
-	__decorate([
-	    av_ts_1.Lifecycle
-	], ThreeEllipsoidParticles.prototype, "mounted", null);
-	ThreeEllipsoidParticles = __decorate([
-	    av_ts_1.Component({
-	        name: 'ThreeEllipsoidParticles'
-	    })
-	], ThreeEllipsoidParticles);
-	Object.defineProperty(exports, "__esModule", { value: true });
+	  }
+	});
 	exports.default = ThreeEllipsoidParticles;
 
-
 /***/ },
-/* 94 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -56106,22 +55586,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (false) {
 	  module.hot.accept()
 	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-113a8891", module.exports)
+	     require("vue-hot-reload-api").rerender("data-v-1e4be780", module.exports)
 	  }
 	}
 
 /***/ },
-/* 95 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_exports__, __vue_options__
 	var __vue_styles__ = {}
 
 	/* script */
-	__vue_exports__ = __webpack_require__(96)
+	__vue_exports__ = __webpack_require__(81)
 
 	/* template */
-	var __vue_template__ = __webpack_require__(207)
+	var __vue_template__ = __webpack_require__(192)
 	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
 	if (
 	  typeof __vue_exports__.default === "object" ||
@@ -56133,7 +55613,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/graphics/VtkSphere.vue"
+	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/src/graphics/VtkSphere.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 
@@ -56144,9 +55624,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!hotAPI.compatible) return
 	  module.hot.accept()
 	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-4e788bc3", __vue_options__)
+	    hotAPI.createRecord("data-v-3ff19db2", __vue_options__)
 	  } else {
-	    hotAPI.reload("data-v-4e788bc3", __vue_options__)
+	    hotAPI.reload("data-v-3ff19db2", __vue_options__)
 	  }
 	})()}
 	if (__vue_options__.functional) {console.error("[vue-loader] VtkSphere.vue: functional components are not supported and should be defined in plain js files using render functions.")}
@@ -56156,88 +55636,74 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 96 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
 	const Vue = __webpack_require__(1);
-	const av_ts_1 = __webpack_require__(26);
-	const vtkActor = __webpack_require__(97);
-	const vtkSphereSource = __webpack_require__(116);
-	const vtkMapper = __webpack_require__(127);
-	const Store_1 = __webpack_require__(3);
-	let VtkSphere = class VtkSphere extends Vue {
-	    constructor() {
-	        super(...arguments);
-	        this.center = av_ts_1.p({
-	            type: Object,
-	            required: true
-	        });
-	        this.radius = av_ts_1.p({
-	            type: Number,
-	            required: true
-	        });
+
+	const vtkActor = __webpack_require__(82);
+	const vtkSphereSource = __webpack_require__(101);
+	const vtkMapper = __webpack_require__(112);
+
+	const Store = __webpack_require__(3).default;
+
+	let VtkSphere = Vue.extend({
+	  name: 'VtkSphere',
+
+	  props: {
+	    center: {
+	      type: Object, // {x : ?, y: ?, z: ?}
+	      required: true
+	    },
+
+	    radius: {
+	      type: Number,
+	      required: true
 	    }
-	    created() {
-	        // Create the _mapper
-	        console.log("Sphere mapper created");
-	        const mapper = vtkMapper.newInstance();
-	        // Create the actor
-	        console.log("Sphere actor created");
-	        const actor = vtkActor.newInstance();
-	        actor.getProperty().setEdgeVisibility(true);
-	        actor.getProperty().setEdgeColor(1.0, 0.5, 0.5);
-	        // Create the source
-	        console.log("Sphere source created");
-	        const sphere = vtkSphereSource.newInstance();
-	        sphere.setPhiResolution(36);
-	        sphere.setThetaResolution(36);
-	        sphere.setRadius(this.radius);
-	        let xCoord = this.center.x;
-	        let yCoord = this.center.y;
-	        let zCoord = this.center.z;
-	        sphere.setCenter(xCoord, yCoord, zCoord);
-	        console.log("Center = " + sphere.getCenter());
-	        // Set up the connections
-	        mapper.setInputConnection(sphere.getOutputPort());
-	        actor.setMapper(mapper);
-	        // Save the data
-	        Store_1.default.commit('ADD_VTK_ACTOR', actor);
-	        Store_1.default.commit('ADD_VTK_SOURCE', sphere);
-	        Store_1.default.commit('ADD_VTK_MAPPER', mapper);
-	    }
-	    mounted() {
-	    }
-	};
-	__decorate([
-	    av_ts_1.Prop
-	], VtkSphere.prototype, "center", void 0);
-	__decorate([
-	    av_ts_1.Prop
-	], VtkSphere.prototype, "radius", void 0);
-	__decorate([
-	    av_ts_1.Lifecycle
-	], VtkSphere.prototype, "created", null);
-	__decorate([
-	    av_ts_1.Lifecycle
-	], VtkSphere.prototype, "mounted", null);
-	VtkSphere = __decorate([
-	    av_ts_1.Component({
-	        name: 'VtkSphere',
-	    })
-	], VtkSphere);
-	Object.defineProperty(exports, "__esModule", { value: true });
+	  },
+
+	  created() {
+
+	    // Create the _mapper
+	    console.log("Sphere mapper created");
+	    const mapper = vtkMapper.newInstance();
+
+	    // Create the actor
+	    console.log("Sphere actor created");
+	    const actor = vtkActor.newInstance();
+	    actor.getProperty().setEdgeVisibility(true);
+	    actor.getProperty().setEdgeColor(1.0, 0.5, 0.5);
+
+	    // Create the source
+	    console.log("Sphere source created");
+	    const sphere = vtkSphereSource.newInstance();
+	    sphere.setPhiResolution(36);
+	    sphere.setThetaResolution(36);
+	    sphere.setRadius(this.radius);
+	    let xCoord = this.center.x;
+	    let yCoord = this.center.y;
+	    let zCoord = this.center.z;
+	    sphere.setCenter(xCoord, yCoord, zCoord);
+	    console.log("Center = " + sphere.getCenter());
+
+	    // Set up the connections
+	    mapper.setInputConnection(sphere.getOutputPort());
+	    actor.setMapper(mapper);
+
+	    // Save the data
+	    Store.commit('ADD_VTK_ACTOR', actor);
+	    Store.commit('ADD_VTK_SOURCE', sphere);
+	    Store.commit('ADD_VTK_MAPPER', mapper);
+	  },
+
+	  mounted() {}
+
+	});
+
 	exports.default = VtkSphere;
 
-
 /***/ },
-/* 97 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56248,17 +55714,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.newInstance = undefined;
 	exports.extend = extend;
 
-	var _glMatrix = __webpack_require__(98);
+	var _glMatrix = __webpack_require__(83);
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
-	var _Prop3D = __webpack_require__(110);
+	var _Prop3D = __webpack_require__(95);
 
 	var _Prop3D2 = _interopRequireDefault(_Prop3D);
 
-	var _Property = __webpack_require__(114);
+	var _Property = __webpack_require__(99);
 
 	var _Property2 = _interopRequireDefault(_Property);
 
@@ -56468,7 +55934,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 98 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -56499,18 +55965,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	THE SOFTWARE. */
 	// END HEADER
 
-	exports.glMatrix = __webpack_require__(99);
-	exports.mat2 = __webpack_require__(100);
-	exports.mat2d = __webpack_require__(101);
-	exports.mat3 = __webpack_require__(102);
-	exports.mat4 = __webpack_require__(103);
-	exports.quat = __webpack_require__(104);
-	exports.vec2 = __webpack_require__(107);
-	exports.vec3 = __webpack_require__(105);
-	exports.vec4 = __webpack_require__(106);
+	exports.glMatrix = __webpack_require__(84);
+	exports.mat2 = __webpack_require__(85);
+	exports.mat2d = __webpack_require__(86);
+	exports.mat3 = __webpack_require__(87);
+	exports.mat4 = __webpack_require__(88);
+	exports.quat = __webpack_require__(89);
+	exports.vec2 = __webpack_require__(92);
+	exports.vec3 = __webpack_require__(90);
+	exports.vec4 = __webpack_require__(91);
 
 /***/ },
-/* 99 */
+/* 84 */
 /***/ function(module, exports) {
 
 	/* Copyright (c) 2015, Brandon Jones, Colin MacKenzie IV.
@@ -56568,7 +56034,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 100 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* Copyright (c) 2015, Brandon Jones, Colin MacKenzie IV.
@@ -56591,7 +56057,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 	THE SOFTWARE. */
 
-	var glMatrix = __webpack_require__(99);
+	var glMatrix = __webpack_require__(84);
 
 	/**
 	 * @class 2x2 Matrix
@@ -56876,7 +56342,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 101 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* Copyright (c) 2015, Brandon Jones, Colin MacKenzie IV.
@@ -56899,7 +56365,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 	THE SOFTWARE. */
 
-	var glMatrix = __webpack_require__(99);
+	var glMatrix = __webpack_require__(84);
 
 	/**
 	 * @class 2x3 Matrix
@@ -57199,7 +56665,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 102 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* Copyright (c) 2015, Brandon Jones, Colin MacKenzie IV.
@@ -57222,7 +56688,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 	THE SOFTWARE. */
 
-	var glMatrix = __webpack_require__(99);
+	var glMatrix = __webpack_require__(84);
 
 	/**
 	 * @class 3x3 Matrix
@@ -57770,7 +57236,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 103 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* Copyright (c) 2015, Brandon Jones, Colin MacKenzie IV.
@@ -57793,7 +57259,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 	THE SOFTWARE. */
 
-	var glMatrix = __webpack_require__(99);
+	var glMatrix = __webpack_require__(84);
 
 	/**
 	 * @class 4x4 Matrix
@@ -59059,7 +58525,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 104 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* Copyright (c) 2015, Brandon Jones, Colin MacKenzie IV.
@@ -59082,10 +58548,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 	THE SOFTWARE. */
 
-	var glMatrix = __webpack_require__(99);
-	var mat3 = __webpack_require__(102);
-	var vec3 = __webpack_require__(105);
-	var vec4 = __webpack_require__(106);
+	var glMatrix = __webpack_require__(84);
+	var mat3 = __webpack_require__(87);
+	var vec3 = __webpack_require__(90);
+	var vec4 = __webpack_require__(91);
 
 	/**
 	 * @class Quaternion
@@ -59618,7 +59084,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 105 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* Copyright (c) 2015, Brandon Jones, Colin MacKenzie IV.
@@ -59641,7 +59107,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 	THE SOFTWARE. */
 
-	var glMatrix = __webpack_require__(99);
+	var glMatrix = __webpack_require__(84);
 
 	/**
 	 * @class 3 Dimensional Vector
@@ -60333,7 +59799,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 106 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* Copyright (c) 2015, Brandon Jones, Colin MacKenzie IV.
@@ -60356,7 +59822,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 	THE SOFTWARE. */
 
-	var glMatrix = __webpack_require__(99);
+	var glMatrix = __webpack_require__(84);
 
 	/**
 	 * @class 4 Dimensional Vector
@@ -60876,7 +60342,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 107 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* Copyright (c) 2015, Brandon Jones, Colin MacKenzie IV.
@@ -60899,7 +60365,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 	THE SOFTWARE. */
 
-	var glMatrix = __webpack_require__(99);
+	var glMatrix = __webpack_require__(84);
 
 	/**
 	 * @class 2 Dimensional Vector
@@ -61405,7 +60871,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 108 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -61436,7 +60902,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.vtkErrorMacro = vtkErrorMacro;
 	exports.vtkWarningMacro = vtkWarningMacro;
 
-	var _vtk = __webpack_require__(109);
+	var _vtk = __webpack_require__(94);
 
 	var _vtk2 = _interopRequireDefault(_vtk);
 
@@ -62138,7 +61604,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 109 */
+/* 94 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -62200,7 +61666,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	vtk.register = register;
 
 /***/ },
-/* 110 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62211,17 +61677,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.newInstance = undefined;
 	exports.extend = extend;
 
-	var _glMatrix = __webpack_require__(98);
+	var _glMatrix = __webpack_require__(83);
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
-	var _BoundingBox = __webpack_require__(111);
+	var _BoundingBox = __webpack_require__(96);
 
 	var _BoundingBox2 = _interopRequireDefault(_BoundingBox);
 
-	var _Prop = __webpack_require__(113);
+	var _Prop = __webpack_require__(98);
 
 	var _Prop2 = _interopRequireDefault(_Prop);
 
@@ -62389,7 +61855,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 111 */
+/* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62403,11 +61869,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
-	var _Plane = __webpack_require__(112);
+	var _Plane = __webpack_require__(97);
 
 	var _Plane2 = _interopRequireDefault(_Plane);
 
@@ -62833,7 +62299,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Object.assign({ newInstance: newInstance, extend: extend }, STATIC);
 
 /***/ },
-/* 112 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62844,7 +62310,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.newInstance = exports.STATIC = undefined;
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
@@ -62903,7 +62369,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Object.assign({ newInstance: newInstance, extend: extend }, STATIC);
 
 /***/ },
-/* 113 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62914,7 +62380,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.newInstance = undefined;
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
@@ -63047,7 +62513,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 114 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63058,11 +62524,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.newInstance = undefined;
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
-	var _Constants = __webpack_require__(115);
+	var _Constants = __webpack_require__(100);
 
 	var _Constants2 = _interopRequireDefault(_Constants);
 
@@ -63198,7 +62664,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 115 */
+/* 100 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -63227,7 +62693,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 116 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63239,15 +62705,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.vtkSphereSource = vtkSphereSource;
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
-	var _PolyData = __webpack_require__(117);
+	var _PolyData = __webpack_require__(102);
 
 	var _PolyData2 = _interopRequireDefault(_PolyData);
 
-	var _DataArray = __webpack_require__(119);
+	var _DataArray = __webpack_require__(104);
 
 	var _DataArray2 = _interopRequireDefault(_DataArray);
 
@@ -63476,7 +62942,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 117 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63487,19 +62953,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.newInstance = undefined;
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
-	var _vtk = __webpack_require__(109);
+	var _vtk = __webpack_require__(94);
 
 	var _vtk2 = _interopRequireDefault(_vtk);
 
-	var _CellArray = __webpack_require__(118);
+	var _CellArray = __webpack_require__(103);
 
 	var _CellArray2 = _interopRequireDefault(_CellArray);
 
-	var _PointSet = __webpack_require__(121);
+	var _PointSet = __webpack_require__(106);
 
 	var _PointSet2 = _interopRequireDefault(_PointSet);
 
@@ -63575,7 +63041,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 118 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63586,15 +63052,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.newInstance = exports.STATIC = undefined;
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
-	var _DataArray = __webpack_require__(119);
+	var _DataArray = __webpack_require__(104);
 
 	var _DataArray2 = _interopRequireDefault(_DataArray);
 
-	var _Constants = __webpack_require__(120);
+	var _Constants = __webpack_require__(105);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -63684,7 +63150,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Object.assign({ newInstance: newInstance, extend: extend }, STATIC);
 
 /***/ },
-/* 119 */
+/* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63695,11 +63161,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.newInstance = exports.STATIC = undefined;
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
-	var _Constants = __webpack_require__(120);
+	var _Constants = __webpack_require__(105);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -63976,7 +63442,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Object.assign({ newInstance: newInstance, extend: extend }, STATIC);
 
 /***/ },
-/* 120 */
+/* 105 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -64018,7 +63484,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 121 */
+/* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64029,19 +63495,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.newInstance = undefined;
 	exports.extend = extend;
 
-	var _vtk = __webpack_require__(109);
+	var _vtk = __webpack_require__(94);
 
 	var _vtk2 = _interopRequireDefault(_vtk);
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
-	var _DataSet = __webpack_require__(122);
+	var _DataSet = __webpack_require__(107);
 
 	var _DataSet2 = _interopRequireDefault(_DataSet);
 
-	var _Points = __webpack_require__(126);
+	var _Points = __webpack_require__(111);
 
 	var _Points2 = _interopRequireDefault(_Points);
 
@@ -64107,7 +63573,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 122 */
+/* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64118,15 +63584,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.newInstance = undefined;
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
-	var _vtk = __webpack_require__(109);
+	var _vtk = __webpack_require__(94);
 
 	var _vtk2 = _interopRequireDefault(_vtk);
 
-	var _DataSetAttributes = __webpack_require__(123);
+	var _DataSetAttributes = __webpack_require__(108);
 
 	var _DataSetAttributes2 = _interopRequireDefault(_DataSetAttributes);
 
@@ -64221,7 +63687,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 123 */
+/* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64232,19 +63698,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.newInstance = undefined;
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
-	var _FieldData = __webpack_require__(124);
+	var _FieldData = __webpack_require__(109);
 
 	var _FieldData2 = _interopRequireDefault(_FieldData);
 
-	var _Constants = __webpack_require__(125);
+	var _Constants = __webpack_require__(110);
 
 	var _Constants2 = _interopRequireDefault(_Constants);
 
-	var _DataArray = __webpack_require__(119);
+	var _DataArray = __webpack_require__(104);
 
 	var _DataArray2 = _interopRequireDefault(_DataArray);
 
@@ -64426,7 +63892,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 124 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64437,11 +63903,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.newInstance = undefined;
 	exports.extend = extend;
 
-	var _vtk = __webpack_require__(109);
+	var _vtk = __webpack_require__(94);
 
 	var _vtk2 = _interopRequireDefault(_vtk);
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
@@ -64639,7 +64105,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 125 */
+/* 110 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -64695,7 +64161,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 126 */
+/* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64706,15 +64172,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.newInstance = undefined;
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
-	var _DataArray = __webpack_require__(119);
+	var _DataArray = __webpack_require__(104);
 
 	var _DataArray2 = _interopRequireDefault(_DataArray);
 
-	var _Constants = __webpack_require__(120);
+	var _Constants = __webpack_require__(105);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -64800,7 +64266,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 127 */
+/* 112 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64811,37 +64277,37 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.newInstance = undefined;
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
-	var _DataArray = __webpack_require__(119);
+	var _DataArray = __webpack_require__(104);
 
 	var _DataArray2 = _interopRequireDefault(_DataArray);
 
-	var _ImageData = __webpack_require__(128);
+	var _ImageData = __webpack_require__(113);
 
 	var _ImageData2 = _interopRequireDefault(_ImageData);
 
-	var _LookupTable = __webpack_require__(131);
+	var _LookupTable = __webpack_require__(116);
 
 	var _LookupTable2 = _interopRequireDefault(_LookupTable);
 
-	var _Math = __webpack_require__(132);
+	var _Math = __webpack_require__(117);
 
 	var _Math2 = _interopRequireDefault(_Math);
 
-	var _Constants = __webpack_require__(203);
+	var _Constants = __webpack_require__(188);
 
-	var _CoincidentTopologyHelper = __webpack_require__(205);
+	var _CoincidentTopologyHelper = __webpack_require__(190);
 
 	var _CoincidentTopologyHelper2 = _interopRequireDefault(_CoincidentTopologyHelper);
 
-	var _Static = __webpack_require__(206);
+	var _Static = __webpack_require__(191);
 
 	var _Static2 = _interopRequireDefault(_Static);
 
-	var _Constants2 = __webpack_require__(204);
+	var _Constants2 = __webpack_require__(189);
 
 	var _Constants3 = _interopRequireDefault(_Constants2);
 
@@ -65367,7 +64833,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Object.assign({ newInstance: newInstance, extend: extend }, staticOffsetAPI, _Static2.default);
 
 /***/ },
-/* 128 */
+/* 113 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65378,19 +64844,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.newInstance = undefined;
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
-	var _DataSet = __webpack_require__(122);
+	var _DataSet = __webpack_require__(107);
 
 	var _DataSet2 = _interopRequireDefault(_DataSet);
 
-	var _StructuredData = __webpack_require__(129);
+	var _StructuredData = __webpack_require__(114);
 
 	var _StructuredData2 = _interopRequireDefault(_StructuredData);
 
-	var _Constants = __webpack_require__(130);
+	var _Constants = __webpack_require__(115);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -65596,7 +65062,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 129 */
+/* 114 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65606,7 +65072,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 	exports.getDataDescriptionFromExtent = getDataDescriptionFromExtent;
 
-	var _Constants = __webpack_require__(130);
+	var _Constants = __webpack_require__(115);
 
 	function getDataDescriptionFromExtent(inExt) {
 	  var dataDim = 0;
@@ -65646,7 +65112,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 130 */
+/* 115 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -65672,7 +65138,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 131 */
+/* 116 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65683,19 +65149,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.newInstance = undefined;
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
-	var _Math = __webpack_require__(132);
+	var _Math = __webpack_require__(117);
 
 	var _Math2 = _interopRequireDefault(_Math);
 
-	var _ScalarsToColors = __webpack_require__(202);
+	var _ScalarsToColors = __webpack_require__(187);
 
 	var _ScalarsToColors2 = _interopRequireDefault(_ScalarsToColors);
 
-	var _Constants = __webpack_require__(203);
+	var _Constants = __webpack_require__(188);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -66012,7 +65478,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Object.assign({ newInstance: newInstance, extend: extend });
 
 /***/ },
-/* 132 */
+/* 117 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -66023,11 +65489,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-	var _seedrandom = __webpack_require__(133);
+	var _seedrandom = __webpack_require__(118);
 
 	var _seedrandom2 = _interopRequireDefault(_seedrandom);
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
@@ -68048,7 +67514,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 133 */
+/* 118 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// A library of seedable RNGs implemented in Javascript.
@@ -68063,17 +67529,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	// alea, a 53-bit multiply-with-carry generator by Johannes Baagøe.
 	// Period: ~2^116
 	// Reported to pass all BigCrush tests.
-	var alea = __webpack_require__(134);
+	var alea = __webpack_require__(119);
 
 	// xor128, a pure xor-shift generator by George Marsaglia.
 	// Period: 2^128-1.
 	// Reported to fail: MatrixRank and LinearComp.
-	var xor128 = __webpack_require__(138);
+	var xor128 = __webpack_require__(123);
 
 	// xorwow, George Marsaglia's 160-bit xor-shift combined plus weyl.
 	// Period: 2^192-2^32
 	// Reported to fail: CollisionOver, SimpPoker, and LinearComp.
-	var xorwow = __webpack_require__(139);
+	var xorwow = __webpack_require__(124);
 
 	// xorshift7, by François Panneton and Pierre L'ecuyer, takes
 	// a different approach: it adds robustness by allowing more shifts
@@ -68081,7 +67547,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// with 256 bits, that passes BigCrush with no systmatic failures.
 	// Period 2^256-1.
 	// No systematic BigCrush failures reported.
-	var xorshift7 = __webpack_require__(140);
+	var xorshift7 = __webpack_require__(125);
 
 	// xor4096, by Richard Brent, is a 4096-bit xor-shift with a
 	// very long period that also adds a Weyl generator. It also passes
@@ -68090,18 +67556,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	// collisions.
 	// Period: 2^4128-2^32.
 	// No systematic BigCrush failures reported.
-	var xor4096 = __webpack_require__(141);
+	var xor4096 = __webpack_require__(126);
 
 	// Tyche-i, by Samuel Neves and Filipe Araujo, is a bit-shifting random
 	// number generator derived from ChaCha, a modern stream cipher.
 	// https://eden.dei.uc.pt/~sneves/pubs/2011-snfa2.pdf
 	// Period: ~2^127
 	// No systematic BigCrush failures reported.
-	var tychei = __webpack_require__(142);
+	var tychei = __webpack_require__(127);
 
 	// The original ARC4-based prng included in this library.
 	// Period: ~2^1600
-	var sr = __webpack_require__(143);
+	var sr = __webpack_require__(128);
 
 	sr.alea = alea;
 	sr.xor128 = xor128;
@@ -68114,7 +67580,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 134 */
+/* 119 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module) {// A port of an algorithm by Johannes Baagøe <baagoe@baagoe.com>, 2010
@@ -68218,7 +67684,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	if (module && module.exports) {
 	  module.exports = impl;
-	} else if (__webpack_require__(136) && __webpack_require__(137)) {
+	} else if (__webpack_require__(121) && __webpack_require__(122)) {
 	  !(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return impl; }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	} else {
 	  this.alea = impl;
@@ -68227,15 +67693,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	})(
 	  this,
 	  (typeof module) == 'object' && module,    // present in node.js
-	  __webpack_require__(136)   // present with an AMD loader
+	  __webpack_require__(121)   // present with an AMD loader
 	);
 
 
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(135)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(120)(module)))
 
 /***/ },
-/* 135 */
+/* 120 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -68251,14 +67717,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 136 */
+/* 121 */
 /***/ function(module, exports) {
 
 	module.exports = function() { throw new Error("define cannot be used indirect"); };
 
 
 /***/ },
-/* 137 */
+/* 122 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {module.exports = __webpack_amd_options__;
@@ -68266,7 +67732,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, {}))
 
 /***/ },
-/* 138 */
+/* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module) {// A Javascript implementaion of the "xor128" prng algorithm by
@@ -68337,7 +67803,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	if (module && module.exports) {
 	  module.exports = impl;
-	} else if (__webpack_require__(136) && __webpack_require__(137)) {
+	} else if (__webpack_require__(121) && __webpack_require__(122)) {
 	  !(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return impl; }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	} else {
 	  this.xor128 = impl;
@@ -68346,15 +67812,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	})(
 	  this,
 	  (typeof module) == 'object' && module,    // present in node.js
-	  __webpack_require__(136)   // present with an AMD loader
+	  __webpack_require__(121)   // present with an AMD loader
 	);
 
 
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(135)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(120)(module)))
 
 /***/ },
-/* 139 */
+/* 124 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module) {// A Javascript implementaion of the "xorwow" prng algorithm by
@@ -68430,7 +67896,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	if (module && module.exports) {
 	  module.exports = impl;
-	} else if (__webpack_require__(136) && __webpack_require__(137)) {
+	} else if (__webpack_require__(121) && __webpack_require__(122)) {
 	  !(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return impl; }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	} else {
 	  this.xorwow = impl;
@@ -68439,15 +67905,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	})(
 	  this,
 	  (typeof module) == 'object' && module,    // present in node.js
-	  __webpack_require__(136)   // present with an AMD loader
+	  __webpack_require__(121)   // present with an AMD loader
 	);
 
 
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(135)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(120)(module)))
 
 /***/ },
-/* 140 */
+/* 125 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module) {// A Javascript implementaion of the "xorshift7" algorithm by
@@ -68535,7 +68001,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	if (module && module.exports) {
 	  module.exports = impl;
-	} else if (__webpack_require__(136) && __webpack_require__(137)) {
+	} else if (__webpack_require__(121) && __webpack_require__(122)) {
 	  !(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return impl; }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	} else {
 	  this.xorshift7 = impl;
@@ -68544,14 +68010,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	})(
 	  this,
 	  (typeof module) == 'object' && module,    // present in node.js
-	  __webpack_require__(136)   // present with an AMD loader
+	  __webpack_require__(121)   // present with an AMD loader
 	);
 
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(135)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(120)(module)))
 
 /***/ },
-/* 141 */
+/* 126 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module) {// A Javascript implementaion of Richard Brent's Xorgens xor4096 algorithm.
@@ -68689,7 +68155,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	if (module && module.exports) {
 	  module.exports = impl;
-	} else if (__webpack_require__(136) && __webpack_require__(137)) {
+	} else if (__webpack_require__(121) && __webpack_require__(122)) {
 	  !(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return impl; }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	} else {
 	  this.xor4096 = impl;
@@ -68698,13 +68164,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	})(
 	  this,                                     // window object or global
 	  (typeof module) == 'object' && module,    // present in node.js
-	  __webpack_require__(136)   // present with an AMD loader
+	  __webpack_require__(121)   // present with an AMD loader
 	);
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(135)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(120)(module)))
 
 /***/ },
-/* 142 */
+/* 127 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module) {// A Javascript implementaion of the "Tyche-i" prng algorithm by
@@ -68797,7 +68263,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	if (module && module.exports) {
 	  module.exports = impl;
-	} else if (__webpack_require__(136) && __webpack_require__(137)) {
+	} else if (__webpack_require__(121) && __webpack_require__(122)) {
 	  !(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return impl; }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	} else {
 	  this.tychei = impl;
@@ -68806,15 +68272,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	})(
 	  this,
 	  (typeof module) == 'object' && module,    // present in node.js
-	  __webpack_require__(136)   // present with an AMD loader
+	  __webpack_require__(121)   // present with an AMD loader
 	);
 
 
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(135)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(120)(module)))
 
 /***/ },
-/* 143 */
+/* 128 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*
@@ -69048,7 +68514,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  module.exports = seedrandom;
 	  // When in node.js, try using crypto package for autoseeding.
 	  try {
-	    nodecrypto = __webpack_require__(144);
+	    nodecrypto = __webpack_require__(129);
 	  } catch (ex) {}
 	} else if (true) {
 	  !(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return seedrandom; }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -69062,10 +68528,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 144 */
+/* 129 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(Buffer) {var rng = __webpack_require__(149)
+	/* WEBPACK VAR INJECTION */(function(Buffer) {var rng = __webpack_require__(134)
 
 	function error () {
 	  var m = [].slice.call(arguments).join(' ')
@@ -69076,9 +68542,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    ].join('\n'))
 	}
 
-	exports.createHash = __webpack_require__(151)
+	exports.createHash = __webpack_require__(136)
 
-	exports.createHmac = __webpack_require__(163)
+	exports.createHmac = __webpack_require__(148)
 
 	exports.randomBytes = function(size, callback) {
 	  if (callback && callback.call) {
@@ -69099,10 +68565,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return ['sha1', 'sha256', 'sha512', 'md5', 'rmd160']
 	}
 
-	var p = __webpack_require__(164)(exports)
+	var p = __webpack_require__(149)(exports)
 	exports.pbkdf2 = p.pbkdf2
 	exports.pbkdf2Sync = p.pbkdf2Sync
-	__webpack_require__(166)(exports, module.exports);
+	__webpack_require__(151)(exports, module.exports);
 
 	// the least I can do is make error messages for the rest of the node.js/crypto api.
 	each(['createCredentials'
@@ -69115,10 +68581,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	})
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(145).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(130).Buffer))
 
 /***/ },
-/* 145 */
+/* 130 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/*!
@@ -69131,9 +68597,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict'
 
-	var base64 = __webpack_require__(146)
-	var ieee754 = __webpack_require__(147)
-	var isArray = __webpack_require__(148)
+	var base64 = __webpack_require__(131)
+	var ieee754 = __webpack_require__(132)
+	var isArray = __webpack_require__(133)
 
 	exports.Buffer = Buffer
 	exports.SlowBuffer = SlowBuffer
@@ -70914,7 +70380,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 146 */
+/* 131 */
 /***/ function(module, exports) {
 
 	'use strict'
@@ -71034,7 +70500,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 147 */
+/* 132 */
 /***/ function(module, exports) {
 
 	exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -71124,7 +70590,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 148 */
+/* 133 */
 /***/ function(module, exports) {
 
 	var toString = {}.toString;
@@ -71135,13 +70601,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 149 */
+/* 134 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global, Buffer) {(function() {
 	  var g = ('undefined' === typeof window ? global : window) || {}
 	  _crypto = (
-	    g.crypto || g.msCrypto || __webpack_require__(150)
+	    g.crypto || g.msCrypto || __webpack_require__(135)
 	  )
 	  module.exports = function(size) {
 	    // Modern Browsers
@@ -71165,22 +70631,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	}())
 
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(145).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(130).Buffer))
 
 /***/ },
-/* 150 */
+/* 135 */
 /***/ function(module, exports) {
 
 	/* (ignored) */
 
 /***/ },
-/* 151 */
+/* 136 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(Buffer) {var createHash = __webpack_require__(152)
+	/* WEBPACK VAR INJECTION */(function(Buffer) {var createHash = __webpack_require__(137)
 
-	var md5 = toConstructor(__webpack_require__(160))
-	var rmd160 = toConstructor(__webpack_require__(162))
+	var md5 = toConstructor(__webpack_require__(145))
+	var rmd160 = toConstructor(__webpack_require__(147))
 
 	function toConstructor (fn) {
 	  return function () {
@@ -71208,10 +70674,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return createHash(alg)
 	}
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(145).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(130).Buffer))
 
 /***/ },
-/* 152 */
+/* 137 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var exports = module.exports = function (alg) {
@@ -71220,16 +70686,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return new Alg()
 	}
 
-	var Buffer = __webpack_require__(145).Buffer
-	var Hash   = __webpack_require__(153)(Buffer)
+	var Buffer = __webpack_require__(130).Buffer
+	var Hash   = __webpack_require__(138)(Buffer)
 
-	exports.sha1 = __webpack_require__(154)(Buffer, Hash)
-	exports.sha256 = __webpack_require__(158)(Buffer, Hash)
-	exports.sha512 = __webpack_require__(159)(Buffer, Hash)
+	exports.sha1 = __webpack_require__(139)(Buffer, Hash)
+	exports.sha256 = __webpack_require__(143)(Buffer, Hash)
+	exports.sha512 = __webpack_require__(144)(Buffer, Hash)
 
 
 /***/ },
-/* 153 */
+/* 138 */
 /***/ function(module, exports) {
 
 	module.exports = function (Buffer) {
@@ -71312,7 +70778,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 154 */
+/* 139 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -71324,7 +70790,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * See http://pajhome.org.uk/crypt/md5 for details.
 	 */
 
-	var inherits = __webpack_require__(155).inherits
+	var inherits = __webpack_require__(140).inherits
 
 	module.exports = function (Buffer, Hash) {
 
@@ -71456,7 +70922,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 155 */
+/* 140 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global, process) {// Copyright Joyent, Inc. and other Node contributors.
@@ -71984,7 +71450,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 	exports.isPrimitive = isPrimitive;
 
-	exports.isBuffer = __webpack_require__(156);
+	exports.isBuffer = __webpack_require__(141);
 
 	function objectToString(o) {
 	  return Object.prototype.toString.call(o);
@@ -72028,7 +71494,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *     prototype.
 	 * @param {function} superCtor Constructor function to inherit prototype from.
 	 */
-	exports.inherits = __webpack_require__(157);
+	exports.inherits = __webpack_require__(142);
 
 	exports._extend = function(origin, add) {
 	  // Don't do anything if add isn't an object
@@ -72049,7 +71515,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(2)))
 
 /***/ },
-/* 156 */
+/* 141 */
 /***/ function(module, exports) {
 
 	module.exports = function isBuffer(arg) {
@@ -72060,7 +71526,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 157 */
+/* 142 */
 /***/ function(module, exports) {
 
 	if (typeof Object.create === 'function') {
@@ -72089,7 +71555,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 158 */
+/* 143 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -72101,7 +71567,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *
 	 */
 
-	var inherits = __webpack_require__(155).inherits
+	var inherits = __webpack_require__(140).inherits
 
 	module.exports = function (Buffer, Hash) {
 
@@ -72242,10 +71708,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 159 */
+/* 144 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var inherits = __webpack_require__(155).inherits
+	var inherits = __webpack_require__(140).inherits
 
 	module.exports = function (Buffer, Hash) {
 	  var K = [
@@ -72492,7 +71958,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 160 */
+/* 145 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -72504,7 +71970,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * See http://pajhome.org.uk/crypt/md5 for more info.
 	 */
 
-	var helpers = __webpack_require__(161);
+	var helpers = __webpack_require__(146);
 
 	/*
 	 * Calculate the MD5 of an array of little-endian words, and a bit length
@@ -72653,7 +72119,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 161 */
+/* 146 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {var intSize = 4;
@@ -72691,10 +72157,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = { hash: hash };
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(145).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(130).Buffer))
 
 /***/ },
-/* 162 */
+/* 147 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {
@@ -72903,13 +72369,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(145).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(130).Buffer))
 
 /***/ },
-/* 163 */
+/* 148 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(Buffer) {var createHash = __webpack_require__(151)
+	/* WEBPACK VAR INJECTION */(function(Buffer) {var createHash = __webpack_require__(136)
 
 	var zeroBuffer = new Buffer(128)
 	zeroBuffer.fill(0)
@@ -72953,13 +72419,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(145).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(130).Buffer))
 
 /***/ },
-/* 164 */
+/* 149 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var pbkdf2Export = __webpack_require__(165)
+	var pbkdf2Export = __webpack_require__(150)
 
 	module.exports = function (crypto, exports) {
 	  exports = exports || {}
@@ -72974,7 +72440,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 165 */
+/* 150 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {module.exports = function(crypto) {
@@ -73062,21 +72528,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	}
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(145).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(130).Buffer))
 
 /***/ },
-/* 166 */
+/* 151 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (crypto, exports) {
 	  exports = exports || {};
-	  var ciphers = __webpack_require__(167)(crypto);
+	  var ciphers = __webpack_require__(152)(crypto);
 	  exports.createCipher = ciphers.createCipher;
 	  exports.createCipheriv = ciphers.createCipheriv;
-	  var deciphers = __webpack_require__(201)(crypto);
+	  var deciphers = __webpack_require__(186)(crypto);
 	  exports.createDecipher = deciphers.createDecipher;
 	  exports.createDecipheriv = deciphers.createDecipheriv;
-	  var modes = __webpack_require__(192);
+	  var modes = __webpack_require__(177);
 	  function listCiphers () {
 	    return Object.keys(modes);
 	  }
@@ -73086,15 +72552,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 167 */
+/* 152 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(Buffer) {var aes = __webpack_require__(168);
-	var Transform = __webpack_require__(169);
-	var inherits = __webpack_require__(172);
-	var modes = __webpack_require__(192);
-	var ebtk = __webpack_require__(193);
-	var StreamCipher = __webpack_require__(194);
+	/* WEBPACK VAR INJECTION */(function(Buffer) {var aes = __webpack_require__(153);
+	var Transform = __webpack_require__(154);
+	var inherits = __webpack_require__(157);
+	var modes = __webpack_require__(177);
+	var ebtk = __webpack_require__(178);
+	var StreamCipher = __webpack_require__(179);
 	inherits(Cipher, Transform);
 	function Cipher(mode, key, iv) {
 	  if (!(this instanceof Cipher)) {
@@ -73155,11 +72621,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return out;
 	};
 	var modelist = {
-	  ECB: __webpack_require__(195),
-	  CBC: __webpack_require__(196),
-	  CFB: __webpack_require__(198),
-	  OFB: __webpack_require__(199),
-	  CTR: __webpack_require__(200)
+	  ECB: __webpack_require__(180),
+	  CBC: __webpack_require__(181),
+	  CFB: __webpack_require__(183),
+	  OFB: __webpack_require__(184),
+	  CTR: __webpack_require__(185)
 	};
 	module.exports = function (crypto) {
 	  function createCipheriv(suite, password, iv) {
@@ -73198,10 +72664,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 	};
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(145).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(130).Buffer))
 
 /***/ },
-/* 168 */
+/* 153 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {var uint_max = Math.pow(2, 32);
@@ -73400,14 +72866,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	  exports.AES = AES;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(145).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(130).Buffer))
 
 /***/ },
-/* 169 */
+/* 154 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(Buffer) {var Transform = __webpack_require__(170).Transform;
-	var inherits = __webpack_require__(172);
+	/* WEBPACK VAR INJECTION */(function(Buffer) {var Transform = __webpack_require__(155).Transform;
+	var inherits = __webpack_require__(157);
 
 	module.exports = CipherBase;
 	inherits(CipherBase, Transform);
@@ -73438,10 +72904,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	  return outData;
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(145).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(130).Buffer))
 
 /***/ },
-/* 170 */
+/* 155 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -73467,15 +72933,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = Stream;
 
-	var EE = __webpack_require__(171).EventEmitter;
-	var inherits = __webpack_require__(172);
+	var EE = __webpack_require__(156).EventEmitter;
+	var inherits = __webpack_require__(157);
 
 	inherits(Stream, EE);
-	Stream.Readable = __webpack_require__(173);
-	Stream.Writable = __webpack_require__(188);
-	Stream.Duplex = __webpack_require__(189);
-	Stream.Transform = __webpack_require__(190);
-	Stream.PassThrough = __webpack_require__(191);
+	Stream.Readable = __webpack_require__(158);
+	Stream.Writable = __webpack_require__(173);
+	Stream.Duplex = __webpack_require__(174);
+	Stream.Transform = __webpack_require__(175);
+	Stream.PassThrough = __webpack_require__(176);
 
 	// Backwards-compat with node 0.4.x
 	Stream.Stream = Stream;
@@ -73574,7 +73040,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 171 */
+/* 156 */
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -73882,7 +73348,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 172 */
+/* 157 */
 /***/ function(module, exports) {
 
 	if (typeof Object.create === 'function') {
@@ -73911,21 +73377,21 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 173 */
+/* 158 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {var Stream = (function (){
 	  try {
-	    return __webpack_require__(170); // hack to fix a circular dependency issue when used with browserify
+	    return __webpack_require__(155); // hack to fix a circular dependency issue when used with browserify
 	  } catch(_){}
 	}());
-	exports = module.exports = __webpack_require__(174);
+	exports = module.exports = __webpack_require__(159);
 	exports.Stream = Stream || exports;
 	exports.Readable = exports;
-	exports.Writable = __webpack_require__(181);
-	exports.Duplex = __webpack_require__(180);
-	exports.Transform = __webpack_require__(186);
-	exports.PassThrough = __webpack_require__(187);
+	exports.Writable = __webpack_require__(166);
+	exports.Duplex = __webpack_require__(165);
+	exports.Transform = __webpack_require__(171);
+	exports.PassThrough = __webpack_require__(172);
 
 	if (!process.browser && process.env.READABLE_STREAM === 'disable' && Stream) {
 	  module.exports = Stream;
@@ -73934,7 +73400,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
-/* 174 */
+/* 159 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -73942,11 +73408,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Readable;
 
 	/*<replacement>*/
-	var processNextTick = __webpack_require__(175);
+	var processNextTick = __webpack_require__(160);
 	/*</replacement>*/
 
 	/*<replacement>*/
-	var isArray = __webpack_require__(148);
+	var isArray = __webpack_require__(133);
 	/*</replacement>*/
 
 	/*<replacement>*/
@@ -73956,7 +73422,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Readable.ReadableState = ReadableState;
 
 	/*<replacement>*/
-	var EE = __webpack_require__(171).EventEmitter;
+	var EE = __webpack_require__(156).EventEmitter;
 
 	var EElistenerCount = function (emitter, type) {
 	  return emitter.listeners(type).length;
@@ -73967,25 +73433,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Stream;
 	(function () {
 	  try {
-	    Stream = __webpack_require__(170);
+	    Stream = __webpack_require__(155);
 	  } catch (_) {} finally {
-	    if (!Stream) Stream = __webpack_require__(171).EventEmitter;
+	    if (!Stream) Stream = __webpack_require__(156).EventEmitter;
 	  }
 	})();
 	/*</replacement>*/
 
-	var Buffer = __webpack_require__(145).Buffer;
+	var Buffer = __webpack_require__(130).Buffer;
 	/*<replacement>*/
-	var bufferShim = __webpack_require__(176);
+	var bufferShim = __webpack_require__(161);
 	/*</replacement>*/
 
 	/*<replacement>*/
-	var util = __webpack_require__(177);
-	util.inherits = __webpack_require__(172);
+	var util = __webpack_require__(162);
+	util.inherits = __webpack_require__(157);
 	/*</replacement>*/
 
 	/*<replacement>*/
-	var debugUtil = __webpack_require__(178);
+	var debugUtil = __webpack_require__(163);
 	var debug = void 0;
 	if (debugUtil && debugUtil.debuglog) {
 	  debug = debugUtil.debuglog('stream');
@@ -73994,7 +73460,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 	/*</replacement>*/
 
-	var BufferList = __webpack_require__(179);
+	var BufferList = __webpack_require__(164);
 	var StringDecoder;
 
 	util.inherits(Readable, Stream);
@@ -74014,7 +73480,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	function ReadableState(options, stream) {
-	  Duplex = Duplex || __webpack_require__(180);
+	  Duplex = Duplex || __webpack_require__(165);
 
 	  options = options || {};
 
@@ -74076,14 +73542,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  this.decoder = null;
 	  this.encoding = null;
 	  if (options.encoding) {
-	    if (!StringDecoder) StringDecoder = __webpack_require__(185).StringDecoder;
+	    if (!StringDecoder) StringDecoder = __webpack_require__(170).StringDecoder;
 	    this.decoder = new StringDecoder(options.encoding);
 	    this.encoding = options.encoding;
 	  }
 	}
 
 	function Readable(options) {
-	  Duplex = Duplex || __webpack_require__(180);
+	  Duplex = Duplex || __webpack_require__(165);
 
 	  if (!(this instanceof Readable)) return new Readable(options);
 
@@ -74186,7 +73652,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	// backwards compatibility.
 	Readable.prototype.setEncoding = function (enc) {
-	  if (!StringDecoder) StringDecoder = __webpack_require__(185).StringDecoder;
+	  if (!StringDecoder) StringDecoder = __webpack_require__(170).StringDecoder;
 	  this._readableState.decoder = new StringDecoder(enc);
 	  this._readableState.encoding = enc;
 	  return this;
@@ -74881,7 +74347,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
-/* 175 */
+/* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -74931,12 +74397,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
-/* 176 */
+/* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
 
-	var buffer = __webpack_require__(145);
+	var buffer = __webpack_require__(130);
 	var Buffer = buffer.Buffer;
 	var SlowBuffer = buffer.SlowBuffer;
 	var MAX_LEN = buffer.kMaxLength || 2147483647;
@@ -75046,7 +74512,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 177 */
+/* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {// Copyright Joyent, Inc. and other Node contributors.
@@ -75157,23 +74623,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return Object.prototype.toString.call(o);
 	}
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(145).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(130).Buffer))
 
 /***/ },
-/* 178 */
+/* 163 */
 /***/ function(module, exports) {
 
 	/* (ignored) */
 
 /***/ },
-/* 179 */
+/* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Buffer = __webpack_require__(145).Buffer;
+	var Buffer = __webpack_require__(130).Buffer;
 	/*<replacement>*/
-	var bufferShim = __webpack_require__(176);
+	var bufferShim = __webpack_require__(161);
 	/*</replacement>*/
 
 	module.exports = BufferList;
@@ -75235,7 +74701,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 180 */
+/* 165 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// a duplex stream is just a stream that is both readable and writable.
@@ -75258,16 +74724,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Duplex;
 
 	/*<replacement>*/
-	var processNextTick = __webpack_require__(175);
+	var processNextTick = __webpack_require__(160);
 	/*</replacement>*/
 
 	/*<replacement>*/
-	var util = __webpack_require__(177);
-	util.inherits = __webpack_require__(172);
+	var util = __webpack_require__(162);
+	util.inherits = __webpack_require__(157);
 	/*</replacement>*/
 
-	var Readable = __webpack_require__(174);
-	var Writable = __webpack_require__(181);
+	var Readable = __webpack_require__(159);
+	var Writable = __webpack_require__(166);
 
 	util.inherits(Duplex, Readable);
 
@@ -75315,7 +74781,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 181 */
+/* 166 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process, setImmediate) {// A bit simpler than readable streams.
@@ -75327,7 +74793,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Writable;
 
 	/*<replacement>*/
-	var processNextTick = __webpack_require__(175);
+	var processNextTick = __webpack_require__(160);
 	/*</replacement>*/
 
 	/*<replacement>*/
@@ -75341,13 +74807,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	Writable.WritableState = WritableState;
 
 	/*<replacement>*/
-	var util = __webpack_require__(177);
-	util.inherits = __webpack_require__(172);
+	var util = __webpack_require__(162);
+	util.inherits = __webpack_require__(157);
 	/*</replacement>*/
 
 	/*<replacement>*/
 	var internalUtil = {
-	  deprecate: __webpack_require__(184)
+	  deprecate: __webpack_require__(169)
 	};
 	/*</replacement>*/
 
@@ -75355,16 +74821,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Stream;
 	(function () {
 	  try {
-	    Stream = __webpack_require__(170);
+	    Stream = __webpack_require__(155);
 	  } catch (_) {} finally {
-	    if (!Stream) Stream = __webpack_require__(171).EventEmitter;
+	    if (!Stream) Stream = __webpack_require__(156).EventEmitter;
 	  }
 	})();
 	/*</replacement>*/
 
-	var Buffer = __webpack_require__(145).Buffer;
+	var Buffer = __webpack_require__(130).Buffer;
 	/*<replacement>*/
-	var bufferShim = __webpack_require__(176);
+	var bufferShim = __webpack_require__(161);
 	/*</replacement>*/
 
 	util.inherits(Writable, Stream);
@@ -75379,7 +74845,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	function WritableState(options, stream) {
-	  Duplex = Duplex || __webpack_require__(180);
+	  Duplex = Duplex || __webpack_require__(165);
 
 	  options = options || {};
 
@@ -75513,7 +74979,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	function Writable(options) {
-	  Duplex = Duplex || __webpack_require__(180);
+	  Duplex = Duplex || __webpack_require__(165);
 
 	  // Writable ctor is applied to Duplexes, too.
 	  // `realHasInstance` is necessary because using plain `instanceof`
@@ -75872,10 +75338,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  };
 	}
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(182).setImmediate))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(167).setImmediate))
 
 /***/ },
-/* 182 */
+/* 167 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var apply = Function.prototype.apply;
@@ -75928,13 +75394,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	// setimmediate attaches itself to the global object
-	__webpack_require__(183);
+	__webpack_require__(168);
 	exports.setImmediate = setImmediate;
 	exports.clearImmediate = clearImmediate;
 
 
 /***/ },
-/* 183 */
+/* 168 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -76127,7 +75593,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(2)))
 
 /***/ },
-/* 184 */
+/* 169 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {
@@ -76201,7 +75667,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 185 */
+/* 170 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -76225,7 +75691,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 	// USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-	var Buffer = __webpack_require__(145).Buffer;
+	var Buffer = __webpack_require__(130).Buffer;
 
 	var isBufferEncoding = Buffer.isEncoding
 	  || function(encoding) {
@@ -76428,7 +75894,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 186 */
+/* 171 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// a transform stream is a readable/writable stream where you do
@@ -76477,11 +75943,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = Transform;
 
-	var Duplex = __webpack_require__(180);
+	var Duplex = __webpack_require__(165);
 
 	/*<replacement>*/
-	var util = __webpack_require__(177);
-	util.inherits = __webpack_require__(172);
+	var util = __webpack_require__(162);
+	util.inherits = __webpack_require__(157);
 	/*</replacement>*/
 
 	util.inherits(Transform, Duplex);
@@ -76615,7 +76081,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 187 */
+/* 172 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// a passthrough stream.
@@ -76626,11 +76092,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = PassThrough;
 
-	var Transform = __webpack_require__(186);
+	var Transform = __webpack_require__(171);
 
 	/*<replacement>*/
-	var util = __webpack_require__(177);
-	util.inherits = __webpack_require__(172);
+	var util = __webpack_require__(162);
+	util.inherits = __webpack_require__(157);
 	/*</replacement>*/
 
 	util.inherits(PassThrough, Transform);
@@ -76646,35 +76112,35 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 188 */
+/* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(181)
+	module.exports = __webpack_require__(166)
 
 
 /***/ },
-/* 189 */
+/* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(180)
+	module.exports = __webpack_require__(165)
 
 
 /***/ },
-/* 190 */
+/* 175 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(186)
+	module.exports = __webpack_require__(171)
 
 
 /***/ },
-/* 191 */
+/* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(187)
+	module.exports = __webpack_require__(172)
 
 
 /***/ },
-/* 192 */
+/* 177 */
 /***/ function(module, exports) {
 
 	exports['aes-128-ecb'] = {
@@ -76787,7 +76253,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 193 */
+/* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {
@@ -76847,15 +76313,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    iv: iv
 	  };
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(145).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(130).Buffer))
 
 /***/ },
-/* 194 */
+/* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(Buffer) {var aes = __webpack_require__(168);
-	var Transform = __webpack_require__(169);
-	var inherits = __webpack_require__(172);
+	/* WEBPACK VAR INJECTION */(function(Buffer) {var aes = __webpack_require__(153);
+	var Transform = __webpack_require__(154);
+	var inherits = __webpack_require__(157);
 
 	inherits(StreamCipher, Transform);
 	module.exports = StreamCipher;
@@ -76879,10 +76345,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  this._cipher.scrub();
 	  next();
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(145).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(130).Buffer))
 
 /***/ },
-/* 195 */
+/* 180 */
 /***/ function(module, exports) {
 
 	exports.encrypt = function (self, block) {
@@ -76893,10 +76359,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 196 */
+/* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var xor = __webpack_require__(197);
+	var xor = __webpack_require__(182);
 	exports.encrypt = function (self, block) {
 	  var data = xor(block, self._prev);
 	  self._prev = self._cipher.encryptBlock(data);
@@ -76910,7 +76376,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 197 */
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {module.exports = xor;
@@ -76923,13 +76389,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	  return out;
 	}
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(145).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(130).Buffer))
 
 /***/ },
-/* 198 */
+/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(Buffer) {var xor = __webpack_require__(197);
+	/* WEBPACK VAR INJECTION */(function(Buffer) {var xor = __webpack_require__(182);
 	exports.encrypt = function (self, data, decrypt) {
 	  var out = new Buffer('');
 	  var len;
@@ -76956,13 +76422,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  self._prev = Buffer.concat([self._prev, decrypt?data:out]);
 	  return out;
 	}
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(145).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(130).Buffer))
 
 /***/ },
-/* 199 */
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(Buffer) {var xor = __webpack_require__(197);
+	/* WEBPACK VAR INJECTION */(function(Buffer) {var xor = __webpack_require__(182);
 	function getBlock(self) {
 	  self._prev = self._cipher.encryptBlock(self._prev);
 	  return self._prev;
@@ -76975,13 +76441,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  self._cache = self._cache.slice(chunk.length);
 	  return xor(chunk, pad);
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(145).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(130).Buffer))
 
 /***/ },
-/* 200 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(Buffer) {var xor = __webpack_require__(197);
+	/* WEBPACK VAR INJECTION */(function(Buffer) {var xor = __webpack_require__(182);
 	function getBlock(self) {
 	  var out = self._cipher.encryptBlock(self._prev);
 	  incr32(self._prev);
@@ -77009,18 +76475,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }
 	}
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(145).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(130).Buffer))
 
 /***/ },
-/* 201 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(Buffer) {var aes = __webpack_require__(168);
-	var Transform = __webpack_require__(169);
-	var inherits = __webpack_require__(172);
-	var modes = __webpack_require__(192);
-	var StreamCipher = __webpack_require__(194);
-	var ebtk = __webpack_require__(193);
+	/* WEBPACK VAR INJECTION */(function(Buffer) {var aes = __webpack_require__(153);
+	var Transform = __webpack_require__(154);
+	var inherits = __webpack_require__(157);
+	var modes = __webpack_require__(177);
+	var StreamCipher = __webpack_require__(179);
+	var ebtk = __webpack_require__(178);
 
 	inherits(Decipher, Transform);
 	function Decipher(mode, key, iv) {
@@ -77088,11 +76554,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	var modelist = {
-	  ECB: __webpack_require__(195),
-	  CBC: __webpack_require__(196),
-	  CFB: __webpack_require__(198),
-	  OFB: __webpack_require__(199),
-	  CTR: __webpack_require__(200)
+	  ECB: __webpack_require__(180),
+	  CBC: __webpack_require__(181),
+	  CFB: __webpack_require__(183),
+	  OFB: __webpack_require__(184),
+	  CTR: __webpack_require__(185)
 	};
 
 	module.exports = function (crypto) {
@@ -77133,10 +76599,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 	};
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(145).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(130).Buffer))
 
 /***/ },
-/* 202 */
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -77147,19 +76613,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.newInstance = undefined;
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
-	var _DataArray = __webpack_require__(119);
+	var _DataArray = __webpack_require__(104);
 
 	var _DataArray2 = _interopRequireDefault(_DataArray);
 
-	var _Constants = __webpack_require__(120);
+	var _Constants = __webpack_require__(105);
 
-	var _Constants2 = __webpack_require__(203);
+	var _Constants2 = __webpack_require__(188);
 
-	var _Constants3 = __webpack_require__(204);
+	var _Constants3 = __webpack_require__(189);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -77686,7 +77152,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Object.assign({ newInstance: newInstance, extend: extend });
 
 /***/ },
-/* 203 */
+/* 188 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -77713,7 +77179,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 204 */
+/* 189 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -77756,7 +77222,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 205 */
+/* 190 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -77784,7 +77250,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 206 */
+/* 191 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -77850,7 +77316,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 207 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -77860,22 +77326,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (false) {
 	  module.hot.accept()
 	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-4e788bc3", module.exports)
+	     require("vue-hot-reload-api").rerender("data-v-3ff19db2", module.exports)
 	  }
 	}
 
 /***/ },
-/* 208 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_exports__, __vue_options__
 	var __vue_styles__ = {}
 
 	/* script */
-	__vue_exports__ = __webpack_require__(209)
+	__vue_exports__ = __webpack_require__(194)
 
 	/* template */
-	var __vue_template__ = __webpack_require__(210)
+	var __vue_template__ = __webpack_require__(195)
 	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
 	if (
 	  typeof __vue_exports__.default === "object" ||
@@ -77887,7 +77353,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/graphics/VtkEllipsoidParticles.vue"
+	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/src/graphics/VtkEllipsoidParticles.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 
@@ -77898,9 +77364,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!hotAPI.compatible) return
 	  module.hot.accept()
 	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-63565760", __vue_options__)
+	    hotAPI.createRecord("data-v-4710facf", __vue_options__)
 	  } else {
-	    hotAPI.reload("data-v-63565760", __vue_options__)
+	    hotAPI.reload("data-v-4710facf", __vue_options__)
 	  }
 	})()}
 	if (__vue_options__.functional) {console.error("[vue-loader] VtkEllipsoidParticles.vue: functional components are not supported and should be defined in plain js files using render functions.")}
@@ -77910,90 +77376,91 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 209 */
+/* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
 	const Vue = __webpack_require__(1);
-	const av_ts_1 = __webpack_require__(26);
-	const vtkActor = __webpack_require__(97);
-	const vtkSphereSource = __webpack_require__(116);
-	const vtkMapper = __webpack_require__(127);
-	const Store_1 = __webpack_require__(3);
-	let VtkEllipsoidParticles = class VtkEllipsoidParticles extends Vue {
-	    created() {
-	        var self = this;
-	        Store_1.default.watch(function () {
-	            return Store_1.default.getters.isParticleReadComplete;
-	        }, function () {
-	            if (Store_1.default.getters.isParticleReadComplete)
-	                self.createVTKParticles();
-	        });
-	    }
-	    mounted() {
-	    }
+
+	const vtkActor = __webpack_require__(82);
+	const vtkSphereSource = __webpack_require__(101);
+	const vtkMapper = __webpack_require__(112);
+
+	const Store = __webpack_require__(3).default;
+
+	let VtkEllipsoidParticles = Vue.extend({
+
+	  name: 'VtkEllipsoidParticles',
+
+	  created() {
+	    var self = this;
+	    Store.watch(function () {
+	      return Store.getters.isParticleReadComplete;
+	    }, function () {
+	      if (Store.getters.isParticleReadComplete) self.createVTKParticles();
+	    });
+	  },
+
+	  mounted() {},
+
+	  methods: {
+
 	    createVTKParticles() {
-	        console.log("Called create VTK particles");
-	        // Get the particle data
-	        let particles = Store_1.default.getters.particleData;
-	        // Extract the radius and center
-	        let radii = particles["Radius"];
-	        let centers = particles["Position"];
-	        // Loop through particles
-	        radii.map(function (radius, index) {
-	            // Create the _mapper
-	            console.log("Sphere mapper created");
-	            const mapper = vtkMapper.newInstance();
-	            // Create the actor
-	            console.log("Sphere actor created");
-	            const actor = vtkActor.newInstance();
-	            actor.getProperty().setEdgeVisibility(true);
-	            actor.getProperty().setEdgeColor(1.0, 0.5, 0.5);
-	            // Create the source
-	            console.log("Sphere source created");
-	            const sphere = vtkSphereSource.newInstance();
-	            sphere.setPhiResolution(10);
-	            sphere.setThetaResolution(10);
-	            // Get the radius ratios
-	            let ratio = [1.0, radius[1] / radius[0], radius[2] / radius[0]];
-	            sphere.setRadius(radius[0]);
-	            let center = centers[index];
-	            sphere.setCenter(center[0], center[1], center[2]);
-	            console.log("Radius = " + sphere.getRadius() + " Center = " + sphere.getCenter());
-	            // Set up the connections
-	            mapper.setInputConnection(sphere.getOutputPort());
-	            actor.setMapper(mapper);
-	            // Save the data
-	            Store_1.default.commit('ADD_VTK_ACTOR', actor);
-	            Store_1.default.commit('ADD_VTK_SOURCE', sphere);
-	            Store_1.default.commit('ADD_VTK_MAPPER', mapper);
-	        });
-	        Store_1.default.commit('VTK_ACTORS_CREATED', true);
+
+	      console.log("Called create VTK particles");
+
+	      // Get the particle data
+	      let particles = Store.getters.particleData;
+
+	      // Extract the radius and center
+	      let radii = particles["Radius"];
+	      let centers = particles["Position"];
+
+	      // Loop through particles
+	      radii.map(function (radius, index) {
+
+	        // Create the _mapper
+	        console.log("Sphere mapper created");
+	        const mapper = vtkMapper.newInstance();
+
+	        // Create the actor
+	        console.log("Sphere actor created");
+	        const actor = vtkActor.newInstance();
+	        actor.getProperty().setEdgeVisibility(true);
+	        actor.getProperty().setEdgeColor(1.0, 0.5, 0.5);
+
+	        // Create the source
+	        console.log("Sphere source created");
+	        const sphere = vtkSphereSource.newInstance();
+	        sphere.setPhiResolution(10);
+	        sphere.setThetaResolution(10);
+
+	        // Get the radius ratios
+	        let ratio = [1.0, radius[1] / radius[0], radius[2] / radius[0]];
+
+	        sphere.setRadius(radius[0]);
+	        let center = centers[index];
+	        sphere.setCenter(center[0], center[1], center[2]);
+	        console.log("Radius = " + sphere.getRadius() + " Center = " + sphere.getCenter());
+
+	        // Set up the connections
+	        mapper.setInputConnection(sphere.getOutputPort());
+	        actor.setMapper(mapper);
+
+	        // Save the data
+	        Store.commit('ADD_VTK_ACTOR', actor);
+	        Store.commit('ADD_VTK_SOURCE', sphere);
+	        Store.commit('ADD_VTK_MAPPER', mapper);
+	      });
+
+	      Store.commit('VTK_ACTORS_CREATED', true);
 	    }
-	};
-	__decorate([
-	    av_ts_1.Lifecycle
-	], VtkEllipsoidParticles.prototype, "created", null);
-	__decorate([
-	    av_ts_1.Lifecycle
-	], VtkEllipsoidParticles.prototype, "mounted", null);
-	VtkEllipsoidParticles = __decorate([
-	    av_ts_1.Component({
-	        name: 'VtkEllipsoidParticles'
-	    })
-	], VtkEllipsoidParticles);
-	Object.defineProperty(exports, "__esModule", { value: true });
+	  }
+	});
+
 	exports.default = VtkEllipsoidParticles;
 
-
 /***/ },
-/* 210 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -78003,22 +77470,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (false) {
 	  module.hot.accept()
 	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-63565760", module.exports)
+	     require("vue-hot-reload-api").rerender("data-v-4710facf", module.exports)
 	  }
 	}
 
 /***/ },
-/* 211 */
+/* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_exports__, __vue_options__
 	var __vue_styles__ = {}
 
 	/* script */
-	__vue_exports__ = __webpack_require__(212)
+	__vue_exports__ = __webpack_require__(197)
 
 	/* template */
-	var __vue_template__ = __webpack_require__(255)
+	var __vue_template__ = __webpack_require__(240)
 	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
 	if (
 	  typeof __vue_exports__.default === "object" ||
@@ -78030,7 +77497,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/vaango_ui/graphics/VtkRenderer.vue"
+	__vue_options__.__file = "/home/banerjee/Github/VaangoUI/src/graphics/VtkRenderer.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 
@@ -78041,9 +77508,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!hotAPI.compatible) return
 	  module.hot.accept()
 	  if (!module.hot.data) {
-	    hotAPI.createRecord("data-v-11377a39", __vue_options__)
+	    hotAPI.createRecord("data-v-ee986730", __vue_options__)
 	  } else {
-	    hotAPI.reload("data-v-11377a39", __vue_options__)
+	    hotAPI.reload("data-v-ee986730", __vue_options__)
 	  }
 	})()}
 	if (__vue_options__.functional) {console.error("[vue-loader] VtkRenderer.vue: functional components are not supported and should be defined in plain js files using render functions.")}
@@ -78053,198 +77520,196 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 212 */
+/* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
 	/* global requestAnimationFrame */
-	/* eslint-disable no-duplicate-imports */
+	/* eslint-disable no-duplicate-consts */
 	const Vue = __webpack_require__(1);
-	const av_ts_1 = __webpack_require__(26);
-	const Store_1 = __webpack_require__(3);
-	const vtkRenderWindow = __webpack_require__(213);
-	const vtkRenderer = __webpack_require__(214);
-	const vtkOpenGLRenderWindow = __webpack_require__(218);
-	const vtkRenderWindowInteractor = __webpack_require__(250);
-	//import * as vtkFullScreenRenderWindow  from 'vtk.js/Sources/Rendering/Misc/FullScreenRenderWindow';
-	//import * as vtk from '../../assets/libs/vtk';
-	//import vtk = require('vtk.js');
-	//import * as vtk_dummy from 'vtk.js';
-	//var vtk_dummy = require('vtk.js');
-	let VtkRenderer = class VtkRenderer extends Vue {
-	    //import * as vtkFullScreenRenderWindow  from 'vtk.js/Sources/Rendering/Misc/FullScreenRenderWindow';
-	    //import * as vtk from '../../assets/libs/vtk';
-	    //import vtk = require('vtk.js');
-	    //import * as vtk_dummy from 'vtk.js';
-	    //var vtk_dummy = require('vtk.js');
-	    constructor() {
-	        super(...arguments);
-	        this.size = av_ts_1.p({
-	            type: Object,
-	            required: true
-	        });
-	        this.renderWindow = av_ts_1.p({
-	            type: vtkRenderWindow
-	        });
-	        this.renderer = av_ts_1.p({
-	            type: vtkRenderer
-	        });
-	        this.openGLRenderWindow = av_ts_1.p({
-	            type: vtkOpenGLRenderWindow
-	        });
-	        this.interactor = av_ts_1.p({
-	            type: vtkRenderWindowInteractor
-	        });
+
+	const vtkRenderWindow = __webpack_require__(198);
+	const vtkRenderer = __webpack_require__(199);
+	const vtkOpenGLRenderWindow = __webpack_require__(203);
+	const vtkRenderWindowInteractor = __webpack_require__(235);
+	const vtkTexture = __webpack_require__(221);
+
+	const Store = __webpack_require__(3).default;
+
+	let VtkRenderer = Vue.extend({
+	  name: 'VtkRenderer',
+
+	  props: {
+	    size: {
+	      type: Object, // { w, h }
+	      required: true
+	    },
+
+	    renderWindow: {
+	      type: vtkRenderWindow
+	    },
+
+	    renderer: {
+	      type: vtkRenderer
+	    },
+
+	    openGLRenderWindow: {
+	      type: vtkOpenGLRenderWindow
+	    },
+
+	    interactor: {
+	      type: vtkRenderWindowInteractor
 	    }
-	    created() {
-	        this._renderWindow = this.renderWindow;
-	        this._renderer = this.renderer;
-	        this._openGLRenderWindow = this.openGLRenderWindow;
-	        this._interactor = this.interactor;
-	        this._pointer = { x: 0, y: 0 };
-	        this._pointerOld = { x: 0, y: 0 };
-	        // Create VTK render window and renderer
-	        this._renderWindow = vtkRenderWindow.newInstance();
-	        this._renderer = vtkRenderer.newInstance();
-	        this._renderWindow.addRenderer(this._renderer);
-	        this._renderer.setBackground(0.32, 0.34, 0.43);
-	        // Create OpenGL renderwindow
-	        this._openGLRenderWindow = vtkOpenGLRenderWindow.newInstance();
-	        this._renderWindow.addView(this._openGLRenderWindow);
-	        // Create interactor
-	        this._interactor = vtkRenderWindowInteractor.newInstance();
-	        // Add watch to check for data updates
-	        var self = this;
-	        Store_1.default.watch(function () { return Store_1.default.getters.areVTKActorsCreated; }, function () {
-	            console.log("areVTKActorsCreated? " + Store_1.default.getters.areVTKActorsCreated);
-	            if (Store_1.default.getters.areVTKActorsCreated) {
-	                self.addActors();
-	                self._renderer.resetCamera();
-	                self._renderWindow.render();
-	            }
+	  },
+
+	  data() {
+	    return {
+	      _pointer: {
+	        x: 0,
+	        y: 0
+	      },
+	      _pointerOld: {
+	        x: 0,
+	        y: 0
+	      },
+	      _renderWindow: null,
+	      _renderer: null,
+	      _openGLRenderWindow: null,
+	      _interactor: null
+	    };
+	  },
+
+	  created() {
+	    this._renderWindow = this.renderWindow;
+	    this._renderer = this.renderer;
+	    this._openGLRenderWindow = this.openGLRenderWindow;
+	    this._interactor = this.interactor;
+
+	    this._pointer = { x: 0, y: 0 };
+	    this._pointerOld = { x: 0, y: 0 };
+
+	    // Create VTK render window and renderer
+	    this._renderWindow = vtkRenderWindow.newInstance();
+	    this._renderer = vtkRenderer.newInstance();
+	    this._renderWindow.addRenderer(this._renderer);
+	    this._renderer.setBackground(0.32, 0.34, 0.43);
+
+	    // Create OpenGL renderwindow
+	    this._openGLRenderWindow = vtkOpenGLRenderWindow.newInstance();
+	    this._renderWindow.addView(this._openGLRenderWindow);
+
+	    // Create interactor
+	    this._interactor = vtkRenderWindowInteractor.newInstance();
+
+	    // Add watch to check for data updates
+	    var self = this;
+	    Store.watch(function () {
+	      return Store.getters.areVTKActorsCreated;
+	    }, function () {
+	      console.log("areVTKActorsCreated? " + Store.getters.areVTKActorsCreated);
+	      if (Store.getters.areVTKActorsCreated) {
+	        self.addActors();
+	        self._renderer.resetCamera();
+	        self._renderWindow.render();
+	      }
+	    });
+	  },
+
+	  beforeMount() {},
+
+	  mounted() {
+
+	    console.log("Mounting VTK renderer");
+
+	    console.log(this.$refs);
+	    console.log(this._renderWindow.domElement);
+	    if (this.$refs["vtk-graphics-container"]) {
+	      console.log("VTK Graphics container created");
+	      let el = this.$refs["vtk-graphics-container"];
+	      this._openGLRenderWindow.setContainer(el);
+
+	      // Set the size of the window
+	      let w = this.size.w;
+	      let h = this.size.h;
+	      this._openGLRenderWindow.setSize(w, h);
+
+	      // Add the actors from the store
+	      this.addActors();
+
+	      // Interactor
+	      this._interactor.setView(this._openGLRenderWindow);
+	      this._interactor.initialize();
+	      this._interactor.bindEvents(el);
+
+	      // Texture image
+	      /*
+	      var self = this;
+	      const img = new Image();
+	      img.src = `./test.png`;
+	      img.onload = function textureLoaded() {
+	        const texture = vtkTexture.newInstance();
+	        texture.setInterpolate(true);
+	        texture.setImage(img);
+	        let actors  = Store.getters.actors;
+	        actors.map(function(actor : any){
+	          actor.addTexture(texture);
 	        });
+	        self._renderer.resetCamera();
+	        self._renderWindow.render();
+	      };
+	      */
+
+	      this._renderWindow.render();
 	    }
-	    beforeMount() {
-	    }
-	    mounted() {
-	        console.log("Mounting VTK renderer");
-	        console.log(this.$refs);
-	        console.log(this._renderWindow.domElement);
-	        if ((this.$refs)["vtk-graphics-container"]) {
-	            console.log("VTK Graphics container created");
-	            let el = (this.$refs)["vtk-graphics-container"];
-	            this._openGLRenderWindow.setContainer(el);
-	            // Set the size of the window
-	            let w = this.size.w;
-	            let h = this.size.h;
-	            this._openGLRenderWindow.setSize(w, h);
-	            // Add the actors from the store
-	            this.addActors();
-	            // Interactor
-	            this._interactor.setView(this._openGLRenderWindow);
-	            this._interactor.initialize();
-	            this._interactor.bindEvents(el);
-	            // Texture image
-	            /*
-	            var self = this;
-	            const img = new Image();
-	            img.src = `./test.png`;
-	            img.onload = function textureLoaded() {
-	              const texture = vtkTexture.newInstance();
-	              texture.setInterpolate(true);
-	              texture.setImage(img);
-	              let actors  = Store.getters.actors;
-	              actors.map(function(actor : any){
-	                actor.addTexture(texture);
-	              });
-	              self._renderer.resetCamera();
-	              self._renderWindow.render();
-	            };
-	            */
-	            this._renderWindow.render();
-	        }
-	    }
-	    // It's good to clean up event listeners before
-	    // http://rc.vuejs.org/guide/migration.html#ready-deprecated
-	    beforeDestroy() {
-	    }
+	  },
+
+	  // It's good to clean up event listeners before
+	  // http://rc.vuejs.org/guide/migration.html#ready-deprecated
+	  beforeDestroy() {},
+
+	  methods: {
 	    // Get actors from the store and add to the scene
 	    addActors() {
-	        var self = this;
-	        let actors = Store_1.default.getters.actors;
-	        actors.map(function (actor, index) {
-	            console.log("Adding actor " + index + " to renderer ");
-	            self._renderer.addActor(actor);
-	        });
-	    }
+	      var self = this;
+	      let actors = Store.getters.actors;
+	      actors.map(function (actor, index) {
+	        console.log("Adding actor " + index + " to renderer ");
+	        self._renderer.addActor(actor);
+	      });
+	    },
+
 	    getMousePosition(x, y) {
-	        debugger;
-	        let state = this._renderWindow.getState();
-	        let rect = state.canvas.getBoundingClientRect();
-	        return [(x - rect.left) / rect.width, (y - rect.top) / rect.height];
-	    }
+	      debugger;
+	      let state = this._renderWindow.getState();
+	      let rect = state.canvas.getBoundingClientRect();
+	      return [(x - rect.left) / rect.width, (y - rect.top) / rect.height];
+	    },
+
 	    zoomIn(e) {
-	        // Get the actors and sources
-	        let actors = Store_1.default.getters.actors;
-	        let sources = Store_1.default.getters.sources;
-	        // Print the actors
-	        var self = this;
-	        actors.map(function (actor, index) {
-	            // console.log(actor.getMapper());
-	        });
-	        //this._renderer.getActiveCamera().zoom(1.1);
-	        this._renderWindow.render();
-	    }
+	      // Get the actors and sources
+	      let actors = Store.getters.actors;
+	      let sources = Store.getters.sources;
+
+	      // Print the actors
+	      var self = this;
+	      actors.map(function (actor, index) {
+	        // console.log(actor.getMapper());
+	      });
+	      //this._renderer.getActiveCamera().zoom(1.1);
+	      this._renderWindow.render();
+	    },
+
 	    zoomOut(e) {
-	        //console.log("key press detected");
-	        //this._renderer.getActiveCamera().zoom(0.8);
-	        //this._renderWindow.render();
+	      //console.log("key press detected");
+	      //this._renderer.getActiveCamera().zoom(0.8);
+	      //this._renderWindow.render();
 	    }
-	};
-	__decorate([
-	    av_ts_1.Prop
-	], VtkRenderer.prototype, "size", void 0);
-	__decorate([
-	    av_ts_1.Prop
-	], VtkRenderer.prototype, "renderWindow", void 0);
-	__decorate([
-	    av_ts_1.Prop
-	], VtkRenderer.prototype, "renderer", void 0);
-	__decorate([
-	    av_ts_1.Prop
-	], VtkRenderer.prototype, "openGLRenderWindow", void 0);
-	__decorate([
-	    av_ts_1.Prop
-	], VtkRenderer.prototype, "interactor", void 0);
-	__decorate([
-	    av_ts_1.Lifecycle
-	], VtkRenderer.prototype, "created", null);
-	__decorate([
-	    av_ts_1.Lifecycle
-	], VtkRenderer.prototype, "beforeMount", null);
-	__decorate([
-	    av_ts_1.Lifecycle
-	], VtkRenderer.prototype, "mounted", null);
-	__decorate([
-	    av_ts_1.Lifecycle
-	], VtkRenderer.prototype, "beforeDestroy", null);
-	VtkRenderer = __decorate([
-	    av_ts_1.Component({
-	        name: 'VtkRenderer'
-	    })
-	], VtkRenderer);
-	Object.defineProperty(exports, "__esModule", { value: true });
+	  }
+	});
+
 	exports.default = VtkRenderer;
 
-
 /***/ },
-/* 213 */
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -78256,7 +77721,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.vtkRenderWindow = vtkRenderWindow;
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
@@ -78379,7 +77844,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 214 */
+/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -78390,29 +77855,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.newInstance = undefined;
 	exports.extend = extend;
 
-	var _glMatrix = __webpack_require__(98);
+	var _glMatrix = __webpack_require__(83);
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
-	var _Camera = __webpack_require__(215);
+	var _Camera = __webpack_require__(200);
 
 	var _Camera2 = _interopRequireDefault(_Camera);
 
-	var _Light = __webpack_require__(216);
+	var _Light = __webpack_require__(201);
 
 	var _Light2 = _interopRequireDefault(_Light);
 
-	var _Math = __webpack_require__(132);
+	var _Math = __webpack_require__(117);
 
 	var _Math2 = _interopRequireDefault(_Math);
 
-	var _Viewport = __webpack_require__(217);
+	var _Viewport = __webpack_require__(202);
 
 	var _Viewport2 = _interopRequireDefault(_Viewport);
 
-	var _BoundingBox = __webpack_require__(111);
+	var _BoundingBox = __webpack_require__(96);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -79009,7 +78474,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 215 */
+/* 200 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -79020,13 +78485,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.newInstance = exports.DEFAULT_VALUES = undefined;
 	exports.extend = extend;
 
-	var _glMatrix = __webpack_require__(98);
+	var _glMatrix = __webpack_require__(83);
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
-	var _Math = __webpack_require__(132);
+	var _Math = __webpack_require__(117);
 
 	var _Math2 = _interopRequireDefault(_Math);
 
@@ -79430,7 +78895,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 216 */
+/* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -79442,11 +78907,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.vtkLight = vtkLight;
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
-	var _Math = __webpack_require__(132);
+	var _Math = __webpack_require__(117);
 
 	var _Math2 = _interopRequireDefault(_Math);
 
@@ -79560,7 +79025,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend, LIGHT_TYPES: LIGHT_TYPES };
 
 /***/ },
-/* 217 */
+/* 202 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -79571,7 +79036,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.newInstance = undefined;
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
@@ -79726,7 +79191,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 218 */
+/* 203 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -79738,23 +79203,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.vtkOpenGLRenderWindow = vtkOpenGLRenderWindow;
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
-	var _ViewNodeFactory = __webpack_require__(219);
+	var _ViewNodeFactory = __webpack_require__(204);
 
 	var _ViewNodeFactory2 = _interopRequireDefault(_ViewNodeFactory);
 
-	var _ShaderCache = __webpack_require__(247);
+	var _ShaderCache = __webpack_require__(232);
 
 	var _ShaderCache2 = _interopRequireDefault(_ShaderCache);
 
-	var _ViewNode = __webpack_require__(222);
+	var _ViewNode = __webpack_require__(207);
 
 	var _ViewNode2 = _interopRequireDefault(_ViewNode);
 
-	var _TextureUnitManager = __webpack_require__(249);
+	var _TextureUnitManager = __webpack_require__(234);
 
 	var _TextureUnitManager2 = _interopRequireDefault(_TextureUnitManager);
 
@@ -80006,7 +79471,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 219 */
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -80018,55 +79483,55 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.vtkOpenGLViewNodeFactory = vtkOpenGLViewNodeFactory;
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
-	var _ViewNodeFactory = __webpack_require__(220);
+	var _ViewNodeFactory = __webpack_require__(205);
 
 	var _ViewNodeFactory2 = _interopRequireDefault(_ViewNodeFactory);
 
-	var _Actor = __webpack_require__(221);
+	var _Actor = __webpack_require__(206);
 
 	var _Actor2 = _interopRequireDefault(_Actor);
 
-	var _Actor2D = __webpack_require__(223);
+	var _Actor2D = __webpack_require__(208);
 
 	var _Actor2D2 = _interopRequireDefault(_Actor2D);
 
-	var _Camera = __webpack_require__(224);
+	var _Camera = __webpack_require__(209);
 
 	var _Camera2 = _interopRequireDefault(_Camera);
 
-	var _ImageMapper = __webpack_require__(225);
+	var _ImageMapper = __webpack_require__(210);
 
 	var _ImageMapper2 = _interopRequireDefault(_ImageMapper);
 
-	var _ImageSlice = __webpack_require__(239);
+	var _ImageSlice = __webpack_require__(224);
 
 	var _ImageSlice2 = _interopRequireDefault(_ImageSlice);
 
-	var _PolyDataMapper = __webpack_require__(240);
+	var _PolyDataMapper = __webpack_require__(225);
 
 	var _PolyDataMapper2 = _interopRequireDefault(_PolyDataMapper);
 
-	var _RenderWindow = __webpack_require__(218);
+	var _RenderWindow = __webpack_require__(203);
 
 	var _RenderWindow2 = _interopRequireDefault(_RenderWindow);
 
-	var _Renderer = __webpack_require__(242);
+	var _Renderer = __webpack_require__(227);
 
 	var _Renderer2 = _interopRequireDefault(_Renderer);
 
-	var _SphereMapper = __webpack_require__(243);
+	var _SphereMapper = __webpack_require__(228);
 
 	var _SphereMapper2 = _interopRequireDefault(_SphereMapper);
 
-	var _StickMapper = __webpack_require__(245);
+	var _StickMapper = __webpack_require__(230);
 
 	var _StickMapper2 = _interopRequireDefault(_StickMapper);
 
-	var _Texture = __webpack_require__(234);
+	var _Texture = __webpack_require__(219);
 
 	var _Texture2 = _interopRequireDefault(_Texture);
 
@@ -80123,7 +79588,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 220 */
+/* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -80134,7 +79599,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.newInstance = undefined;
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
@@ -80193,7 +79658,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 221 */
+/* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -80204,13 +79669,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.newInstance = undefined;
 	exports.extend = extend;
 
-	var _glMatrix = __webpack_require__(98);
+	var _glMatrix = __webpack_require__(83);
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
-	var _ViewNode = __webpack_require__(222);
+	var _ViewNode = __webpack_require__(207);
 
 	var _ViewNode2 = _interopRequireDefault(_ViewNode);
 
@@ -80355,7 +79820,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 222 */
+/* 207 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -80366,7 +79831,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.newInstance = exports.PASS_TYPES = undefined;
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
@@ -80533,7 +79998,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend, PASS_TYPES: PASS_TYPES };
 
 /***/ },
-/* 223 */
+/* 208 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -80544,11 +80009,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.newInstance = undefined;
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var macro = _interopRequireWildcard(_macro);
 
-	var _ViewNode = __webpack_require__(222);
+	var _ViewNode = __webpack_require__(207);
 
 	var _ViewNode2 = _interopRequireDefault(_ViewNode);
 
@@ -80661,7 +80126,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 224 */
+/* 209 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -80672,13 +80137,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.newInstance = undefined;
 	exports.extend = extend;
 
-	var _glMatrix = __webpack_require__(98);
+	var _glMatrix = __webpack_require__(83);
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var macro = _interopRequireWildcard(_macro);
 
-	var _ViewNode = __webpack_require__(222);
+	var _ViewNode = __webpack_require__(207);
 
 	var _ViewNode2 = _interopRequireDefault(_ViewNode);
 
@@ -80790,7 +80255,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 225 */
+/* 210 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -80802,45 +80267,45 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.vtkOpenGLImageMapper = vtkOpenGLImageMapper;
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
-	var _DataArray = __webpack_require__(119);
+	var _DataArray = __webpack_require__(104);
 
 	var _DataArray2 = _interopRequireDefault(_DataArray);
 
-	var _Helper = __webpack_require__(226);
+	var _Helper = __webpack_require__(211);
 
 	var _Helper2 = _interopRequireDefault(_Helper);
 
-	var _Math = __webpack_require__(132);
+	var _Math = __webpack_require__(117);
 
 	var _Math2 = _interopRequireDefault(_Math);
 
-	var _Texture = __webpack_require__(234);
+	var _Texture = __webpack_require__(219);
 
 	var _Texture2 = _interopRequireDefault(_Texture);
 
-	var _ShaderProgram = __webpack_require__(231);
+	var _ShaderProgram = __webpack_require__(216);
 
 	var _ShaderProgram2 = _interopRequireDefault(_ShaderProgram);
 
-	var _Texture3 = __webpack_require__(236);
+	var _Texture3 = __webpack_require__(221);
 
 	var _Texture4 = _interopRequireDefault(_Texture3);
 
-	var _ViewNode = __webpack_require__(222);
+	var _ViewNode = __webpack_require__(207);
 
 	var _ViewNode2 = _interopRequireDefault(_ViewNode);
 
-	var _Constants = __webpack_require__(115);
+	var _Constants = __webpack_require__(100);
 
-	var _vtkPolyDataVS = __webpack_require__(237);
+	var _vtkPolyDataVS = __webpack_require__(222);
 
 	var _vtkPolyDataVS2 = _interopRequireDefault(_vtkPolyDataVS);
 
-	var _vtkPolyDataFS = __webpack_require__(238);
+	var _vtkPolyDataFS = __webpack_require__(223);
 
 	var _vtkPolyDataFS2 = _interopRequireDefault(_vtkPolyDataFS);
 
@@ -81203,7 +80668,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 226 */
+/* 211 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -81215,19 +80680,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.vtkOpenGLHelper = vtkOpenGLHelper;
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
-	var _CellArrayBufferObject = __webpack_require__(227);
+	var _CellArrayBufferObject = __webpack_require__(212);
 
 	var _CellArrayBufferObject2 = _interopRequireDefault(_CellArrayBufferObject);
 
-	var _ShaderProgram = __webpack_require__(231);
+	var _ShaderProgram = __webpack_require__(216);
 
 	var _ShaderProgram2 = _interopRequireDefault(_ShaderProgram);
 
-	var _VertexArrayObject = __webpack_require__(233);
+	var _VertexArrayObject = __webpack_require__(218);
 
 	var _VertexArrayObject2 = _interopRequireDefault(_VertexArrayObject);
 
@@ -81302,7 +80767,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 227 */
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -81313,21 +80778,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.newInstance = undefined;
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
-	var _DynamicFloat32Array = __webpack_require__(228);
+	var _DynamicFloat32Array = __webpack_require__(213);
 
 	var _DynamicFloat32Array2 = _interopRequireDefault(_DynamicFloat32Array);
 
-	var _BufferObject = __webpack_require__(229);
+	var _BufferObject = __webpack_require__(214);
 
 	var _BufferObject2 = _interopRequireDefault(_BufferObject);
 
-	var _Constants = __webpack_require__(230);
+	var _Constants = __webpack_require__(215);
 
-	var _Constants2 = __webpack_require__(115);
+	var _Constants2 = __webpack_require__(100);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -81564,7 +81029,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 228 */
+/* 213 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -81650,7 +81115,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = DynamicFloat32Array;
 
 /***/ },
-/* 229 */
+/* 214 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -81661,11 +81126,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.newInstance = exports.STATIC = undefined;
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var macro = _interopRequireWildcard(_macro);
 
-	var _Constants = __webpack_require__(230);
+	var _Constants = __webpack_require__(215);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -81810,7 +81275,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Object.assign({ newInstance: newInstance, extend: extend }, STATIC);
 
 /***/ },
-/* 230 */
+/* 215 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -81829,7 +81294,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 231 */
+/* 216 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -81842,11 +81307,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.vtkShaderProgram = vtkShaderProgram;
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
-	var _Shader = __webpack_require__(232);
+	var _Shader = __webpack_require__(217);
 
 	var _Shader2 = _interopRequireDefault(_Shader);
 
@@ -82266,7 +81731,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend, substitute: substitute };
 
 /***/ },
-/* 232 */
+/* 217 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -82278,7 +81743,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.vtkShader = vtkShader;
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
@@ -82384,7 +81849,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 233 */
+/* 218 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -82395,11 +81860,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.newInstance = undefined;
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
-	var _Constants = __webpack_require__(230);
+	var _Constants = __webpack_require__(215);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -82677,7 +82142,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 234 */
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -82688,19 +82153,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.newInstance = undefined;
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
-	var _Constants = __webpack_require__(235);
+	var _Constants = __webpack_require__(220);
 
-	var _Constants2 = __webpack_require__(120);
+	var _Constants2 = __webpack_require__(105);
 
-	var _Math = __webpack_require__(132);
+	var _Math = __webpack_require__(117);
 
 	var _Math2 = _interopRequireDefault(_Math);
 
-	var _ViewNode = __webpack_require__(222);
+	var _ViewNode = __webpack_require__(207);
 
 	var _ViewNode2 = _interopRequireDefault(_ViewNode);
 
@@ -83365,7 +82830,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 235 */
+/* 220 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -83394,7 +82859,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 236 */
+/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -83405,7 +82870,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.newInstance = undefined;
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
@@ -83456,19 +82921,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 237 */
+/* 222 */
 /***/ function(module, exports) {
 
 	module.exports = "//VTK::System::Dec\n\n/*=========================================================================\n\n  Program:   Visualization Toolkit\n  Module:    vtkPolyDataVS.glsl\n\n  Copyright (c) Ken Martin, Will Schroeder, Bill Lorensen\n  All rights reserved.\n  See Copyright.txt or http://www.kitware.com/Copyright.htm for details.\n\n     This software is distributed WITHOUT ANY WARRANTY; without even\n     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR\n     PURPOSE.  See the above copyright notice for more information.\n\n=========================================================================*/\n\nattribute vec4 vertexMC;\n\n// frag position in VC\n//VTK::PositionVC::Dec\n\n// optional normal declaration\n//VTK::Normal::Dec\n\n// extra lighting parameters\n//VTK::Light::Dec\n\n// Texture coordinates\n//VTK::TCoord::Dec\n\n// material property values\n//VTK::Color::Dec\n\n// clipping plane vars\n//VTK::Clip::Dec\n\n// camera and actor matrix values\n//VTK::Camera::Dec\n\n// Apple Bug\n//VTK::PrimID::Dec\n\nvoid main()\n{\n  //VTK::Color::Impl\n\n  //VTK::Normal::Impl\n\n  //VTK::TCoord::Impl\n\n  //VTK::Clip::Impl\n\n  //VTK::PrimID::Impl\n\n  //VTK::PositionVC::Impl\n\n  //VTK::Light::Impl\n}\n"
 
 /***/ },
-/* 238 */
+/* 223 */
 /***/ function(module, exports) {
 
 	module.exports = "//VTK::System::Dec\n\n/*=========================================================================\n\n  Program:   Visualization Toolkit\n  Module:    vtkPolyDataFS.glsl\n\n  Copyright (c) Ken Martin, Will Schroeder, Bill Lorensen\n  All rights reserved.\n  See Copyright.txt or http://www.kitware.com/Copyright.htm for details.\n\n     This software is distributed WITHOUT ANY WARRANTY; without even\n     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR\n     PURPOSE.  See the above copyright notice for more information.\n\n=========================================================================*/\n// Template for the polydata mappers fragment shader\n\nuniform int PrimitiveIDOffset;\n\n// VC position of this fragment\n//VTK::PositionVC::Dec\n\n// optional color passed in from the vertex shader, vertexColor\n//VTK::Color::Dec\n\n// optional surface normal declaration\n//VTK::Normal::Dec\n\n// extra lighting parameters\n//VTK::Light::Dec\n\n// Texture coordinates\n//VTK::TCoord::Dec\n\n// picking support\n//VTK::Picking::Dec\n\n// Depth Peeling Support\n//VTK::DepthPeeling::Dec\n\n// clipping plane vars\n//VTK::Clip::Dec\n\n// the output of this shader\n//VTK::Output::Dec\n\n// Apple Bug\n//VTK::PrimID::Dec\n\n// handle coincident offsets\n//VTK::Coincident::Dec\n\nvoid main()\n{\n  // VC position of this fragment. This should not branch/return/discard.\n  //VTK::PositionVC::Impl\n\n  // Place any calls that require uniform flow (e.g. dFdx) here.\n  //VTK::UniformFlow::Impl\n\n  // Set gl_FragDepth here (gl_FragCoord.z by default)\n  //VTK::Depth::Impl\n\n  // Early depth peeling abort:\n  //VTK::DepthPeeling::PreColor\n\n  // Apple Bug\n  //VTK::PrimID::Impl\n\n  //VTK::Clip::Impl\n\n  //VTK::Color::Impl\n\n  // Generate the normal if we are not passed in one\n  //VTK::Normal::Impl\n\n  //VTK::Light::Impl\n\n  //VTK::TCoord::Impl\n\n  if (gl_FragData[0].a <= 0.0)\n    {\n    discard;\n    }\n\n  //VTK::DepthPeeling::Impl\n\n  //VTK::Picking::Impl\n\n  // handle coincident offsets\n  //VTK::Coincident::Impl\n}\n"
 
 /***/ },
-/* 239 */
+/* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -83479,13 +82944,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.newInstance = undefined;
 	exports.extend = extend;
 
-	var _glMatrix = __webpack_require__(98);
+	var _glMatrix = __webpack_require__(83);
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
-	var _ViewNode = __webpack_require__(222);
+	var _ViewNode = __webpack_require__(207);
 
 	var _ViewNode2 = _interopRequireDefault(_ViewNode);
 
@@ -83603,7 +83068,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 240 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -83615,45 +83080,45 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.vtkOpenGLPolyDataMapper = vtkOpenGLPolyDataMapper;
 	exports.extend = extend;
 
-	var _glMatrix = __webpack_require__(98);
+	var _glMatrix = __webpack_require__(83);
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
-	var _Helper = __webpack_require__(226);
+	var _Helper = __webpack_require__(211);
 
 	var _Helper2 = _interopRequireDefault(_Helper);
 
-	var _Math = __webpack_require__(132);
+	var _Math = __webpack_require__(117);
 
 	var _Math2 = _interopRequireDefault(_Math);
 
-	var _ShaderProgram = __webpack_require__(231);
+	var _ShaderProgram = __webpack_require__(216);
 
 	var _ShaderProgram2 = _interopRequireDefault(_ShaderProgram);
 
-	var _Texture = __webpack_require__(234);
+	var _Texture = __webpack_require__(219);
 
 	var _Texture2 = _interopRequireDefault(_Texture);
 
-	var _ViewNode = __webpack_require__(222);
+	var _ViewNode = __webpack_require__(207);
 
 	var _ViewNode2 = _interopRequireDefault(_ViewNode);
 
-	var _Constants = __webpack_require__(115);
+	var _Constants = __webpack_require__(100);
 
-	var _Constants2 = __webpack_require__(204);
+	var _Constants2 = __webpack_require__(189);
 
-	var _Constants3 = __webpack_require__(235);
+	var _Constants3 = __webpack_require__(220);
 
-	var _Constants4 = __webpack_require__(241);
+	var _Constants4 = __webpack_require__(226);
 
-	var _vtkPolyDataVS = __webpack_require__(237);
+	var _vtkPolyDataVS = __webpack_require__(222);
 
 	var _vtkPolyDataVS2 = _interopRequireDefault(_vtkPolyDataVS);
 
-	var _vtkPolyDataFS = __webpack_require__(238);
+	var _vtkPolyDataFS = __webpack_require__(223);
 
 	var _vtkPolyDataFS2 = _interopRequireDefault(_vtkPolyDataFS);
 
@@ -84698,7 +84163,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 241 */
+/* 226 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -84719,7 +84184,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 242 */
+/* 227 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -84731,15 +84196,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.vtkOpenGLRenderer = vtkOpenGLRenderer;
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
-	var _ViewNode = __webpack_require__(222);
+	var _ViewNode = __webpack_require__(207);
 
 	var _ViewNode2 = _interopRequireDefault(_ViewNode);
 
-	var _Math = __webpack_require__(132);
+	var _Math = __webpack_require__(117);
 
 	var _Math2 = _interopRequireDefault(_Math);
 
@@ -84915,7 +84380,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 243 */
+/* 228 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -84927,35 +84392,35 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.vtkOpenGLSphereMapper = vtkOpenGLSphereMapper;
 	exports.extend = extend;
 
-	var _glMatrix = __webpack_require__(98);
+	var _glMatrix = __webpack_require__(83);
 
-	var _Constants = __webpack_require__(230);
+	var _Constants = __webpack_require__(215);
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
-	var _DynamicFloat32Array = __webpack_require__(228);
+	var _DynamicFloat32Array = __webpack_require__(213);
 
 	var _DynamicFloat32Array2 = _interopRequireDefault(_DynamicFloat32Array);
 
-	var _Math = __webpack_require__(132);
+	var _Math = __webpack_require__(117);
 
 	var _Math2 = _interopRequireDefault(_Math);
 
-	var _ShaderProgram = __webpack_require__(231);
+	var _ShaderProgram = __webpack_require__(216);
 
 	var _ShaderProgram2 = _interopRequireDefault(_ShaderProgram);
 
-	var _PolyDataMapper = __webpack_require__(240);
+	var _PolyDataMapper = __webpack_require__(225);
 
 	var _PolyDataMapper2 = _interopRequireDefault(_PolyDataMapper);
 
-	var _vtkSphereMapperVS = __webpack_require__(244);
+	var _vtkSphereMapperVS = __webpack_require__(229);
 
 	var _vtkSphereMapperVS2 = _interopRequireDefault(_vtkSphereMapperVS);
 
-	var _vtkPolyDataFS = __webpack_require__(238);
+	var _vtkPolyDataFS = __webpack_require__(223);
 
 	var _vtkPolyDataFS2 = _interopRequireDefault(_vtkPolyDataFS);
 
@@ -85198,13 +84663,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 244 */
+/* 229 */
 /***/ function(module, exports) {
 
 	module.exports = "//VTK::System::Dec\n\n/*=========================================================================\n\n  Program:   Visualization Toolkit\n  Module:    vtkSphereMapperVS.glsl\n\n  Copyright (c) Ken Martin, Will Schroeder, Bill Lorensen\n  All rights reserved.\n  See Copyright.txt or http://www.kitware.com/Copyright.htm for details.\n\n     This software is distributed WITHOUT ANY WARRANTY; without even\n     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR\n     PURPOSE.  See the above copyright notice for more information.\n\n=========================================================================*/\n// this shader implements imposters in OpenGL for Spheres\n\nattribute vec4 vertexMC;\nattribute vec2 offsetMC;\n\n// optional normal declaration\n//VTK::Normal::Dec\n\n// Texture coordinates\n//VTK::TCoord::Dec\n\nuniform mat3 normalMatrix; // transform model coordinate directions to view coordinates\n\n// material property values\n//VTK::Color::Dec\n\n// clipping plane vars\n//VTK::Clip::Dec\n\n// camera and actor matrix values\n//VTK::Camera::Dec\n\nvarying vec4 vertexVCVSOutput;\nvarying float radiusVCVSOutput;\nvarying vec3 centerVCVSOutput;\n\nuniform int cameraParallel;\n\nvoid main()\n{\n  //VTK::Color::Impl\n\n  //VTK::Normal::Impl\n\n  //VTK::TCoord::Impl\n\n  //VTK::Clip::Impl\n\n  // compute the projected vertex position\n  vertexVCVSOutput = MCVCMatrix * vertexMC;\n  centerVCVSOutput = vertexVCVSOutput.xyz;\n  radiusVCVSOutput = length(offsetMC)*0.5;\n\n  // make the triangle face the camera\n  if (cameraParallel == 0)\n    {\n    vec3 dir = normalize(-vertexVCVSOutput.xyz);\n    vec3 base2 = normalize(cross(dir,vec3(1.0,0.0,0.0)));\n    vec3 base1 = cross(base2,dir);\n    vertexVCVSOutput.xyz = vertexVCVSOutput.xyz + offsetMC.x*base1 + offsetMC.y*base2;\n    }\n  else\n    {\n    // add in the offset\n    vertexVCVSOutput.xy = vertexVCVSOutput.xy + offsetMC;\n    }\n\n  gl_Position = VCDCMatrix * vertexVCVSOutput;\n}\n"
 
 /***/ },
-/* 245 */
+/* 230 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -85216,31 +84681,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.vtkOpenGLStickMapper = vtkOpenGLStickMapper;
 	exports.extend = extend;
 
-	var _glMatrix = __webpack_require__(98);
+	var _glMatrix = __webpack_require__(83);
 
-	var _Constants = __webpack_require__(230);
+	var _Constants = __webpack_require__(215);
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var macro = _interopRequireWildcard(_macro);
 
-	var _DynamicFloat32Array = __webpack_require__(228);
+	var _DynamicFloat32Array = __webpack_require__(213);
 
 	var _DynamicFloat32Array2 = _interopRequireDefault(_DynamicFloat32Array);
 
-	var _vtkStickMapperVS = __webpack_require__(246);
+	var _vtkStickMapperVS = __webpack_require__(231);
 
 	var _vtkStickMapperVS2 = _interopRequireDefault(_vtkStickMapperVS);
 
-	var _vtkPolyDataFS = __webpack_require__(238);
+	var _vtkPolyDataFS = __webpack_require__(223);
 
 	var _vtkPolyDataFS2 = _interopRequireDefault(_vtkPolyDataFS);
 
-	var _ShaderProgram = __webpack_require__(231);
+	var _ShaderProgram = __webpack_require__(216);
 
 	var _ShaderProgram2 = _interopRequireDefault(_ShaderProgram);
 
-	var _PolyDataMapper = __webpack_require__(240);
+	var _PolyDataMapper = __webpack_require__(225);
 
 	var _PolyDataMapper2 = _interopRequireDefault(_PolyDataMapper);
 
@@ -85572,13 +85037,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 246 */
+/* 231 */
 /***/ function(module, exports) {
 
 	module.exports = "//VTK::System::Dec\n\n/*=========================================================================\n\n  Program:   Visualization Toolkit\n  Module:    vtkStickMapperVS.glsl\n\n  Copyright (c) Ken Martin, Will Schroeder, Bill Lorensen\n  All rights reserved.\n  See Copyright.txt or http://www.kitware.com/Copyright.htm for details.\n\n     This software is distributed WITHOUT ANY WARRANTY; without even\n     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR\n     PURPOSE.  See the above copyright notice for more information.\n\n=========================================================================*/\n// this shader implements imposters in OpenGL for Sticks\n\nattribute vec4 vertexMC;\nattribute vec3 orientMC;\nattribute vec4 offsetMC;\nattribute float radiusMC;\n\n// optional normal declaration\n//VTK::Normal::Dec\n\n//VTK::Picking::Dec\n\n// Texture coordinates\n//VTK::TCoord::Dec\n\nuniform mat3 normalMatrix; // transform model coordinate directions to view coordinates\n\n// material property values\n//VTK::Color::Dec\n\n// clipping plane vars\n//VTK::Clip::Dec\n\n// camera and actor matrix values\n//VTK::Camera::Dec\n\nvarying vec4 vertexVCVSOutput;\nvarying float radiusVCVSOutput;\nvarying float lengthVCVSOutput;\nvarying vec3 centerVCVSOutput;\nvarying vec3 orientVCVSOutput;\n\nuniform int cameraParallel;\n\nvoid main()\n{\n  //VTK::Picking::Impl\n\n  //VTK::Color::Impl\n\n  //VTK::Normal::Impl\n\n  //VTK::TCoord::Impl\n\n  //VTK::Clip::Impl\n\n  vertexVCVSOutput = MCVCMatrix * vertexMC;\n  centerVCVSOutput = vertexVCVSOutput.xyz;\n  radiusVCVSOutput = radiusMC;\n  lengthVCVSOutput = length(orientMC);\n  orientVCVSOutput = normalMatrix * normalize(orientMC);\n\n  // make sure it is pointing out of the screen\n  if (orientVCVSOutput.z < 0.0)\n    {\n    orientVCVSOutput = -orientVCVSOutput;\n    }\n\n  // make the basis\n  vec3 xbase;\n  vec3 ybase;\n  vec3 dir = vec3(0.0,0.0,1.0);\n  if (cameraParallel == 0)\n    {\n    dir = normalize(-vertexVCVSOutput.xyz);\n    }\n  if (abs(dot(dir,orientVCVSOutput)) == 1.0)\n    {\n    xbase = normalize(cross(vec3(0.0,1.0,0.0),orientVCVSOutput));\n    ybase = cross(xbase,orientVCVSOutput);\n    }\n  else\n    {\n    xbase = normalize(cross(orientVCVSOutput,dir));\n    ybase = cross(orientVCVSOutput,xbase);\n    }\n\n  vec3 offsets = offsetMC.xyz*2.0-1.0;\n  vertexVCVSOutput.xyz = vertexVCVSOutput.xyz +\n    radiusVCVSOutput*offsets.x*xbase +\n    radiusVCVSOutput*offsets.y*ybase +\n    0.5*lengthVCVSOutput*offsets.z*orientVCVSOutput;\n\n  gl_Position = VCDCMatrix * vertexVCVSOutput;\n}\n"
 
 /***/ },
-/* 247 */
+/* 232 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -85589,15 +85054,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.newInstance = undefined;
 	exports.extend = extend;
 
-	var _blueimpMd = __webpack_require__(248);
+	var _blueimpMd = __webpack_require__(233);
 
 	var _blueimpMd2 = _interopRequireDefault(_blueimpMd);
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
-	var _ShaderProgram = __webpack_require__(231);
+	var _ShaderProgram = __webpack_require__(216);
 
 	var _ShaderProgram2 = _interopRequireDefault(_ShaderProgram);
 
@@ -85779,7 +85244,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 248 */
+/* 233 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*
@@ -86064,7 +85529,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 249 */
+/* 234 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -86075,7 +85540,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.newInstance = undefined;
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
@@ -86205,7 +85670,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ },
-/* 250 */
+/* 235 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -86216,15 +85681,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.newInstance = undefined;
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
-	var _Math = __webpack_require__(132);
+	var _Math = __webpack_require__(117);
 
 	var _Math2 = _interopRequireDefault(_Math);
 
-	var _InteractorStyleTrackballCamera = __webpack_require__(251);
+	var _InteractorStyleTrackballCamera = __webpack_require__(236);
 
 	var _InteractorStyleTrackballCamera2 = _interopRequireDefault(_InteractorStyleTrackballCamera);
 
@@ -86850,7 +86315,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Object.assign({ newInstance: newInstance, extend: extend });
 
 /***/ },
-/* 251 */
+/* 236 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -86861,19 +86326,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.newInstance = undefined;
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
-	var _InteractorStyle = __webpack_require__(252);
+	var _InteractorStyle = __webpack_require__(237);
 
 	var _InteractorStyle2 = _interopRequireDefault(_InteractorStyle);
 
-	var _Math = __webpack_require__(132);
+	var _Math = __webpack_require__(117);
 
 	var _Math2 = _interopRequireDefault(_Math);
 
-	var _Constants = __webpack_require__(254);
+	var _Constants = __webpack_require__(239);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -87256,7 +86721,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Object.assign({ newInstance: newInstance, extend: extend });
 
 /***/ },
-/* 252 */
+/* 237 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -87267,15 +86732,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.newInstance = undefined;
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
-	var _InteractorObserver = __webpack_require__(253);
+	var _InteractorObserver = __webpack_require__(238);
 
 	var _InteractorObserver2 = _interopRequireDefault(_InteractorObserver);
 
-	var _Constants = __webpack_require__(254);
+	var _Constants = __webpack_require__(239);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -87485,7 +86950,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Object.assign({ newInstance: newInstance, extend: extend });
 
 /***/ },
-/* 253 */
+/* 238 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -87496,7 +86961,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.newInstance = undefined;
 	exports.extend = extend;
 
-	var _macro = __webpack_require__(108);
+	var _macro = __webpack_require__(93);
 
 	var _macro2 = _interopRequireDefault(_macro);
 
@@ -87659,7 +87124,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Object.assign({ newInstance: newInstance, extend: extend });
 
 /***/ },
-/* 254 */
+/* 239 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -87695,7 +87160,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 255 */
+/* 240 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -87715,7 +87180,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (false) {
 	  module.hot.accept()
 	  if (module.hot.data) {
-	     require("vue-hot-reload-api").rerender("data-v-11377a39", module.exports)
+	     require("vue-hot-reload-api").rerender("data-v-ee986730", module.exports)
 	  }
 	}
 

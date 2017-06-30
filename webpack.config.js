@@ -44,7 +44,7 @@ module.exports = {
   },
   vue: {
     // instruct vue-loader to load TypeScript
-    loaders: { js: 'vue-ts-loader', },
+    //loaders: { js: 'vue-ts-loader', },
     // make TS' generated code cooperate with vue-loader
     esModule: true
   },

@@ -1,7 +1,7 @@
-//  This is the entry routine for Vaango
+//  This is the entry routine for Vaango UI
 
 const Vue = require("vue");
-const Store = require("./vuex/Store");
+const Store = require("./vuex/Store").default;
 
 var VaangoMainPanel = require("./views/VaangoMainPanel.vue").default;
 var MainMenubar = require("./views/MainMenubar.vue").default;
@@ -24,14 +24,12 @@ Vue.component('general-input-panel', GeneralInputPanel);
 Vue.component('mpm-input-panel', MPMInputPanel);
 Vue.component('time-input-panel', TimeInputPanel);
 
-var ThreeOcean = require("./graphics/Ocean.vue").default;
 var ThreeRenderer = require("./graphics/ThreeRenderer.vue").default;
 var ThreeScene = require("./graphics/ThreeScene.vue").default;
 var ThreeCamera = require("./graphics/ThreeCamera.vue").default;
 var ThreeSphere = require("./graphics/ThreeSphere.vue").default;
 var ThreeEllipsoidParticles = require("./graphics/ThreeEllipsoidParticles.vue").default;
 
-Vue.component('ocean', ThreeOcean);
 Vue.component('three-renderer', ThreeRenderer);
 Vue.component('three-scene', ThreeScene);
 Vue.component('three-camera', ThreeCamera);

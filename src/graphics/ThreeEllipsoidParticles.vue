@@ -1,2 +1,2 @@
 <template> </template>
-<script src="./ThreeEllipsoidParticles.ts"> </script>
+<script src="./ThreeEllipsoidParticles.js"> </script>

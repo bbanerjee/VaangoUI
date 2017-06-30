@@ -22,6 +22,6 @@
   </div>
 </template>
 
-<script src="./GeneralInputPanel.ts">
+<script src="./GeneralInputPanel.js">
 
 </script>

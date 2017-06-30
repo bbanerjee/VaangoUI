@@ -1,3 +1,3 @@
 <template>
 </template>
-<script src="./ThreeCamera.ts"> </script>
+<script src="./ThreeCamera.js"> </script>

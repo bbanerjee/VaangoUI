@@ -1,2 +1,2 @@
 <template> </template>
-<script src="./VtkSphere.ts"> </script>
+<script src="./VtkSphere.js"> </script>

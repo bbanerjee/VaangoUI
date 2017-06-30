@@ -22,4 +22,4 @@
   </div>
 </template>
 
-<script src="./MainTextPanel.ts"> </script>
+<script src="./MainTextPanel.js"> </script>

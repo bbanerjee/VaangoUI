@@ -16,4 +16,4 @@
   </div>
 </template>
 
-<script src="./ThreeRenderer.ts"> </script>
+<script src="./ThreeRenderer.js"> </script>

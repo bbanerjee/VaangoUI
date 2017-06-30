@@ -24,11 +24,10 @@
         </vtk-graphics-panel>
       </div>
     </div>
-    </div>
   </div>
 </template>
 
-<script src="./VaangoMainPanel.ts"> </script>
+<script src="./VaangoMainPanel.js"> </script>
 
 <style>
  .uk-container {

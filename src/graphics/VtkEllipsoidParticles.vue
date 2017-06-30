@@ -1,2 +1,2 @@
 <template> </template>
-<script src="./VtkEllipsoidParticles.ts"> </script>
+<script src="./VtkEllipsoidParticles.js"> </script>

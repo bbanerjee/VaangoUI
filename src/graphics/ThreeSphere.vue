@@ -1,2 +1,2 @@
 <template> </template>
-<script src="./ThreeSphere.ts"> </script>
+<script src="./ThreeSphere.js"> </script>

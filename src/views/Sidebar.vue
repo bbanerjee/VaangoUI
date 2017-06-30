@@ -13,7 +13,7 @@
   </div>
 </template>
 
-<script src="./Sidebar.ts">
+<script src="./Sidebar.js">
 </script>
 
 <style>

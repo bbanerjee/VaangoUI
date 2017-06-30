@@ -21,6 +21,6 @@
   </div>
 </template>
 
-<script src="./ThreeGraphicsPanel.ts">
+<script src="./ThreeGraphicsPanel.js">
 
 </script>

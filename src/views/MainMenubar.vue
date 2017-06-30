@@ -51,7 +51,7 @@
   </div>
 </template>
 
-<script src="./MainMenubar.ts">
+<script src="./MainMenubar.js">
 </script>
 
 <style>

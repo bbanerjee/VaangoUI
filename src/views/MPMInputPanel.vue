@@ -175,6 +175,6 @@
   </div>
 </template>
 
-<script src="./MPMInputPanel.ts">
+<script src="./MPMInputPanel.js">
 
 </script>

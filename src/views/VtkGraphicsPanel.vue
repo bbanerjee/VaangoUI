@@ -17,6 +17,6 @@
   </div>
 </template>
 
-<script src="./VtkGraphicsPanel.ts">
+<script src="./VtkGraphicsPanel.js">
 
 </script>

@@ -8,4 +8,4 @@
   </div>
 </template>
 
-<script src="./VtkRenderer.ts"> </script>
+<script src="./VtkRenderer.js"> </script>
