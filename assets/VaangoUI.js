@@ -9662,6 +9662,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      d_integrationTypeLabels: ["Explicit", "Explicit: Fracture", "Implicit"],
 	      d_integrationTypeUPS: ["explicit", "fracture", "implicit"],
 	      d_integration: "Explicit",
+	      d_integrationIndex: 0,
 
 	      // Interpolation type
 	      d_interpolationTypeLabels: ["Linear", "GIMP", "ThirdOrderBSpline", "CPDI", "CPTI"],
@@ -9763,6 +9764,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  methods: {
 
+	    updateIntegrationIndex() {
+	      this.d_integrationIndex = 0;
+	      this.d_integrationTypeLabels.forEach((label, index) => {
+	        if (this.d_integration === label) {
+	          this.d_integrationIndex = index;
+	          return;
+	        }
+	      });
+	    },
+
 	    updateMPMFlags() {
 	      this.d_doNumericalDamping = false;
 	      this.d_doArtificialViscosity = false;
@@ -9813,15 +9824,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	      });
 
 	      let xmlDoc = document.implementation.createDocument("", "", null);
-
 	      let mpmElement = xmlDoc.createElement("MPM");
 
-	      /*
-	      let d_integrator = integrationType;
+	      let d_integrator = this.d_integrationTypeUPS[this.d_integrationIndex];
 	      let flag = xmlDoc.createElement("time_integrator");
 	      flag.appendChild(xmlDoc.createTextNode(d_integrator));
 	      mpmElement.appendChild(flag);
-	       flag = xmlDoc.createElement("interpolator");
+
+	      /*
+	      flag = xmlDoc.createElement("interpolator");
 	      flag.appendChild(xmlDoc.createTextNode(d_mpmAlgo));
 	      mpmElement.appendChild(flag);
 	       flag = xmlDoc.createElement("minimum_particle_mass");
@@ -9902,6 +9913,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var xmlText = formatter.xml(new XMLSerializer().serializeToString(xmlDoc));
 
 	      console.log(xmlText);
+
+	      var blob = new Blob([xmlText], { type: "text/plain;charset=utf-8" });
+	      var a = document.createElement("a");
+	      var url = URL.createObjectURL(blob);
+	      a.href = url;
+	      a.download = "test.ups";
+	      document.body.appendChild(a);
+	      a.click();
+	      setTimeout(function () {
+	        document.body.removeChild(a);
+	        window.URL.revokeObjectURL(url);
+	      }, 0);
 	    }
 
 	  }
@@ -10359,14 +10382,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	      "value": _vm.d_integration
 	    },
 	    on: {
-	      "change": function($event) {
+	      "change": [function($event) {
 	        _vm.d_integration = Array.prototype.filter.call($event.target.options, function(o) {
 	          return o.selected
 	        }).map(function(o) {
 	          var val = "_value" in o ? o._value : o.value;
 	          return val
 	        })[0]
-	      }
+	      }, function($event) {
+	        _vm.updateIntegrationIndex()
+	      }]
 	    }
 	  }, _vm._l((_vm.d_integrationTypeLabels), function(label, index) {
 	    return _c('option', [_vm._v(_vm._s(label))])

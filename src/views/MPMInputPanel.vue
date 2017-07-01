@@ -18,6 +18,7 @@
         <div class="uk-form-controls">
           <select v-model="d_integration" 
                   :value="d_integration"
+                  @change="updateIntegrationIndex()"
                   class="uk-select uk-form-width-small" 
                   id="integration-type">
             <option v-for="(label, index) in d_integrationTypeLabels">{{label}}</option>

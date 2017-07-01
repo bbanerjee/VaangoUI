@@ -29,6 +29,7 @@ let MPMInputPanel = Vue.extend(
           "implicit",
         ],
         d_integration: "Explicit",
+        d_integrationIndex: 0,
 
         // Interpolation type
         d_interpolationTypeLabels : [
@@ -175,6 +176,16 @@ let MPMInputPanel = Vue.extend(
 
     methods: {
 
+      updateIntegrationIndex() {
+        this.d_integrationIndex = 0;
+        this.d_integrationTypeLabels.forEach((label, index) => {
+          if (this.d_integration === label) {
+            this.d_integrationIndex = index;
+            return;
+          }
+        });
+      },
+
       updateMPMFlags() {
         this.d_doNumericalDamping = false;
         this.d_doArtificialViscosity = false;
@@ -225,15 +236,14 @@ let MPMInputPanel = Vue.extend(
         });
 
         let xmlDoc = document.implementation.createDocument("", "", null);
-
         let mpmElement = xmlDoc.createElement("MPM");
 
-        /*
-        let d_integrator = integrationType;
+        let d_integrator = this.d_integrationTypeUPS[this.d_integrationIndex];
         let flag = xmlDoc.createElement("time_integrator");
         flag.appendChild(xmlDoc.createTextNode(d_integrator));
         mpmElement.appendChild(flag);
 
+        /*
         flag = xmlDoc.createElement("interpolator");
         flag.appendChild(xmlDoc.createTextNode(d_mpmAlgo));
         mpmElement.appendChild(flag);
@@ -336,6 +346,18 @@ let MPMInputPanel = Vue.extend(
         var xmlText = formatter.xml(new XMLSerializer().serializeToString(xmlDoc));
 
         console.log(xmlText);
+
+        var blob = new Blob([xmlText], {type: "text/plain;charset=utf-8"});
+        var a = document.createElement("a");
+        var url = URL.createObjectURL(blob);
+        a.href = url;
+        a.download = "test.ups";
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function() {
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);  
+        }, 0); 
       }
 
     }
