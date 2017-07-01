@@ -51,6 +51,7 @@ let MPMInputPanel = Vue.extend(
         d_mpmFlagLabels : [
           "Do not reset grid",
           "Add particle colors",
+          "Do numerical damping",
           "Use artificial viscosity",
           "Do pressure stabilization",
           "Do explicit heat conduction",
@@ -66,58 +67,162 @@ let MPMInputPanel = Vue.extend(
           "Manually add new material",
           "Allow particle insertion",
           "Delete rogue particles",
+          "Do gradient-enhanced velocity projection",
+          "Use rotating coordinate system",
+          "Do adaptive refinement"
         ],
         d_mpmFlagUPS : [
         ],
         d_mpmFlags : [],
 
+        // Limiting conditions 
         d_minPartMass : 1.0e-16,
         d_maxPartVel : 1.0e8,
+
+        // Damping 
+        d_doNumericalDamping: false,
+        d_dampCoeff : 0.0,
 
         d_doArtificialViscosity: false,
         artViscC1 : 0.0,
         artViscC2 : 0.0,
 
-        defGradAlgo : "taylor",
+        // Def Grad computation 
+        d_defGradAlgoLabels : [
+          "Prescribed",
+          "Linear",
+          "Taylor series",
+          "Subcycling"
+        ],
+        d_defGradAlgoUPS : [
+          "prescribed",
+          "linear",
+          "taylor",
+          "subcycling",
+        ],
+        d_defGradAlgo : "Taylor series",
+        d_doPrescribedDefGrad : false,
+        d_doLinearDefGrad : false,
+        d_doSubcyclingDefGrad : false,
+        d_doTaylorDefGrad : true,
+
         defGradFile : "none",
         defGradTaylorTerms : 1,
+
         doVelProj : false,
 
-        doRotCoord : false,
-        rotCen : [0,0,0],
-        rotAxis : [0,0,0],
-        rotVel : [0,0,0],
+        d_useRotatingCoord : false,
+        d_rotCen : [0,0,0],
+        d_rotAxis : [0,0,0],
+        d_rotVel : [0,0,0],
 
-        doGridAMR : false,
-        doPartAMR : false
+        d_doAdaptiveRefine: false,
+        d_doGridAMR : false,
+        d_doPartAMR : false
       };
     },
 
     computed: {
+      c_doNumericalDamping: {
+        get: function() {
+          return this.d_doNumericalDamping;
+        }
+      },
+
       c_doArtificialViscosity: {
         get: function() {
           return this.d_doArtificialViscosity;
         }
-      }
+      },
+
+      c_doPrescribedDefGrad : {
+        get: function() {
+          return this.d_doPrescribedDefGrad;
+        }
+      },
+
+      c_doLinearDefGrad : {
+        get: function() {
+          return this.d_doLinearDefGrad;
+        }
+      },
+
+      c_doSubcyclingDefGrad : {
+        get: function() {
+          return this.d_doSubcyclingDefGrad;
+        }
+      },
+
+      c_doTaylorDefGrad : {
+        get: function() {
+          return this.d_doTaylorDefGrad;
+        }
+      },
+
+      c_useRotatingCoord : {
+        get: function() {
+          return this.d_useRotatingCoord;
+        }
+      },
+
+      c_doAdaptiveRefine : {
+        get: function() {
+          return this.d_doAdaptiveRefine;
+        }
+      },
+
     },
 
     methods: {
 
       updateMPMFlags() {
+        this.d_doNumericalDamping = false;
         this.d_doArtificialViscosity = false;
+        this.d_useRotatingCoord = false;
+        this.d_doAdaptiveRefine = false;
         this.d_mpmFlags.forEach((flag) => {
           if (flag.index === 2) {
+            this.d_doNumericalDamping = true;
+            this.d_doArtificialViscosity = false;
+          }
+          if (flag.index === 3) {
+            this.d_doNumericalDamping = false;
             this.d_doArtificialViscosity = true;
           }
+          if (flag.label === "Use rotating coordinate system") {
+            this.d_useRotatingCoord = true;
+          }
+          if (flag.label === "Do adaptive refinement") {
+            this.d_doAdaptiveRefine = true;
+          }
         });
+      },
+
+      updateDefGradAlgo() {
+        console.log("Updating def grad algo to " + this.d_defGradAlgo);
+        this.d_doPrescribedDefGrad = false;
+        this.d_doLinearDefGrad = false;
+        this.d_doSubcyclingDefGrad = false;
+        this.d_doTaylorDefGrad = false;
+        if (this.d_defGradAlgo === "Prescribed") {
+          this.d_doPrescribedDefGrad = true;
+        } else if (this.d_defGradAlgo === "Linear") {
+          this.d_doLinearDefGrad = true;
+        } else if (this.d_defGradAlgo === "Subcycling") {
+          this.d_doSubcyclingDefGrad = true;
+        } else {
+          this.d_doTaylorDefGrad = true;
+        }
       },
 
       printMPMParameters() {
         console.log("dim = " + this.d_dimension);
         console.log("int = " + this.d_integration);
         console.log("interp = " + this.d_interpolation);
-        console.log("MPM Flags = " + this.d_mpmFlags[1].label);
-        console.log("MPM Flags = " + this.d_mpmFlags[1].index);
+        console.log("MPM Flags = ");
+        this.d_mpmFlags.forEach((flag) => {
+          console.log(flag.index + " " + flag.label);
+        });
 
         let xmlDoc = document.implementation.createDocument("", "", null);
 

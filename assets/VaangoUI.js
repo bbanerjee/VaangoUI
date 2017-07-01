@@ -9669,57 +9669,148 @@ return /******/ (function(modules) { // webpackBootstrap
 	      d_interpolation: "GIMP",
 
 	      // MPM simulation flags
-	      d_mpmFlagLabels: ["Do not reset grid", "Add particle colors", "Use artificial viscosity", "Do pressure stabilization", "Do explicit heat conduction", "Do thermal expansion", "Do viscous heating", "Do contact friction heating", "Use load curves", "Use exact deformation", "Use CBDI boundary condition", "Use cohesive zones", "Create new particles", "Allow adding new material", "Manually add new material", "Allow particle insertion", "Delete rogue particles"],
+	      d_mpmFlagLabels: ["Do not reset grid", "Add particle colors", "Do numerical damping", "Use artificial viscosity", "Do pressure stabilization", "Do explicit heat conduction", "Do thermal expansion", "Do viscous heating", "Do contact friction heating", "Use load curves", "Use exact deformation", "Use CBDI boundary condition", "Use cohesive zones", "Create new particles", "Allow adding new material", "Manually add new material", "Allow particle insertion", "Delete rogue particles", "Do gradient-enhanced velocity projection", "Use rotating coordinate system", "Do adaptive refinement"],
 	      d_mpmFlagUPS: [],
 	      d_mpmFlags: [],
 
+	      // Limiting conditions 
 	      d_minPartMass: 1.0e-16,
 	      d_maxPartVel: 1.0e8,
+
+	      // Damping 
+	      d_doNumericalDamping: false,
+	      d_dampCoeff: 0.0,
 
 	      d_doArtificialViscosity: false,
 	      artViscC1: 0.0,
 	      artViscC2: 0.0,
 
-	      defGradAlgo: "taylor",
+	      // Def Grad computation 
+	      d_defGradAlgoLabels: ["Prescribed", "Linear", "Taylor series", "Subcycling"],
+	      d_defGradAlgoUPS: ["prescribed", "linear", "taylor", "subcycling"],
+	      d_defGradAlgo: "Taylor series",
+	      d_doPrescribedDefGrad: false,
+	      d_doLinearDefGrad: false,
+	      d_doSubcyclingDefGrad: false,
+	      d_doTaylorDefGrad: true,
+
 	      defGradFile: "none",
 	      defGradTaylorTerms: 1,
+
 	      doVelProj: false,
 
-	      doRotCoord: false,
-	      rotCen: [0, 0, 0],
-	      rotAxis: [0, 0, 0],
-	      rotVel: [0, 0, 0],
+	      d_useRotatingCoord: false,
+	      d_rotCen: [0, 0, 0],
+	      d_rotAxis: [0, 0, 0],
+	      d_rotVel: [0, 0, 0],
 
-	      doGridAMR: false,
-	      doPartAMR: false
+	      d_doAdaptiveRefine: false,
+	      d_doGridAMR: false,
+	      d_doPartAMR: false
 	    };
 	  },
 
 	  computed: {
+	    c_doNumericalDamping: {
+	      get: function () {
+	        return this.d_doNumericalDamping;
+	      }
+	    },
+
 	    c_doArtificialViscosity: {
 	      get: function () {
 	        return this.d_doArtificialViscosity;
 	      }
+	    },
+
+	    c_doPrescribedDefGrad: {
+	      get: function () {
+	        return this.d_doPrescribedDefGrad;
+	      }
+	    },
+
+	    c_doLinearDefGrad: {
+	      get: function () {
+	        return this.d_doLinearDefGrad;
+	      }
+	    },
+
+	    c_doSubcyclingDefGrad: {
+	      get: function () {
+	        return this.d_doSubcyclingDefGrad;
+	      }
+	    },
+
+	    c_doTaylorDefGrad: {
+	      get: function () {
+	        return this.d_doTaylorDefGrad;
+	      }
+	    },
+
+	    c_useRotatingCoord: {
+	      get: function () {
+	        return this.d_useRotatingCoord;
+	      }
+	    },
+
+	    c_doAdaptiveRefine: {
+	      get: function () {
+	        return this.d_doAdaptiveRefine;
+	      }
 	    }
+
 	  },
 
 	  methods: {
 
 	    updateMPMFlags() {
+	      this.d_doNumericalDamping = false;
 	      this.d_doArtificialViscosity = false;
+	      this.d_useRotatingCoord = false;
+	      this.d_doAdaptiveRefine = false;
 	      this.d_mpmFlags.forEach(flag => {
 	        if (flag.index === 2) {
+	          this.d_doNumericalDamping = true;
+	          this.d_doArtificialViscosity = false;
+	        }
+	        if (flag.index === 3) {
+	          this.d_doNumericalDamping = false;
 	          this.d_doArtificialViscosity = true;
 	        }
+	        if (flag.label === "Use rotating coordinate system") {
+	          this.d_useRotatingCoord = true;
+	        }
+	        if (flag.label === "Do adaptive refinement") {
+	          this.d_doAdaptiveRefine = true;
+	        }
 	      });
+	    },
+
+	    updateDefGradAlgo() {
+	      console.log("Updating def grad algo to " + this.d_defGradAlgo);
+	      this.d_doPrescribedDefGrad = false;
+	      this.d_doLinearDefGrad = false;
+	      this.d_doSubcyclingDefGrad = false;
+	      this.d_doTaylorDefGrad = false;
+	      if (this.d_defGradAlgo === "Prescribed") {
+	        this.d_doPrescribedDefGrad = true;
+	      } else if (this.d_defGradAlgo === "Linear") {
+	        this.d_doLinearDefGrad = true;
+	      } else if (this.d_defGradAlgo === "Subcycling") {
+	        this.d_doSubcyclingDefGrad = true;
+	      } else {
+	        this.d_doTaylorDefGrad = true;
+	      }
 	    },
 
 	    printMPMParameters() {
 	      console.log("dim = " + this.d_dimension);
 	      console.log("int = " + this.d_integration);
 	      console.log("interp = " + this.d_interpolation);
-	      console.log("MPM Flags = " + this.d_mpmFlags[1].label);
-	      console.log("MPM Flags = " + this.d_mpmFlags[1].index);
+	      console.log("MPM Flags = ");
+	      this.d_mpmFlags.forEach(flag => {
+	        console.log(flag.index + " " + flag.label);
+	      });
 
 	      let xmlDoc = document.implementation.createDocument("", "", null);
 
@@ -10299,6 +10390,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    attrs: {
 	      "id": "interpolation-type"
 	    },
+	    domProps: {
+	      "value": _vm.d_interpolation
+	    },
 	    on: {
 	      "change": function($event) {
 	        _vm.d_interpolation = Array.prototype.filter.call($event.target.options, function(o) {
@@ -10413,7 +10507,45 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _vm.d_maxPartVel = $event.target.value
 	      }
 	    }
-	  })])]), _vm._v(" "), (_vm.c_doArtificialViscosity) ? _c('div', {
+	  })])]), _vm._v(" "), (_vm.c_doNumericalDamping) ? _c('div', {
+	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right",
+	    staticStyle: {
+	      "background-color": "rgba(218, 247, 166, 100)"
+	    }
+	  }, [_c('hr', {
+	    staticClass: "uk-hr"
+	  }), _vm._v(" "), _c('div', {
+	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+	  }, [_c('label', {
+	    staticClass: "uk-form-label",
+	    attrs: {
+	      "for": "dampCoeff"
+	    }
+	  }, [_vm._v("Damping Coefficient")]), _vm._v(" "), _c('div', {
+	    staticClass: "uk-form-controls"
+	  }, [_c('input', {
+	    directives: [{
+	      name: "model",
+	      rawName: "v-model",
+	      value: (_vm.artViscC1),
+	      expression: "artViscC1"
+	    }],
+	    staticClass: "uk-input uk-form-width-small",
+	    attrs: {
+	      "id": "dampCoeff",
+	      "type": "text",
+	      "placeholder": "0.2"
+	    },
+	    domProps: {
+	      "value": _vm._s(_vm.artViscC1)
+	    },
+	    on: {
+	      "input": function($event) {
+	        if ($event.target.composing) { return; }
+	        _vm.artViscC1 = $event.target.value
+	      }
+	    }
+	  })])])]) : _vm._e(), _vm._v(" "), (_vm.c_doArtificialViscosity) ? _c('div', {
 	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right",
 	    staticStyle: {
 	      "background-color": "rgba(218, 247, 166, 100)"
@@ -10480,7 +10612,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _vm.artViscC2 = $event.target.value
 	      }
 	    }
-	  })])])]) : _vm._e(), _vm._v(" "), _vm._m(1), _vm._v(" "), _c('div', {
+	  })])])]) : _vm._e(), _vm._v(" "), _c('div', {
+	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+	  }, [_c('hr', {
+	    staticClass: "uk-hr"
+	  }), _vm._v("\n      Deformation gradient\n      "), _c('div', {
 	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
 	  }, [_c('label', {
 	    staticClass: "uk-form-label"
@@ -10490,25 +10626,32 @@ return /******/ (function(modules) { // webpackBootstrap
 	    directives: [{
 	      name: "model",
 	      rawName: "v-model",
-	      value: (_vm.defGradAlgo),
-	      expression: "defGradAlgo"
+	      value: (_vm.d_defGradAlgo),
+	      expression: "d_defGradAlgo"
 	    }],
 	    staticClass: "uk-select uk-form-width-small",
 	    attrs: {
 	      "id": "def-grad-algo"
 	    },
 	    on: {
-	      "change": function($event) {
-	        _vm.defGradAlgo = Array.prototype.filter.call($event.target.options, function(o) {
+	      "change": [function($event) {
+	        _vm.d_defGradAlgo = Array.prototype.filter.call($event.target.options, function(o) {
 	          return o.selected
 	        }).map(function(o) {
 	          var val = "_value" in o ? o._value : o.value;
 	          return val
 	        })[0]
-	      }
+	      }, function($event) {
+	        _vm.updateDefGradAlgo()
+	      }]
 	    }
-	  }, [_c('option', [_vm._v("Prescribed")]), _vm._v(" "), _c('option', [_vm._v("Linear")]), _vm._v(" "), _c('option', [_vm._v("Taylor series")]), _vm._v(" "), _c('option', [_vm._v("Subcycling")])])])]), _vm._v(" "), _c('div', {
-	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+	  }, _vm._l((_vm.d_defGradAlgoLabels), function(label, index) {
+	    return _c('option', [_vm._v(_vm._s(label))])
+	  }))])]), _vm._v(" "), (_vm.c_doPrescribedDefGrad) ? _c('div', {
+	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right",
+	    staticStyle: {
+	      "background-color": "rgba(218, 247, 166, 100)"
+	    }
 	  }, [_c('label', {
 	    staticClass: "uk-form-label",
 	    attrs: {
@@ -10523,7 +10666,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      value: (_vm.defGradFile),
 	      expression: "defGradFile"
 	    }],
-	    staticClass: "uk-input uk-form-width-small",
+	    staticClass: "uk-input uk-form-width-medium",
 	    attrs: {
 	      "id": "def-grad-file",
 	      "type": "text",
@@ -10538,8 +10681,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _vm.defGradFile = $event.target.value
 	      }
 	    }
-	  })])]), _vm._v(" "), _c('div', {
-	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+	  })])]) : _vm._e(), _vm._v(" "), (_vm.c_doTaylorDefGrad) ? _c('div', {
+	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right",
+	    staticStyle: {
+	      "background-color": "rgba(218, 247, 166, 100)"
+	    }
 	  }, [_c('label', {
 	    staticClass: "uk-form-label",
 	    attrs: {
@@ -10554,7 +10700,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      value: (_vm.defGradTaylorTerms),
 	      expression: "defGradTaylorTerms"
 	    }],
-	    staticClass: "uk-input uk-form-width-small",
+	    staticClass: "uk-input uk-form-width-xsmall",
 	    attrs: {
 	      "id": "def-grad-taylor-terms",
 	      "type": "text",
@@ -10569,81 +10715,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _vm.defGradTaylorTerms = $event.target.value
 	      }
 	    }
-	  })])]), _vm._v(" "), _c('div', {
+	  })])]) : _vm._e()]), _vm._v(" "), (_vm.c_useRotatingCoord) ? _c('div', {
 	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-	  }, [_c('div', {
-	    staticClass: "uk-form-controls uk-form-controls-text"
-	  }, [_c('label', [_vm._v("Gradient-enhanced velocity projection "), _c('input', {
-	    directives: [{
-	      name: "model",
-	      rawName: "v-model",
-	      value: (_vm.doVelProj),
-	      expression: "doVelProj"
-	    }],
-	    staticClass: "uk-checkbox",
-	    attrs: {
-	      "type": "checkbox",
-	      "name": "do_vel_proj"
-	    },
-	    domProps: {
-	      "checked": Array.isArray(_vm.doVelProj) ? _vm._i(_vm.doVelProj, null) > -1 : (_vm.doVelProj)
-	    },
-	    on: {
-	      "click": function($event) {
-	        var $$a = _vm.doVelProj,
-	          $$el = $event.target,
-	          $$c = $$el.checked ? (true) : (false);
-	        if (Array.isArray($$a)) {
-	          var $$v = null,
-	            $$i = _vm._i($$a, $$v);
-	          if ($$c) {
-	            $$i < 0 && (_vm.doVelProj = $$a.concat($$v))
-	          } else {
-	            $$i > -1 && (_vm.doVelProj = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
-	          }
-	        } else {
-	          _vm.doVelProj = $$c
-	        }
-	      }
-	    }
-	  })])])]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
-	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-	  }, [_c('label', {
-	    staticClass: "uk-form-label-large"
-	  }, [_vm._v("Use rotating coordinate system")]), _vm._v(" "), _c('input', {
-	    directives: [{
-	      name: "model",
-	      rawName: "v-model",
-	      value: (_vm.doRotCoord),
-	      expression: "doRotCoord"
-	    }],
-	    staticClass: "uk-checkbox",
-	    attrs: {
-	      "type": "checkbox",
-	      "name": "do_rot_coord"
-	    },
-	    domProps: {
-	      "checked": Array.isArray(_vm.doRotCoord) ? _vm._i(_vm.doRotCoord, null) > -1 : (_vm.doRotCoord)
-	    },
-	    on: {
-	      "click": function($event) {
-	        var $$a = _vm.doRotCoord,
-	          $$el = $event.target,
-	          $$c = $$el.checked ? (true) : (false);
-	        if (Array.isArray($$a)) {
-	          var $$v = null,
-	            $$i = _vm._i($$a, $$v);
-	          if ($$c) {
-	            $$i < 0 && (_vm.doRotCoord = $$a.concat($$v))
-	          } else {
-	            $$i > -1 && (_vm.doRotCoord = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
-	          }
-	        } else {
-	          _vm.doRotCoord = $$c
-	        }
-	      }
-	    }
-	  })]), _vm._v(" "), _c('div', {
+	  }, [_c('hr', {
+	    staticClass: "uk-hr"
+	  }), _vm._v("\n      Rotating coordinate system\n      "), _c('div', {
 	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
 	  }, [_c('label', {
 	    staticClass: "uk-form-label",
@@ -10656,27 +10732,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	    directives: [{
 	      name: "model",
 	      rawName: "v-model",
-	      value: (_vm.rotCen),
-	      expression: "rotCen"
+	      value: (_vm.d_rotCen),
+	      expression: "d_rotCen"
 	    }],
 	    staticClass: "uk-input uk-form-width-small",
 	    attrs: {
 	      "id": "form-rot-cen",
-	      "type": "text",
-	      "placeholder": "0, 0, 0"
+	      "type": "text"
 	    },
 	    domProps: {
-	      "value": _vm._s(_vm.rotCen)
+	      "value": _vm._s(_vm.d_rotCen)
 	    },
 	    on: {
 	      "input": function($event) {
 	        if ($event.target.composing) { return; }
-	        _vm.rotCen = $event.target.value
+	        _vm.d_rotCen = $event.target.value
 	      }
 	    }
-	  })])]), _vm._v(" "), _c('div', {
-	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-	  }, [_c('label', {
+	  })]), _vm._v(" "), _c('label', {
 	    staticClass: "uk-form-label",
 	    attrs: {
 	      "for": "form-rot-axis"
@@ -10687,27 +10760,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	    directives: [{
 	      name: "model",
 	      rawName: "v-model",
-	      value: (_vm.rotAxis),
-	      expression: "rotAxis"
+	      value: (_vm.d_rotAxis),
+	      expression: "d_rotAxis"
 	    }],
 	    staticClass: "uk-input uk-form-width-small",
 	    attrs: {
 	      "id": "form-rot-axis",
-	      "type": "text",
-	      "placeholder": "0, 0, 0"
+	      "type": "text"
 	    },
 	    domProps: {
-	      "value": _vm._s(_vm.rotAxis)
+	      "value": _vm._s(_vm.d_rotAxis)
 	    },
 	    on: {
 	      "input": function($event) {
 	        if ($event.target.composing) { return; }
-	        _vm.rotAxis = $event.target.value
+	        _vm.d_rotAxis = $event.target.value
 	      }
 	    }
-	  })])]), _vm._v(" "), _c('div', {
-	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-	  }, [_c('label', {
+	  })]), _vm._v(" "), _c('label', {
 	    staticClass: "uk-form-label",
 	    attrs: {
 	      "for": "form-rot-vel"
@@ -10718,27 +10788,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	    directives: [{
 	      name: "model",
 	      rawName: "v-model",
-	      value: (_vm.rotVel),
-	      expression: "rotVel"
+	      value: (_vm.d_rotVel),
+	      expression: "d_rotVel"
 	    }],
 	    staticClass: "uk-input uk-form-width-small",
 	    attrs: {
 	      "id": "form-rot-vel",
-	      "type": "text",
-	      "placeholder": "0, 0, 0"
+	      "type": "text"
 	    },
 	    domProps: {
-	      "value": _vm._s(_vm.rotVel)
+	      "value": _vm._s(_vm.d_rotVel)
 	    },
 	    on: {
 	      "input": function($event) {
 	        if ($event.target.composing) { return; }
-	        _vm.rotVel = $event.target.value
+	        _vm.d_rotVel = $event.target.value
 	      }
 	    }
-	  })])]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
+	  })])])]) : _vm._e(), _vm._v(" "), (_vm.c_doAdaptiveRefine) ? _c('div', {
 	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-	  }, [_vm._v("\n      Adaptive refinement\n    ")]), _vm._v(" "), _c('div', {
+	  }, [_c('hr', {
+	    staticClass: "uk-hr"
+	  }), _vm._v("\n      Adaptive refinement\n      "), _c('div', {
 	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
 	  }, [_c('div', {
 	    staticClass: "uk-form-controls uk-form-controls-text"
@@ -10746,8 +10817,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    directives: [{
 	      name: "model",
 	      rawName: "v-model",
-	      value: (_vm.doGridAMR),
-	      expression: "doGridAMR"
+	      value: (_vm.d_doGridAMR),
+	      expression: "d_doGridAMR"
 	    }],
 	    staticClass: "uk-checkbox",
 	    attrs: {
@@ -10755,23 +10826,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	      "name": "do_grid_amr"
 	    },
 	    domProps: {
-	      "checked": Array.isArray(_vm.doGridAMR) ? _vm._i(_vm.doGridAMR, null) > -1 : (_vm.doGridAMR)
+	      "checked": Array.isArray(_vm.d_doGridAMR) ? _vm._i(_vm.d_doGridAMR, null) > -1 : (_vm.d_doGridAMR)
 	    },
 	    on: {
 	      "click": function($event) {
-	        var $$a = _vm.doGridAMR,
+	        var $$a = _vm.d_doGridAMR,
 	          $$el = $event.target,
 	          $$c = $$el.checked ? (true) : (false);
 	        if (Array.isArray($$a)) {
 	          var $$v = null,
 	            $$i = _vm._i($$a, $$v);
 	          if ($$c) {
-	            $$i < 0 && (_vm.doGridAMR = $$a.concat($$v))
+	            $$i < 0 && (_vm.d_doGridAMR = $$a.concat($$v))
 	          } else {
-	            $$i > -1 && (_vm.doGridAMR = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+	            $$i > -1 && (_vm.d_doGridAMR = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
 	          }
 	        } else {
-	          _vm.doGridAMR = $$c
+	          _vm.d_doGridAMR = $$c
 	        }
 	      }
 	    }
@@ -10779,8 +10850,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    directives: [{
 	      name: "model",
 	      rawName: "v-model",
-	      value: (_vm.doPartAMR),
-	      expression: "doPartAMR"
+	      value: (_vm.d_doPartAMR),
+	      expression: "d_doPartAMR"
 	    }],
 	    staticClass: "uk-checkbox",
 	    attrs: {
@@ -10788,27 +10859,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	      "name": "do_part_amr"
 	    },
 	    domProps: {
-	      "checked": Array.isArray(_vm.doPartAMR) ? _vm._i(_vm.doPartAMR, null) > -1 : (_vm.doPartAMR)
+	      "checked": Array.isArray(_vm.d_doPartAMR) ? _vm._i(_vm.d_doPartAMR, null) > -1 : (_vm.d_doPartAMR)
 	    },
 	    on: {
 	      "click": function($event) {
-	        var $$a = _vm.doPartAMR,
+	        var $$a = _vm.d_doPartAMR,
 	          $$el = $event.target,
 	          $$c = $$el.checked ? (true) : (false);
 	        if (Array.isArray($$a)) {
 	          var $$v = null,
 	            $$i = _vm._i($$a, $$v);
 	          if ($$c) {
-	            $$i < 0 && (_vm.doPartAMR = $$a.concat($$v))
+	            $$i < 0 && (_vm.d_doPartAMR = $$a.concat($$v))
 	          } else {
-	            $$i > -1 && (_vm.doPartAMR = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+	            $$i > -1 && (_vm.d_doPartAMR = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
 	          }
 	        } else {
-	          _vm.doPartAMR = $$c
+	          _vm.d_doPartAMR = $$c
 	        }
 	      }
 	    }
-	  }), _vm._v(" Do particle refinement")])])])]), _vm._v(" "), _c('button', {
+	  }), _vm._v(" Do particle refinement")])])])]) : _vm._e()]), _vm._v(" "), _c('button', {
 	    staticClass: "uk-button uk-button-default",
 	    on: {
 	      "click": _vm.printMPMParameters
@@ -10820,12 +10891,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, [_c('hr', {
 	    staticClass: "uk-hr"
 	  }), _vm._v("\n      Simulation limits\n    ")])
-	},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-	  return _c('div', {
-	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-	  }, [_c('hr', {
-	    staticClass: "uk-hr"
-	  }), _vm._v("\n      Deformation gradient\n    ")])
 	}]}
 	module.exports.render._withStripped = true
 	if (false) {
