@@ -9658,17 +9658,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	      d_dimensionLabels: ["3D", "2D Axisymmetric"],
 	      d_dimension: 0,
 
+	      // Integration type
 	      d_integrationTypeLabels: ["Explicit", "Explicit: Fracture", "Implicit"],
-	      d_integrationTypeStrings: ["explicit", "fracture", "implicit"],
+	      d_integrationTypeUPS: ["explicit", "fracture", "implicit"],
 	      d_integration: "Explicit",
 
-	      interpolationType: "gimp",
+	      // Interpolation type
+	      d_interpolationTypeLabels: ["Linear", "GIMP", "ThirdOrderBSpline", "CPDI", "CPTI"],
+	      d_interpolationTypeUPS: ["linear", "gimp", "thirdOrderBS", "cpdi", "cpti"],
+	      d_interpolation: "GIMP",
 
-	      mpmFlags: ["test"],
+	      // MPM simulation flags
+	      d_mpmFlagLabels: ["Do not reset grid", "Add particle colors", "Use artificial viscosity", "Do pressure stabilization", "Do explicit heat conduction", "Do thermal expansion", "Do viscous heating", "Do contact friction heating", "Use load curves", "Use exact deformation", "Use CBDI boundary condition", "Use cohesive zones", "Create new particles", "Allow adding new material", "Manually add new material", "Allow particle insertion", "Delete rogue particles"],
+	      d_mpmFlagUPS: [],
+	      d_mpmFlags: [],
 
-	      minPartMass: 1.0e-16,
-	      maxPartVel: 1.0e16,
+	      d_minPartMass: 1.0e-16,
+	      d_maxPartVel: 1.0e8,
 
+	      d_doArtificialViscosity: false,
 	      artViscC1: 0.0,
 	      artViscC2: 0.0,
 
@@ -9687,12 +9695,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	  },
 
+	  computed: {
+	    c_doArtificialViscosity: {
+	      get: function () {
+	        return this.d_doArtificialViscosity;
+	      }
+	    }
+	  },
+
 	  methods: {
+
+	    updateMPMFlags() {
+	      this.d_doArtificialViscosity = false;
+	      this.d_mpmFlags.forEach(flag => {
+	        if (flag.index === 2) {
+	          this.d_doArtificialViscosity = true;
+	        }
+	      });
+	    },
 
 	    printMPMParameters() {
 	      console.log("dim = " + this.d_dimension);
 	      console.log("int = " + this.d_integration);
-	      console.log("MPM Flags = " + this.mpmFlags);
+	      console.log("interp = " + this.d_interpolation);
+	      console.log("MPM Flags = " + this.d_mpmFlags[1].label);
+	      console.log("MPM Flags = " + this.d_mpmFlags[1].index);
 
 	      let xmlDoc = document.implementation.createDocument("", "", null);
 
@@ -10265,8 +10292,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    directives: [{
 	      name: "model",
 	      rawName: "v-model",
-	      value: (_vm.interpolationType),
-	      expression: "interpolationType"
+	      value: (_vm.d_interpolation),
+	      expression: "d_interpolation"
 	    }],
 	    staticClass: "uk-select uk-form-width-small",
 	    attrs: {
@@ -10274,7 +10301,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 	    on: {
 	      "change": function($event) {
-	        _vm.interpolationType = Array.prototype.filter.call($event.target.options, function(o) {
+	        _vm.d_interpolation = Array.prototype.filter.call($event.target.options, function(o) {
 	          return o.selected
 	        }).map(function(o) {
 	          var val = "_value" in o ? o._value : o.value;
@@ -10282,7 +10309,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        })[0]
 	      }
 	    }
-	  }, [_c('option', [_vm._v("Linear")]), _vm._v(" "), _c('option', [_vm._v("GIMP")]), _vm._v(" "), _c('option', [_vm._v("ThirdOrderBS")]), _vm._v(" "), _c('option', [_vm._v("CPDI")]), _vm._v(" "), _c('option', [_vm._v("CPTI")])])])]), _vm._v(" "), _c('div', {
+	  }, _vm._l((_vm.d_interpolationTypeLabels), function(label, index) {
+	    return _c('option', [_vm._v(_vm._s(label))])
+	  }))])]), _vm._v(" "), _c('div', {
 	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
 	  }, [_c('label', {
 	    staticClass: "uk-form-label",
@@ -10295,8 +10324,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    directives: [{
 	      name: "model",
 	      rawName: "v-model",
-	      value: (_vm.mpmFlags),
-	      expression: "mpmFlags"
+	      value: (_vm.d_mpmFlags),
+	      expression: "d_mpmFlags"
 	    }],
 	    staticClass: "uk-select uk-form-width-medium",
 	    attrs: {
@@ -10304,18 +10333,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	      "multiple": ""
 	    },
 	    on: {
-	      "change": function($event) {
-	        _vm.mpmFlags = Array.prototype.filter.call($event.target.options, function(o) {
+	      "change": [function($event) {
+	        _vm.d_mpmFlags = Array.prototype.filter.call($event.target.options, function(o) {
 	          return o.selected
 	        }).map(function(o) {
 	          var val = "_value" in o ? o._value : o.value;
 	          return val
 	        })
-	      }
+	      }, function($event) {
+	        _vm.updateMPMFlags()
+	      }]
 	    }
-	  }, [_c('option', [_vm._v("Do not reset grid")]), _vm._v(" "), _c('option', [_vm._v("Add particle colors")]), _vm._v(" "), _c('option', [_vm._v("Use artificial viscosity")]), _vm._v(" "), _c('option', [_vm._v("Do pressure stabilization")]), _vm._v(" "), _c('option', [_vm._v("Do explicit heat conduction")]), _vm._v(" "), _c('option', [_vm._v("Do thermal expansion")]), _vm._v(" "), _c('option', [_vm._v("Do viscous heating")]), _vm._v(" "), _c('option', [_vm._v("Do contact friction heating")]), _vm._v(" "), _c('option', [_vm._v("Use load curves")]), _vm._v(" "), _c('option', [_vm._v("Use exact deformation")]), _vm._v(" "), _c('option', [_vm._v("Use CBDI boundary condition")]), _vm._v(" "), _c('option', [_vm._v("Use cohesive zones")]), _vm._v(" "), _c('option', [_vm._v("Create new particles")]), _vm._v(" "), _c('option', [_vm._v("Allow adding new material")]), _vm._v(" "), _c('option', [_vm._v("Manually add new material")]), _vm._v(" "), _c('option', [_vm._v("Allow particle insertion")]), _vm._v(" "), _c('option', [_vm._v("Delete rogue particles")])])])]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
-	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-	  }, [_vm._v("\n      Simulation limits\n    ")]), _vm._v(" "), _c('div', {
+	  }, _vm._l((_vm.d_mpmFlagLabels), function(label, index) {
+	    return _c('option', {
+	      domProps: {
+	        "value": {
+	          label: label,
+	          index: index
+	        }
+	      }
+	    }, [_vm._v(_vm._s(label))])
+	  }))])]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c('div', {
 	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
 	  }, [_c('label', {
 	    staticClass: "uk-form-label-large",
@@ -10328,27 +10366,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	    directives: [{
 	      name: "model",
 	      rawName: "v-model",
-	      value: (_vm.minPartMass),
-	      expression: "minPartMass"
+	      value: (_vm.d_minPartMass),
+	      expression: "d_minPartMass"
 	    }],
 	    staticClass: "uk-input uk-form-width-small",
 	    attrs: {
 	      "id": "min-part-mass",
-	      "type": "text",
-	      "placeholder": "1.0e-16"
+	      "type": "text"
 	    },
 	    domProps: {
-	      "value": _vm._s(_vm.minPartMass)
+	      "value": _vm.d_minPartMass,
+	      "value": _vm._s(_vm.d_minPartMass)
 	    },
 	    on: {
 	      "input": function($event) {
 	        if ($event.target.composing) { return; }
-	        _vm.minPartMass = $event.target.value
+	        _vm.d_minPartMass = $event.target.value
 	      }
 	    }
-	  })])]), _vm._v(" "), _c('div', {
-	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-	  }, [_c('label', {
+	  })]), _vm._v(" "), _c('label', {
 	    staticClass: "uk-form-label-large",
 	    attrs: {
 	      "for": "max-part-vel"
@@ -10359,27 +10395,32 @@ return /******/ (function(modules) { // webpackBootstrap
 	    directives: [{
 	      name: "model",
 	      rawName: "v-model",
-	      value: (_vm.maxPartVel),
-	      expression: "maxPartVel"
+	      value: (_vm.d_maxPartVel),
+	      expression: "d_maxPartVel"
 	    }],
 	    staticClass: "uk-input uk-form-width-small",
 	    attrs: {
 	      "id": "max-part-vel",
-	      "type": "text",
-	      "placeholder": "1.0e16"
+	      "type": "text"
 	    },
 	    domProps: {
-	      "value": _vm._s(_vm.maxPartVel)
+	      "value": _vm.d_maxPartVel,
+	      "value": _vm._s(_vm.d_maxPartVel)
 	    },
 	    on: {
 	      "input": function($event) {
 	        if ($event.target.composing) { return; }
-	        _vm.maxPartVel = $event.target.value
+	        _vm.d_maxPartVel = $event.target.value
 	      }
 	    }
-	  })])]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
-	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-	  }, [_vm._v("\n      Artificial viscosity parameters \n    ")]), _vm._v(" "), _c('div', {
+	  })])]), _vm._v(" "), (_vm.c_doArtificialViscosity) ? _c('div', {
+	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right",
+	    staticStyle: {
+	      "background-color": "rgba(218, 247, 166, 100)"
+	    }
+	  }, [_c('hr', {
+	    staticClass: "uk-hr"
+	  }), _vm._v("\n      Artificial viscosity parameters \n      "), _c('div', {
 	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
 	  }, [_c('label', {
 	    staticClass: "uk-form-label",
@@ -10410,9 +10451,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _vm.artViscC1 = $event.target.value
 	      }
 	    }
-	  })])]), _vm._v(" "), _c('div', {
-	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-	  }, [_c('label', {
+	  })]), _vm._v(" "), _c('label', {
 	    staticClass: "uk-form-label",
 	    attrs: {
 	      "for": "c2"
@@ -10441,9 +10480,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _vm.artViscC2 = $event.target.value
 	      }
 	    }
-	  })])]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
-	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-	  }, [_vm._v("\n      Deformation gradient\n    ")]), _vm._v(" "), _c('div', {
+	  })])])]) : _vm._e(), _vm._v(" "), _vm._m(1), _vm._v(" "), _c('div', {
 	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
 	  }, [_c('label', {
 	    staticClass: "uk-form-label"
@@ -10777,7 +10814,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	      "click": _vm.printMPMParameters
 	    }
 	  }, [_vm._v("Print")])])
-	},staticRenderFns: []}
+	},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+	  return _c('div', {
+	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+	  }, [_c('hr', {
+	    staticClass: "uk-hr"
+	  }), _vm._v("\n      Simulation limits\n    ")])
+	},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+	  return _c('div', {
+	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+	  }, [_c('hr', {
+	    staticClass: "uk-hr"
+	  }), _vm._v("\n      Deformation gradient\n    ")])
+	}]}
 	module.exports.render._withStripped = true
 	if (false) {
 	  module.hot.accept()

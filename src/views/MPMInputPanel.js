@@ -17,25 +17,64 @@ let MPMInputPanel = Vue.extend(
         ],
         d_dimension: 0,
 
+        // Integration type
         d_integrationTypeLabels : [
           "Explicit",
           "Explicit: Fracture",
-          "Implicit"
+          "Implicit",
         ],
-        d_integrationTypeStrings : [
+        d_integrationTypeUPS : [
           "explicit",
           "fracture",
-          "implicit"
+          "implicit",
         ],
         d_integration: "Explicit",
 
-        interpolationType : "gimp",
+        // Interpolation type
+        d_interpolationTypeLabels : [
+          "Linear",
+          "GIMP",
+          "ThirdOrderBSpline",
+          "CPDI",
+          "CPTI",
+        ],
+        d_interpolationTypeUPS : [
+          "linear",
+          "gimp",
+          "thirdOrderBS",
+          "cpdi",
+          "cpti",
+        ],
+        d_interpolation : "GIMP",
 
-        mpmFlags : ["test"],
+        // MPM simulation flags
+        d_mpmFlagLabels : [
+          "Do not reset grid",
+          "Add particle colors",
+          "Use artificial viscosity",
+          "Do pressure stabilization",
+          "Do explicit heat conduction",
+          "Do thermal expansion",
+          "Do viscous heating",
+          "Do contact friction heating",
+          "Use load curves",
+          "Use exact deformation",
+          "Use CBDI boundary condition",
+          "Use cohesive zones",
+          "Create new particles",
+          "Allow adding new material",
+          "Manually add new material",
+          "Allow particle insertion",
+          "Delete rogue particles",
+        ],
+        d_mpmFlagUPS : [
+        ],
+        d_mpmFlags : [],
 
-        minPartMass : 1.0e-16,
-        maxPartVel : 1.0e16,
+        d_minPartMass : 1.0e-16,
+        d_maxPartVel : 1.0e8,
 
+        d_doArtificialViscosity: false,
         artViscC1 : 0.0,
         artViscC2 : 0.0,
 
@@ -54,12 +93,31 @@ let MPMInputPanel = Vue.extend(
       };
     },
 
+    computed: {
+      c_doArtificialViscosity: {
+        get: function() {
+          return this.d_doArtificialViscosity;
+        }
+      }
+    },
+
     methods: {
+
+      updateMPMFlags() {
+        this.d_doArtificialViscosity = false;
+        this.d_mpmFlags.forEach((flag) => {
+          if (flag.index === 2) {
+            this.d_doArtificialViscosity = true;
+          }
+        });
+      },
 
       printMPMParameters() {
         console.log("dim = " + this.d_dimension);
         console.log("int = " + this.d_integration);
-        console.log("MPM Flags = " + this.mpmFlags);
+        console.log("interp = " + this.d_interpolation);
+        console.log("MPM Flags = " + this.d_mpmFlags[1].label);
+        console.log("MPM Flags = " + this.d_mpmFlags[1].index);
 
         let xmlDoc = document.implementation.createDocument("", "", null);
 

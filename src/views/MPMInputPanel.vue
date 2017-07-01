@@ -20,7 +20,7 @@
                   :value="d_integration"
                   class="uk-select uk-form-width-small" 
                   id="integration-type">
-            <option v-for="(label, index) in d_integrationTypeLabels">{{ label }}</option>
+            <option v-for="(label, index) in d_integrationTypeLabels">{{label}}</option>
           </select>
         </div>
       </div>
@@ -29,13 +29,11 @@
       <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
         <label class="uk-form-label" for="interpolation-type">MPM interpolation</label>
         <div class="uk-form-controls">
-          <select v-model="interpolationType" class="uk-select uk-form-width-small" id="interpolation-type">
-                                    <option>Linear</option>
-                                    <option>GIMP</option>
-                                    <option>ThirdOrderBS</option>
-                                    <option>CPDI</option>
-                                    <option>CPTI</option>
-                                </select>
+          <select v-model="d_interpolation" 
+                  class="uk-select uk-form-width-small" 
+                  id="interpolation-type">
+            <option v-for="(label, index) in d_interpolationTypeLabels">{{label}}</option>
+          </select>
         </div>
       </div>
 
@@ -43,68 +41,57 @@
       <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
         <label class="uk-form-label" for="mpm-flags">MPM Options</label>
         <div class="uk-form-controls">
-          <select v-model="mpmFlags" class="uk-select uk-form-width-medium" id="mpm-flags" multiple>
-                                    <option>Do not reset grid</option>
-                                    <option>Add particle colors</option>
-                                    <option>Use artificial viscosity</option>
-                                    <option>Do pressure stabilization</option>
-                                    <option>Do explicit heat conduction</option>
-                                    <option>Do thermal expansion</option>
-                                    <option>Do viscous heating</option>
-                                    <option>Do contact friction heating</option>
-                                    <option>Use load curves</option>
-                                    <option>Use exact deformation</option>
-                                    <option>Use CBDI boundary condition</option>
-                                    <option>Use cohesive zones</option>
-                                    <option>Create new particles</option>
-                                    <option>Allow adding new material</option>
-                                    <option>Manually add new material</option>
-                                    <option>Allow particle insertion</option>
-                                    <option>Delete rogue particles</option>
-                                </select>
+          <select v-model="d_mpmFlags" 
+                  @change="updateMPMFlags()"
+                  class="uk-select uk-form-width-medium" 
+                  id="mpm-flags" multiple>
+            <option v-for="(label, index) in d_mpmFlagLabels"
+                    v-bind:value="{label: label, index: index}">{{label}}</option>
+          </select>
         </div>
       </div>
 
       <!-- Simulation limits -->
-      <hr>
       <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
+        <hr class="uk-hr">
         Simulation limits
       </div>
       <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
         <label class="uk-form-label-large" for="min-part-mass">Minimum particle mass</label>
         <div class="uk-form-controls">
-          <input v-model="minPartMass" class="uk-input uk-form-width-small" id="min-part-mass" 
-                 type="text" placeholder="1.0e-16">
+          <input v-model="d_minPartMass" :value="d_minPartMass"
+                 class="uk-input uk-form-width-small" id="min-part-mass" 
+                 type="text">
         </div>
-      </div>
-      <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
         <label class="uk-form-label-large" for="max-part-vel">Maximum particle velocity</label>
         <div class="uk-form-controls">
-          <input v-model="maxPartVel" class="uk-input uk-form-width-small" id="max-part-vel" type="text" placeholder="1.0e16">
+          <input v-model="d_maxPartVel" :value="d_maxPartVel"
+                 class="uk-input uk-form-width-small" id="max-part-vel" 
+                 type="text">
         </div>
       </div>
 
       <!-- Artificial viscosity flags -->
-      <hr>
-      <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
+      <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+           style="background-color:rgba(218, 247, 166, 100);"
+           v-if="c_doArtificialViscosity">
+        <hr class="uk-hr">
         Artificial viscosity parameters 
-      </div>
-      <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
-        <label class="uk-form-label" for="c1">C1</label>
-        <div class="uk-form-controls">
-          <input v-model="artViscC1" class="uk-input uk-form-width-small" id="c1" type="text" placeholder="0.2">
-        </div>
-      </div>
-      <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
-        <label class="uk-form-label" for="c2">C2</label>
-        <div class="uk-form-controls">
-          <input v-model="artViscC2" class="uk-input uk-form-width-small" id="c2" type="text" placeholder="0.05">
+        <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
+          <label class="uk-form-label" for="c1">C1</label>
+          <div class="uk-form-controls">
+            <input v-model="artViscC1" class="uk-input uk-form-width-small" id="c1" type="text" placeholder="0.2">
+          </div>
+          <label class="uk-form-label" for="c2">C2</label>
+          <div class="uk-form-controls">
+            <input v-model="artViscC2" class="uk-input uk-form-width-small" id="c2" type="text" placeholder="0.05">
+          </div>
         </div>
       </div>
 
       <!-- Gradient computation -->
-      <hr>
       <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
+        <hr class="uk-hr">
         Deformation gradient
       </div>
       <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">

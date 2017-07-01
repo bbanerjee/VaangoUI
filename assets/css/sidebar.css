@@ -141,9 +141,20 @@
 }
 
 .uk-form-width-small {
-  width: 100px
+  width: 100px;
 }
 
 .uk-form-width-medium {
-  width: 150px
+  width: 150px;
 }
+
+.uk-hr hr {
+  margin: 0 0 0 0;
+}
+
+*+.uk-hr,
+*+hr {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
