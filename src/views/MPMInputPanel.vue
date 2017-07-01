@@ -6,8 +6,9 @@
       <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
         <span class="uk-form-label">Dimensions</span>
         <div class="uk-form-controls uk-form-controls-text">
-          <label><input v-model="threeD" class="uk-radio" type="radio" name="dimensions"> 3D</label>
-          <label><input v-model="twoD" class="uk-radio" type="radio" name="dimensions"> 2D Axisymmetric</label>
+          <label v-for="(dimLabel, dimIndex) in d_dimensionLabels">
+            <input v-model="d_dimension" :value="dimIndex" class="uk-radio" type="radio" name="dimRadioBtn"> {{dimLabel}} 
+          </label>
         </div>
       </div>
 
@@ -15,11 +16,12 @@
       <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
         <label class="uk-form-label" for="integration-type">Time integration</label>
         <div class="uk-form-controls">
-          <select v-model="integrationType" class="uk-select uk-form-width-small" id="integration-type">
-                                    <option>Explicit</option>
-                                    <option>Explicit: Fracture</option>
-                                    <option>Implicit</option>
-                                </select>
+          <select v-model="d_integration" 
+                  :value="d_integration"
+                  class="uk-select uk-form-width-small" 
+                  id="integration-type">
+            <option v-for="(label, index) in d_integrationTypeLabels">{{ label }}</option>
+          </select>
         </div>
       </div>
 
@@ -71,7 +73,8 @@
       <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">
         <label class="uk-form-label-large" for="min-part-mass">Minimum particle mass</label>
         <div class="uk-form-controls">
-          <input v-model="minPartMass" class="uk-input uk-form-width-small" id="min-part-mass" type="text" placeholder="1.0e-16">
+          <input v-model="minPartMass" class="uk-input uk-form-width-small" id="min-part-mass" 
+                 type="text" placeholder="1.0e-16">
         </div>
       </div>
       <div class="uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right">

@@ -9654,13 +9654,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	      id: "MPMInputPanel",
 	      sidebarTabIndex: 0,
 
-	      threeD: true,
-	      twoD: false,
+	      // These are the names that are displayed in the UI
+	      d_dimensionLabels: ["3D", "2D Axisymmetric"],
+	      d_dimension: 0,
 
-	      integrationType: "explicit",
+	      d_integrationTypeLabels: ["Explicit", "Explicit: Fracture", "Implicit"],
+	      d_integrationTypeStrings: ["explicit", "fracture", "implicit"],
+	      d_integration: "Explicit",
+
 	      interpolationType: "gimp",
 
-	      mpmFlags: ["resetGrid", "colors", "artVisc", "pressStab"],
+	      mpmFlags: ["test"],
 
 	      minPartMass: 1.0e-16,
 	      maxPartVel: 1.0e16,
@@ -9686,21 +9690,100 @@ return /******/ (function(modules) { // webpackBootstrap
 	  methods: {
 
 	    printMPMParameters() {
+	      console.log("dim = " + this.d_dimension);
+	      console.log("int = " + this.d_integration);
 	      console.log("MPM Flags = " + this.mpmFlags);
 
-	      var xmlDoc = document.implementation.createDocument("", "", null);
-	      var mpmElement = xmlDoc.createElement("MPM");
+	      let xmlDoc = document.implementation.createDocument("", "", null);
+
+	      let mpmElement = xmlDoc.createElement("MPM");
+
+	      /*
+	      let d_integrator = integrationType;
+	      let flag = xmlDoc.createElement("time_integrator");
+	      flag.appendChild(xmlDoc.createTextNode(d_integrator));
+	      mpmElement.appendChild(flag);
+	       flag = xmlDoc.createElement("interpolator");
+	      flag.appendChild(xmlDoc.createTextNode(d_mpmAlgo));
+	      mpmElement.appendChild(flag);
+	       flag = xmlDoc.createElement("minimum_particle_mass");
+	      flag.appendChild(xmlDoc.createTextNode(d_minMass));
+	      mpmElement.appendChild(flag);
+	       flag = xmlDoc.createElement("maximum_particle_velocity");
+	      flag.appendChild(xmlDoc.createTextNode(d_maxVel));
+	      mpmElement.appendChild(flag);
+	       flag = xmlDoc.createElement("do_grid_reset");
+	      flag.appendChild(xmlDoc.createTextNode(d_gridReset));
+	      mpmElement.appendChild(flag);
+	       flag = xmlDoc.createElement("use_load_curves");
+	      flag.appendChild(xmlDoc.createTextNode(d_loadCurve));
+	      mpmElement.appendChild(flag);
+	       flag = xmlDoc.createElement("do_contact_friction_heating");
+	      flag.appendChild(xmlDoc.createTextNode(d_fricHeat));
+	      mpmElement.appendChild(flag);
+	       flag = xmlDoc.createElement("artificial_damping_coeff");
+	      flag.appendChild(xmlDoc.createTextNode(d_damping));
+	      mpmElement.appendChild(flag);
+	       flag = xmlDoc.createElement("artificial_viscosity");
+	      flag.appendChild(xmlDoc.createTextNode(d_viscosity));
+	      mpmElement.appendChild(flag);
+	       flag = xmlDoc.createElement("artificial_viscosity_coeff1");
+	      flag.appendChild(xmlDoc.createTextNode(d_viscCoefC1));
+	      mpmElement.appendChild(flag);
+	       flag = xmlDoc.createElement("artificial_viscosity_coeff2");
+	      flag.appendChild(xmlDoc.createTextNode(d_viscCoefC2));
+	      mpmElement.appendChild(flag);
+	       flag = xmlDoc.createElement("erosion");
+	      flag = xmlDoc.createAttribute("algorithm");
+	      flag.appendChild(xmlDoc.createTextNode(d_failAlgo));
+	      mpmElement.appendChild(flag);
+	       flag = xmlDoc.createElement("create_new_particles");
+	      flag.appendChild(xmlDoc.createTextNode(d_convert));
+	      mpmElement.appendChild(flag);
+	                   if(this.__parent.d_integrator === "implicit") {
+	      flag = xmlDoc.createElement("dynamic");
+	      flag.appendChild(xmlDoc.createTextNode(d_impDynamic));
+	      mpmElement.appendChild(flag);
+	       flag = xmlDoc.createElement("solver");
+	      flag.appendChild(xmlDoc.createTextNode(d_solver));
+	      mpmElement.appendChild(flag);
+	       flag = xmlDoc.createElement("DoImplicitHeatConduction");
+	      flag.appendChild(xmlDoc.createTextNode(d_impHeat));
+	      mpmElement.appendChild(flag);
+	       flag = xmlDoc.createElement("convergence_criteria_disp");
+	      flag.appendChild(xmlDoc.createTextNode(d_convDisp));
+	      flag.appendChild(xmlDoc.createTextNode())
+	       flag = xmlDoc.createElement("convergence_criteria_energy");
+	      flag.appendChild(xmlDoc.createTextNode(d_convEnergy));
+	      mpmElement.appendChild(flag);
+	       flag = xmlDoc.createElement("num_iters_to_decrease_delT");
+	      flag.appendChild(xmlDoc.createTextNode(d_maxItersDecDelt));
+	      mpmElement.appendChild(flag);
+	       flag = xmlDoc.createElement("delT_decrease_factor");
+	      flag.appendChild(xmlDoc.createTextNode(d_deltDecFac));
+	      mpmElement.appendChild(flag);
+	       flag = xmlDoc.createElement("num_iters_to_increase_delT");
+	      flag.appendChild(xmlDoc.createTextNode(d_maxItersIncDelt));
+	      mpmElement.appendChild(flag);
+	       flag = xmlDoc.createElement("delT_increase_factor");
+	      flag.appendChild(xmlDoc.createTextNode(d_delTInFac));
+	      mpmElement.appendChild(flag);
+	       flag = xmlDoc.createElement("iters_before_timestep_restart");
+	      flag.appendChild(xmlDoc.createTextNode(d_maxItersRestart));
+	      mpmElement.appendChild(flag);
+	                  }
+	                  */
 	      var artVisc = xmlDoc.createElement("artificial_viscosity");
 	      var artViscVal = xmlDoc.createTextNode(this.artViscC1.toString());
 	      artVisc.appendChild(artViscVal);
 	      console.log("art visc = " + this.artViscC1 + "," + artVisc.nodeValue);
 	      mpmElement.appendChild(artVisc);
+
 	      xmlDoc.appendChild(mpmElement);
 	      var formatter = new vkbeautify();
 	      var xmlText = formatter.xml(new XMLSerializer().serializeToString(xmlDoc));
-	      //var xmlText = new XMLSerializer().serializeToString(xmlDoc);
 
-	      console.log("XML = " + xmlText);
+	      console.log(xmlText);
 	    }
 
 	  }
@@ -10111,47 +10194,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	    staticClass: "uk-form-label"
 	  }, [_vm._v("Dimensions")]), _vm._v(" "), _c('div', {
 	    staticClass: "uk-form-controls uk-form-controls-text"
-	  }, [_c('label', [_c('input', {
-	    directives: [{
-	      name: "model",
-	      rawName: "v-model",
-	      value: (_vm.threeD),
-	      expression: "threeD"
-	    }],
-	    staticClass: "uk-radio",
-	    attrs: {
-	      "type": "radio",
-	      "name": "dimensions"
-	    },
-	    domProps: {
-	      "checked": _vm._q(_vm.threeD, null)
-	    },
-	    on: {
-	      "click": function($event) {
-	        _vm.threeD = null
+	  }, _vm._l((_vm.d_dimensionLabels), function(dimLabel, dimIndex) {
+	    return _c('label', [_c('input', {
+	      directives: [{
+	        name: "model",
+	        rawName: "v-model",
+	        value: (_vm.d_dimension),
+	        expression: "d_dimension"
+	      }],
+	      staticClass: "uk-radio",
+	      attrs: {
+	        "type": "radio",
+	        "name": "dimRadioBtn"
+	      },
+	      domProps: {
+	        "value": dimIndex,
+	        "checked": _vm._q(_vm.d_dimension, dimIndex)
+	      },
+	      on: {
+	        "click": function($event) {
+	          _vm.d_dimension = dimIndex
+	        }
 	      }
-	    }
-	  }), _vm._v(" 3D")]), _vm._v(" "), _c('label', [_c('input', {
-	    directives: [{
-	      name: "model",
-	      rawName: "v-model",
-	      value: (_vm.twoD),
-	      expression: "twoD"
-	    }],
-	    staticClass: "uk-radio",
-	    attrs: {
-	      "type": "radio",
-	      "name": "dimensions"
-	    },
-	    domProps: {
-	      "checked": _vm._q(_vm.twoD, null)
-	    },
-	    on: {
-	      "click": function($event) {
-	        _vm.twoD = null
-	      }
-	    }
-	  }), _vm._v(" 2D Axisymmetric")])])]), _vm._v(" "), _c('div', {
+	    }), _vm._v(" " + _vm._s(dimLabel) + " \n        ")])
+	  }))]), _vm._v(" "), _c('div', {
 	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
 	  }, [_c('label', {
 	    staticClass: "uk-form-label",
@@ -10164,16 +10230,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	    directives: [{
 	      name: "model",
 	      rawName: "v-model",
-	      value: (_vm.integrationType),
-	      expression: "integrationType"
+	      value: (_vm.d_integration),
+	      expression: "d_integration"
 	    }],
 	    staticClass: "uk-select uk-form-width-small",
 	    attrs: {
 	      "id": "integration-type"
 	    },
+	    domProps: {
+	      "value": _vm.d_integration
+	    },
 	    on: {
 	      "change": function($event) {
-	        _vm.integrationType = Array.prototype.filter.call($event.target.options, function(o) {
+	        _vm.d_integration = Array.prototype.filter.call($event.target.options, function(o) {
 	          return o.selected
 	        }).map(function(o) {
 	          var val = "_value" in o ? o._value : o.value;
@@ -10181,7 +10250,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        })[0]
 	      }
 	    }
-	  }, [_c('option', [_vm._v("Explicit")]), _vm._v(" "), _c('option', [_vm._v("Explicit: Fracture")]), _vm._v(" "), _c('option', [_vm._v("Implicit")])])])]), _vm._v(" "), _c('div', {
+	  }, _vm._l((_vm.d_integrationTypeLabels), function(label, index) {
+	    return _c('option', [_vm._v(_vm._s(label))])
+	  }))])]), _vm._v(" "), _c('div', {
 	    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
 	  }, [_c('label', {
 	    staticClass: "uk-form-label",
