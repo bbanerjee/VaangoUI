@@ -9,6 +9,7 @@ let VaangoMainPanel = Vue.extend(
         id : "VaangoMainPanel", 
         sidebarTabIndex : 0, 
         sidebarTabName : "",
+        editorWindowActive : false,
         size : { x: 500, y: 500 }
       }
     },
@@ -18,6 +19,14 @@ let VaangoMainPanel = Vue.extend(
         console.log("Updating sidebarTabIndex to " + index + " " + name);
         this.sidebarTabIndex = index;
         this.sidebarTabName = name;
+
+        // If the "Create geometry" tab has been selected than
+        // turn on the editor window
+        if (this.sidebarTabName === "Create geometry") {
+          this.editorWindowActive = true;
+        } else {
+          this.editorWindowActive = false;
+        }
       }
     }
   }

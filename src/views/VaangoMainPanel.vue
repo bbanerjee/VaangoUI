@@ -16,12 +16,16 @@
         </main-text-panel>
       </div>
       <div class="uk-flex-vertical">
-        <three-graphics-panel
-          class="uk-width-xxlarge">
+        <three-graphics-panel class="uk-width-xxlarge">
         </three-graphics-panel>
-        <vtk-graphics-panel
-          class="uk-width-xxlarge">
-        </vtk-graphics-panel>
+        <div v-if="editorWindowActive == false" class="uk-width-xxlarge">
+          <vtk-graphics-panel>
+          </vtk-graphics-panel>
+        </div> 
+        <div v-else class="uk-width-xxlarge">
+          <editor-graphics-panel>
+          </editor-graphics-panel>
+        </div> 
       </div>
     </div>
   </div>

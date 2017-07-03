@@ -10,11 +10,11 @@ let VaangoInputsSidebar = Vue.extend(
         tabNames: [
           "Simulation type",
           "Timestep controls",
-          "Geometry",
-          "MPM Parameters",
-          "MPM Materials",
-          "ICE Parameters",
-          "ICE Materials",
+          "Create geometry",
+          "MPM parameters",
+          "MPM materials",
+          "ICE parameters",
+          "ICE materials",
           "Exchange",
           "Grid and BC"
         ]
