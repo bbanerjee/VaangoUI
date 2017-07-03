@@ -1,29 +1,29 @@
 "use strict";
-function setScene(store) {
+function setEditorScene(store) {
     store.commit('SET_EDITOR_SCENE');
 }
 
-exports.setScene = setScene;
+exports.setEditorScene = setEditorScene;
 
-function setCamera(store) {
+function setEditorCamera(store) {
     store.commit('SET_EDITOR_CAMERA');
 }
-exports.setCamera = setCamera;
+exports.setEditorCamera = setEditorCamera;
 
-function deleteScene(store) {
+function deleteEditorScene(store) {
     store.commit('DELETE_EDITOR_SCENE');
 }
-exports.deleteScene = deleteScene;
+exports.deleteEditorScene = deleteEditorScene;
 
-function deleteCamera(store) {
+function deleteEditorCamera(store) {
     store.commit('DELETE_EDITOR_CAMERA');
 }
-exports.deleteCamera = deleteCamera;
+exports.deleteEditorCamera = deleteEditorCamera;
 
-function addObject(store) {
+function addGeometryObject(store) {
     store.commit('ADD_GEOMETRY_OBJECT');
 }
-exports.addObject = addObject;
+exports.addGeometryObject = addGeometryObject;
 
 function updateGeometryObjectsCreatedFlag(store) {
     store.commit('GEOMETRY_OBJECTS_CREATED');
@@ -32,10 +32,10 @@ exports.updateGeometryObjectsCreatedFlag = updateGeometryObjectsCreatedFlag;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = {
-    setScene,
-    setCamera,
-    deleteScene,
-    deleteCamera,
-    addObject,
+    setEditorScene,
+    setEditorCamera,
+    deleteEditorScene,
+    deleteEditorCamera,
+    addGeometryObject,
     updateGeometryObjectsCreatedFlag
 };

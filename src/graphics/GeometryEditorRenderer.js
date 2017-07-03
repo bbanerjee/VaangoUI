@@ -82,7 +82,7 @@ let GeometryEditorRenderer = Vue.extend(
         camera.updateProjectionMatrix();
         Store.commit('SET_EDITOR_CAMERA', camera);
 
-        this.d_controls = new ThreeTrackball(Store.getters.camera,
+        this.d_controls = new ThreeTrackball(Store.getters.editorCamera,
                                              this.d_renderer.domElement);
         console.log("Ediotr trackballControls: mounted + created");
         this.d_controls.rotateSpeed = 10.0;
@@ -127,7 +127,7 @@ let GeometryEditorRenderer = Vue.extend(
       },
 
       render() {
-        this.d_renderer.render(Store.getters.scene, Store.getters.camera);
+        this.d_renderer.render(Store.getters.editorScene, Store.getters.editorCamera);
         //console.log("Done rendering");
       },
 

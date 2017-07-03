@@ -26,4 +26,3 @@ let GeometryEditorGraphicsPanel = Vue.extend(
 
 exports.default = GeometryEditorGraphicsPanel;
 
-Vue.component('editor-graphics-panel', GeometryEditorGraphicsPanel);

@@ -7782,31 +7782,31 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 
-	function setScene(store) {
+	function setEditorScene(store) {
 	    store.commit('SET_EDITOR_SCENE');
 	}
 
-	exports.setScene = setScene;
+	exports.setEditorScene = setEditorScene;
 
-	function setCamera(store) {
+	function setEditorCamera(store) {
 	    store.commit('SET_EDITOR_CAMERA');
 	}
-	exports.setCamera = setCamera;
+	exports.setEditorCamera = setEditorCamera;
 
-	function deleteScene(store) {
+	function deleteEditorScene(store) {
 	    store.commit('DELETE_EDITOR_SCENE');
 	}
-	exports.deleteScene = deleteScene;
+	exports.deleteEditorScene = deleteEditorScene;
 
-	function deleteCamera(store) {
+	function deleteEditorCamera(store) {
 	    store.commit('DELETE_EDITOR_CAMERA');
 	}
-	exports.deleteCamera = deleteCamera;
+	exports.deleteEditorCamera = deleteEditorCamera;
 
-	function addObject(store) {
+	function addGeometryObject(store) {
 	    store.commit('ADD_GEOMETRY_OBJECT');
 	}
-	exports.addObject = addObject;
+	exports.addGeometryObject = addGeometryObject;
 
 	function updateGeometryObjectsCreatedFlag(store) {
 	    store.commit('GEOMETRY_OBJECTS_CREATED');
@@ -7815,11 +7815,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.default = {
-	    setScene: setScene,
-	    setCamera: setCamera,
-	    deleteScene: deleteScene,
-	    deleteCamera: deleteCamera,
-	    addObject: addObject,
+	    setEditorScene: setEditorScene,
+	    setEditorCamera: setEditorCamera,
+	    deleteEditorScene: deleteEditorScene,
+	    deleteEditorCamera: deleteEditorCamera,
+	    addGeometryObject: addGeometryObject,
 	    updateGeometryObjectsCreatedFlag: updateGeometryObjectsCreatedFlag
 	};
 
@@ -7831,31 +7831,31 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function SET_EDITOR_SCENE(state, scene) {
 	    state.scene = scene;
-	    console.log("set scene");
+	    console.log("set editor scene");
 	}
 	exports.SET_EDITOR_SCENE = SET_EDITOR_SCENE;
 
 	function SET_EDITOR_CAMERA(state, camera) {
 	    state.camera = camera;
-	    console.log("set camera");
+	    console.log("set editor camera");
 	}
 	exports.SET_EDITOR_CAMERA = SET_EDITOR_CAMERA;
 
 	function DELETE_EDITOR_SCENE(state, message) {
 	    state.scene = null;
-	    console.log("deleted scene" + message);
+	    console.log("deleted editor scene" + message);
 	}
 	exports.DELETE_EDITOR_SCENE = DELETE_EDITOR_SCENE;
 
 	function DELETE_EDITOR_CAMERA(state, message) {
 	    state.camera = null;
-	    console.log("deleted camera" + message);
+	    console.log("deleted editor camera" + message);
 	}
 	exports.DELETE_EDITOR_CAMERA = DELETE_EDITOR_CAMERA;
 
 	function ADD_GEOMETRY_OBJECT(state, object) {
 	    state.scene.add(object);
-	    console.log("Added object");
+	    console.log("Added geometry object");
 	}
 	exports.ADD_GEOMETRY_OBJECT = ADD_GEOMETRY_OBJECT;
 
@@ -11544,8 +11544,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 	exports.default = GeometryEditorGraphicsPanel;
-
-	Vue.component('editor-graphics-panel', GeometryEditorGraphicsPanel);
 
 /***/ },
 /* 69 */
@@ -87846,7 +87844,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      camera.updateProjectionMatrix();
 	      Store.commit('SET_EDITOR_CAMERA', camera);
 
-	      this.d_controls = new ThreeTrackball(Store.getters.camera, this.d_renderer.domElement);
+	      this.d_controls = new ThreeTrackball(Store.getters.editorCamera, this.d_renderer.domElement);
 	      console.log("Ediotr trackballControls: mounted + created");
 	      this.d_controls.rotateSpeed = 10.0;
 	      this.d_controls.zoomSpeed = 1.2;
@@ -87889,7 +87887,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    render() {
-	      this.d_renderer.render(Store.getters.scene, Store.getters.camera);
+	      this.d_renderer.render(Store.getters.editorScene, Store.getters.editorCamera);
 	      //console.log("Done rendering");
 	    },
 

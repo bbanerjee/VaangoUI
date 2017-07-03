@@ -1,31 +1,31 @@
 "use strict";
 function SET_EDITOR_SCENE(state, scene) {
     state.scene = scene;
-    console.log("set scene");
+    console.log("set editor scene");
 }
 exports.SET_EDITOR_SCENE = SET_EDITOR_SCENE;
 
 function SET_EDITOR_CAMERA(state, camera) {
     state.camera = camera;
-    console.log("set camera");
+    console.log("set editor camera");
 }
 exports.SET_EDITOR_CAMERA = SET_EDITOR_CAMERA;
 
 function DELETE_EDITOR_SCENE(state, message) {
     state.scene = null;
-    console.log("deleted scene" + message);
+    console.log("deleted editor scene" + message);
 }
 exports.DELETE_EDITOR_SCENE = DELETE_EDITOR_SCENE;
 
 function DELETE_EDITOR_CAMERA(state, message) {
     state.camera = null;
-    console.log("deleted camera" + message);
+    console.log("deleted editor camera" + message);
 }
 exports.DELETE_EDITOR_CAMERA = DELETE_EDITOR_CAMERA;
 
 function ADD_GEOMETRY_OBJECT(state, object) {
     state.scene.add(object);
-    console.log("Added object");
+    console.log("Added geometry object");
 }
 exports.ADD_GEOMETRY_OBJECT = ADD_GEOMETRY_OBJECT;
 
