@@ -29,26 +29,10 @@ let GeometryEditorRenderer = Vue.extend(
 
         d_pointer: { x: 0, y: 0 },
         d_pointerOld: { x: 0, y: 0 },
-        d_size: {left: 0, top: 0, width: 0, height: 0}
+        d_size: {left: 0, top: 0, width: 0, height: 0},
+
       };
     }, 
-
-    created() {
-      this.d_renderer = this.renderer;
-      if (!(this.d_renderer instanceof THREE.WebGLRenderer)) {
-        this.d_renderer = new THREE.WebGLRenderer({ antialias: true });
-      }
-      let w = (this.size).w;
-      let h = (this.size).h;
-      this.d_size = {left: 0, top: 0, width: w, height: w};
-      this.d_renderer.setSize(w, h);
-      this.d_renderer.setClearColor(0x52576e)
-      this.d_testCamera = new THREE.PerspectiveCamera( 30, w/h, 100, 200 );
-      this.d_cameraHelper = new THREE.CameraHelper( this.d_testCamera );
-      this.d_pointer = {x: 0, y: 0};
-      this.d_pointerOld = {x: 0, y: 0};
-      console.log("Created Geometry editor renderer");
-    },
 
     computed: {
       getScene() {
@@ -64,6 +48,24 @@ let GeometryEditorRenderer = Vue.extend(
       }
     }, 
 
+    created() {
+      this.d_renderer = this.renderer;
+      if (!(this.d_renderer instanceof THREE.WebGLRenderer)) {
+        this.d_renderer = new THREE.WebGLRenderer({ antialias: true });
+      }
+      let w = (this.size).w;
+      let h = (this.size).h;
+      this.d_size = {left: 0, top: 0, width: w, height: w};
+      this.d_renderer.setSize(w, h);
+      this.d_renderer.setClearColor(0x52576e)
+      //this.d_testCamera = new THREE.PerspectiveCamera( 30, w/h, 100, 200 );
+      //this.d_cameraHelper = new THREE.CameraHelper( this.d_testCamera );
+      this.d_pointer = {x: 0, y: 0};
+      this.d_pointerOld = {x: 0, y: 0};
+
+      console.log("Created Geometry editor renderer");
+    },
+
     mounted() {
       console.log("Mounted geometry editor renderer");
       console.log(this.$refs);
@@ -77,6 +79,7 @@ let GeometryEditorRenderer = Vue.extend(
         // Update based on actual screen size
         this.setActualScreenSize(this.d_renderer.domElement);
         this.d_renderer.setSize(this.d_size.width, this.d_size.height);
+        console.log("Actual : width: " + this.d_size.width + " height: " + this.d_size.height);
         let camera = Store.getters.editorCamera;
         camera.aspect = this.d_size.width / this.d_size.height;
         camera.updateProjectionMatrix();
@@ -84,7 +87,7 @@ let GeometryEditorRenderer = Vue.extend(
 
         this.d_controls = new ThreeTrackball(Store.getters.editorCamera,
                                              this.d_renderer.domElement);
-        console.log("Ediotr trackballControls: mounted + created");
+        console.log("Editor trackballControls: mounted + created");
         this.d_controls.rotateSpeed = 10.0;
         this.d_controls.zoomSpeed = 1.2;
         this.d_controls.panSpeed = 0.8;
@@ -95,8 +98,40 @@ let GeometryEditorRenderer = Vue.extend(
         this.d_controls.keys = [65, 83, 68];
         console.log("Added trackball controls")
 
+        // Create grid 
+        let grid = new THREE.GridHelper(60, 60);
+
+        // Create axis lines
+        let axes = new THREE.AxisHelper( 5 );
+
+        // Create axis arrows
+        let dir = [new THREE.Vector3( 1, 0, 0 ),
+                   new THREE.Vector3( 0, 1, 0 ),
+                   new THREE.Vector3( 0, 0, 1 )];
+        let origin = new THREE.Vector3( 0, 0, 0 );
+        let length = 2;
+        let hex = [0xff0000, 0x00ff00, 0x0000ff];
+        let arrows = [];
+        dir.forEach((axis, index) => {
+          arrows.push(new THREE.ArrowHelper( axis, origin, length, hex[index]));
+        });
+
+        // Get the scene
         let scene = Store.getters.editorScene;
         scene.add(this.d_cameraHelper);
+
+        // Add grid to scene
+        scene.add(grid);
+
+        // Add axes to scene
+        scene.add(axes);
+
+        // Add arrows to scene
+        arrows.forEach((arrow) => {
+          scene.add(arrow);
+        });
+
+        // Save the scene
         Store.commit('SET_EDITOR_SCENE', scene);
 
       }
@@ -113,8 +148,8 @@ let GeometryEditorRenderer = Vue.extend(
 
     methods: {
       setActualScreenSize(domElement) {
-        let box = domElement.getBoundingClientRect();
-        let d = domElement.ownerDocument.documentElement;
+        let box = domElement.parentElement.getBoundingClientRect();
+        let d = domElement.parentElement.ownerDocument.documentElement;
         this.d_size.left = box.left + window.pageXOffset - d.clientLeft;
         this.d_size.top = box.top + window.pageYOffset - d.clientTop;
         this.d_size.width = box.width;

@@ -1,5 +1,5 @@
 <template>
-  <div id = "geometry-editor--div">
+  <div id = "geometry-editor-div">
     <slot></slot>
     <div v-on:keydown="keydown($event)" 
          v-on:keyup="keyup($event)"
