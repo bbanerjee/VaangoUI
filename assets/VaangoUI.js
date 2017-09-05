@@ -88317,7 +88317,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-	  return _c('div', [_vm._t("vtk", [_c('div', {
+	  return _c('div', [_vm._t("vtk"), _vm._v(" "), _c('div', {
 	    ref: "vtk-graphics-container",
 	    on: {
 	      "click": function($event) {
@@ -88327,7 +88327,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _vm.zoomOut($event)
 	      }
 	    }
-	  }), _vm._v(" "), _vm._t("default")])], 2)
+	  }), _vm._v(" "), _vm._t("default")], 2)
 	},staticRenderFns: []}
 	module.exports.render._withStripped = true
 	if (false) {
