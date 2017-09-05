@@ -17,6 +17,9 @@
         <keep-alive>
           <mpm-input-panel v-if='sidebarTabIndex === 3'> </mpm-input-panel>
         </keep-alive>
+        <keep-alive>
+          <ice-input-panel v-if='sidebarTabIndex === 5'> </ice-input-panel>
+        </keep-alive>
       </div>
     </div>
   </div>

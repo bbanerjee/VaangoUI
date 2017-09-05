@@ -118,7 +118,7 @@ let GeometryEditorRenderer = Vue.extend(
 
         // Get the scene
         let scene = Store.getters.editorScene;
-        scene.add(this.d_cameraHelper);
+        //scene.add(this.d_cameraHelper);
 
         // Add grid to scene
         scene.add(grid);

@@ -12,6 +12,7 @@ var ThreeGraphicsPanel = require("./views/ThreeGraphicsPanel.vue").default;
 var VtkGraphicsPanel = require("./views/VtkGraphicsPanel.vue").default;
 var GeneralInputPanel = require("./views/GeneralInputPanel.vue").default;
 var MPMInputPanel = require("./views/MPMInputPanel.vue").default;
+var ICEInputPanel = require("./views/ICEInputPanel.vue").default;
 var TimeInputPanel = require("./views/TimeInputPanel.vue").default;
 var GeometryEditorGraphicsPanel = require("./views/GeometryEditorGraphicsPanel.vue").default;
 
@@ -24,6 +25,7 @@ Vue.component('three-graphics-panel', ThreeGraphicsPanel);
 Vue.component('vtk-graphics-panel', VtkGraphicsPanel);
 Vue.component('general-input-panel', GeneralInputPanel);
 Vue.component('mpm-input-panel', MPMInputPanel);
+Vue.component('ice-input-panel', ICEInputPanel);
 Vue.component('time-input-panel', TimeInputPanel);
 Vue.component('editor-graphics-panel', GeometryEditorGraphicsPanel);
 
