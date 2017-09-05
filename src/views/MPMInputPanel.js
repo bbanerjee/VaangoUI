@@ -1,5 +1,5 @@
-const Vue = require("vue");
-const vkbeautify = require("vkbeautify");
+import Vue from "vue";
+import vkbeautify from "vkbeautify";
 
 let MPMInputPanel = Vue.extend(
   {
@@ -342,8 +342,7 @@ let MPMInputPanel = Vue.extend(
         mpmElement.appendChild(artVisc);
 
         xmlDoc.appendChild(mpmElement);
-        var formatter = new vkbeautify();
-        var xmlText = formatter.xml(new XMLSerializer().serializeToString(xmlDoc));
+        var xmlText = vkbeautify.xml(new XMLSerializer().serializeToString(xmlDoc));
 
         console.log(xmlText);
 

@@ -1,5 +1,5 @@
+import Vue from "vue";
 const THREE = require('three');
-const Vue = require("vue");
 
 const Store = require("../vuex/Store").default;
 

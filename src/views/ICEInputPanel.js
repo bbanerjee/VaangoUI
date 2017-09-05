@@ -1,5 +1,5 @@
-const Vue = require("vue");
-const vkbeautify = require("vkbeautify");
+import Vue from "vue";
+import vkbeautify from "vkbeautify";
 
 let ICEInputPanel = Vue.extend(
   {
@@ -180,8 +180,7 @@ let ICEInputPanel = Vue.extend(
 
         cfd.appendChild(ice);
         xmlDoc.appendChild(cfd);
-        var formatter = new vkbeautify();
-        var xmlText = formatter.xml(new XMLSerializer().serializeToString(xmlDoc));
+        var xmlText = vkbeautify.xml(new XMLSerializer().serializeToString(xmlDoc));
 
         console.log(xmlText);
 

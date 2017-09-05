@@ -1,4 +1,4 @@
-const Vue = require("vue");
+import Vue from "vue";
 
 const vtkActor        = require('vtk.js/Sources/Rendering/Core/Actor');
 const vtkSphereSource = require('vtk.js/Sources/Filters/Sources/SphereSource');

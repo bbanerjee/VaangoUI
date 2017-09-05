@@ -1,6 +1,6 @@
 //  This is the entry routine for Vaango UI
 
-const Vue = require("vue");
+import Vue from "vue";
 const Store = require("./vuex/Store").default;
 
 var VaangoMainPanel = require("./views/VaangoMainPanel.vue").default;

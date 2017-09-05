@@ -1,6 +1,6 @@
 /* global requestAnimationFrame */
 /* eslint-disable no-duplicate-consts */
-const Vue = require("vue");
+import Vue from "vue";
 
 const vtkRenderWindow           = require('vtk.js/Sources/Rendering/Core/RenderWindow');
 const vtkRenderer               = require('vtk.js/Sources/Rendering/Core/Renderer');
@@ -138,6 +138,7 @@ let VtkRenderer = Vue.extend(
         };
         */
      
+        this._renderer.resetCamera();
         this._renderWindow.render();
       }
 
@@ -176,14 +177,14 @@ let VtkRenderer = Vue.extend(
         actors.map(function(actor, index){
           // console.log(actor.getMapper());
         });
-        //this._renderer.getActiveCamera().zoom(1.1);
+        this._renderer.getActiveCamera().zoom(1.1);
         this._renderWindow.render();
       },
 
       zoomOut(e) {
         //console.log("key press detected");
-        //this._renderer.getActiveCamera().zoom(0.8);
-        //this._renderWindow.render();
+        this._renderer.getActiveCamera().zoom(0.8);
+        this._renderWindow.render();
       }
     }
   }
