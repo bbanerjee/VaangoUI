@@ -1,6 +1,6 @@
 //  This is the entry routine for Vaango UI
+import Vue from "vue"
 
-import Vue from "vue";
 const Store = require("./vuex/Store").default;
 
 var VaangoMainPanel = require("./views/VaangoMainPanel.vue").default;
@@ -10,11 +10,12 @@ var VaangoInputsSidebar = require("./views/VaangoInputsSidebar.vue").default;
 var MainTextPanel = require("./views/MainTextPanel.vue").default;
 var ThreeGraphicsPanel = require("./views/ThreeGraphicsPanel.vue").default;
 var VtkGraphicsPanel = require("./views/VtkGraphicsPanel.vue").default;
-var GeneralInputPanel = require("./views/GeneralInputPanel.vue").default;
+var SimulationComponentPanel = require("./views/SimulationComponentPanel.vue").default;
 var MPMInputPanel = require("./views/MPMInputPanel.vue").default;
 var ICEInputPanel = require("./views/ICEInputPanel.vue").default;
 var TimeInputPanel = require("./views/TimeInputPanel.vue").default;
 var GeometryEditorGraphicsPanel = require("./views/GeometryEditorGraphicsPanel.vue").default;
+var TaskGraphEditorPanel = require("./views/TaskGraphEditorPanel.vue").default;
 
 Vue.component('vaango-main-panel', VaangoMainPanel);
 Vue.component('main-menubar', MainMenubar);
@@ -23,12 +24,12 @@ Vue.component('vaango-inputs-sidebar', VaangoInputsSidebar);
 Vue.component('main-text-panel', MainTextPanel);
 Vue.component('three-graphics-panel', ThreeGraphicsPanel);
 Vue.component('vtk-graphics-panel', VtkGraphicsPanel);
-Vue.component('general-input-panel', GeneralInputPanel);
+Vue.component('simulation-component-panel', SimulationComponentPanel);
 Vue.component('mpm-input-panel', MPMInputPanel);
 Vue.component('ice-input-panel', ICEInputPanel);
 Vue.component('time-input-panel', TimeInputPanel);
 Vue.component('editor-graphics-panel', GeometryEditorGraphicsPanel);
-
+Vue.component('task-graph-editor-panel', TaskGraphEditorPanel);
 
 var ThreeRenderer = require("./graphics/ThreeRenderer.vue").default;
 var ThreeScene = require("./graphics/ThreeScene.vue").default;
@@ -54,9 +55,12 @@ var GeometryEditorRenderer = require("./graphics/GeometryEditorRenderer.vue").de
 var GeometryEditorScene = require("./graphics/GeometryEditorScene.vue").default;
 var GeometryEditorCamera = require("./graphics/GeometryEditorCamera.vue").default;
 
-Vue.component('editor-renderer', GeometryEditorRenderer);
-Vue.component('editor-scene', GeometryEditorScene);
-Vue.component('editor-camera', GeometryEditorCamera);
+Vue.component('geometry-editor-renderer', GeometryEditorRenderer);
+Vue.component('geometry-editor-scene', GeometryEditorScene);
+Vue.component('geometry-editor-camera', GeometryEditorCamera);
+
+var TaskGraphEditor = require("./taskgraph/TaskGraphEditor.vue").default;
+Vue.component('task-graph-editor', TaskGraphEditor);
 
 // import ParticleList = vaango_ui.ParticleList;
 class VaangoUI {

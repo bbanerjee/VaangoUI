@@ -8,6 +8,7 @@ let VaangoInputsSidebar = Vue.extend(
       return {
         id: "VaangoInputsSidebar",
         tabNames: [
+          "Taskgraph editor",
           "Simulation type",
           "Timestep controls",
           "Create geometry",

@@ -1,5 +1,5 @@
 <template>
-  <div id='general-input-container'>
+  <div id='simulation-component-container'>
     <form class="uk-form-stacked">
 
       <div class="uk-margin">
@@ -22,6 +22,6 @@
   </div>
 </template>
 
-<script src="./GeneralInputPanel.js">
+<script src="./SimulationComponentPanel.js">
 
 </script>

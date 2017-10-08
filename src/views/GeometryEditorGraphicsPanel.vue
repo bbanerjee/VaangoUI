@@ -5,12 +5,14 @@
         <h3 class="uk-card-title">Geometry editor</h3>
       </div>
       <div class="uk-card-body">
-        <editor-renderer v-bind:size="{w:500, h:500}">
-          <editor-scene v-bind:size="size"> 
-            <editor-camera  v-bind:size="size"
-                           v-bind:position="{x: 5,  y: 5, z: 5 }"> </editor-camera>
-          </editor-scene>
-        </editor-renderer>
+        <geometry-editor-renderer v-bind:size="{w:500, h:500}">
+          <geometry-editor-scene v-bind:size="size"> 
+            <geometry-editor-camera  
+              v-bind:size="size"
+              v-bind:position="{x: 5,  y: 5, z: 5 }"> 
+            </geometry-editor-camera>
+          </geometry-editor-scene>
+        </geometry-editor-renderer>
       </div>
     </div>
   </div>

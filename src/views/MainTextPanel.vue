@@ -9,16 +9,19 @@
       </div>
       <div class="uk-card-body">
         <keep-alive>
-          <general-input-panel v-if='sidebarTabIndex === 0'> </general-input-panel>
+          <task-graph-editor-panel v-if='sidebarTabName === "Taskgraph editor"'> </task-graph-editor-panel>
+        </keep-alive>
+        <keep-alive>
+          <simulation-component-panel v-if='sidebarTabName === "Simulation type"'> </simulation-component-panel>
         </keep-alive>
         <keep-alive>
           <time-input-panel v-if='sidebarTabName === "Timestep controls"'></time-input-panel>
         </keep-alive>
         <keep-alive>
-          <mpm-input-panel v-if='sidebarTabIndex === 3'> </mpm-input-panel>
+          <mpm-input-panel v-if='sidebarTabName === "MPM parameters"'> </mpm-input-panel>
         </keep-alive>
         <keep-alive>
-          <ice-input-panel v-if='sidebarTabIndex === 5'> </ice-input-panel>
+          <ice-input-panel v-if='sidebarTabName === "ICE parameters"'> </ice-input-panel>
         </keep-alive>
       </div>
     </div>

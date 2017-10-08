@@ -7,7 +7,7 @@
 		exports["VaangoUI"] = factory(require("jQuery"));
 	else
 		root["VaangoUI"] = factory(root["jQuery"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_365__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_376__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "assets/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 222);
+/******/ 	return __webpack_require__(__webpack_require__.s = 223);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -917,6 +917,35 @@ exports.default = {
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports) {
+
+if (typeof Object.create === 'function') {
+  // implementation from standard node.js 'util' module
+  module.exports = function inherits(ctor, superCtor) {
+    ctor.super_ = superCtor
+    ctor.prototype = Object.create(superCtor.prototype, {
+      constructor: {
+        value: ctor,
+        enumerable: false,
+        writable: true,
+        configurable: true
+      }
+    });
+  };
+} else {
+  // old school shim for old browsers
+  module.exports = function inherits(ctor, superCtor) {
+    ctor.super_ = superCtor
+    var TempCtor = function () {}
+    TempCtor.prototype = superCtor.prototype
+    ctor.prototype = new TempCtor()
+    ctor.prototype.constructor = ctor
+  }
+}
+
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -930,9 +959,9 @@ exports.default = {
 
 
 
-var base64 = __webpack_require__(243)
-var ieee754 = __webpack_require__(298)
-var isArray = __webpack_require__(101)
+var base64 = __webpack_require__(246)
+var ieee754 = __webpack_require__(307)
+var isArray = __webpack_require__(98)
 
 exports.Buffer = Buffer
 exports.SlowBuffer = SlowBuffer
@@ -2713,42 +2742,13 @@ function isnan (val) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(15)))
 
 /***/ }),
-/* 2 */
-/***/ (function(module, exports) {
-
-if (typeof Object.create === 'function') {
-  // implementation from standard node.js 'util' module
-  module.exports = function inherits(ctor, superCtor) {
-    ctor.super_ = superCtor
-    ctor.prototype = Object.create(superCtor.prototype, {
-      constructor: {
-        value: ctor,
-        enumerable: false,
-        writable: true,
-        configurable: true
-      }
-    });
-  };
-} else {
-  // old school shim for old browsers
-  module.exports = function inherits(ctor, superCtor) {
-    ctor.super_ = superCtor
-    var TempCtor = function () {}
-    TempCtor.prototype = superCtor.prototype
-    ctor.prototype = new TempCtor()
-    ctor.prototype.constructor = ctor
-  }
-}
-
-
-/***/ }),
 /* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */(function(process, global) {/*!
- * Vue.js v2.4.2
+ * Vue.js v2.4.4
  * (c) 2014-2017 Evan You
  * Released under the MIT License.
  */
@@ -2911,12 +2911,9 @@ var capitalize = cached(function (str) {
 /**
  * Hyphenate a camelCase string.
  */
-var hyphenateRE = /([^-])([A-Z])/g;
+var hyphenateRE = /\B([A-Z])/g;
 var hyphenate = cached(function (str) {
-  return str
-    .replace(hyphenateRE, '$1-$2')
-    .replace(hyphenateRE, '$1-$2')
-    .toLowerCase()
+  return str.replace(hyphenateRE, '-$1').toLowerCase()
 });
 
 /**
@@ -3331,7 +3328,7 @@ var isAndroid = UA && UA.indexOf('android') > 0;
 var isIOS = UA && /iphone|ipad|ipod|ios/.test(UA);
 var isChrome = UA && /chrome\/\d+/.test(UA) && !isEdge;
 
-// Firefix has a "watch" function on Object.prototype...
+// Firefox has a "watch" function on Object.prototype...
 var nativeWatch = ({}).watch;
 
 var supportsPassive = false;
@@ -3413,13 +3410,13 @@ var nextTick = (function () {
       // "force" the microtask queue to be flushed by adding an empty timer.
       if (isIOS) { setTimeout(noop); }
     };
-  } else if (typeof MutationObserver !== 'undefined' && (
+  } else if (!isIE && typeof MutationObserver !== 'undefined' && (
     isNative(MutationObserver) ||
     // PhantomJS and iOS 7.x
     MutationObserver.toString() === '[object MutationObserverConstructor]'
   )) {
     // use MutationObserver where native Promise is not available,
-    // e.g. PhantomJS IE11, iOS7, Android 4.4
+    // e.g. PhantomJS, iOS7, Android 4.4
     var counter = 1;
     var observer = new MutationObserver(nextTickHandler);
     var textNode = document.createTextNode(String(counter));
@@ -3719,9 +3716,9 @@ function defineReactive$$1 (
         dep.depend();
         if (childOb) {
           childOb.dep.depend();
-        }
-        if (Array.isArray(value)) {
-          dependArray(value);
+          if (Array.isArray(value)) {
+            dependArray(value);
+          }
         }
       }
       return value
@@ -3898,7 +3895,7 @@ function mergeDataOrFn (
         : childVal;
       var defaultData = typeof parentVal === 'function'
         ? parentVal.call(vm)
-        : undefined;
+        : parentVal;
       if (instanceData) {
         return mergeData(instanceData, defaultData)
       } else {
@@ -4301,7 +4298,12 @@ function assertType (value, type) {
   var valid;
   var expectedType = getType(type);
   if (simpleCheckRE.test(expectedType)) {
-    valid = typeof value === expectedType.toLowerCase();
+    var t = typeof value;
+    valid = t === expectedType.toLowerCase();
+    // for primitive wrapper objects
+    if (!valid && t === 'object') {
+      valid = value instanceof type;
+    }
   } else if (expectedType === 'Object') {
     valid = isPlainObject(value);
   } else if (expectedType === 'Array') {
@@ -4499,7 +4501,7 @@ function createTextVNode (val) {
 // used for static nodes and slot nodes because they may be reused across
 // multiple renders, cloning them avoids errors when DOM manipulations rely
 // on their elm reference.
-function cloneVNode (vnode) {
+function cloneVNode (vnode, deep) {
   var cloned = new VNode(
     vnode.tag,
     vnode.data,
@@ -4515,14 +4517,17 @@ function cloneVNode (vnode) {
   cloned.key = vnode.key;
   cloned.isComment = vnode.isComment;
   cloned.isCloned = true;
+  if (deep && vnode.children) {
+    cloned.children = cloneVNodes(vnode.children);
+  }
   return cloned
 }
 
-function cloneVNodes (vnodes) {
+function cloneVNodes (vnodes, deep) {
   var len = vnodes.length;
   var res = new Array(len);
   for (var i = 0; i < len; i++) {
-    res[i] = cloneVNode(vnodes[i]);
+    res[i] = cloneVNode(vnodes[i], deep);
   }
   return res
 }
@@ -4536,8 +4541,10 @@ var normalizeEvent = cached(function (name) {
   name = once$$1 ? name.slice(1) : name;
   var capture = name.charAt(0) === '!';
   name = capture ? name.slice(1) : name;
+  var plain = !(passive || once$$1 || capture);
   return {
     name: name,
+    plain: plain,
     once: once$$1,
     capture: capture,
     passive: passive
@@ -4563,6 +4570,11 @@ function createFnInvoker (fns) {
   return invoker
 }
 
+// #6552
+function prioritizePlainEvents (a, b) {
+  return a.plain ? -1 : b.plain ? 1 : 0
+}
+
 function updateListeners (
   on,
   oldOn,
@@ -4571,10 +4583,13 @@ function updateListeners (
   vm
 ) {
   var name, cur, old, event;
+  var toAdd = [];
+  var hasModifier = false;
   for (name in on) {
     cur = on[name];
     old = oldOn[name];
     event = normalizeEvent(name);
+    if (!event.plain) { hasModifier = true; }
     if (isUndef(cur)) {
       process.env.NODE_ENV !== 'production' && warn(
         "Invalid handler for event \"" + (event.name) + "\": got " + String(cur),
@@ -4584,10 +4599,18 @@ function updateListeners (
       if (isUndef(cur.fns)) {
         cur = on[name] = createFnInvoker(cur);
       }
-      add(event.name, cur, event.once, event.capture, event.passive);
+      event.handler = cur;
+      toAdd.push(event);
     } else if (cur !== old) {
       old.fns = cur;
       on[name] = old;
+    }
+  }
+  if (toAdd.length) {
+    if (hasModifier) { toAdd.sort(prioritizePlainEvents); }
+    for (var i = 0; i < toAdd.length; i++) {
+      var event$1 = toAdd[i];
+      add(event$1.name, event$1.handler, event$1.once, event$1.capture, event$1.passive);
     }
   }
   for (name in oldOn) {
@@ -4904,11 +4927,17 @@ function resolveAsyncComponent (
 
 /*  */
 
+function isAsyncPlaceholder (node) {
+  return node.isComment && node.asyncFactory
+}
+
+/*  */
+
 function getFirstComponentChild (children) {
   if (Array.isArray(children)) {
     for (var i = 0; i < children.length; i++) {
       var c = children[i];
-      if (isDef(c) && isDef(c.componentOptions)) {
+      if (isDef(c) && (isDef(c.componentOptions) || isAsyncPlaceholder(c))) {
         return c
       }
     }
@@ -4995,8 +5024,8 @@ function eventsMixin (Vue) {
     }
     // array of events
     if (Array.isArray(event)) {
-      for (var i$1 = 0, l = event.length; i$1 < l; i$1++) {
-        this$1.$off(event[i$1], fn);
+      for (var i = 0, l = event.length; i < l; i++) {
+        this$1.$off(event[i], fn);
       }
       return vm
     }
@@ -5009,14 +5038,16 @@ function eventsMixin (Vue) {
       vm._events[event] = null;
       return vm
     }
-    // specific handler
-    var cb;
-    var i = cbs.length;
-    while (i--) {
-      cb = cbs[i];
-      if (cb === fn || cb.fn === fn) {
-        cbs.splice(i, 1);
-        break
+    if (fn) {
+      // specific handler
+      var cb;
+      var i$1 = cbs.length;
+      while (i$1--) {
+        cb = cbs[i$1];
+        if (cb === fn || cb.fn === fn) {
+          cbs.splice(i$1, 1);
+          break
+        }
       }
     }
     return vm
@@ -5068,10 +5099,15 @@ function resolveSlots (
   var defaultSlot = [];
   for (var i = 0, l = children.length; i < l; i++) {
     var child = children[i];
+    var data = child.data;
+    // remove slot attribute if the node is resolved as a Vue slot node
+    if (data && data.attrs && data.attrs.slot) {
+      delete data.attrs.slot;
+    }
     // named slots should only be respected if the vnode was rendered in the
     // same context.
     if ((child.context === context || child.functionalContext === context) &&
-      child.data && child.data.slot != null
+      data && data.slot != null
     ) {
       var name = child.data.slot;
       var slot = (slots[name] || (slots[name] = []));
@@ -5324,11 +5360,11 @@ function updateChildComponent (
   }
   vm.$options._renderChildren = renderChildren;
 
-  // update $attrs and $listensers hash
+  // update $attrs and $listeners hash
   // these are also reactive so they may trigger child update if the child
   // used them during render
-  vm.$attrs = parentVnode.data && parentVnode.data.attrs;
-  vm.$listeners = listeners;
+  vm.$attrs = (parentVnode.data && parentVnode.data.attrs) || emptyObject;
+  vm.$listeners = listeners || emptyObject;
 
   // update props
   if (propsData && vm.$options.props) {
@@ -5915,7 +5951,7 @@ function initData (vm) {
     if (process.env.NODE_ENV !== 'production') {
       if (methods && hasOwn(methods, key)) {
         warn(
-          ("method \"" + key + "\" has already been defined as a data property."),
+          ("Method \"" + key + "\" has already been defined as a data property."),
           vm
         );
       }
@@ -5948,6 +5984,8 @@ var computedWatcherOptions = { lazy: true };
 function initComputed (vm, computed) {
   process.env.NODE_ENV !== 'production' && checkOptionType(vm, 'computed');
   var watchers = vm._computedWatchers = Object.create(null);
+  // computed properties are just getters during SSR
+  var isSSR = isServerRendering();
 
   for (var key in computed) {
     var userDef = computed[key];
@@ -5958,8 +5996,16 @@ function initComputed (vm, computed) {
         vm
       );
     }
-    // create internal watcher for the computed property.
-    watchers[key] = new Watcher(vm, getter || noop, noop, computedWatcherOptions);
+
+    if (!isSSR) {
+      // create internal watcher for the computed property.
+      watchers[key] = new Watcher(
+        vm,
+        getter || noop,
+        noop,
+        computedWatcherOptions
+      );
+    }
 
     // component-defined computed properties are already defined on the
     // component prototype. We only need to define computed properties defined
@@ -5976,13 +6022,20 @@ function initComputed (vm, computed) {
   }
 }
 
-function defineComputed (target, key, userDef) {
+function defineComputed (
+  target,
+  key,
+  userDef
+) {
+  var shouldCache = !isServerRendering();
   if (typeof userDef === 'function') {
-    sharedPropertyDefinition.get = createComputedGetter(key);
+    sharedPropertyDefinition.get = shouldCache
+      ? createComputedGetter(key)
+      : userDef;
     sharedPropertyDefinition.set = noop;
   } else {
     sharedPropertyDefinition.get = userDef.get
-      ? userDef.cache !== false
+      ? shouldCache && userDef.cache !== false
         ? createComputedGetter(key)
         : userDef.get
       : noop;
@@ -6021,22 +6074,28 @@ function initMethods (vm, methods) {
   process.env.NODE_ENV !== 'production' && checkOptionType(vm, 'methods');
   var props = vm.$options.props;
   for (var key in methods) {
-    vm[key] = methods[key] == null ? noop : bind(methods[key], vm);
     if (process.env.NODE_ENV !== 'production') {
       if (methods[key] == null) {
         warn(
-          "method \"" + key + "\" has an undefined value in the component definition. " +
+          "Method \"" + key + "\" has an undefined value in the component definition. " +
           "Did you reference the function correctly?",
           vm
         );
       }
       if (props && hasOwn(props, key)) {
         warn(
-          ("method \"" + key + "\" has already been defined as a prop."),
+          ("Method \"" + key + "\" has already been defined as a prop."),
           vm
         );
       }
+      if ((key in vm) && isReserved(key)) {
+        warn(
+          "Method \"" + key + "\" conflicts with an existing Vue instance method. " +
+          "Avoid defining component methods that start with _ or $."
+        );
+      }
     }
+    vm[key] = methods[key] == null ? noop : bind(methods[key], vm);
   }
 }
 
@@ -6156,7 +6215,10 @@ function resolveInject (inject, vm) {
     // inject is :any because flow is not smart enough to figure out cached
     var result = Object.create(null);
     var keys = hasSymbol
-        ? Reflect.ownKeys(inject)
+        ? Reflect.ownKeys(inject).filter(function (key) {
+          /* istanbul ignore next */
+          return Object.getOwnPropertyDescriptor(inject, key).enumerable
+        })
         : Object.keys(inject);
 
     for (var i = 0; i < keys.length; i++) {
@@ -6191,7 +6253,7 @@ function createFunctionalComponent (
   var propOptions = Ctor.options.props;
   if (isDef(propOptions)) {
     for (var key in propOptions) {
-      props[key] = validateProp(key, propOptions, propsData || {});
+      props[key] = validateProp(key, propOptions, propsData || emptyObject);
     }
   } else {
     if (isDef(data.attrs)) { mergeProps(props, data.attrs); }
@@ -6206,7 +6268,7 @@ function createFunctionalComponent (
     props: props,
     children: children,
     parent: context,
-    listeners: data.on || {},
+    listeners: data.on || emptyObject,
     injections: resolveInject(Ctor.options.inject, context),
     slots: function () { return resolveSlots(children, context); }
   });
@@ -6530,7 +6592,7 @@ function _createElement (
   var vnode, ns;
   if (typeof tag === 'string') {
     var Ctor;
-    ns = config.getTagNamespace(tag);
+    ns = (context.$vnode && context.$vnode.ns) || config.getTagNamespace(tag);
     if (config.isReservedTag(tag)) {
       // platform built-in elements
       vnode = new VNode(
@@ -6826,17 +6888,18 @@ function initRender (vm) {
   // $attrs & $listeners are exposed for easier HOC creation.
   // they need to be reactive so that HOCs using them are always updated
   var parentData = parentVnode && parentVnode.data;
+
   /* istanbul ignore else */
   if (process.env.NODE_ENV !== 'production') {
-    defineReactive$$1(vm, '$attrs', parentData && parentData.attrs, function () {
+    defineReactive$$1(vm, '$attrs', parentData && parentData.attrs || emptyObject, function () {
       !isUpdatingChildComponent && warn("$attrs is readonly.", vm);
     }, true);
-    defineReactive$$1(vm, '$listeners', vm.$options._parentListeners, function () {
+    defineReactive$$1(vm, '$listeners', vm.$options._parentListeners || emptyObject, function () {
       !isUpdatingChildComponent && warn("$listeners is readonly.", vm);
     }, true);
   } else {
-    defineReactive$$1(vm, '$attrs', parentData && parentData.attrs, null, true);
-    defineReactive$$1(vm, '$listeners', vm.$options._parentListeners, null, true);
+    defineReactive$$1(vm, '$attrs', parentData && parentData.attrs || emptyObject, null, true);
+    defineReactive$$1(vm, '$listeners', vm.$options._parentListeners || emptyObject, null, true);
   }
 }
 
@@ -6853,9 +6916,13 @@ function renderMixin (Vue) {
     var _parentVnode = ref._parentVnode;
 
     if (vm._isMounted) {
-      // clone slot nodes on re-renders
+      // if the parent didn't update, the slot nodes will be the ones from
+      // last render. They need to be cloned to ensure "freshness" for this render.
       for (var key in vm.$slots) {
-        vm.$slots[key] = cloneVNodes(vm.$slots[key]);
+        var slot = vm.$slots[key];
+        if (slot._rendered) {
+          vm.$slots[key] = cloneVNodes(slot, true /* deep */);
+        }
       }
     }
 
@@ -7400,7 +7467,7 @@ Object.defineProperty(Vue$3.prototype, '$ssrContext', {
   }
 });
 
-Vue$3.version = '2.4.2';
+Vue$3.version = '2.4.4';
 
 /*  */
 
@@ -7409,7 +7476,7 @@ Vue$3.version = '2.4.2';
 var isReservedAttr = makeMap('style,class');
 
 // attributes that should be using props for binding
-var acceptValue = makeMap('input,textarea,option,select');
+var acceptValue = makeMap('input,textarea,option,select,progress');
 var mustUseProp = function (tag, type, attr) {
   return (
     (attr === 'value' && acceptValue(tag)) && type !== 'button' ||
@@ -7598,6 +7665,8 @@ function isUnknownElement (tag) {
   }
 }
 
+var isTextInputType = makeMap('text,number,password,search,email,tel,url');
+
 /*  */
 
 /**
@@ -7744,8 +7813,6 @@ function registerRef (vnode, isRemoval) {
  *
  * modified by Evan You (@yyx990803)
  *
-
-/*
  * Not type-checking this because this file is perf-critical and the cost
  * of making flow understand it is not worth it.
  */
@@ -7771,14 +7838,12 @@ function sameVnode (a, b) {
   )
 }
 
-// Some browsers do not support dynamically changing type for <input>
-// so they need to be treated as different nodes
 function sameInputType (a, b) {
   if (a.tag !== 'input') { return true }
   var i;
   var typeA = isDef(i = a.data) && isDef(i = i.attrs) && i.type;
   var typeB = isDef(i = b.data) && isDef(i = i.attrs) && i.type;
-  return typeA === typeB
+  return typeA === typeB || isTextInputType(typeA) && isTextInputType(typeB)
 }
 
 function createKeyToOldIdx (children, beginIdx, endIdx) {
@@ -8110,10 +8175,11 @@ function createPatchFunction (backend) {
         newStartVnode = newCh[++newStartIdx];
       } else {
         if (isUndef(oldKeyToIdx)) { oldKeyToIdx = createKeyToOldIdx(oldCh, oldStartIdx, oldEndIdx); }
-        idxInOld = isDef(newStartVnode.key) ? oldKeyToIdx[newStartVnode.key] : null;
+        idxInOld = isDef(newStartVnode.key)
+          ? oldKeyToIdx[newStartVnode.key]
+          : findIdxInOld(newStartVnode, oldCh, oldStartIdx, oldEndIdx);
         if (isUndef(idxInOld)) { // New element
           createElm(newStartVnode, insertedVnodeQueue, parentElm, oldStartVnode.elm);
-          newStartVnode = newCh[++newStartIdx];
         } else {
           elmToMove = oldCh[idxInOld];
           /* istanbul ignore if */
@@ -8127,13 +8193,12 @@ function createPatchFunction (backend) {
             patchVnode(elmToMove, newStartVnode, insertedVnodeQueue);
             oldCh[idxInOld] = undefined;
             canMove && nodeOps.insertBefore(parentElm, elmToMove.elm, oldStartVnode.elm);
-            newStartVnode = newCh[++newStartIdx];
           } else {
             // same key but different element. treat as new element
             createElm(newStartVnode, insertedVnodeQueue, parentElm, oldStartVnode.elm);
-            newStartVnode = newCh[++newStartIdx];
           }
         }
+        newStartVnode = newCh[++newStartIdx];
       }
     }
     if (oldStartIdx > oldEndIdx) {
@@ -8141,6 +8206,13 @@ function createPatchFunction (backend) {
       addVnodes(parentElm, refElm, newCh, newStartIdx, newEndIdx, insertedVnodeQueue);
     } else if (newStartIdx > newEndIdx) {
       removeVnodes(parentElm, oldCh, oldStartIdx, oldEndIdx);
+    }
+  }
+
+  function findIdxInOld (node, oldCh, start, end) {
+    for (var i = start; i < end; i++) {
+      var c = oldCh[i];
+      if (isDef(c) && sameVnode(node, c)) { return i }
     }
   }
 
@@ -8251,27 +8323,46 @@ function createPatchFunction (backend) {
         if (!elm.hasChildNodes()) {
           createChildren(vnode, children, insertedVnodeQueue);
         } else {
-          var childrenMatch = true;
-          var childNode = elm.firstChild;
-          for (var i$1 = 0; i$1 < children.length; i$1++) {
-            if (!childNode || !hydrate(childNode, children[i$1], insertedVnodeQueue)) {
-              childrenMatch = false;
-              break
+          // v-html and domProps: innerHTML
+          if (isDef(i = data) && isDef(i = i.domProps) && isDef(i = i.innerHTML)) {
+            if (i !== elm.innerHTML) {
+              /* istanbul ignore if */
+              if (process.env.NODE_ENV !== 'production' &&
+                typeof console !== 'undefined' &&
+                !bailed
+              ) {
+                bailed = true;
+                console.warn('Parent: ', elm);
+                console.warn('server innerHTML: ', i);
+                console.warn('client innerHTML: ', elm.innerHTML);
+              }
+              return false
             }
-            childNode = childNode.nextSibling;
-          }
-          // if childNode is not null, it means the actual childNodes list is
-          // longer than the virtual children list.
-          if (!childrenMatch || childNode) {
-            if (process.env.NODE_ENV !== 'production' &&
-              typeof console !== 'undefined' &&
-              !bailed
-            ) {
-              bailed = true;
-              console.warn('Parent: ', elm);
-              console.warn('Mismatching childNodes vs. VNodes: ', elm.childNodes, children);
+          } else {
+            // iterate and compare children lists
+            var childrenMatch = true;
+            var childNode = elm.firstChild;
+            for (var i$1 = 0; i$1 < children.length; i$1++) {
+              if (!childNode || !hydrate(childNode, children[i$1], insertedVnodeQueue)) {
+                childrenMatch = false;
+                break
+              }
+              childNode = childNode.nextSibling;
             }
-            return false
+            // if childNode is not null, it means the actual childNodes list is
+            // longer than the virtual children list.
+            if (!childrenMatch || childNode) {
+              /* istanbul ignore if */
+              if (process.env.NODE_ENV !== 'production' &&
+                typeof console !== 'undefined' &&
+                !bailed
+              ) {
+                bailed = true;
+                console.warn('Parent: ', elm);
+                console.warn('Mismatching childNodes vs. VNodes: ', elm.childNodes, children);
+              }
+              return false
+            }
           }
         }
       }
@@ -8362,14 +8453,28 @@ function createPatchFunction (backend) {
           // component root element replaced.
           // update parent placeholder node element, recursively
           var ancestor = vnode.parent;
+          var patchable = isPatchable(vnode);
           while (ancestor) {
-            ancestor.elm = vnode.elm;
-            ancestor = ancestor.parent;
-          }
-          if (isPatchable(vnode)) {
-            for (var i = 0; i < cbs.create.length; ++i) {
-              cbs.create[i](emptyNode, vnode.parent);
+            for (var i = 0; i < cbs.destroy.length; ++i) {
+              cbs.destroy[i](ancestor);
             }
+            ancestor.elm = vnode.elm;
+            if (patchable) {
+              for (var i$1 = 0; i$1 < cbs.create.length; ++i$1) {
+                cbs.create[i$1](emptyNode, ancestor);
+              }
+              // #6513
+              // invoke insert hooks that may have been merged by create hooks.
+              // e.g. for directives that uses the "inserted" hook.
+              var insert = ancestor.data.hook.insert;
+              if (insert.merged) {
+                // start at index 1 to avoid re-invoking component mounted hook
+                for (var i$2 = 1; i$2 < insert.fns.length; i$2++) {
+                  insert.fns[i$2]();
+                }
+              }
+            }
+            ancestor = ancestor.parent;
           }
         }
 
@@ -8553,7 +8658,12 @@ function setAttr (el, key, value) {
     if (isFalsyAttrValue(value)) {
       el.removeAttribute(key);
     } else {
-      el.setAttribute(key, key);
+      // technically allowfullscreen is a boolean attribute for <iframe>,
+      // but Flash expects a value of "true" when used on <embed> tag
+      value = key === 'allowfullscreen' && el.tagName === 'EMBED'
+        ? 'true'
+        : key;
+      el.setAttribute(key, value);
     }
   } else if (isEnumeratedAttr(key)) {
     el.setAttribute(key, isFalsyAttrValue(value) || value === 'false' ? 'false' : 'true');
@@ -8967,7 +9077,7 @@ function updateStyle (oldVnode, vnode) {
   var style = normalizeStyleBinding(vnode.data.style) || {};
 
   // store normalized style under a different key for next diff
-  // make sure to clone it if it's reactive, since the user likley wants
+  // make sure to clone it if it's reactive, since the user likely wants
   // to mutate it.
   vnode.data.normalizedStyle = isDef(style.__ob__)
     ? extend({}, style)
@@ -9572,8 +9682,6 @@ var patch = createPatchFunction({ nodeOps: nodeOps, modules: modules });
  * properties to Elements.
  */
 
-var isTextInputType = makeMap('text,number,password,search,email,tel,url');
-
 /* istanbul ignore if */
 if (isIE9) {
   // http://www.matts411.com/post/internet-explorer-9-oninput/
@@ -9588,14 +9696,7 @@ if (isIE9) {
 var model$1 = {
   inserted: function inserted (el, binding, vnode) {
     if (vnode.tag === 'select') {
-      var cb = function () {
-        setSelected(el, binding, vnode.context);
-      };
-      cb();
-      /* istanbul ignore if */
-      if (isIE || isEdge) {
-        setTimeout(cb, 0);
-      }
+      setSelected(el, binding, vnode.context);
       el._vOptions = [].map.call(el.options, getValue);
     } else if (vnode.tag === 'textarea' || isTextInputType(el.type)) {
       el._vModifiers = binding.modifiers;
@@ -9626,13 +9727,30 @@ var model$1 = {
       var prevOptions = el._vOptions;
       var curOptions = el._vOptions = [].map.call(el.options, getValue);
       if (curOptions.some(function (o, i) { return !looseEqual(o, prevOptions[i]); })) {
-        trigger(el, 'change');
+        // trigger change event if
+        // no matching option found for at least one value
+        var needReset = el.multiple
+          ? binding.value.some(function (v) { return hasNoMatchingOption(v, curOptions); })
+          : binding.value !== binding.oldValue && hasNoMatchingOption(binding.value, curOptions);
+        if (needReset) {
+          trigger(el, 'change');
+        }
       }
     }
   }
 };
 
 function setSelected (el, binding, vm) {
+  actuallySetSelected(el, binding, vm);
+  /* istanbul ignore if */
+  if (isIE || isEdge) {
+    setTimeout(function () {
+      actuallySetSelected(el, binding, vm);
+    }, 0);
+  }
+}
+
+function actuallySetSelected (el, binding, vm) {
   var value = binding.value;
   var isMultiple = el.multiple;
   if (isMultiple && !Array.isArray(value)) {
@@ -9663,6 +9781,10 @@ function setSelected (el, binding, vm) {
   if (!isMultiple) {
     el.selectedIndex = -1;
   }
+}
+
+function hasNoMatchingOption (value, options) {
+  return options.every(function (o) { return !looseEqual(o, value); })
 }
 
 function getValue (option) {
@@ -9825,10 +9947,6 @@ function hasParentTransition (vnode) {
 
 function isSameChild (child, oldChild) {
   return oldChild.key === child.key && oldChild.tag === child.tag
-}
-
-function isAsyncPlaceholder (node) {
-  return node.isComment && node.asyncFactory
 }
 
 var Transition = {
@@ -10179,6 +10297,74 @@ setTimeout(function () {
 
 /***/ }),
 /* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* eslint-disable node/no-deprecated-api */
+var buffer = __webpack_require__(2)
+var Buffer = buffer.Buffer
+
+// alternative to using Object.keys for old browsers
+function copyProps (src, dst) {
+  for (var key in src) {
+    dst[key] = src[key]
+  }
+}
+if (Buffer.from && Buffer.alloc && Buffer.allocUnsafe && Buffer.allocUnsafeSlow) {
+  module.exports = buffer
+} else {
+  // Copy properties from require('buffer')
+  copyProps(buffer, exports)
+  exports.Buffer = SafeBuffer
+}
+
+function SafeBuffer (arg, encodingOrOffset, length) {
+  return Buffer(arg, encodingOrOffset, length)
+}
+
+// Copy static methods from Buffer
+copyProps(Buffer, SafeBuffer)
+
+SafeBuffer.from = function (arg, encodingOrOffset, length) {
+  if (typeof arg === 'number') {
+    throw new TypeError('Argument must not be a number')
+  }
+  return Buffer(arg, encodingOrOffset, length)
+}
+
+SafeBuffer.alloc = function (size, fill, encoding) {
+  if (typeof size !== 'number') {
+    throw new TypeError('Argument must be a number')
+  }
+  var buf = Buffer(size)
+  if (fill !== undefined) {
+    if (typeof encoding === 'string') {
+      buf.fill(fill, encoding)
+    } else {
+      buf.fill(fill)
+    }
+  } else {
+    buf.fill(0)
+  }
+  return buf
+}
+
+SafeBuffer.allocUnsafe = function (size) {
+  if (typeof size !== 'number') {
+    throw new TypeError('Argument must be a number')
+  }
+  return Buffer(size)
+}
+
+SafeBuffer.allocUnsafeSlow = function (size) {
+  if (typeof size !== 'number') {
+    throw new TypeError('Argument must be a number')
+  }
+  return buffer.SlowBuffer(size)
+}
+
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports) {
 
 /* globals __VUE_SSR_CONTEXT__ */
@@ -10275,7 +10461,7 @@ module.exports = function normalizeComponent (
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {(function (module, exports) {
@@ -10330,7 +10516,7 @@ module.exports = function normalizeComponent (
 
   var Buffer;
   try {
-    Buffer = __webpack_require__(366).Buffer;
+    Buffer = __webpack_require__(377).Buffer;
   } catch (e) {
   }
 
@@ -13709,7 +13895,7 @@ module.exports = function normalizeComponent (
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(24)(module)))
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13721,7 +13907,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-var _seedrandom = __webpack_require__(316);
+var _seedrandom = __webpack_require__(325);
 
 var _seedrandom2 = _interopRequireDefault(_seedrandom);
 
@@ -15747,7 +15933,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -15779,17 +15965,17 @@ THE SOFTWARE. */
 // END HEADER
 
 exports.glMatrix = __webpack_require__(16);
-exports.mat2 = __webpack_require__(285);
-exports.mat2d = __webpack_require__(286);
-exports.mat3 = __webpack_require__(95);
-exports.mat4 = __webpack_require__(287);
-exports.quat = __webpack_require__(288);
-exports.vec2 = __webpack_require__(289);
-exports.vec3 = __webpack_require__(96);
-exports.vec4 = __webpack_require__(97);
+exports.mat2 = __webpack_require__(294);
+exports.mat2d = __webpack_require__(295);
+exports.mat3 = __webpack_require__(92);
+exports.mat4 = __webpack_require__(296);
+exports.quat = __webpack_require__(297);
+exports.vec2 = __webpack_require__(298);
+exports.vec3 = __webpack_require__(93);
+exports.vec4 = __webpack_require__(94);
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15797,19 +15983,19 @@ exports.vec4 = __webpack_require__(97);
 
 var elliptic = exports;
 
-elliptic.version = __webpack_require__(284).version;
-elliptic.utils = __webpack_require__(283);
-elliptic.rand = __webpack_require__(82);
-elliptic.curve = __webpack_require__(43);
-elliptic.curves = __webpack_require__(275);
+elliptic.version = __webpack_require__(293).version;
+elliptic.utils = __webpack_require__(292);
+elliptic.rand = __webpack_require__(83);
+elliptic.curve = __webpack_require__(41);
+elliptic.curves = __webpack_require__(284);
 
 // Protocols
-elliptic.ec = __webpack_require__(276);
-elliptic.eddsa = __webpack_require__(279);
+elliptic.ec = __webpack_require__(285);
+elliptic.eddsa = __webpack_require__(288);
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15819,16 +16005,16 @@ var _vue = __webpack_require__(3);
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _vuex = __webpack_require__(363);
+var _vuex = __webpack_require__(374);
 
 var _vuex2 = _interopRequireDefault(_vuex);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var ThreeGraphicsModule = __webpack_require__(235).default;
-var EditorGraphicsModule = __webpack_require__(225).default;
-var VTKGraphicsModule = __webpack_require__(240).default;
-var ParticleModule = __webpack_require__(230).default;
+var ThreeGraphicsModule = __webpack_require__(238).default;
+var EditorGraphicsModule = __webpack_require__(228).default;
+var VTKGraphicsModule = __webpack_require__(243).default;
+var ParticleModule = __webpack_require__(233).default;
 
 //Object.defineProperty(exports, "__esModule", { value: true });
 
@@ -15844,7 +16030,7 @@ exports.default = new _vuex2.default.Store({
 });
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports) {
 
 module.exports = assert;
@@ -15861,7 +16047,7 @@ assert.equal = function assertEqual(l, r, msg) {
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports) {
 
 module.exports = function() {
@@ -15870,7 +16056,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16050,82 +16236,14 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = { newInstance: newInstance, extend: extend, PASS_TYPES: PASS_TYPES };
 
 /***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* eslint-disable node/no-deprecated-api */
-var buffer = __webpack_require__(1)
-var Buffer = buffer.Buffer
-
-// alternative to using Object.keys for old browsers
-function copyProps (src, dst) {
-  for (var key in src) {
-    dst[key] = src[key]
-  }
-}
-if (Buffer.from && Buffer.alloc && Buffer.allocUnsafe && Buffer.allocUnsafeSlow) {
-  module.exports = buffer
-} else {
-  // Copy properties from require('buffer')
-  copyProps(buffer, exports)
-  exports.Buffer = SafeBuffer
-}
-
-function SafeBuffer (arg, encodingOrOffset, length) {
-  return Buffer(arg, encodingOrOffset, length)
-}
-
-// Copy static methods from Buffer
-copyProps(Buffer, SafeBuffer)
-
-SafeBuffer.from = function (arg, encodingOrOffset, length) {
-  if (typeof arg === 'number') {
-    throw new TypeError('Argument must not be a number')
-  }
-  return Buffer(arg, encodingOrOffset, length)
-}
-
-SafeBuffer.alloc = function (size, fill, encoding) {
-  if (typeof size !== 'number') {
-    throw new TypeError('Argument must be a number')
-  }
-  var buf = Buffer(size)
-  if (fill !== undefined) {
-    if (typeof encoding === 'string') {
-      buf.fill(fill, encoding)
-    } else {
-      buf.fill(fill)
-    }
-  } else {
-    buf.fill(0)
-  }
-  return buf
-}
-
-SafeBuffer.allocUnsafe = function (size) {
-  if (typeof size !== 'number') {
-    throw new TypeError('Argument must be a number')
-  }
-  return Buffer(size)
-}
-
-SafeBuffer.allocUnsafeSlow = function (size) {
-  if (typeof size !== 'number') {
-    throw new TypeError('Argument must be a number')
-  }
-  return buffer.SlowBuffer(size)
-}
-
-
-/***/ }),
 /* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var assert = __webpack_require__(10);
-var inherits = __webpack_require__(2);
+var assert = __webpack_require__(11);
+var inherits = __webpack_require__(1);
 
 exports.inherits = inherits;
 
@@ -60252,10 +60370,10 @@ exports.default = Object.assign({ newInstance: newInstance, extend: extend }, ST
 /* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Buffer = __webpack_require__(13).Buffer
-var Transform = __webpack_require__(48).Transform
-var StringDecoder = __webpack_require__(65).StringDecoder
-var inherits = __webpack_require__(2)
+var Buffer = __webpack_require__(4).Buffer
+var Transform = __webpack_require__(46).Transform
+var StringDecoder = __webpack_require__(66).StringDecoder
+var inherits = __webpack_require__(1)
 
 function CipherBase (hashMode) {
   Transform.call(this)
@@ -60414,7 +60532,7 @@ var _macro = __webpack_require__(0);
 
 var _macro2 = _interopRequireDefault(_macro);
 
-var _Shader = __webpack_require__(212);
+var _Shader = __webpack_require__(213);
 
 var _Shader2 = _interopRequireDefault(_Shader);
 
@@ -61073,7 +61191,7 @@ exports.default = { newInstance: newInstance, extend: extend, substitute: substi
 
 /*<replacement>*/
 
-var processNextTick = __webpack_require__(46);
+var processNextTick = __webpack_require__(44);
 /*</replacement>*/
 
 /*<replacement>*/
@@ -61089,11 +61207,11 @@ module.exports = Duplex;
 
 /*<replacement>*/
 var util = __webpack_require__(35);
-util.inherits = __webpack_require__(2);
+util.inherits = __webpack_require__(1);
 /*</replacement>*/
 
-var Readable = __webpack_require__(111);
-var Writable = __webpack_require__(61);
+var Readable = __webpack_require__(108);
+var Writable = __webpack_require__(62);
 
 util.inherits(Duplex, Readable);
 
@@ -61200,66 +61318,78 @@ module.exports = function(module) {
 /* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {// prototype class for hash functions
+var Buffer = __webpack_require__(4).Buffer
+
+// prototype class for hash functions
 function Hash (blockSize, finalSize) {
-  this._block = new Buffer(blockSize)
+  this._block = Buffer.alloc(blockSize)
   this._finalSize = finalSize
   this._blockSize = blockSize
   this._len = 0
-  this._s = 0
 }
 
 Hash.prototype.update = function (data, enc) {
   if (typeof data === 'string') {
     enc = enc || 'utf8'
-    data = new Buffer(data, enc)
+    data = Buffer.from(data, enc)
   }
 
-  var l = this._len += data.length
-  var s = this._s || 0
-  var f = 0
-  var buffer = this._block
+  var block = this._block
+  var blockSize = this._blockSize
+  var length = data.length
+  var accum = this._len
 
-  while (s < l) {
-    var t = Math.min(data.length, f + this._blockSize - (s % this._blockSize))
-    var ch = (t - f)
+  for (var offset = 0; offset < length;) {
+    var assigned = accum % blockSize
+    var remainder = Math.min(length - offset, blockSize - assigned)
 
-    for (var i = 0; i < ch; i++) {
-      buffer[(s % this._blockSize) + i] = data[i + f]
+    for (var i = 0; i < remainder; i++) {
+      block[assigned + i] = data[offset + i]
     }
 
-    s += ch
-    f += ch
+    accum += remainder
+    offset += remainder
 
-    if ((s % this._blockSize) === 0) {
-      this._update(buffer)
+    if ((accum % blockSize) === 0) {
+      this._update(block)
     }
   }
-  this._s = s
 
+  this._len += length
   return this
 }
 
 Hash.prototype.digest = function (enc) {
-  // Suppose the length of the message M, in bits, is l
-  var l = this._len * 8
+  var rem = this._len % this._blockSize
 
-  // Append the bit 1 to the end of the message
-  this._block[this._len % this._blockSize] = 0x80
+  this._block[rem] = 0x80
 
-  // and then k zero bits, where k is the smallest non-negative solution to the equation (l + 1 + k) === finalSize mod blockSize
-  this._block.fill(0, this._len % this._blockSize + 1)
+  // zero (rem + 1) trailing bits, where (rem + 1) is the smallest
+  // non-negative solution to the equation (length + 1 + (rem + 1)) === finalSize mod blockSize
+  this._block.fill(0, rem + 1)
 
-  if (l % (this._blockSize * 8) >= this._finalSize * 8) {
+  if (rem >= this._finalSize) {
     this._update(this._block)
     this._block.fill(0)
   }
 
-  // to this append the block which is equal to the number l written in binary
-  // TODO: handle case where l is > Math.pow(2, 29)
-  this._block.writeInt32BE(l, this._blockSize - 4)
+  var bits = this._len * 8
 
-  var hash = this._update(this._block) || this._hash()
+  // uint32
+  if (bits <= 0xffffffff) {
+    this._block.writeUInt32BE(bits, this._blockSize - 4)
+
+  // uint64
+  } else {
+    var lowBits = bits & 0xffffffff
+    var highBits = (bits - lowBits) / 0x100000000
+
+    this._block.writeUInt32BE(highBits, this._blockSize - 8)
+    this._block.writeUInt32BE(lowBits, this._blockSize - 4)
+  }
+
+  this._update(this._block)
+  var hash = this._hash()
 
   return enc ? hash.toString(enc) : hash
 }
@@ -61270,7 +61400,6 @@ Hash.prototype._update = function () {
 
 module.exports = Hash
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ }),
 /* 26 */
@@ -61287,13 +61416,13 @@ module.exports = __webpack_amd_options__;
 
 var asn1 = exports;
 
-asn1.bignum = __webpack_require__(5);
+asn1.bignum = __webpack_require__(6);
 
-asn1.define = __webpack_require__(142).define;
+asn1.define = __webpack_require__(141).define;
 asn1.base = __webpack_require__(28);
-asn1.constants = __webpack_require__(67);
-asn1.decoders = __webpack_require__(146);
-asn1.encoders = __webpack_require__(148);
+asn1.constants = __webpack_require__(68);
+asn1.decoders = __webpack_require__(145);
+asn1.encoders = __webpack_require__(147);
 
 
 /***/ }),
@@ -61302,10 +61431,10 @@ asn1.encoders = __webpack_require__(148);
 
 var base = exports;
 
-base.Reporter = __webpack_require__(144).Reporter;
-base.DecoderBuffer = __webpack_require__(66).DecoderBuffer;
-base.EncoderBuffer = __webpack_require__(66).EncoderBuffer;
-base.Node = __webpack_require__(143);
+base.Reporter = __webpack_require__(143).Reporter;
+base.DecoderBuffer = __webpack_require__(67).DecoderBuffer;
+base.EncoderBuffer = __webpack_require__(67).EncoderBuffer;
+base.Node = __webpack_require__(142);
 
 
 /***/ }),
@@ -61405,17 +61534,17 @@ var _macro = __webpack_require__(0);
 
 var _macro2 = _interopRequireDefault(_macro);
 
-var _glMatrix = __webpack_require__(7);
+var _glMatrix = __webpack_require__(8);
 
 var _Constants = __webpack_require__(31);
 
 var _Constants2 = __webpack_require__(21);
 
-var _Math = __webpack_require__(6);
+var _Math = __webpack_require__(7);
 
 var _Math2 = _interopRequireDefault(_Math);
 
-var _ViewNode = __webpack_require__(12);
+var _ViewNode = __webpack_require__(13);
 
 var _ViewNode2 = _interopRequireDefault(_ViewNode);
 
@@ -62498,7 +62627,7 @@ vtk.register = register;
   return buffer
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2).Buffer))
 
 /***/ }),
 /* 35 */
@@ -62612,7 +62741,7 @@ function objectToString(o) {
   return Object.prototype.toString.call(o);
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2).Buffer))
 
 /***/ }),
 /* 36 */
@@ -62620,10 +62749,10 @@ function objectToString(o) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(Buffer) {
-var inherits = __webpack_require__(2)
-var md5 = __webpack_require__(57)
-var RIPEMD160 = __webpack_require__(63)
-var sha = __webpack_require__(64)
+var inherits = __webpack_require__(1)
+var md5 = __webpack_require__(58)
+var RIPEMD160 = __webpack_require__(64)
+var sha = __webpack_require__(65)
 
 var Base = __webpack_require__(20)
 
@@ -62672,7 +62801,7 @@ module.exports = function createHash (alg) {
   return new Hash(sha(alg))
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2).Buffer))
 
 /***/ }),
 /* 37 */
@@ -62682,7 +62811,7 @@ module.exports = function createHash (alg) {
 
 
 var utils = __webpack_require__(14);
-var assert = __webpack_require__(10);
+var assert = __webpack_require__(11);
 
 function BlockHash() {
   this.pending = null;
@@ -62784,7 +62913,7 @@ function oldBrowser () {
   throw new Error('secure random number generation not supported by this browser\nuse chrome, FireFox or Internet Explorer 11')
 }
 
-var Buffer = __webpack_require__(13).Buffer
+var Buffer = __webpack_require__(4).Buffer
 var crypto = global.crypto || global.msCrypto
 
 if (crypto && crypto.getRandomValues) {
@@ -62823,68 +62952,115 @@ function randomBytes (size, cb) {
 /* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {// based on the aes implimentation in triple sec
+// based on the aes implimentation in triple sec
 // https://github.com/keybase/triplesec
-
 // which is in turn based on the one from crypto-js
 // https://code.google.com/p/crypto-js/
 
-var uint_max = Math.pow(2, 32)
-function fixup_uint32 (x) {
-  var ret, x_pos
-  ret = x > uint_max || x < 0 ? (x_pos = Math.abs(x) % uint_max, x < 0 ? uint_max - x_pos : x_pos) : x
-  return ret
+var Buffer = __webpack_require__(4).Buffer
+
+function asUInt32Array (buf) {
+  if (!Buffer.isBuffer(buf)) buf = Buffer.from(buf)
+
+  var len = (buf.length / 4) | 0
+  var out = new Array(len)
+
+  for (var i = 0; i < len; i++) {
+    out[i] = buf.readUInt32BE(i * 4)
+  }
+
+  return out
 }
-function scrub_vec (v) {
+
+function scrubVec (v) {
   for (var i = 0; i < v.length; v++) {
     v[i] = 0
   }
-  return false
 }
 
-function Global () {
-  this.SBOX = []
-  this.INV_SBOX = []
-  this.SUB_MIX = [[], [], [], []]
-  this.INV_SUB_MIX = [[], [], [], []]
-  this.init()
-  this.RCON = [0x00, 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1b, 0x36]
+function cryptBlock (M, keySchedule, SUB_MIX, SBOX, nRounds) {
+  var SUB_MIX0 = SUB_MIX[0]
+  var SUB_MIX1 = SUB_MIX[1]
+  var SUB_MIX2 = SUB_MIX[2]
+  var SUB_MIX3 = SUB_MIX[3]
+
+  var s0 = M[0] ^ keySchedule[0]
+  var s1 = M[1] ^ keySchedule[1]
+  var s2 = M[2] ^ keySchedule[2]
+  var s3 = M[3] ^ keySchedule[3]
+  var t0, t1, t2, t3
+  var ksRow = 4
+
+  for (var round = 1; round < nRounds; round++) {
+    t0 = SUB_MIX0[s0 >>> 24] ^ SUB_MIX1[(s1 >>> 16) & 0xff] ^ SUB_MIX2[(s2 >>> 8) & 0xff] ^ SUB_MIX3[s3 & 0xff] ^ keySchedule[ksRow++]
+    t1 = SUB_MIX0[s1 >>> 24] ^ SUB_MIX1[(s2 >>> 16) & 0xff] ^ SUB_MIX2[(s3 >>> 8) & 0xff] ^ SUB_MIX3[s0 & 0xff] ^ keySchedule[ksRow++]
+    t2 = SUB_MIX0[s2 >>> 24] ^ SUB_MIX1[(s3 >>> 16) & 0xff] ^ SUB_MIX2[(s0 >>> 8) & 0xff] ^ SUB_MIX3[s1 & 0xff] ^ keySchedule[ksRow++]
+    t3 = SUB_MIX0[s3 >>> 24] ^ SUB_MIX1[(s0 >>> 16) & 0xff] ^ SUB_MIX2[(s1 >>> 8) & 0xff] ^ SUB_MIX3[s2 & 0xff] ^ keySchedule[ksRow++]
+    s0 = t0
+    s1 = t1
+    s2 = t2
+    s3 = t3
+  }
+
+  t0 = ((SBOX[s0 >>> 24] << 24) | (SBOX[(s1 >>> 16) & 0xff] << 16) | (SBOX[(s2 >>> 8) & 0xff] << 8) | SBOX[s3 & 0xff]) ^ keySchedule[ksRow++]
+  t1 = ((SBOX[s1 >>> 24] << 24) | (SBOX[(s2 >>> 16) & 0xff] << 16) | (SBOX[(s3 >>> 8) & 0xff] << 8) | SBOX[s0 & 0xff]) ^ keySchedule[ksRow++]
+  t2 = ((SBOX[s2 >>> 24] << 24) | (SBOX[(s3 >>> 16) & 0xff] << 16) | (SBOX[(s0 >>> 8) & 0xff] << 8) | SBOX[s1 & 0xff]) ^ keySchedule[ksRow++]
+  t3 = ((SBOX[s3 >>> 24] << 24) | (SBOX[(s0 >>> 16) & 0xff] << 16) | (SBOX[(s1 >>> 8) & 0xff] << 8) | SBOX[s2 & 0xff]) ^ keySchedule[ksRow++]
+  t0 = t0 >>> 0
+  t1 = t1 >>> 0
+  t2 = t2 >>> 0
+  t3 = t3 >>> 0
+
+  return [t0, t1, t2, t3]
 }
 
-Global.prototype.init = function () {
-  var d, i, sx, t, x, x2, x4, x8, xi, _i
-  d = (function () {
-    var _i, _results
-    _results = []
-    for (i = _i = 0; _i < 256; i = ++_i) {
-      if (i < 128) {
-        _results.push(i << 1)
-      } else {
-        _results.push((i << 1) ^ 0x11b)
-      }
+// AES constants
+var RCON = [0x00, 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1b, 0x36]
+var G = (function () {
+  // Compute double table
+  var d = new Array(256)
+  for (var j = 0; j < 256; j++) {
+    if (j < 128) {
+      d[j] = j << 1
+    } else {
+      d[j] = (j << 1) ^ 0x11b
     }
-    return _results
-  })()
-  x = 0
-  xi = 0
-  for (i = _i = 0; _i < 256; i = ++_i) {
-    sx = xi ^ (xi << 1) ^ (xi << 2) ^ (xi << 3) ^ (xi << 4)
+  }
+
+  var SBOX = []
+  var INV_SBOX = []
+  var SUB_MIX = [[], [], [], []]
+  var INV_SUB_MIX = [[], [], [], []]
+
+  // Walk GF(2^8)
+  var x = 0
+  var xi = 0
+  for (var i = 0; i < 256; ++i) {
+    // Compute sbox
+    var sx = xi ^ (xi << 1) ^ (xi << 2) ^ (xi << 3) ^ (xi << 4)
     sx = (sx >>> 8) ^ (sx & 0xff) ^ 0x63
-    this.SBOX[x] = sx
-    this.INV_SBOX[sx] = x
-    x2 = d[x]
-    x4 = d[x2]
-    x8 = d[x4]
-    t = (d[sx] * 0x101) ^ (sx * 0x1010100)
-    this.SUB_MIX[0][x] = (t << 24) | (t >>> 8)
-    this.SUB_MIX[1][x] = (t << 16) | (t >>> 16)
-    this.SUB_MIX[2][x] = (t << 8) | (t >>> 24)
-    this.SUB_MIX[3][x] = t
+    SBOX[x] = sx
+    INV_SBOX[sx] = x
+
+    // Compute multiplication
+    var x2 = d[x]
+    var x4 = d[x2]
+    var x8 = d[x4]
+
+    // Compute sub bytes, mix columns tables
+    var t = (d[sx] * 0x101) ^ (sx * 0x1010100)
+    SUB_MIX[0][x] = (t << 24) | (t >>> 8)
+    SUB_MIX[1][x] = (t << 16) | (t >>> 16)
+    SUB_MIX[2][x] = (t << 8) | (t >>> 24)
+    SUB_MIX[3][x] = t
+
+    // Compute inv sub bytes, inv mix columns tables
     t = (x8 * 0x1010101) ^ (x4 * 0x10001) ^ (x2 * 0x101) ^ (x * 0x1010100)
-    this.INV_SUB_MIX[0][sx] = (t << 24) | (t >>> 8)
-    this.INV_SUB_MIX[1][sx] = (t << 16) | (t >>> 16)
-    this.INV_SUB_MIX[2][sx] = (t << 8) | (t >>> 24)
-    this.INV_SUB_MIX[3][sx] = t
+    INV_SUB_MIX[0][sx] = (t << 24) | (t >>> 8)
+    INV_SUB_MIX[1][sx] = (t << 16) | (t >>> 16)
+    INV_SUB_MIX[2][sx] = (t << 8) | (t >>> 24)
+    INV_SUB_MIX[3][sx] = t
+
     if (x === 0) {
       x = xi = 1
     } else {
@@ -62892,56 +63068,87 @@ Global.prototype.init = function () {
       xi ^= d[d[xi]]
     }
   }
-  return true
-}
 
-var G = new Global()
+  return {
+    SBOX: SBOX,
+    INV_SBOX: INV_SBOX,
+    SUB_MIX: SUB_MIX,
+    INV_SUB_MIX: INV_SUB_MIX
+  }
+})()
+
+function AES (key) {
+  this._key = asUInt32Array(key)
+  this._reset()
+}
 
 AES.blockSize = 4 * 4
-
-AES.prototype.blockSize = AES.blockSize
-
 AES.keySize = 256 / 8
-
+AES.prototype.blockSize = AES.blockSize
 AES.prototype.keySize = AES.keySize
+AES.prototype._reset = function () {
+  var keyWords = this._key
+  var keySize = keyWords.length
+  var nRounds = keySize + 6
+  var ksRows = (nRounds + 1) * 4
 
-function bufferToArray (buf) {
-  var len = buf.length / 4
-  var out = new Array(len)
-  var i = -1
-  while (++i < len) {
-    out[i] = buf.readUInt32BE(i * 4)
+  var keySchedule = []
+  for (var k = 0; k < keySize; k++) {
+    keySchedule[k] = keyWords[k]
   }
-  return out
-}
-function AES (key) {
-  this._key = bufferToArray(key)
-  this._doReset()
+
+  for (k = keySize; k < ksRows; k++) {
+    var t = keySchedule[k - 1]
+
+    if (k % keySize === 0) {
+      t = (t << 8) | (t >>> 24)
+      t =
+        (G.SBOX[t >>> 24] << 24) |
+        (G.SBOX[(t >>> 16) & 0xff] << 16) |
+        (G.SBOX[(t >>> 8) & 0xff] << 8) |
+        (G.SBOX[t & 0xff])
+
+      t ^= RCON[(k / keySize) | 0] << 24
+    } else if (keySize > 6 && k % keySize === 4) {
+      t =
+        (G.SBOX[t >>> 24] << 24) |
+        (G.SBOX[(t >>> 16) & 0xff] << 16) |
+        (G.SBOX[(t >>> 8) & 0xff] << 8) |
+        (G.SBOX[t & 0xff])
+    }
+
+    keySchedule[k] = keySchedule[k - keySize] ^ t
+  }
+
+  var invKeySchedule = []
+  for (var ik = 0; ik < ksRows; ik++) {
+    var ksR = ksRows - ik
+    var tt = keySchedule[ksR - (ik % 4 ? 0 : 4)]
+
+    if (ik < 4 || ksR <= 4) {
+      invKeySchedule[ik] = tt
+    } else {
+      invKeySchedule[ik] =
+        G.INV_SUB_MIX[0][G.SBOX[tt >>> 24]] ^
+        G.INV_SUB_MIX[1][G.SBOX[(tt >>> 16) & 0xff]] ^
+        G.INV_SUB_MIX[2][G.SBOX[(tt >>> 8) & 0xff]] ^
+        G.INV_SUB_MIX[3][G.SBOX[tt & 0xff]]
+    }
+  }
+
+  this._nRounds = nRounds
+  this._keySchedule = keySchedule
+  this._invKeySchedule = invKeySchedule
 }
 
-AES.prototype._doReset = function () {
-  var invKsRow, keySize, keyWords, ksRow, ksRows, t
-  keyWords = this._key
-  keySize = keyWords.length
-  this._nRounds = keySize + 6
-  ksRows = (this._nRounds + 1) * 4
-  this._keySchedule = []
-  for (ksRow = 0; ksRow < ksRows; ksRow++) {
-    this._keySchedule[ksRow] = ksRow < keySize ? keyWords[ksRow] : (t = this._keySchedule[ksRow - 1], (ksRow % keySize) === 0 ? (t = (t << 8) | (t >>> 24), t = (G.SBOX[t >>> 24] << 24) | (G.SBOX[(t >>> 16) & 0xff] << 16) | (G.SBOX[(t >>> 8) & 0xff] << 8) | G.SBOX[t & 0xff], t ^= G.RCON[(ksRow / keySize) | 0] << 24) : keySize > 6 && ksRow % keySize === 4 ? t = (G.SBOX[t >>> 24] << 24) | (G.SBOX[(t >>> 16) & 0xff] << 16) | (G.SBOX[(t >>> 8) & 0xff] << 8) | G.SBOX[t & 0xff] : void 0, this._keySchedule[ksRow - keySize] ^ t)
-  }
-  this._invKeySchedule = []
-  for (invKsRow = 0; invKsRow < ksRows; invKsRow++) {
-    ksRow = ksRows - invKsRow
-    t = this._keySchedule[ksRow - (invKsRow % 4 ? 0 : 4)]
-    this._invKeySchedule[invKsRow] = invKsRow < 4 || ksRow <= 4 ? t : G.INV_SUB_MIX[0][G.SBOX[t >>> 24]] ^ G.INV_SUB_MIX[1][G.SBOX[(t >>> 16) & 0xff]] ^ G.INV_SUB_MIX[2][G.SBOX[(t >>> 8) & 0xff]] ^ G.INV_SUB_MIX[3][G.SBOX[t & 0xff]]
-  }
-  return true
+AES.prototype.encryptBlockRaw = function (M) {
+  M = asUInt32Array(M)
+  return cryptBlock(M, this._keySchedule, G.SUB_MIX, G.SBOX, this._nRounds)
 }
 
 AES.prototype.encryptBlock = function (M) {
-  M = bufferToArray(new Buffer(M))
-  var out = this._doCryptBlock(M, this._keySchedule, G.SUB_MIX, G.SBOX)
-  var buf = new Buffer(16)
+  var out = this.encryptBlockRaw(M)
+  var buf = Buffer.allocUnsafe(16)
   buf.writeUInt32BE(out[0], 0)
   buf.writeUInt32BE(out[1], 4)
   buf.writeUInt32BE(out[2], 8)
@@ -62950,12 +63157,15 @@ AES.prototype.encryptBlock = function (M) {
 }
 
 AES.prototype.decryptBlock = function (M) {
-  M = bufferToArray(new Buffer(M))
-  var temp = [M[3], M[1]]
-  M[1] = temp[0]
-  M[3] = temp[1]
-  var out = this._doCryptBlock(M, this._invKeySchedule, G.INV_SUB_MIX, G.INV_SBOX)
-  var buf = new Buffer(16)
+  M = asUInt32Array(M)
+
+  // swap
+  var m1 = M[1]
+  M[1] = M[3]
+  M[3] = m1
+
+  var out = cryptBlock(M, this._invKeySchedule, G.INV_SUB_MIX, G.INV_SBOX, this._nRounds)
+  var buf = Buffer.allocUnsafe(16)
   buf.writeUInt32BE(out[0], 0)
   buf.writeUInt32BE(out[3], 4)
   buf.writeUInt32BE(out[2], 8)
@@ -62964,262 +63174,16 @@ AES.prototype.decryptBlock = function (M) {
 }
 
 AES.prototype.scrub = function () {
-  scrub_vec(this._keySchedule)
-  scrub_vec(this._invKeySchedule)
-  scrub_vec(this._key)
+  scrubVec(this._keySchedule)
+  scrubVec(this._invKeySchedule)
+  scrubVec(this._key)
 }
 
-AES.prototype._doCryptBlock = function (M, keySchedule, SUB_MIX, SBOX) {
-  var ksRow, s0, s1, s2, s3, t0, t1, t2, t3
+module.exports.AES = AES
 
-  s0 = M[0] ^ keySchedule[0]
-  s1 = M[1] ^ keySchedule[1]
-  s2 = M[2] ^ keySchedule[2]
-  s3 = M[3] ^ keySchedule[3]
-  ksRow = 4
-  for (var round = 1; round < this._nRounds; round++) {
-    t0 = SUB_MIX[0][s0 >>> 24] ^ SUB_MIX[1][(s1 >>> 16) & 0xff] ^ SUB_MIX[2][(s2 >>> 8) & 0xff] ^ SUB_MIX[3][s3 & 0xff] ^ keySchedule[ksRow++]
-    t1 = SUB_MIX[0][s1 >>> 24] ^ SUB_MIX[1][(s2 >>> 16) & 0xff] ^ SUB_MIX[2][(s3 >>> 8) & 0xff] ^ SUB_MIX[3][s0 & 0xff] ^ keySchedule[ksRow++]
-    t2 = SUB_MIX[0][s2 >>> 24] ^ SUB_MIX[1][(s3 >>> 16) & 0xff] ^ SUB_MIX[2][(s0 >>> 8) & 0xff] ^ SUB_MIX[3][s1 & 0xff] ^ keySchedule[ksRow++]
-    t3 = SUB_MIX[0][s3 >>> 24] ^ SUB_MIX[1][(s0 >>> 16) & 0xff] ^ SUB_MIX[2][(s1 >>> 8) & 0xff] ^ SUB_MIX[3][s2 & 0xff] ^ keySchedule[ksRow++]
-    s0 = t0
-    s1 = t1
-    s2 = t2
-    s3 = t3
-  }
-  t0 = ((SBOX[s0 >>> 24] << 24) | (SBOX[(s1 >>> 16) & 0xff] << 16) | (SBOX[(s2 >>> 8) & 0xff] << 8) | SBOX[s3 & 0xff]) ^ keySchedule[ksRow++]
-  t1 = ((SBOX[s1 >>> 24] << 24) | (SBOX[(s2 >>> 16) & 0xff] << 16) | (SBOX[(s3 >>> 8) & 0xff] << 8) | SBOX[s0 & 0xff]) ^ keySchedule[ksRow++]
-  t2 = ((SBOX[s2 >>> 24] << 24) | (SBOX[(s3 >>> 16) & 0xff] << 16) | (SBOX[(s0 >>> 8) & 0xff] << 8) | SBOX[s1 & 0xff]) ^ keySchedule[ksRow++]
-  t3 = ((SBOX[s3 >>> 24] << 24) | (SBOX[(s0 >>> 16) & 0xff] << 16) | (SBOX[(s1 >>> 8) & 0xff] << 8) | SBOX[s2 & 0xff]) ^ keySchedule[ksRow++]
-  return [
-    fixup_uint32(t0),
-    fixup_uint32(t1),
-    fixup_uint32(t2),
-    fixup_uint32(t3)
-  ]
-}
-
-exports.AES = AES
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ }),
 /* 40 */
-/***/ (function(module, exports) {
-
-exports['aes-128-ecb'] = {
-  cipher: 'AES',
-  key: 128,
-  iv: 0,
-  mode: 'ECB',
-  type: 'block'
-}
-exports['aes-192-ecb'] = {
-  cipher: 'AES',
-  key: 192,
-  iv: 0,
-  mode: 'ECB',
-  type: 'block'
-}
-exports['aes-256-ecb'] = {
-  cipher: 'AES',
-  key: 256,
-  iv: 0,
-  mode: 'ECB',
-  type: 'block'
-}
-exports['aes-128-cbc'] = {
-  cipher: 'AES',
-  key: 128,
-  iv: 16,
-  mode: 'CBC',
-  type: 'block'
-}
-exports['aes-192-cbc'] = {
-  cipher: 'AES',
-  key: 192,
-  iv: 16,
-  mode: 'CBC',
-  type: 'block'
-}
-exports['aes-256-cbc'] = {
-  cipher: 'AES',
-  key: 256,
-  iv: 16,
-  mode: 'CBC',
-  type: 'block'
-}
-exports['aes128'] = exports['aes-128-cbc']
-exports['aes192'] = exports['aes-192-cbc']
-exports['aes256'] = exports['aes-256-cbc']
-exports['aes-128-cfb'] = {
-  cipher: 'AES',
-  key: 128,
-  iv: 16,
-  mode: 'CFB',
-  type: 'stream'
-}
-exports['aes-192-cfb'] = {
-  cipher: 'AES',
-  key: 192,
-  iv: 16,
-  mode: 'CFB',
-  type: 'stream'
-}
-exports['aes-256-cfb'] = {
-  cipher: 'AES',
-  key: 256,
-  iv: 16,
-  mode: 'CFB',
-  type: 'stream'
-}
-exports['aes-128-cfb8'] = {
-  cipher: 'AES',
-  key: 128,
-  iv: 16,
-  mode: 'CFB8',
-  type: 'stream'
-}
-exports['aes-192-cfb8'] = {
-  cipher: 'AES',
-  key: 192,
-  iv: 16,
-  mode: 'CFB8',
-  type: 'stream'
-}
-exports['aes-256-cfb8'] = {
-  cipher: 'AES',
-  key: 256,
-  iv: 16,
-  mode: 'CFB8',
-  type: 'stream'
-}
-exports['aes-128-cfb1'] = {
-  cipher: 'AES',
-  key: 128,
-  iv: 16,
-  mode: 'CFB1',
-  type: 'stream'
-}
-exports['aes-192-cfb1'] = {
-  cipher: 'AES',
-  key: 192,
-  iv: 16,
-  mode: 'CFB1',
-  type: 'stream'
-}
-exports['aes-256-cfb1'] = {
-  cipher: 'AES',
-  key: 256,
-  iv: 16,
-  mode: 'CFB1',
-  type: 'stream'
-}
-exports['aes-128-ofb'] = {
-  cipher: 'AES',
-  key: 128,
-  iv: 16,
-  mode: 'OFB',
-  type: 'stream'
-}
-exports['aes-192-ofb'] = {
-  cipher: 'AES',
-  key: 192,
-  iv: 16,
-  mode: 'OFB',
-  type: 'stream'
-}
-exports['aes-256-ofb'] = {
-  cipher: 'AES',
-  key: 256,
-  iv: 16,
-  mode: 'OFB',
-  type: 'stream'
-}
-exports['aes-128-ctr'] = {
-  cipher: 'AES',
-  key: 128,
-  iv: 16,
-  mode: 'CTR',
-  type: 'stream'
-}
-exports['aes-192-ctr'] = {
-  cipher: 'AES',
-  key: 192,
-  iv: 16,
-  mode: 'CTR',
-  type: 'stream'
-}
-exports['aes-256-ctr'] = {
-  cipher: 'AES',
-  key: 256,
-  iv: 16,
-  mode: 'CTR',
-  type: 'stream'
-}
-exports['aes-128-gcm'] = {
-  cipher: 'AES',
-  key: 128,
-  iv: 12,
-  mode: 'GCM',
-  type: 'auth'
-}
-exports['aes-192-gcm'] = {
-  cipher: 'AES',
-  key: 192,
-  iv: 12,
-  mode: 'GCM',
-  type: 'auth'
-}
-exports['aes-256-gcm'] = {
-  cipher: 'AES',
-  key: 256,
-  iv: 12,
-  mode: 'GCM',
-  type: 'auth'
-}
-
-
-/***/ }),
-/* 41 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(Buffer) {var xor = __webpack_require__(34)
-
-function incr32 (iv) {
-  var len = iv.length
-  var item
-  while (len--) {
-    item = iv.readUInt8(len)
-    if (item === 255) {
-      iv.writeUInt8(0, len)
-    } else {
-      item++
-      iv.writeUInt8(item, len)
-      break
-    }
-  }
-}
-
-function getBlock (self) {
-  var out = self._cipher.encryptBlock(self._prev)
-  incr32(self._prev)
-  return out
-}
-
-exports.encrypt = function (self, chunk) {
-  while (self._cache.length < chunk.length) {
-    self._cache = Buffer.concat([self._cache, getBlock(self)])
-  }
-  var pad = self._cache.slice(0, chunk.length)
-  self._cache = self._cache.slice(chunk.length)
-  return xor(chunk, pad)
-}
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
-
-/***/ }),
-/* 42 */
 /***/ (function(module, exports) {
 
 /*
@@ -63275,7 +63239,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 43 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63283,29 +63247,30 @@ module.exports = function() {
 
 var curve = exports;
 
-curve.base = __webpack_require__(271);
-curve.short = __webpack_require__(274);
-curve.mont = __webpack_require__(273);
-curve.edwards = __webpack_require__(272);
+curve.base = __webpack_require__(280);
+curve.short = __webpack_require__(283);
+curve.mont = __webpack_require__(282);
+curve.edwards = __webpack_require__(281);
 
 
 /***/ }),
-/* 44 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Buffer = __webpack_require__(13).Buffer
-var MD5 = __webpack_require__(300)
+var Buffer = __webpack_require__(4).Buffer
+var MD5 = __webpack_require__(309)
 
 /* eslint-disable camelcase */
-function EVP_BytesToKey (password, salt, keyLen, ivLen) {
+function EVP_BytesToKey (password, salt, keyBits, ivLen) {
   if (!Buffer.isBuffer(password)) password = Buffer.from(password, 'binary')
   if (salt) {
     if (!Buffer.isBuffer(salt)) salt = Buffer.from(salt, 'binary')
     if (salt.length !== 8) throw new RangeError('salt should be Buffer with 8 byte length')
   }
 
+  var keyLen = keyBits / 8
   var key = Buffer.alloc(keyLen)
-  var iv = Buffer.alloc(ivLen)
+  var iv = Buffer.alloc(ivLen || 0)
   var tmp = Buffer.alloc(0)
 
   while (keyLen > 0 || ivLen > 0) {
@@ -63340,14 +63305,14 @@ module.exports = EVP_BytesToKey
 
 
 /***/ }),
-/* 45 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {var asn1 = __webpack_require__(303)
-var aesid = __webpack_require__(302)
-var fixProc = __webpack_require__(305)
+/* WEBPACK VAR INJECTION */(function(Buffer) {var asn1 = __webpack_require__(312)
+var aesid = __webpack_require__(311)
+var fixProc = __webpack_require__(314)
 var ciphers = __webpack_require__(55)
-var compat = __webpack_require__(104)
+var compat = __webpack_require__(101)
 module.exports = parseKeys
 
 function parseKeys (buffer) {
@@ -63450,10 +63415,10 @@ function decrypt (data, password) {
   return Buffer.concat(out)
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2).Buffer))
 
 /***/ }),
-/* 46 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63504,13 +63469,13 @@ function nextTick(fn, arg1, arg2, arg3) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17)))
 
 /***/ }),
-/* 47 */
+/* 45 */
 /***/ (function(module, exports) {
 
 module.exports = "//VTK::System::Dec\n\n/*=========================================================================\n\n  Program:   Visualization Toolkit\n  Module:    vtkPolyDataFS.glsl\n\n  Copyright (c) Ken Martin, Will Schroeder, Bill Lorensen\n  All rights reserved.\n  See Copyright.txt or http://www.kitware.com/Copyright.htm for details.\n\n     This software is distributed WITHOUT ANY WARRANTY; without even\n     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR\n     PURPOSE.  See the above copyright notice for more information.\n\n=========================================================================*/\n// Template for the polydata mappers fragment shader\n\nuniform int PrimitiveIDOffset;\n\n// VC position of this fragment\n//VTK::PositionVC::Dec\n\n// optional color passed in from the vertex shader, vertexColor\n//VTK::Color::Dec\n\n// optional surface normal declaration\n//VTK::Normal::Dec\n\n// extra lighting parameters\n//VTK::Light::Dec\n\n// Texture coordinates\n//VTK::TCoord::Dec\n\n// picking support\n//VTK::Picking::Dec\n\n// Depth Peeling Support\n//VTK::DepthPeeling::Dec\n\n// clipping plane vars\n//VTK::Clip::Dec\n\n// the output of this shader\n//VTK::Output::Dec\n\n// Apple Bug\n//VTK::PrimID::Dec\n\n// handle coincident offsets\n//VTK::Coincident::Dec\n\nvoid main()\n{\n  // VC position of this fragment. This should not branch/return/discard.\n  //VTK::PositionVC::Impl\n\n  // Place any calls that require uniform flow (e.g. dFdx) here.\n  //VTK::UniformFlow::Impl\n\n  // Set gl_FragDepth here (gl_FragCoord.z by default)\n  //VTK::Depth::Impl\n\n  // Early depth peeling abort:\n  //VTK::DepthPeeling::PreColor\n\n  // Apple Bug\n  //VTK::PrimID::Impl\n\n  //VTK::Clip::Impl\n\n  //VTK::Color::Impl\n\n  // Generate the normal if we are not passed in one\n  //VTK::Normal::Impl\n\n  //VTK::Light::Impl\n\n  //VTK::TCoord::Impl\n\n  if (gl_FragData[0].a <= 0.0)\n    {\n    discard;\n    }\n\n  //VTK::DepthPeeling::Impl\n\n  //VTK::Picking::Impl\n\n  // handle coincident offsets\n  //VTK::Coincident::Impl\n\n  //VTK::ZBuffer::Impl\n}\n"
 
 /***/ }),
-/* 48 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Copyright Joyent, Inc. and other Node contributors.
@@ -63536,15 +63501,15 @@ module.exports = "//VTK::System::Dec\n\n/*======================================
 
 module.exports = Stream;
 
-var EE = __webpack_require__(59).EventEmitter;
-var inherits = __webpack_require__(2);
+var EE = __webpack_require__(60).EventEmitter;
+var inherits = __webpack_require__(1);
 
 inherits(Stream, EE);
-Stream.Readable = __webpack_require__(62);
-Stream.Writable = __webpack_require__(315);
-Stream.Duplex = __webpack_require__(310);
-Stream.Transform = __webpack_require__(314);
-Stream.PassThrough = __webpack_require__(313);
+Stream.Readable = __webpack_require__(63);
+Stream.Writable = __webpack_require__(324);
+Stream.Duplex = __webpack_require__(319);
+Stream.Transform = __webpack_require__(323);
+Stream.PassThrough = __webpack_require__(322);
 
 // Backwards-compat with node 0.4.x
 Stream.Stream = Stream;
@@ -63643,7 +63608,7 @@ Stream.prototype.pipe = function(dest, options) {
 
 
 /***/ }),
-/* 49 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -63662,7 +63627,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(362)
+var listToStyles = __webpack_require__(373)
 
 /*
 type StyleObject = {
@@ -63864,7 +63829,7 @@ function applyToTag (styleElement, obj) {
 
 
 /***/ }),
-/* 50 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63892,7 +63857,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 51 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63936,7 +63901,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 52 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64097,7 +64062,7 @@ var newInstance = exports.newInstance = macro.newInstance(extend);
 exports.default = Object.assign({ newInstance: newInstance, extend: extend }, STATIC);
 
 /***/ }),
-/* 53 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64113,7 +64078,7 @@ var _macro = __webpack_require__(0);
 
 var _macro2 = _interopRequireDefault(_macro);
 
-var _CellArrayBufferObject = __webpack_require__(206);
+var _CellArrayBufferObject = __webpack_require__(207);
 
 var _CellArrayBufferObject2 = _interopRequireDefault(_CellArrayBufferObject);
 
@@ -64121,7 +64086,7 @@ var _ShaderProgram = __webpack_require__(22);
 
 var _ShaderProgram2 = _interopRequireDefault(_ShaderProgram);
 
-var _VertexArrayObject = __webpack_require__(79);
+var _VertexArrayObject = __webpack_require__(80);
 
 var _VertexArrayObject2 = _interopRequireDefault(_VertexArrayObject);
 
@@ -64196,7 +64161,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend);
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 54 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64208,17 +64173,17 @@ Object.defineProperty(exports, "__esModule", {
 exports.newInstance = undefined;
 exports.extend = extend;
 
-var _glMatrix = __webpack_require__(7);
+var _glMatrix = __webpack_require__(8);
 
 var _macro = __webpack_require__(0);
 
 var _macro2 = _interopRequireDefault(_macro);
 
-var _Helper = __webpack_require__(53);
+var _Helper = __webpack_require__(51);
 
 var _Helper2 = _interopRequireDefault(_Helper);
 
-var _Math = __webpack_require__(6);
+var _Math = __webpack_require__(7);
 
 var _Math2 = _interopRequireDefault(_Math);
 
@@ -64230,23 +64195,23 @@ var _Texture = __webpack_require__(32);
 
 var _Texture2 = _interopRequireDefault(_Texture);
 
-var _ViewNode = __webpack_require__(12);
+var _ViewNode = __webpack_require__(13);
 
 var _ViewNode2 = _interopRequireDefault(_ViewNode);
 
 var _Constants = __webpack_require__(29);
 
-var _Constants2 = __webpack_require__(51);
+var _Constants2 = __webpack_require__(49);
 
 var _Constants3 = __webpack_require__(31);
 
-var _Constants4 = __webpack_require__(208);
+var _Constants4 = __webpack_require__(209);
 
-var _vtkPolyDataVS = __webpack_require__(117);
+var _vtkPolyDataVS = __webpack_require__(114);
 
 var _vtkPolyDataVS2 = _interopRequireDefault(_vtkPolyDataVS);
 
-var _vtkPolyDataFS = __webpack_require__(47);
+var _vtkPolyDataFS = __webpack_require__(45);
 
 var _vtkPolyDataFS2 = _interopRequireDefault(_vtkPolyDataFS);
 
@@ -65451,19 +65416,636 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
+/* 53 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Copyright (C) 2013 by Javi Agenjo
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Permission is hereby granted, free of charge, to any person obtaining a copy
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * of this software and associated documentation files (the "Software"), to deal
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * in the Software without restriction, including without limitation the rights
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * copies of the Software, and to permit persons to whom the Software is
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * furnished to do so, subject to the following conditions:
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * The above copyright notice and this permission notice shall be included in
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * all copies or substantial portions of the Software.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * THE SOFTWARE.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
+
+
+var _LiteGraphStates = __webpack_require__(54);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+* @class LiteGraph
+*/
+var LiteGraph = function () {
+  function LiteGraph() {
+    _classCallCheck(this, LiteGraph);
+
+    this.d_node_images_path = "";
+    this.d_proxy = null; //used to redirect calls
+
+    this.d_debug = false;
+    this.d_throw_errors = true;
+    this.d_registered_node_types = {}; //nodetypes by string
+    this.d_node_types_by_file_extension = {}; //used for droping files in the canvas
+    this.d_Nodes = {}; //node types by classname
+  }
+
+  /**
+  * Register a node class so it can be listed when the user wants to create a new one
+  * @method registerNodeType
+  * @param {String} type name of the node and path
+  * @param {Class} base_class class containing the structure of a node
+  */
+
+
+  _createClass(LiteGraph, [{
+    key: "registerNodeType",
+    value: function registerNodeType(type, base_class) {
+      if (!base_class.prototype) throw "Cannot register a simple object, it must be a class with a prototype";
+      base_class.type = type;
+
+      if (this.d_debug) console.log("Node registered: " + type);
+
+      var categories = type.split("/");
+
+      var pos = type.lastIndexOf("/");
+      base_class.category = type.substr(0, pos);
+
+      //extend class
+      if (base_class.prototype) //is a class
+        for (var i in LGraphNode.prototype) {
+          if (!base_class.prototype[i]) base_class.prototype[i] = LGraphNode.prototype[i];
+        }this.d_registered_node_types[type] = base_class;
+      if (base_class.constructor.name) this.d_Nodes[base_class.constructor.name] = base_class;
+
+      //warnings
+      if (base_class.prototype.onPropertyChange) console.warn("LiteGraph node class " + type + " has onPropertyChange method, it must be called onPropertyChanged with d at the end");
+
+      if (base_class.supported_extensions) {
+        for (var _i in base_class.supported_extensions) {
+          this.d_node_types_by_file_extension[base_class.supported_extensions[_i].toLowerCase()] = base_class;
+        }
+      }
+    }
+
+    /**
+    * Adds this method to all nodetypes, existing and to be created
+    * (You can add it to LGraphNode.prototype but then existing node types wont have it)
+    * @method addNodeMethod
+    * @param {Function} func
+    */
+
+  }, {
+    key: "addNodeMethod",
+    value: function addNodeMethod(name, func) {
+      LGraphNode.prototype[name] = func;
+      for (var i in this.d_registered_node_types) {
+        var type = this.d_registered_node_types[i];
+        if (type.prototype[name]) type.prototype["_" + name] = type.prototype[name]; //keep old in case of replacing
+        type.prototype[name] = func;
+      }
+    }
+
+    /**
+    * Create a node of a given type with a name. The node is not attached to any graph yet.
+    * @method createNode
+    * @param {String} type full name of the node class. p.e. "math/sin"
+    * @param {String} name a name to distinguish from other nodes
+    * @param {Object} options to set options
+    */
+
+  }, {
+    key: "createNode",
+    value: function createNode(type, title, options) {
+      var base_class = this.d_registered_node_types[type];
+      if (!base_class) {
+        if (LiteGraph.debug) console.log("GraphNode type \"" + type + "\" not registered.");
+        return null;
+      }
+
+      var prototype = base_class.prototype || base_class;
+
+      title = title || base_class.title || type;
+
+      var node = new base_class(name);
+      node.type = type;
+
+      if (!node.title) node.title = title;
+      if (!node.properties) node.properties = {};
+      if (!node.properties_info) node.properties_info = [];
+      if (!node.flags) node.flags = {};
+      if (!node.size) node.size = node.computeSize();
+      if (!node.pos) node.pos = _LiteGraphStates.LiteGraphStates.DEFAULT_POSITION.concat();
+      if (!node.mode) node.mode = _LiteGraphStates.LiteGraphStates.ALWAYS;
+
+      //extra options
+      if (options) {
+        for (var i in options) {
+          node[i] = options[i];
+        }
+      }
+
+      return node;
+    }
+
+    /**
+    * Returns a registered node type with a given name
+    * @method getNodeType
+    * @param {String} type full name of the node class. p.e. "math/sin"
+    * @return {Class} the node class
+    */
+
+  }, {
+    key: "getNodeType",
+    value: function getNodeType(type) {
+      return this.d_registered_node_types[type];
+    }
+
+    /**
+    * Returns a list of node types matching one category
+    * @method getNodeType
+    * @param {String} category category name
+    * @return {Array} array with all the node classes
+    */
+
+  }, {
+    key: "getNodeTypesInCategory",
+    value: function getNodeTypesInCategory(category) {
+      var r = [];
+      for (var i in this.registered_node_types) {
+        if (category == "") {
+          if (this.d_registered_node_types[i].category == null) r.push(this.d_registered_node_types[i]);
+        } else if (this.d_registered_node_types[i].category == category) {
+          r.push(this.d_registered_node_types[i]);
+        }
+      }return r;
+    }
+
+    /**
+    * Returns a list with all the node type categories
+    * @method getNodeTypesCategories
+    * @return {Array} array with all the names of the categories 
+    */
+
+  }, {
+    key: "getNodeTypesCategories",
+    value: function getNodeTypesCategories() {
+      var categories = { "": 1 };
+      for (var i in this.d_registered_node_types) {
+        if (this.d_registered_node_types[i].category && !this.d_registered_node_types[i].skip_list) {
+          categories[this.d_registered_node_types[i].category] = 1;
+        }
+      }
+      var result = [];
+      for (var _i2 in categories) {
+        result.push(_i2);
+      }
+      return result;
+    }
+
+    //debug purposes: reloads all the js scripts that matches a wilcard
+
+  }, {
+    key: "reloadNodes",
+    value: function reloadNodes(folder_wildcard) {
+      var tmp = document.getElementsByTagName("script");
+      //weird, this array changes by its own, so we use a copy
+      var script_files = [];
+      for (var i in tmp) {
+        script_files.push(tmp[i]);
+      }
+
+      var docHeadObj = document.getElementsByTagName("head")[0];
+      folder_wildcard = document.location.href + folder_wildcard;
+
+      for (var _i3 in script_files) {
+        var src = script_files[_i3].src;
+        if (!src || src.substr(0, folder_wildcard.length) != folder_wildcard) {
+          continue;
+        }
+
+        try {
+          if (this.d_debug) console.log("Reloading: " + src);
+          var dynamicScript = document.createElement("script");
+          dynamicScript.type = "text/javascript";
+          dynamicScript.src = src;
+          docHeadObj.appendChild(dynamicScript);
+          docHeadObj.removeChild(script_files[_i3]);
+        } catch (err) {
+          if (this.d_throw_errors) throw err;
+          if (this.d_debug) console.log("Error while reloading " + src);
+        }
+      }
+
+      if (this.d_debug) console.log("Nodes reloaded");
+    }
+
+    //separated just to improve if it doesnt work
+
+  }, {
+    key: "cloneObject",
+    value: function cloneObject(obj, target) {
+      if (obj == null) return null;
+      var r = JSON.parse(JSON.stringify(obj));
+      if (!target) return r;
+
+      for (var i in r) {
+        target[i] = r[i];
+      }return target;
+    }
+  }, {
+    key: "isValidConnection",
+    value: function isValidConnection(type_a, type_b) {
+      if (!type_a || //generic output
+      !type_b || //generic input
+      type_a == type_a || //same type (is valid for triggers)
+      type_a !== _LiteGraphStates.LiteGraphStates.EVENT && type_b !== _LiteGraphStates.LiteGraphStates.EVENT && type_a.toLowerCase() == type_b.toLowerCase()) //same type
+        return true;
+      return false;
+    }
+  }], [{
+    key: "compareObjects",
+    value: function compareObjects(a, b) {
+      for (var i in a) {
+        if (a[i] != b[i]) return false;
+      }return true;
+    }
+  }, {
+    key: "distance",
+    value: function distance(a, b) {
+      return Math.sqrt((b[0] - a[0]) * (b[0] - a[0]) + (b[1] - a[1]) * (b[1] - a[1]));
+    }
+  }, {
+    key: "colorToString",
+    value: function colorToString(c) {
+      return "rgba(" + Math.round(c[0] * 255).toFixed() + "," + Math.round(c[1] * 255).toFixed() + "," + Math.round(c[2] * 255).toFixed() + "," + (c.length == 4 ? c[3].toFixed(2) : "1.0") + ")";
+    }
+  }, {
+    key: "isInsideRectangle",
+    value: function isInsideRectangle(x, y, left, top, width, height) {
+      if (left < x && left + width > x && top < y && top + height > y) return true;
+      return false;
+    }
+  }, {
+    key: "growBounding",
+    value: function growBounding(bounding, x, y) {
+      if (x < bounding[0]) bounding[0] = x;else if (x > bounding[2]) bounding[2] = x;
+
+      if (y < bounding[1]) bounding[1] = y;else if (y > bounding[3]) bounding[3] = y;
+    }
+
+    //point inside boundin box
+
+  }, {
+    key: "isInsideBounding",
+    value: function isInsideBounding(p, bb) {
+      if (p[0] < bb[0][0] || p[1] < bb[0][1] || p[0] > bb[1][0] || p[1] > bb[1][1]) return false;
+      return true;
+    }
+
+    //boundings overlap, format: [start,end]
+
+  }, {
+    key: "overlapBounding",
+    value: function overlapBounding(a, b) {
+      if (a[0] > b[2] || a[1] > b[3] || a[2] < b[0] || a[3] < b[1]) return false;
+      return true;
+    }
+
+    //Convert a hex value to its decimal value - the inputted hex must be in the
+    //	format of a hex triplet - the kind we use for HTML colours. The function
+    //	will return an array with three values.
+
+  }, {
+    key: "hex2num",
+    value: function hex2num(hex) {
+      if (hex.charAt(0) == "#") hex = hex.slice(1); //Remove the '#' char - if there is one.
+      hex = hex.toUpperCase();
+      var hex_alphabets = "0123456789ABCDEF";
+      var value = new Array(3);
+      var k = 0;
+      var int1, int2;
+      for (var i = 0; i < 6; i += 2) {
+        int1 = hex_alphabets.indexOf(hex.charAt(i));
+        int2 = hex_alphabets.indexOf(hex.charAt(i + 1));
+        value[k](int1 * 16) + int2;
+        k++;
+      }
+      return value;
+    }
+
+    //Give a array with three values as the argument and the function will return
+    //	the corresponding hex triplet.
+
+  }, {
+    key: "num2hex",
+    value: function num2hex(triplet) {
+      var hex_alphabets = "0123456789ABCDEF";
+      var hex = "#";
+      var int1, int2;
+      for (var i = 0; i < 3; i++) {
+        int1 = triplet[i] / 16;
+        int2 = triplet[i] % 16;
+
+        hex += hex_alphabets.charAt(int1) + hex_alphabets.charAt(int2);
+      }
+      return hex;
+    }
+
+    /* LiteGraph GUI elements *************************************/
+
+  }, {
+    key: "createContextMenu",
+    value: function createContextMenu(values, options, ref_window) {
+      options = options || {};
+      this.options = options;
+
+      //allows to create graph canvas in separate window
+      ref_window = ref_window || window;
+
+      if (!options.from) LiteGraph.closeAllContextMenus(ref_window);else {
+        //closing submenus
+        var menus = document.querySelectorAll(".graphcontextmenu");
+        for (var key in menus) {
+          if (menus[key].previousSibling == options.from) menus[key].closeMenu();
+        }
+      }
+
+      var root = ref_window.document.createElement("div");
+      root.className = "graphcontextmenu graphmenubar-panel";
+      this.root = root;
+      var style = root.style;
+
+      style.minWidth = "100px";
+      style.minHeight = "20px";
+
+      style.position = "fixed";
+      style.top = "100px";
+      style.left = "100px";
+      style.color = "#AAF";
+      style.padding = "2px";
+      style.borderBottom = "2px solid #AAF";
+      style.backgroundColor = "#444";
+      style.zIndex = 10;
+
+      //title
+      if (options.title) {
+        var element = document.createElement("div");
+        element.className = "graphcontextmenu-title";
+        element.innerHTML = options.title;
+        root.appendChild(element);
+      }
+
+      //avoid a context menu in a context menu
+      root.addEventListener("contextmenu", function (e) {
+        e.preventDefault();return false;
+      });
+
+      for (var i in values) {
+        var item = values[i];
+        var element = ref_window.document.createElement("div");
+        element.className = "graphmenu-entry";
+
+        if (item == null) {
+          element.className += " separator";
+          root.appendChild(element);
+          continue;
+        }
+
+        if (item.is_menu) element.className += " submenu";
+
+        if (item.disabled) element.className += " disabled";
+
+        if (item.className) element.className += " " + item.className;
+
+        element.style.cursor = "pointer";
+        element.dataset["value"] = typeof item == "string" ? item : item.value;
+        element.data = item;
+
+        var content = "";
+        if (typeof item == "string") content = values.constructor == Array ? values[i] : i;else content = item.content ? item.content : i;
+        if (options.allow_html) element.innerHTML = content;else element.innerText = content;
+
+        element.addEventListener("click", on_click);
+        root.appendChild(element);
+      }
+
+      root.addEventListener("mouseover", function (e) {
+        this.mouse_inside = true;
+      });
+
+      root.addEventListener("mouseout", function (e) {
+        //console.log("OUT!");
+        //check if mouse leave a inner element
+        var aux = e.relatedTarget || e.toElement;
+        while (aux != this && aux != ref_window.document) {
+          aux = aux.parentNode;
+        }if (aux == this) return;
+        this.mouse_inside = false;
+        if (!this.block_close) this.closeMenu();
+      });
+
+      //insert before checking position
+      ref_window.document.body.appendChild(root);
+
+      var root_rect = root.getClientRects()[0];
+
+      //link menus
+      if (options.from) {
+        options.from.block_close = true;
+      }
+
+      var left = options.left || 0;
+      var top = options.top || 0;
+      if (options.event) {
+        left = options.event.pageX - 10;
+        top = options.event.pageY - 10;
+        if (options.left) left = options.left;
+
+        var rect = ref_window.document.body.getClientRects()[0];
+
+        if (options.from) {
+          var parent_rect = options.from.getClientRects()[0];
+          left = parent_rect.left + parent_rect.width;
+        }
+
+        if (left > rect.width - root_rect.width - 10) left = rect.width - root_rect.width - 10;
+        if (top > rect.height - root_rect.height - 10) top = rect.height - root_rect.height - 10;
+      }
+
+      root.style.left = left + "px";
+      root.style.top = top + "px";
+
+      function on_click(e) {
+        var value = this.dataset["value"];
+        var close = true;
+        if (options.callback) {
+          var ret = options.callback.call(root, this.data, e);
+          if (ret !== undefined) close = ret;
+        }
+
+        if (close) LiteGraph.closeAllContextMenus(ref_window);
+        //root.closeMenu();
+      }
+
+      root.closeMenu = function () {
+        if (options.from) {
+          options.from.block_close = false;
+          if (!options.from.mouse_inside) options.from.closeMenu();
+        }
+        if (this.parentNode) ref_window.document.body.removeChild(this);
+      };
+
+      return root;
+    }
+  }, {
+    key: "closeAllContextMenus",
+    value: function closeAllContextMenus(ref_window) {
+      ref_window = ref_window || window;
+
+      var elements = ref_window.document.querySelectorAll(".graphcontextmenu");
+      if (!elements.length) return;
+
+      var result = [];
+      for (var i = 0; i < elements.length; i++) {
+        result.push(elements[i]);
+      }for (var i in result) {
+        if (result[i].parentNode) result[i].parentNode.removeChild(result[i]);
+      }
+    }
+  }, {
+    key: "extendClass",
+    value: function extendClass(target, origin) {
+      for (var i in origin) //copy class properties
+      {
+        if (target.hasOwnProperty(i)) continue;
+        target[i] = origin[i];
+      }
+
+      if (origin.prototype) //copy prototype properties
+        for (var i in origin.prototype) //only enumerables
+        {
+          if (!origin.prototype.hasOwnProperty(i)) continue;
+
+          if (target.prototype.hasOwnProperty(i)) //avoid overwritting existing ones
+            continue;
+
+          //copy getters 
+          if (origin.prototype.__lookupGetter__(i)) target.prototype.__defineGetter__(i, origin.prototype.__lookupGetter__(i));else target.prototype[i] = origin.prototype[i];
+
+          //and setters
+          if (origin.prototype.__lookupSetter__(i)) target.prototype.__defineSetter__(i, origin.prototype.__lookupSetter__(i));
+        }
+    }
+  }]);
+
+  return LiteGraph;
+}();
+
+exports.default = LiteGraph;
+;
+
+if (typeof performance != "undefined") LiteGraph.getTime = function () {
+  return performance.now();
+};else LiteGraph.getTime = function () {
+  return Date.now();
+};
+
+/***/ }),
+/* 54 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+/**
+ * Copyright (C) 2013 by Javi Agenjo
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+var LiteGraphStates = exports.LiteGraphStates = {
+	NODE_TITLE_HEIGHT: 16,
+	NODE_SLOT_HEIGHT: 15,
+	NODE_WIDTH: 140,
+	NODE_MIN_WIDTH: 50,
+	NODE_COLLAPSED_RADIUS: 10,
+	NODE_COLLAPSED_WIDTH: 80,
+	CANVAS_GRID_SIZE: 10,
+	NODE_TITLE_COLOR: "#222",
+	NODE_DEFAULT_COLOR: "#999",
+	NODE_DEFAULT_BGCOLOR: "#444",
+	NODE_DEFAULT_BOXCOLOR: "#AEF",
+	NODE_DEFAULT_SHAPE: "box",
+	MAX_NUMBER_OF_NODES: 1000, //avoid infinite loops
+	DEFAULT_POSITION: [100, 100], //default node position
+
+	//enums
+	INPUT: 1,
+	OUTPUT: 2,
+
+	EVENT: -1, //for outputs
+	ACTION: -1, //for inputs
+
+	ALWAYS: 0,
+	ON_EVENT: 1,
+	NEVER: 2
+};
+
+/***/ }),
 /* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var ciphers = __webpack_require__(246)
-exports.createCipher = exports.Cipher = ciphers.createCipher
-exports.createCipheriv = exports.Cipheriv = ciphers.createCipheriv
-var deciphers = __webpack_require__(245)
-exports.createDecipher = exports.Decipher = deciphers.createDecipher
-exports.createDecipheriv = exports.Decipheriv = deciphers.createDecipheriv
-var modes = __webpack_require__(40)
+var ciphers = __webpack_require__(249)
+var deciphers = __webpack_require__(248)
+var modes = __webpack_require__(86)
+
 function getCiphers () {
   return Object.keys(modes)
 }
+
+exports.createCipher = exports.Cipher = ciphers.createCipher
+exports.createCipheriv = exports.Cipheriv = ciphers.createCipheriv
+exports.createDecipher = exports.Decipher = deciphers.createDecipher
+exports.createDecipheriv = exports.Decipheriv = deciphers.createDecipheriv
 exports.listCiphers = exports.getCiphers = getCiphers
 
 
@@ -65471,7 +66053,31 @@ exports.listCiphers = exports.getCiphers = getCiphers
 /* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {var bn = __webpack_require__(5);
+var modeModules = {
+  ECB: __webpack_require__(255),
+  CBC: __webpack_require__(251),
+  CFB: __webpack_require__(252),
+  CFB8: __webpack_require__(254),
+  CFB1: __webpack_require__(253),
+  OFB: __webpack_require__(256),
+  CTR: __webpack_require__(85),
+  GCM: __webpack_require__(85)
+}
+
+var modes = __webpack_require__(86)
+
+for (var key in modes) {
+  modes[key].module = modeModules[modes[key].mode]
+}
+
+module.exports = modes
+
+
+/***/ }),
+/* 57 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(Buffer) {var bn = __webpack_require__(6);
 var randomBytes = __webpack_require__(38);
 module.exports = crt;
 function blind(priv) {
@@ -65512,10 +66118,10 @@ function getr(priv) {
   return r;
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2).Buffer))
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65529,7 +66135,7 @@ function getr(priv) {
  * See http://pajhome.org.uk/crypt/md5 for more info.
  */
 
-var makeHash = __webpack_require__(256)
+var makeHash = __webpack_require__(265)
 
 /*
  * Calculate the MD5 of an array of little-endian words, and a bit length
@@ -65673,21 +66279,21 @@ module.exports = function md5 (buf) {
 
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-exports.utils = __webpack_require__(267);
-exports.Cipher = __webpack_require__(264);
-exports.DES = __webpack_require__(265);
-exports.CBC = __webpack_require__(263);
-exports.EDE = __webpack_require__(266);
+exports.utils = __webpack_require__(276);
+exports.Cipher = __webpack_require__(273);
+exports.DES = __webpack_require__(274);
+exports.CBC = __webpack_require__(272);
+exports.EDE = __webpack_require__(275);
 
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports) {
 
 // Copyright Joyent, Inc. and other Node contributors.
@@ -65995,16 +66601,16 @@ function isUndefined(arg) {
 
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var hash = exports;
 
 hash.utils = __webpack_require__(14);
 hash.common = __webpack_require__(37);
-hash.sha = __webpack_require__(293);
-hash.ripemd = __webpack_require__(292);
-hash.hmac = __webpack_require__(291);
+hash.sha = __webpack_require__(302);
+hash.ripemd = __webpack_require__(301);
+hash.hmac = __webpack_require__(300);
 
 // Proxy hash functions to the main object
 hash.sha1 = hash.sha.sha1;
@@ -66016,7 +66622,7 @@ hash.ripemd160 = hash.ripemd.ripemd160;
 
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66049,7 +66655,7 @@ hash.ripemd160 = hash.ripemd.ripemd160;
 
 /*<replacement>*/
 
-var processNextTick = __webpack_require__(46);
+var processNextTick = __webpack_require__(44);
 /*</replacement>*/
 
 module.exports = Writable;
@@ -66087,21 +66693,21 @@ Writable.WritableState = WritableState;
 
 /*<replacement>*/
 var util = __webpack_require__(35);
-util.inherits = __webpack_require__(2);
+util.inherits = __webpack_require__(1);
 /*</replacement>*/
 
 /*<replacement>*/
 var internalUtil = {
-  deprecate: __webpack_require__(333)
+  deprecate: __webpack_require__(342)
 };
 /*</replacement>*/
 
 /*<replacement>*/
-var Stream = __webpack_require__(114);
+var Stream = __webpack_require__(111);
 /*</replacement>*/
 
 /*<replacement>*/
-var Buffer = __webpack_require__(13).Buffer;
+var Buffer = __webpack_require__(4).Buffer;
 var OurUint8Array = global.Uint8Array || function () {};
 function _uint8ArrayToBuffer(chunk) {
   return Buffer.from(chunk);
@@ -66111,7 +66717,7 @@ function _isUint8Array(obj) {
 }
 /*</replacement>*/
 
-var destroyImpl = __webpack_require__(113);
+var destroyImpl = __webpack_require__(110);
 
 util.inherits(Writable, Stream);
 
@@ -66684,29 +67290,29 @@ Writable.prototype._destroy = function (err, cb) {
   this.end();
   cb(err);
 };
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17), __webpack_require__(364).setImmediate, __webpack_require__(15)))
-
-/***/ }),
-/* 62 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(111);
-exports.Stream = exports;
-exports.Readable = exports;
-exports.Writable = __webpack_require__(61);
-exports.Duplex = __webpack_require__(23);
-exports.Transform = __webpack_require__(112);
-exports.PassThrough = __webpack_require__(311);
-
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17), __webpack_require__(375).setImmediate, __webpack_require__(15)))
 
 /***/ }),
 /* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
+exports = module.exports = __webpack_require__(108);
+exports.Stream = exports;
+exports.Readable = exports;
+exports.Writable = __webpack_require__(62);
+exports.Duplex = __webpack_require__(23);
+exports.Transform = __webpack_require__(109);
+exports.PassThrough = __webpack_require__(320);
+
+
+/***/ }),
+/* 64 */
+/***/ (function(module, exports, __webpack_require__) {
+
 "use strict";
 /* WEBPACK VAR INJECTION */(function(Buffer) {
-var inherits = __webpack_require__(2)
-var HashBase = __webpack_require__(290)
+var inherits = __webpack_require__(1)
+var HashBase = __webpack_require__(299)
 
 function RIPEMD160 () {
   HashBase.call(this, 64)
@@ -66996,10 +67602,10 @@ function fn5 (a, b, c, d, e, m, k, s) {
 
 module.exports = RIPEMD160
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2).Buffer))
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var exports = module.exports = function SHA (algorithm) {
@@ -67011,16 +67617,16 @@ var exports = module.exports = function SHA (algorithm) {
   return new Algorithm()
 }
 
-exports.sha = __webpack_require__(325)
-exports.sha1 = __webpack_require__(326)
-exports.sha224 = __webpack_require__(327)
-exports.sha256 = __webpack_require__(115)
-exports.sha384 = __webpack_require__(328)
-exports.sha512 = __webpack_require__(116)
+exports.sha = __webpack_require__(334)
+exports.sha1 = __webpack_require__(335)
+exports.sha224 = __webpack_require__(336)
+exports.sha256 = __webpack_require__(112)
+exports.sha384 = __webpack_require__(337)
+exports.sha512 = __webpack_require__(113)
 
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Copyright Joyent, Inc. and other Node contributors.
@@ -67044,7 +67650,7 @@ exports.sha512 = __webpack_require__(116)
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-var Buffer = __webpack_require__(1).Buffer;
+var Buffer = __webpack_require__(2).Buffer;
 
 var isBufferEncoding = Buffer.isEncoding
   || function(encoding) {
@@ -67247,12 +67853,12 @@ function base64DetectIncompleteChar(buffer) {
 
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var inherits = __webpack_require__(2);
+var inherits = __webpack_require__(1);
 var Reporter = __webpack_require__(28).Reporter;
-var Buffer = __webpack_require__(1).Buffer;
+var Buffer = __webpack_require__(2).Buffer;
 
 function DecoderBuffer(base, options) {
   Reporter.call(this, options);
@@ -67369,7 +67975,7 @@ EncoderBuffer.prototype.join = function join(out, offset) {
 
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var constants = exports;
@@ -67390,14 +67996,14 @@ constants._reverse = function reverse(map) {
   return res;
 };
 
-constants.der = __webpack_require__(145);
+constants.der = __webpack_require__(144);
 
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var inherits = __webpack_require__(2);
+var inherits = __webpack_require__(1);
 
 var asn1 = __webpack_require__(27);
 var base = asn1.base;
@@ -67724,11 +68330,11 @@ function derDecodeLen(buf, primitive, fail) {
 
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var inherits = __webpack_require__(2);
-var Buffer = __webpack_require__(1).Buffer;
+var inherits = __webpack_require__(1);
+var Buffer = __webpack_require__(2).Buffer;
 
 var asn1 = __webpack_require__(27);
 var base = asn1.base;
@@ -68025,7 +68631,7 @@ function encodeTag(tag, primitive, cls, reporter) {
 
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68044,7 +68650,7 @@ var _macro = __webpack_require__(0);
 
 var _macro2 = _interopRequireDefault(_macro);
 
-var _Plane = __webpack_require__(181);
+var _Plane = __webpack_require__(182);
 
 var _Plane2 = _interopRequireDefault(_Plane);
 
@@ -68470,7 +69076,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = Object.assign({ newInstance: newInstance, extend: extend }, STATIC);
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68490,7 +69096,7 @@ var _vtk = __webpack_require__(33);
 
 var _vtk2 = _interopRequireDefault(_vtk);
 
-var _DataSetAttributes = __webpack_require__(179);
+var _DataSetAttributes = __webpack_require__(180);
 
 var _DataSetAttributes2 = _interopRequireDefault(_DataSetAttributes);
 
@@ -68585,7 +69191,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68612,7 +69218,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68628,7 +69234,7 @@ var _macro = __webpack_require__(0);
 
 var _macro2 = _interopRequireDefault(_macro);
 
-var _PolyData = __webpack_require__(183);
+var _PolyData = __webpack_require__(184);
 
 var _PolyData2 = _interopRequireDefault(_PolyData);
 
@@ -68861,7 +69467,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68873,17 +69479,17 @@ Object.defineProperty(exports, "__esModule", {
 exports.newInstance = undefined;
 exports.extend = extend;
 
-var _glMatrix = __webpack_require__(7);
+var _glMatrix = __webpack_require__(8);
 
 var _macro = __webpack_require__(0);
 
 var _macro2 = _interopRequireDefault(_macro);
 
-var _Prop3D = __webpack_require__(195);
+var _Prop3D = __webpack_require__(196);
 
 var _Prop3D2 = _interopRequireDefault(_Prop3D);
 
-var _Property = __webpack_require__(196);
+var _Property = __webpack_require__(197);
 
 var _Property2 = _interopRequireDefault(_Property);
 
@@ -69096,7 +69702,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69133,7 +69739,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69149,7 +69755,7 @@ var _macro = __webpack_require__(0);
 
 var _macro2 = _interopRequireDefault(_macro);
 
-var _AbstractMapper3D = __webpack_require__(187);
+var _AbstractMapper3D = __webpack_require__(188);
 
 var _AbstractMapper3D2 = _interopRequireDefault(_AbstractMapper3D);
 
@@ -69157,29 +69763,29 @@ var _DataArray = __webpack_require__(19);
 
 var _DataArray2 = _interopRequireDefault(_DataArray);
 
-var _ImageData = __webpack_require__(180);
+var _ImageData = __webpack_require__(181);
 
 var _ImageData2 = _interopRequireDefault(_ImageData);
 
-var _LookupTable = __webpack_require__(174);
+var _LookupTable = __webpack_require__(175);
 
 var _LookupTable2 = _interopRequireDefault(_LookupTable);
 
-var _Math = __webpack_require__(6);
+var _Math = __webpack_require__(7);
 
 var _Math2 = _interopRequireDefault(_Math);
 
-var _Constants = __webpack_require__(50);
+var _Constants = __webpack_require__(48);
 
-var _CoincidentTopologyHelper = __webpack_require__(192);
+var _CoincidentTopologyHelper = __webpack_require__(193);
 
 var _CoincidentTopologyHelper2 = _interopRequireDefault(_CoincidentTopologyHelper);
 
-var _Static = __webpack_require__(193);
+var _Static = __webpack_require__(194);
 
 var _Static2 = _interopRequireDefault(_Static);
 
-var _Constants2 = __webpack_require__(51);
+var _Constants2 = __webpack_require__(49);
 
 var _Constants3 = _interopRequireDefault(_Constants2);
 
@@ -69710,7 +70316,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = Object.assign({ newInstance: newInstance, extend: extend }, staticOffsetAPI, _Static2.default);
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69882,7 +70488,7 @@ var newInstance = exports.newInstance = macro.newInstance(extend, 'vtkFramebuffe
 exports.default = Object.assign({ newInstance: newInstance, extend: extend });
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69898,23 +70504,23 @@ var _macro = __webpack_require__(0);
 
 var _macro2 = _interopRequireDefault(_macro);
 
-var _ForwardPass = __webpack_require__(207);
+var _ForwardPass = __webpack_require__(208);
 
 var _ForwardPass2 = _interopRequireDefault(_ForwardPass);
 
-var _ViewNodeFactory = __webpack_require__(217);
+var _ViewNodeFactory = __webpack_require__(218);
 
 var _ViewNodeFactory2 = _interopRequireDefault(_ViewNodeFactory);
 
-var _ShaderCache = __webpack_require__(213);
+var _ShaderCache = __webpack_require__(214);
 
 var _ShaderCache2 = _interopRequireDefault(_ShaderCache);
 
-var _ViewNode = __webpack_require__(12);
+var _ViewNode = __webpack_require__(13);
 
 var _ViewNode2 = _interopRequireDefault(_ViewNode);
 
-var _TextureUnitManager = __webpack_require__(216);
+var _TextureUnitManager = __webpack_require__(217);
 
 var _TextureUnitManager2 = _interopRequireDefault(_TextureUnitManager);
 
@@ -70203,7 +70809,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70497,7 +71103,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70843,7 +71449,7 @@ ThreeTrackball.EPS = 0.000001;
 module.exports = ThreeTrackball;
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70868,7 +71474,7 @@ function assign(dest) {
 exports.assign = assign;
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var r;
@@ -70926,7 +71532,7 @@ if (typeof self === 'object') {
 } else {
   // Node.js or Web worker with no crypto support
   try {
-    var crypto = __webpack_require__(367);
+    var crypto = __webpack_require__(378);
     if (typeof crypto.randomBytes !== 'function')
       throw new Error('Not supported');
 
@@ -70939,48 +71545,60 @@ if (typeof self === 'object') {
 
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {var aes = __webpack_require__(39)
+var aes = __webpack_require__(39)
+var Buffer = __webpack_require__(4).Buffer
 var Transform = __webpack_require__(20)
-var inherits = __webpack_require__(2)
-var GHASH = __webpack_require__(247)
+var inherits = __webpack_require__(1)
+var GHASH = __webpack_require__(250)
 var xor = __webpack_require__(34)
-inherits(StreamCipher, Transform)
-module.exports = StreamCipher
+
+function xorTest (a, b) {
+  var out = 0
+  if (a.length !== b.length) out++
+
+  var len = Math.min(a.length, b.length)
+  for (var i = 0; i < len; ++i) {
+    out += (a[i] ^ b[i])
+  }
+
+  return out
+}
 
 function StreamCipher (mode, key, iv, decrypt) {
-  if (!(this instanceof StreamCipher)) {
-    return new StreamCipher(mode, key, iv)
-  }
   Transform.call(this)
-  this._finID = Buffer.concat([iv, new Buffer([0, 0, 0, 1])])
-  iv = Buffer.concat([iv, new Buffer([0, 0, 0, 2])])
+
+  this._finID = Buffer.concat([iv, Buffer.from([0, 0, 0, 1])])
+  iv = Buffer.concat([iv, Buffer.from([0, 0, 0, 2])])
+
   this._cipher = new aes.AES(key)
-  this._prev = new Buffer(iv.length)
-  this._cache = new Buffer('')
-  this._secCache = new Buffer('')
+  this._prev = Buffer.from(iv)
+  this._cache = Buffer.allocUnsafe(0)
+  this._secCache = Buffer.allocUnsafe(0)
   this._decrypt = decrypt
   this._alen = 0
   this._len = 0
-  iv.copy(this._prev)
   this._mode = mode
-  var h = new Buffer(4)
-  h.fill(0)
+
+  var h = Buffer.alloc(4, 0)
   this._ghash = new GHASH(this._cipher.encryptBlock(h))
   this._authTag = null
   this._called = false
 }
+
+inherits(StreamCipher, Transform)
+
 StreamCipher.prototype._update = function (chunk) {
   if (!this._called && this._alen) {
     var rump = 16 - (this._alen % 16)
     if (rump < 16) {
-      rump = new Buffer(rump)
-      rump.fill(0)
+      rump = Buffer.alloc(rump, 0)
       this._ghash.update(rump)
     }
   }
+
   this._called = true
   var out = this._mode.encrypt(this, chunk)
   if (this._decrypt) {
@@ -70991,78 +71609,37 @@ StreamCipher.prototype._update = function (chunk) {
   this._len += chunk.length
   return out
 }
+
 StreamCipher.prototype._final = function () {
-  if (this._decrypt && !this._authTag) {
-    throw new Error('Unsupported state or unable to authenticate data')
-  }
+  if (this._decrypt && !this._authTag) throw new Error('Unsupported state or unable to authenticate data')
+
   var tag = xor(this._ghash.final(this._alen * 8, this._len * 8), this._cipher.encryptBlock(this._finID))
-  if (this._decrypt) {
-    if (xorTest(tag, this._authTag)) {
-      throw new Error('Unsupported state or unable to authenticate data')
-    }
-  } else {
-    this._authTag = tag
-  }
+  if (this._decrypt && xorTest(tag, this._authTag)) throw new Error('Unsupported state or unable to authenticate data')
+
+  this._authTag = tag
   this._cipher.scrub()
 }
+
 StreamCipher.prototype.getAuthTag = function getAuthTag () {
-  if (!this._decrypt && Buffer.isBuffer(this._authTag)) {
-    return this._authTag
-  } else {
-    throw new Error('Attempting to get auth tag in unsupported state')
-  }
+  if (this._decrypt || !Buffer.isBuffer(this._authTag)) throw new Error('Attempting to get auth tag in unsupported state')
+
+  return this._authTag
 }
+
 StreamCipher.prototype.setAuthTag = function setAuthTag (tag) {
-  if (this._decrypt) {
-    this._authTag = tag
-  } else {
-    throw new Error('Attempting to set auth tag in unsupported state')
-  }
+  if (!this._decrypt) throw new Error('Attempting to set auth tag in unsupported state')
+
+  this._authTag = tag
 }
+
 StreamCipher.prototype.setAAD = function setAAD (buf) {
-  if (!this._called) {
-    this._ghash.update(buf)
-    this._alen += buf.length
-  } else {
-    throw new Error('Attempting to set AAD in unsupported state')
-  }
-}
-function xorTest (a, b) {
-  var out = 0
-  if (a.length !== b.length) {
-    out++
-  }
-  var len = Math.min(a.length, b.length)
-  var i = -1
-  while (++i < len) {
-    out += (a[i] ^ b[i])
-  }
-  return out
+  if (this._called) throw new Error('Attempting to set AAD in unsupported state')
+
+  this._ghash.update(buf)
+  this._alen += buf.length
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
-
-/***/ }),
-/* 84 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var xor = __webpack_require__(34)
-
-exports.encrypt = function (self, block) {
-  var data = xor(block, self._prev)
-
-  self._prev = self._cipher.encryptBlock(data)
-  return self._prev
-}
-
-exports.decrypt = function (self, block) {
-  var pad = self._prev
-
-  self._prev = block
-  var out = self._cipher.decryptBlock(block)
-
-  return xor(out, pad)
-}
+module.exports = StreamCipher
 
 
 /***/ }),
@@ -71071,170 +71648,281 @@ exports.decrypt = function (self, block) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var xor = __webpack_require__(34)
 
-exports.encrypt = function (self, data, decrypt) {
-  var out = new Buffer('')
-  var len
-
-  while (data.length) {
-    if (self._cache.length === 0) {
-      self._cache = self._cipher.encryptBlock(self._prev)
-      self._prev = new Buffer('')
-    }
-
-    if (self._cache.length <= data.length) {
-      len = self._cache.length
-      out = Buffer.concat([out, encryptStart(self, data.slice(0, len), decrypt)])
-      data = data.slice(len)
+function incr32 (iv) {
+  var len = iv.length
+  var item
+  while (len--) {
+    item = iv.readUInt8(len)
+    if (item === 255) {
+      iv.writeUInt8(0, len)
     } else {
-      out = Buffer.concat([out, encryptStart(self, data, decrypt)])
+      item++
+      iv.writeUInt8(item, len)
       break
     }
   }
-
-  return out
 }
-function encryptStart (self, data, decrypt) {
-  var len = data.length
-  var out = xor(data, self._cache)
-  self._cache = self._cache.slice(len)
-  self._prev = Buffer.concat([self._prev, decrypt ? data : out])
-  return out
-}
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
-
-/***/ }),
-/* 86 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(Buffer) {function encryptByte (self, byteParam, decrypt) {
-  var pad
-  var i = -1
-  var len = 8
-  var out = 0
-  var bit, value
-  while (++i < len) {
-    pad = self._cipher.encryptBlock(self._prev)
-    bit = (byteParam & (1 << (7 - i))) ? 0x80 : 0
-    value = pad[0] ^ bit
-    out += ((value & 0x80) >> (i % 8))
-    self._prev = shiftIn(self._prev, decrypt ? bit : value)
-  }
-  return out
-}
-exports.encrypt = function (self, chunk, decrypt) {
-  var len = chunk.length
-  var out = new Buffer(len)
-  var i = -1
-  while (++i < len) {
-    out[i] = encryptByte(self, chunk[i], decrypt)
-  }
-  return out
-}
-function shiftIn (buffer, value) {
-  var len = buffer.length
-  var i = -1
-  var out = new Buffer(buffer.length)
-  buffer = Buffer.concat([buffer, new Buffer([value])])
-  while (++i < len) {
-    out[i] = buffer[i] << 1 | buffer[i + 1] >> (7)
-  }
-  return out
-}
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
-
-/***/ }),
-/* 87 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(Buffer) {function encryptByte (self, byteParam, decrypt) {
-  var pad = self._cipher.encryptBlock(self._prev)
-  var out = pad[0] ^ byteParam
-  self._prev = Buffer.concat([self._prev.slice(1), new Buffer([decrypt ? byteParam : out])])
-  return out
-}
-exports.encrypt = function (self, chunk, decrypt) {
-  var len = chunk.length
-  var out = new Buffer(len)
-  var i = -1
-  while (++i < len) {
-    out[i] = encryptByte(self, chunk[i], decrypt)
-  }
-  return out
-}
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
-
-/***/ }),
-/* 88 */
-/***/ (function(module, exports) {
-
-exports.encrypt = function (self, block) {
-  return self._cipher.encryptBlock(block)
-}
-exports.decrypt = function (self, block) {
-  return self._cipher.decryptBlock(block)
-}
-
-
-/***/ }),
-/* 89 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(Buffer) {var xor = __webpack_require__(34)
 
 function getBlock (self) {
-  self._prev = self._cipher.encryptBlock(self._prev)
-  return self._prev
+  var out = self._cipher.encryptBlockRaw(self._prev)
+  incr32(self._prev)
+  return out
 }
 
+var blockSize = 16
 exports.encrypt = function (self, chunk) {
-  while (self._cache.length < chunk.length) {
-    self._cache = Buffer.concat([self._cache, getBlock(self)])
+  var chunkNum = Math.ceil(chunk.length / blockSize)
+  var start = self._cache.length
+  self._cache = Buffer.concat([
+    self._cache,
+    Buffer.allocUnsafe(chunkNum * blockSize)
+  ])
+  for (var i = 0; i < chunkNum; i++) {
+    var out = getBlock(self)
+    var offset = start + i * blockSize
+    self._cache.writeUInt32BE(out[0], offset + 0)
+    self._cache.writeUInt32BE(out[1], offset + 4)
+    self._cache.writeUInt32BE(out[2], offset + 8)
+    self._cache.writeUInt32BE(out[3], offset + 12)
   }
-
   var pad = self._cache.slice(0, chunk.length)
   self._cache = self._cache.slice(chunk.length)
   return xor(chunk, pad)
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2).Buffer))
 
 /***/ }),
-/* 90 */
+/* 86 */
+/***/ (function(module, exports) {
+
+module.exports = {
+	"aes-128-ecb": {
+		"cipher": "AES",
+		"key": 128,
+		"iv": 0,
+		"mode": "ECB",
+		"type": "block"
+	},
+	"aes-192-ecb": {
+		"cipher": "AES",
+		"key": 192,
+		"iv": 0,
+		"mode": "ECB",
+		"type": "block"
+	},
+	"aes-256-ecb": {
+		"cipher": "AES",
+		"key": 256,
+		"iv": 0,
+		"mode": "ECB",
+		"type": "block"
+	},
+	"aes-128-cbc": {
+		"cipher": "AES",
+		"key": 128,
+		"iv": 16,
+		"mode": "CBC",
+		"type": "block"
+	},
+	"aes-192-cbc": {
+		"cipher": "AES",
+		"key": 192,
+		"iv": 16,
+		"mode": "CBC",
+		"type": "block"
+	},
+	"aes-256-cbc": {
+		"cipher": "AES",
+		"key": 256,
+		"iv": 16,
+		"mode": "CBC",
+		"type": "block"
+	},
+	"aes128": {
+		"cipher": "AES",
+		"key": 128,
+		"iv": 16,
+		"mode": "CBC",
+		"type": "block"
+	},
+	"aes192": {
+		"cipher": "AES",
+		"key": 192,
+		"iv": 16,
+		"mode": "CBC",
+		"type": "block"
+	},
+	"aes256": {
+		"cipher": "AES",
+		"key": 256,
+		"iv": 16,
+		"mode": "CBC",
+		"type": "block"
+	},
+	"aes-128-cfb": {
+		"cipher": "AES",
+		"key": 128,
+		"iv": 16,
+		"mode": "CFB",
+		"type": "stream"
+	},
+	"aes-192-cfb": {
+		"cipher": "AES",
+		"key": 192,
+		"iv": 16,
+		"mode": "CFB",
+		"type": "stream"
+	},
+	"aes-256-cfb": {
+		"cipher": "AES",
+		"key": 256,
+		"iv": 16,
+		"mode": "CFB",
+		"type": "stream"
+	},
+	"aes-128-cfb8": {
+		"cipher": "AES",
+		"key": 128,
+		"iv": 16,
+		"mode": "CFB8",
+		"type": "stream"
+	},
+	"aes-192-cfb8": {
+		"cipher": "AES",
+		"key": 192,
+		"iv": 16,
+		"mode": "CFB8",
+		"type": "stream"
+	},
+	"aes-256-cfb8": {
+		"cipher": "AES",
+		"key": 256,
+		"iv": 16,
+		"mode": "CFB8",
+		"type": "stream"
+	},
+	"aes-128-cfb1": {
+		"cipher": "AES",
+		"key": 128,
+		"iv": 16,
+		"mode": "CFB1",
+		"type": "stream"
+	},
+	"aes-192-cfb1": {
+		"cipher": "AES",
+		"key": 192,
+		"iv": 16,
+		"mode": "CFB1",
+		"type": "stream"
+	},
+	"aes-256-cfb1": {
+		"cipher": "AES",
+		"key": 256,
+		"iv": 16,
+		"mode": "CFB1",
+		"type": "stream"
+	},
+	"aes-128-ofb": {
+		"cipher": "AES",
+		"key": 128,
+		"iv": 16,
+		"mode": "OFB",
+		"type": "stream"
+	},
+	"aes-192-ofb": {
+		"cipher": "AES",
+		"key": 192,
+		"iv": 16,
+		"mode": "OFB",
+		"type": "stream"
+	},
+	"aes-256-ofb": {
+		"cipher": "AES",
+		"key": 256,
+		"iv": 16,
+		"mode": "OFB",
+		"type": "stream"
+	},
+	"aes-128-ctr": {
+		"cipher": "AES",
+		"key": 128,
+		"iv": 16,
+		"mode": "CTR",
+		"type": "stream"
+	},
+	"aes-192-ctr": {
+		"cipher": "AES",
+		"key": 192,
+		"iv": 16,
+		"mode": "CTR",
+		"type": "stream"
+	},
+	"aes-256-ctr": {
+		"cipher": "AES",
+		"key": 256,
+		"iv": 16,
+		"mode": "CTR",
+		"type": "stream"
+	},
+	"aes-128-gcm": {
+		"cipher": "AES",
+		"key": 128,
+		"iv": 12,
+		"mode": "GCM",
+		"type": "auth"
+	},
+	"aes-192-gcm": {
+		"cipher": "AES",
+		"key": 192,
+		"iv": 12,
+		"mode": "GCM",
+		"type": "auth"
+	},
+	"aes-256-gcm": {
+		"cipher": "AES",
+		"key": 256,
+		"iv": 12,
+		"mode": "GCM",
+		"type": "auth"
+	}
+};
+
+/***/ }),
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {var aes = __webpack_require__(39)
+var aes = __webpack_require__(39)
+var Buffer = __webpack_require__(4).Buffer
 var Transform = __webpack_require__(20)
-var inherits = __webpack_require__(2)
+var inherits = __webpack_require__(1)
 
-inherits(StreamCipher, Transform)
-module.exports = StreamCipher
 function StreamCipher (mode, key, iv, decrypt) {
-  if (!(this instanceof StreamCipher)) {
-    return new StreamCipher(mode, key, iv)
-  }
   Transform.call(this)
+
   this._cipher = new aes.AES(key)
-  this._prev = new Buffer(iv.length)
-  this._cache = new Buffer('')
-  this._secCache = new Buffer('')
+  this._prev = Buffer.from(iv)
+  this._cache = Buffer.allocUnsafe(0)
+  this._secCache = Buffer.allocUnsafe(0)
   this._decrypt = decrypt
-  iv.copy(this._prev)
   this._mode = mode
 }
+
+inherits(StreamCipher, Transform)
+
 StreamCipher.prototype._update = function (chunk) {
   return this._mode.encrypt(this, chunk, this._decrypt)
 }
+
 StreamCipher.prototype._final = function () {
   this._cipher.scrub()
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
+module.exports = StreamCipher
+
 
 /***/ }),
-/* 91 */
+/* 88 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -71391,7 +72079,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 92 */
+/* 89 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -71404,19 +72092,19 @@ module.exports = {
 };
 
 /***/ }),
-/* 93 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var inherits = __webpack_require__(2)
-var Legacy = __webpack_require__(257)
+var inherits = __webpack_require__(1)
+var Legacy = __webpack_require__(266)
 var Base = __webpack_require__(20)
-var Buffer = __webpack_require__(13).Buffer
-var md5 = __webpack_require__(57)
-var RIPEMD160 = __webpack_require__(63)
+var Buffer = __webpack_require__(4).Buffer
+var md5 = __webpack_require__(58)
+var RIPEMD160 = __webpack_require__(64)
 
-var sha = __webpack_require__(64)
+var sha = __webpack_require__(65)
 
 var ZEROS = Buffer.alloc(128)
 
@@ -71473,16 +72161,16 @@ module.exports = function createHmac (alg, key) {
 
 
 /***/ }),
-/* 94 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var randomBytes = __webpack_require__(38);
 module.exports = findPrime;
 findPrime.simpleSieve = simpleSieve;
 findPrime.fermatTest = fermatTest;
-var BN = __webpack_require__(5);
+var BN = __webpack_require__(6);
 var TWENTYFOUR = new BN(24);
-var MillerRabin = __webpack_require__(102);
+var MillerRabin = __webpack_require__(99);
 var millerRabin = new MillerRabin();
 var ONE = new BN(1);
 var TWO = new BN(2);
@@ -71584,7 +72272,7 @@ function findPrime(bits, gen) {
 
 
 /***/ }),
-/* 95 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* Copyright (c) 2015, Brandon Jones, Colin MacKenzie IV.
@@ -72155,7 +72843,7 @@ module.exports = mat3;
 
 
 /***/ }),
-/* 96 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* Copyright (c) 2015, Brandon Jones, Colin MacKenzie IV.
@@ -72870,7 +73558,7 @@ module.exports = vec3;
 
 
 /***/ }),
-/* 97 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* Copyright (c) 2015, Brandon Jones, Colin MacKenzie IV.
@@ -73413,7 +74101,7 @@ module.exports = vec4;
 
 
 /***/ }),
-/* 98 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -73421,8 +74109,8 @@ module.exports = vec4;
 
 var utils = __webpack_require__(14);
 var common = __webpack_require__(37);
-var shaCommon = __webpack_require__(100);
-var assert = __webpack_require__(10);
+var shaCommon = __webpack_require__(97);
+var assert = __webpack_require__(11);
 
 var sum32 = utils.sum32;
 var sum32_4 = utils.sum32_4;
@@ -73525,7 +74213,7 @@ SHA256.prototype._digest = function digest(enc) {
 
 
 /***/ }),
-/* 99 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -73533,7 +74221,7 @@ SHA256.prototype._digest = function digest(enc) {
 
 var utils = __webpack_require__(14);
 var common = __webpack_require__(37);
-var assert = __webpack_require__(10);
+var assert = __webpack_require__(11);
 
 var rotr64_hi = utils.rotr64_hi;
 var rotr64_lo = utils.rotr64_lo;
@@ -73862,7 +74550,7 @@ function g1_512_lo(xh, xl) {
 
 
 /***/ }),
-/* 100 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -73918,7 +74606,7 @@ exports.g1_256 = g1_256;
 
 
 /***/ }),
-/* 101 */
+/* 98 */
 /***/ (function(module, exports) {
 
 var toString = {}.toString;
@@ -73929,11 +74617,11 @@ module.exports = Array.isArray || function (arr) {
 
 
 /***/ }),
-/* 102 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var bn = __webpack_require__(5);
-var brorand = __webpack_require__(82);
+var bn = __webpack_require__(6);
+var brorand = __webpack_require__(83);
 
 function MillerRabin(rand) {
   this.rand = rand || new brorand.Rand();
@@ -73944,20 +74632,24 @@ MillerRabin.create = function create(rand) {
   return new MillerRabin(rand);
 };
 
-MillerRabin.prototype._rand = function _rand(n) {
+MillerRabin.prototype._randbelow = function _randbelow(n) {
   var len = n.bitLength();
-  var buf = this.rand.generate(Math.ceil(len / 8));
+  var min_bytes = Math.ceil(len / 8);
 
-  // Set low bits
-  buf[0] |= 3;
+  // Generage random bytes until a number less than n is found.
+  // This ensures that 0..n-1 have an equal probability of being selected.
+  do
+    var a = new bn(this.rand.generate(min_bytes));
+  while (a.cmp(n) >= 0);
 
-  // Mask high bits
-  var mask = len & 0x7;
-  if (mask !== 0)
-    buf[buf.length - 1] >>= 7 - mask;
+  return a;
+};
 
-  return new bn(buf);
-}
+MillerRabin.prototype._randrange = function _randrange(start, stop) {
+  // Generate a random number greater than or equal to start and less than stop.
+  var size = stop.sub(start);
+  return start.add(this._randbelow(size));
+};
 
 MillerRabin.prototype.test = function test(n, k, cb) {
   var len = n.bitLength();
@@ -73969,7 +74661,6 @@ MillerRabin.prototype.test = function test(n, k, cb) {
 
   // Find d and s, (n - 1) = (2 ^ s) * d;
   var n1 = n.subn(1);
-  var n2 = n1.subn(1);
   for (var s = 0; !n1.testn(s); s++) {}
   var d = n.shrn(s);
 
@@ -73977,7 +74668,7 @@ MillerRabin.prototype.test = function test(n, k, cb) {
 
   var prime = true;
   for (; k > 0; k--) {
-    var a = this._rand(n2);
+    var a = this._randrange(new bn(2), n1);
     if (cb)
       cb(a);
 
@@ -74011,14 +74702,13 @@ MillerRabin.prototype.getDivisor = function getDivisor(n, k) {
 
   // Find d and s, (n - 1) = (2 ^ s) * d;
   var n1 = n.subn(1);
-  var n2 = n1.subn(1);
   for (var s = 0; !n1.testn(s); s++) {}
   var d = n.shrn(s);
 
   var rn1 = n1.toRed(red);
 
   for (; k > 0; k--) {
-    var a = this._rand(n2);
+    var a = this._randrange(new bn(2), n1);
 
     var g = n.gcd(a);
     if (g.cmpn(1) !== 0)
@@ -74048,7 +74738,7 @@ MillerRabin.prototype.getDivisor = function getDivisor(n, k) {
 
 
 /***/ }),
-/* 103 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -74113,17 +74803,17 @@ utils.encode = function encode(arr, enc) {
 
 
 /***/ }),
-/* 104 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-exports.pbkdf2 = __webpack_require__(306)
+exports.pbkdf2 = __webpack_require__(315)
 
-exports.pbkdf2Sync = __webpack_require__(107)
+exports.pbkdf2Sync = __webpack_require__(104)
 
 
 /***/ }),
-/* 105 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process) {var defaultEncoding
@@ -74140,7 +74830,7 @@ module.exports = defaultEncoding
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17)))
 
 /***/ }),
-/* 106 */
+/* 103 */
 /***/ (function(module, exports) {
 
 var MAX_ALLOC = Math.pow(2, 30) - 1 // default in iojs
@@ -74164,16 +74854,16 @@ module.exports = function (iterations, keylen) {
 
 
 /***/ }),
-/* 107 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var md5 = __webpack_require__(57)
-var rmd160 = __webpack_require__(63)
-var sha = __webpack_require__(64)
+var md5 = __webpack_require__(58)
+var rmd160 = __webpack_require__(64)
+var sha = __webpack_require__(65)
 
-var checkParameters = __webpack_require__(106)
-var defaultEncoding = __webpack_require__(105)
-var Buffer = __webpack_require__(13).Buffer
+var checkParameters = __webpack_require__(103)
+var defaultEncoding = __webpack_require__(102)
+var Buffer = __webpack_require__(4).Buffer
 var ZEROS = Buffer.alloc(128)
 var sizes = {
   md5: 16,
@@ -74271,7 +74961,7 @@ module.exports = pbkdf2
 
 
 /***/ }),
-/* 108 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var createHash = __webpack_require__(36);
@@ -74290,13 +74980,13 @@ function i2ops(c) {
   out.writeUInt32BE(c,0);
   return out;
 }
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2).Buffer))
 
 /***/ }),
-/* 109 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {var bn = __webpack_require__(5);
+/* WEBPACK VAR INJECTION */(function(Buffer) {var bn = __webpack_require__(6);
 function withPublic(paddedMsg, key) {
   return new Buffer(paddedMsg
     .toRed(bn.mont(key.modulus))
@@ -74306,10 +74996,10 @@ function withPublic(paddedMsg, key) {
 }
 
 module.exports = withPublic;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2).Buffer))
 
 /***/ }),
-/* 110 */
+/* 107 */
 /***/ (function(module, exports) {
 
 module.exports = function xor(a, b) {
@@ -74322,7 +75012,7 @@ module.exports = function xor(a, b) {
 };
 
 /***/ }),
-/* 111 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -74351,13 +75041,13 @@ module.exports = function xor(a, b) {
 
 /*<replacement>*/
 
-var processNextTick = __webpack_require__(46);
+var processNextTick = __webpack_require__(44);
 /*</replacement>*/
 
 module.exports = Readable;
 
 /*<replacement>*/
-var isArray = __webpack_require__(101);
+var isArray = __webpack_require__(98);
 /*</replacement>*/
 
 /*<replacement>*/
@@ -74367,7 +75057,7 @@ var Duplex;
 Readable.ReadableState = ReadableState;
 
 /*<replacement>*/
-var EE = __webpack_require__(59).EventEmitter;
+var EE = __webpack_require__(60).EventEmitter;
 
 var EElistenerCount = function (emitter, type) {
   return emitter.listeners(type).length;
@@ -74375,13 +75065,13 @@ var EElistenerCount = function (emitter, type) {
 /*</replacement>*/
 
 /*<replacement>*/
-var Stream = __webpack_require__(114);
+var Stream = __webpack_require__(111);
 /*</replacement>*/
 
 // TODO(bmeurer): Change this back to const once hole checks are
 // properly optimized away early in Ignition+TurboFan.
 /*<replacement>*/
-var Buffer = __webpack_require__(13).Buffer;
+var Buffer = __webpack_require__(4).Buffer;
 var OurUint8Array = global.Uint8Array || function () {};
 function _uint8ArrayToBuffer(chunk) {
   return Buffer.from(chunk);
@@ -74393,11 +75083,11 @@ function _isUint8Array(obj) {
 
 /*<replacement>*/
 var util = __webpack_require__(35);
-util.inherits = __webpack_require__(2);
+util.inherits = __webpack_require__(1);
 /*</replacement>*/
 
 /*<replacement>*/
-var debugUtil = __webpack_require__(368);
+var debugUtil = __webpack_require__(379);
 var debug = void 0;
 if (debugUtil && debugUtil.debuglog) {
   debug = debugUtil.debuglog('stream');
@@ -74406,8 +75096,8 @@ if (debugUtil && debugUtil.debuglog) {
 }
 /*</replacement>*/
 
-var BufferList = __webpack_require__(312);
-var destroyImpl = __webpack_require__(113);
+var BufferList = __webpack_require__(321);
+var destroyImpl = __webpack_require__(110);
 var StringDecoder;
 
 util.inherits(Readable, Stream);
@@ -74490,7 +75180,7 @@ function ReadableState(options, stream) {
   this.decoder = null;
   this.encoding = null;
   if (options.encoding) {
-    if (!StringDecoder) StringDecoder = __webpack_require__(65).StringDecoder;
+    if (!StringDecoder) StringDecoder = __webpack_require__(66).StringDecoder;
     this.decoder = new StringDecoder(options.encoding);
     this.encoding = options.encoding;
   }
@@ -74646,7 +75336,7 @@ Readable.prototype.isPaused = function () {
 
 // backwards compatibility.
 Readable.prototype.setEncoding = function (enc) {
-  if (!StringDecoder) StringDecoder = __webpack_require__(65).StringDecoder;
+  if (!StringDecoder) StringDecoder = __webpack_require__(66).StringDecoder;
   this._readableState.decoder = new StringDecoder(enc);
   this._readableState.encoding = enc;
   return this;
@@ -75336,7 +76026,7 @@ function indexOf(xs, x) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(15), __webpack_require__(17)))
 
 /***/ }),
-/* 112 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -75411,7 +76101,7 @@ var Duplex = __webpack_require__(23);
 
 /*<replacement>*/
 var util = __webpack_require__(35);
-util.inherits = __webpack_require__(2);
+util.inherits = __webpack_require__(1);
 /*</replacement>*/
 
 util.inherits(Transform, Duplex);
@@ -75556,7 +76246,7 @@ function done(stream, er, data) {
 }
 
 /***/ }),
-/* 113 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -75564,7 +76254,7 @@ function done(stream, er, data) {
 
 /*<replacement>*/
 
-var processNextTick = __webpack_require__(46);
+var processNextTick = __webpack_require__(44);
 /*</replacement>*/
 
 // undocumented cb() API, needed for core, not for public API
@@ -75634,17 +76324,17 @@ module.exports = {
 };
 
 /***/ }),
-/* 114 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(59).EventEmitter;
+module.exports = __webpack_require__(60).EventEmitter;
 
 
 /***/ }),
-/* 115 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {/**
+/**
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-256, as defined
  * in FIPS 180-2
  * Version 2.2-beta Copyright Angel Marin, Paul Johnston 2000 - 2009.
@@ -75652,8 +76342,9 @@ module.exports = __webpack_require__(59).EventEmitter;
  *
  */
 
-var inherits = __webpack_require__(2)
+var inherits = __webpack_require__(1)
 var Hash = __webpack_require__(25)
+var Buffer = __webpack_require__(4).Buffer
 
 var K = [
   0x428A2F98, 0x71374491, 0xB5C0FBCF, 0xE9B5DBA5,
@@ -75763,7 +76454,7 @@ Sha256.prototype._update = function (M) {
 }
 
 Sha256.prototype._hash = function () {
-  var H = new Buffer(32)
+  var H = Buffer.allocUnsafe(32)
 
   H.writeInt32BE(this._a, 0)
   H.writeInt32BE(this._b, 4)
@@ -75779,14 +76470,14 @@ Sha256.prototype._hash = function () {
 
 module.exports = Sha256
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ }),
-/* 116 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {var inherits = __webpack_require__(2)
+var inherits = __webpack_require__(1)
 var Hash = __webpack_require__(25)
+var Buffer = __webpack_require__(4).Buffer
 
 var K = [
   0x428a2f98, 0xd728ae22, 0x71374491, 0x23ef65cd,
@@ -76024,7 +76715,7 @@ Sha512.prototype._update = function (M) {
 }
 
 Sha512.prototype._hash = function () {
-  var H = new Buffer(64)
+  var H = Buffer.allocUnsafe(64)
 
   function writeInt64BE (h, l, offset) {
     H.writeInt32BE(h, offset)
@@ -76045,16 +76736,15 @@ Sha512.prototype._hash = function () {
 
 module.exports = Sha512
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ }),
-/* 117 */
+/* 114 */
 /***/ (function(module, exports) {
 
 module.exports = "//VTK::System::Dec\n\n/*=========================================================================\n\n  Program:   Visualization Toolkit\n  Module:    vtkPolyDataVS.glsl\n\n  Copyright (c) Ken Martin, Will Schroeder, Bill Lorensen\n  All rights reserved.\n  See Copyright.txt or http://www.kitware.com/Copyright.htm for details.\n\n     This software is distributed WITHOUT ANY WARRANTY; without even\n     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR\n     PURPOSE.  See the above copyright notice for more information.\n\n=========================================================================*/\n\nattribute vec4 vertexMC;\n\n// frag position in VC\n//VTK::PositionVC::Dec\n\n// optional normal declaration\n//VTK::Normal::Dec\n\n// extra lighting parameters\n//VTK::Light::Dec\n\n// Texture coordinates\n//VTK::TCoord::Dec\n\n// material property values\n//VTK::Color::Dec\n\n// clipping plane vars\n//VTK::Clip::Dec\n\n// camera and actor matrix values\n//VTK::Camera::Dec\n\n// Apple Bug\n//VTK::PrimID::Dec\n\nvoid main()\n{\n  //VTK::Color::Impl\n\n  //VTK::Normal::Impl\n\n  //VTK::TCoord::Impl\n\n  //VTK::Clip::Impl\n\n  //VTK::PrimID::Impl\n\n  //VTK::PositionVC::Impl\n\n  //VTK::Light::Impl\n}\n"
 
 /***/ }),
-/* 118 */
+/* 115 */
 /***/ (function(module, exports) {
 
 /**
@@ -76411,16 +77101,16 @@ module.exports = new vkbeautify();
 
 
 /***/ }),
-/* 119 */
+/* 116 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_GeometryEditorCamera_js__ = __webpack_require__(150);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_GeometryEditorCamera_js__ = __webpack_require__(149);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_GeometryEditorCamera_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_GeometryEditorCamera_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_1259bc30_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_GeometryEditorCamera_vue__ = __webpack_require__(335);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_1259bc30_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_GeometryEditorCamera_vue__ = __webpack_require__(345);
 var disposed = false
-var normalizeComponent = __webpack_require__(4)
+var normalizeComponent = __webpack_require__(5)
 /* script */
 /* template */
 
@@ -76461,16 +77151,16 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 120 */
+/* 117 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_GeometryEditorRenderer_js__ = __webpack_require__(151);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_GeometryEditorRenderer_js__ = __webpack_require__(150);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_GeometryEditorRenderer_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_GeometryEditorRenderer_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_b78e6be4_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_GeometryEditorRenderer_vue__ = __webpack_require__(349);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_b78e6be4_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_GeometryEditorRenderer_vue__ = __webpack_require__(360);
 var disposed = false
-var normalizeComponent = __webpack_require__(4)
+var normalizeComponent = __webpack_require__(5)
 /* script */
 /* template */
 
@@ -76511,16 +77201,16 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 121 */
+/* 118 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_GeometryEditorScene_js__ = __webpack_require__(152);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_GeometryEditorScene_js__ = __webpack_require__(151);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_GeometryEditorScene_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_GeometryEditorScene_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_73604c5e_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_GeometryEditorScene_vue__ = __webpack_require__(345);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_73604c5e_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_GeometryEditorScene_vue__ = __webpack_require__(356);
 var disposed = false
-var normalizeComponent = __webpack_require__(4)
+var normalizeComponent = __webpack_require__(5)
 /* script */
 /* template */
 
@@ -76561,16 +77251,16 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 122 */
+/* 119 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_ThreeCamera_js__ = __webpack_require__(153);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_ThreeCamera_js__ = __webpack_require__(152);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_ThreeCamera_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_ThreeCamera_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_517b89e7_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_ThreeCamera_vue__ = __webpack_require__(340);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_517b89e7_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_ThreeCamera_vue__ = __webpack_require__(350);
 var disposed = false
-var normalizeComponent = __webpack_require__(4)
+var normalizeComponent = __webpack_require__(5)
 /* script */
 /* template */
 
@@ -76611,16 +77301,16 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 123 */
+/* 120 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_ThreeEllipsoidParticles_js__ = __webpack_require__(154);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_ThreeEllipsoidParticles_js__ = __webpack_require__(153);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_ThreeEllipsoidParticles_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_ThreeEllipsoidParticles_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_6009942c_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_ThreeEllipsoidParticles_vue__ = __webpack_require__(342);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_6009942c_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_ThreeEllipsoidParticles_vue__ = __webpack_require__(352);
 var disposed = false
-var normalizeComponent = __webpack_require__(4)
+var normalizeComponent = __webpack_require__(5)
 /* script */
 /* template */
 
@@ -76661,16 +77351,16 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 124 */
+/* 121 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_ThreeRenderer_js__ = __webpack_require__(155);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_ThreeRenderer_js__ = __webpack_require__(154);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_ThreeRenderer_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_ThreeRenderer_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_bbc3f3f6_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_ThreeRenderer_vue__ = __webpack_require__(350);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_bbc3f3f6_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_ThreeRenderer_vue__ = __webpack_require__(361);
 var disposed = false
-var normalizeComponent = __webpack_require__(4)
+var normalizeComponent = __webpack_require__(5)
 /* script */
 /* template */
 
@@ -76711,16 +77401,16 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 125 */
+/* 122 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_ThreeScene_js__ = __webpack_require__(156);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_ThreeScene_js__ = __webpack_require__(155);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_ThreeScene_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_ThreeScene_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_2b71f93a_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_ThreeScene_vue__ = __webpack_require__(337);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_2b71f93a_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_ThreeScene_vue__ = __webpack_require__(347);
 var disposed = false
-var normalizeComponent = __webpack_require__(4)
+var normalizeComponent = __webpack_require__(5)
 /* script */
 /* template */
 
@@ -76761,16 +77451,16 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 126 */
+/* 123 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_ThreeSphere_js__ = __webpack_require__(157);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_ThreeSphere_js__ = __webpack_require__(156);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_ThreeSphere_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_ThreeSphere_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3ee79a8f_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_ThreeSphere_vue__ = __webpack_require__(338);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3ee79a8f_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_ThreeSphere_vue__ = __webpack_require__(348);
 var disposed = false
-var normalizeComponent = __webpack_require__(4)
+var normalizeComponent = __webpack_require__(5)
 /* script */
 /* template */
 
@@ -76811,16 +77501,16 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 127 */
+/* 124 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_VtkEllipsoidParticles_js__ = __webpack_require__(158);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_VtkEllipsoidParticles_js__ = __webpack_require__(157);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_VtkEllipsoidParticles_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_VtkEllipsoidParticles_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_56198dbb_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_VtkEllipsoidParticles_vue__ = __webpack_require__(341);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_56198dbb_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_VtkEllipsoidParticles_vue__ = __webpack_require__(351);
 var disposed = false
-var normalizeComponent = __webpack_require__(4)
+var normalizeComponent = __webpack_require__(5)
 /* script */
 /* template */
 
@@ -76861,16 +77551,16 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 128 */
+/* 125 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_VtkRenderer_js__ = __webpack_require__(159);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_VtkRenderer_js__ = __webpack_require__(158);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_VtkRenderer_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_VtkRenderer_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_b7425358_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_VtkRenderer_vue__ = __webpack_require__(348);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_b7425358_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_VtkRenderer_vue__ = __webpack_require__(359);
 var disposed = false
-var normalizeComponent = __webpack_require__(4)
+var normalizeComponent = __webpack_require__(5)
 /* script */
 /* template */
 
@@ -76911,16 +77601,16 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 129 */
+/* 126 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_VtkSphere_js__ = __webpack_require__(160);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_VtkSphere_js__ = __webpack_require__(159);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_VtkSphere_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_VtkSphere_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_ef239ac4_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_VtkSphere_vue__ = __webpack_require__(357);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_ef239ac4_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_VtkSphere_vue__ = __webpack_require__(367);
 var disposed = false
-var normalizeComponent = __webpack_require__(4)
+var normalizeComponent = __webpack_require__(5)
 /* script */
 /* template */
 
@@ -76961,16 +77651,16 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 130 */
+/* 127 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_GeneralInputPanel_js__ = __webpack_require__(161);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_GeneralInputPanel_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_GeneralInputPanel_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_c2eb802e_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_GeneralInputPanel_vue__ = __webpack_require__(351);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_TaskGraphEditor_js__ = __webpack_require__(160);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_TaskGraphEditor_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_TaskGraphEditor_js__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_64ba1650_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_TaskGraphEditor_vue__ = __webpack_require__(354);
 var disposed = false
-var normalizeComponent = __webpack_require__(4)
+var normalizeComponent = __webpack_require__(5)
 /* script */
 /* template */
 
@@ -76981,15 +77671,15 @@ var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
-  __WEBPACK_IMPORTED_MODULE_0__babel_loader_GeneralInputPanel_js___default.a,
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_c2eb802e_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_GeneralInputPanel_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_TaskGraphEditor_js___default.a,
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_64ba1650_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_TaskGraphEditor_vue__["a" /* default */],
   __vue_styles__,
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "src/views/GeneralInputPanel.vue"
+Component.options.__file = "src/taskgraph/TaskGraphEditor.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] GeneralInputPanel.vue: functional components are not supported with templates, they should use render functions.")}
+if (Component.options.functional) {console.error("[vue-loader] TaskGraphEditor.vue: functional components are not supported with templates, they should use render functions.")}
 
 /* hot reload */
 if (false) {(function () {
@@ -76998,9 +77688,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-c2eb802e", Component.options)
+    hotAPI.createRecord("data-v-64ba1650", Component.options)
   } else {
-    hotAPI.reload("data-v-c2eb802e", Component.options)
+    hotAPI.reload("data-v-64ba1650", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -77011,16 +77701,16 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 131 */
+/* 128 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_GeometryEditorGraphicsPanel_js__ = __webpack_require__(162);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_GeometryEditorGraphicsPanel_js__ = __webpack_require__(161);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_GeometryEditorGraphicsPanel_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_GeometryEditorGraphicsPanel_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_e92ea47e_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_GeometryEditorGraphicsPanel_vue__ = __webpack_require__(356);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_e92ea47e_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_GeometryEditorGraphicsPanel_vue__ = __webpack_require__(366);
 var disposed = false
-var normalizeComponent = __webpack_require__(4)
+var normalizeComponent = __webpack_require__(5)
 /* script */
 /* template */
 
@@ -77061,16 +77751,16 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 132 */
+/* 129 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_ICEInputPanel_js__ = __webpack_require__(163);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_ICEInputPanel_js__ = __webpack_require__(162);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_ICEInputPanel_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_ICEInputPanel_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_e5670068_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_ICEInputPanel_vue__ = __webpack_require__(355);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_e5670068_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_ICEInputPanel_vue__ = __webpack_require__(365);
 var disposed = false
-var normalizeComponent = __webpack_require__(4)
+var normalizeComponent = __webpack_require__(5)
 /* script */
 /* template */
 
@@ -77111,16 +77801,16 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 133 */
+/* 130 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_MPMInputPanel_js__ = __webpack_require__(164);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_MPMInputPanel_js__ = __webpack_require__(163);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_MPMInputPanel_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_MPMInputPanel_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_13378e2b_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_MPMInputPanel_vue__ = __webpack_require__(336);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_13378e2b_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_MPMInputPanel_vue__ = __webpack_require__(346);
 var disposed = false
-var normalizeComponent = __webpack_require__(4)
+var normalizeComponent = __webpack_require__(5)
 /* script */
 /* template */
 
@@ -77161,20 +77851,20 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 134 */
+/* 131 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_MainMenubar_js__ = __webpack_require__(165);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_MainMenubar_js__ = __webpack_require__(164);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_MainMenubar_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_MainMenubar_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_73239da2_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_MainMenubar_vue__ = __webpack_require__(344);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_73239da2_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_MainMenubar_vue__ = __webpack_require__(355);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(360)
+  __webpack_require__(371)
 }
-var normalizeComponent = __webpack_require__(4)
+var normalizeComponent = __webpack_require__(5)
 /* script */
 /* template */
 
@@ -77215,16 +77905,16 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 135 */
+/* 132 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_MainTextPanel_js__ = __webpack_require__(166);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_MainTextPanel_js__ = __webpack_require__(165);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_MainTextPanel_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_MainTextPanel_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_909b3db6_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_MainTextPanel_vue__ = __webpack_require__(347);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_909b3db6_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_MainTextPanel_vue__ = __webpack_require__(358);
 var disposed = false
-var normalizeComponent = __webpack_require__(4)
+var normalizeComponent = __webpack_require__(5)
 /* script */
 /* template */
 
@@ -77265,20 +77955,20 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 136 */
+/* 133 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_Sidebar_js__ = __webpack_require__(167);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_Sidebar_js__ = __webpack_require__(166);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_Sidebar_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_Sidebar_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_d3e24cba_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_Sidebar_vue__ = __webpack_require__(353);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_d3e24cba_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_Sidebar_vue__ = __webpack_require__(363);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(361)
+  __webpack_require__(372)
 }
-var normalizeComponent = __webpack_require__(4)
+var normalizeComponent = __webpack_require__(5)
 /* script */
 /* template */
 
@@ -77319,16 +78009,116 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 137 */
+/* 134 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_ThreeGraphicsPanel_js__ = __webpack_require__(168);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_ThreeGraphicsPanel_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_ThreeGraphicsPanel_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_7fcd4944_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_ThreeGraphicsPanel_vue__ = __webpack_require__(346);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_SimulationComponentPanel_js__ = __webpack_require__(167);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_SimulationComponentPanel_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_SimulationComponentPanel_js__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_06a1fa92_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_SimulationComponentPanel_vue__ = __webpack_require__(344);
 var disposed = false
-var normalizeComponent = __webpack_require__(4)
+var normalizeComponent = __webpack_require__(5)
+/* script */
+/* template */
+
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_SimulationComponentPanel_js___default.a,
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_06a1fa92_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_SimulationComponentPanel_vue__["a" /* default */],
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "src/views/SimulationComponentPanel.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] SimulationComponentPanel.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-06a1fa92", Component.options)
+  } else {
+    hotAPI.reload("data-v-06a1fa92", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["default"] = (Component.exports);
+
+
+/***/ }),
+/* 135 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_TaskGraphEditorPanel_js__ = __webpack_require__(168);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_TaskGraphEditorPanel_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_TaskGraphEditorPanel_js__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_f1a2d752_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_TaskGraphEditorPanel_vue__ = __webpack_require__(368);
+var disposed = false
+var normalizeComponent = __webpack_require__(5)
+/* script */
+/* template */
+
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_TaskGraphEditorPanel_js___default.a,
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_f1a2d752_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_TaskGraphEditorPanel_vue__["a" /* default */],
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "src/views/TaskGraphEditorPanel.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] TaskGraphEditorPanel.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-f1a2d752", Component.options)
+  } else {
+    hotAPI.reload("data-v-f1a2d752", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["default"] = (Component.exports);
+
+
+/***/ }),
+/* 136 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_ThreeGraphicsPanel_js__ = __webpack_require__(169);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_ThreeGraphicsPanel_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_ThreeGraphicsPanel_js__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_7fcd4944_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_ThreeGraphicsPanel_vue__ = __webpack_require__(357);
+var disposed = false
+var normalizeComponent = __webpack_require__(5)
 /* script */
 /* template */
 
@@ -77369,16 +78159,16 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 138 */
+/* 137 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_TimeInputPanel_js__ = __webpack_require__(169);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_TimeInputPanel_js__ = __webpack_require__(170);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_TimeInputPanel_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_TimeInputPanel_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_d4abc4e0_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_TimeInputPanel_vue__ = __webpack_require__(354);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_d4abc4e0_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_TimeInputPanel_vue__ = __webpack_require__(364);
 var disposed = false
-var normalizeComponent = __webpack_require__(4)
+var normalizeComponent = __webpack_require__(5)
 /* script */
 /* template */
 
@@ -77419,20 +78209,20 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 139 */
+/* 138 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_VaangoInputsSidebar_js__ = __webpack_require__(170);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_VaangoInputsSidebar_js__ = __webpack_require__(171);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_VaangoInputsSidebar_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_VaangoInputsSidebar_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_640fd25a_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_VaangoInputsSidebar_vue__ = __webpack_require__(343);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_640fd25a_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_VaangoInputsSidebar_vue__ = __webpack_require__(353);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(359)
+  __webpack_require__(370)
 }
-var normalizeComponent = __webpack_require__(4)
+var normalizeComponent = __webpack_require__(5)
 /* script */
 /* template */
 
@@ -77473,20 +78263,20 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 140 */
+/* 139 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_VaangoMainPanel_js__ = __webpack_require__(171);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_VaangoMainPanel_js__ = __webpack_require__(172);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_VaangoMainPanel_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_VaangoMainPanel_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_40e1a71c_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_VaangoMainPanel_vue__ = __webpack_require__(339);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_40e1a71c_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_VaangoMainPanel_vue__ = __webpack_require__(349);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(358)
+  __webpack_require__(369)
 }
-var normalizeComponent = __webpack_require__(4)
+var normalizeComponent = __webpack_require__(5)
 /* script */
 /* template */
 
@@ -77527,16 +78317,16 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 141 */
+/* 140 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_VtkGraphicsPanel_js__ = __webpack_require__(172);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_VtkGraphicsPanel_js__ = __webpack_require__(173);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_VtkGraphicsPanel_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_VtkGraphicsPanel_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_c6b534d6_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_VtkGraphicsPanel_vue__ = __webpack_require__(352);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_c6b534d6_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_VtkGraphicsPanel_vue__ = __webpack_require__(362);
 var disposed = false
-var normalizeComponent = __webpack_require__(4)
+var normalizeComponent = __webpack_require__(5)
 /* script */
 /* template */
 
@@ -77577,11 +78367,11 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 142 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var asn1 = __webpack_require__(27);
-var inherits = __webpack_require__(2);
+var inherits = __webpack_require__(1);
 
 var api = exports;
 
@@ -77600,7 +78390,7 @@ function Entity(name, body) {
 Entity.prototype._createNamed = function createNamed(base) {
   var named;
   try {
-    named = __webpack_require__(334).runInThisContext(
+    named = __webpack_require__(343).runInThisContext(
       '(function ' + this.name + '(entity) {\n' +
       '  this._initNamed(entity);\n' +
       '})'
@@ -77644,13 +78434,13 @@ Entity.prototype.encode = function encode(data, enc, /* internal */ reporter) {
 
 
 /***/ }),
-/* 143 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Reporter = __webpack_require__(28).Reporter;
 var EncoderBuffer = __webpack_require__(28).EncoderBuffer;
 var DecoderBuffer = __webpack_require__(28).DecoderBuffer;
-var assert = __webpack_require__(10);
+var assert = __webpack_require__(11);
 
 // Supported tags
 var tags = [
@@ -78284,10 +79074,10 @@ Node.prototype._isPrintstr = function isPrintstr(str) {
 
 
 /***/ }),
-/* 144 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var inherits = __webpack_require__(2);
+var inherits = __webpack_require__(1);
 
 function Reporter(options) {
   this._reporterState = {
@@ -78411,10 +79201,10 @@ ReporterError.prototype.rethrow = function rethrow(msg) {
 
 
 /***/ }),
-/* 145 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var constants = __webpack_require__(67);
+var constants = __webpack_require__(68);
 
 exports.tagClass = {
   0: 'universal',
@@ -78459,23 +79249,23 @@ exports.tagByName = constants._reverse(exports.tag);
 
 
 /***/ }),
-/* 146 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var decoders = exports;
 
-decoders.der = __webpack_require__(68);
-decoders.pem = __webpack_require__(147);
+decoders.der = __webpack_require__(69);
+decoders.pem = __webpack_require__(146);
 
 
 /***/ }),
-/* 147 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var inherits = __webpack_require__(2);
-var Buffer = __webpack_require__(1).Buffer;
+var inherits = __webpack_require__(1);
+var Buffer = __webpack_require__(2).Buffer;
 
-var DERDecoder = __webpack_require__(68);
+var DERDecoder = __webpack_require__(69);
 
 function PEMDecoder(entity) {
   DERDecoder.call(this, entity);
@@ -78524,22 +79314,22 @@ PEMDecoder.prototype.decode = function decode(data, options) {
 
 
 /***/ }),
-/* 148 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var encoders = exports;
 
-encoders.der = __webpack_require__(69);
-encoders.pem = __webpack_require__(149);
+encoders.der = __webpack_require__(70);
+encoders.pem = __webpack_require__(148);
 
 
 /***/ }),
-/* 149 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var inherits = __webpack_require__(2);
+var inherits = __webpack_require__(1);
 
-var DEREncoder = __webpack_require__(69);
+var DEREncoder = __webpack_require__(70);
 
 function PEMEncoder(entity) {
   DEREncoder.call(this, entity);
@@ -78561,7 +79351,7 @@ PEMEncoder.prototype.encode = function encode(data, options) {
 
 
 /***/ }),
-/* 150 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78574,8 +79364,8 @@ var _vue2 = _interopRequireDefault(_vue);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var THREE = __webpack_require__(18);
-var Store = __webpack_require__(9).default;
-var util = __webpack_require__(81);
+var Store = __webpack_require__(10).default;
+var util = __webpack_require__(82);
 
 var EditorCamera = _vue2.default.extend({
   name: 'EditorCamera',
@@ -78634,7 +79424,7 @@ var EditorCamera = _vue2.default.extend({
 exports.default = EditorCamera;
 
 /***/ }),
-/* 151 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78647,9 +79437,9 @@ var _vue2 = _interopRequireDefault(_vue);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var THREE = __webpack_require__(18);
-var ThreeTrackball = __webpack_require__(80);
+var ThreeTrackball = __webpack_require__(81);
 
-var Store = __webpack_require__(9).default;
+var Store = __webpack_require__(10).default;
 
 var GeometryEditorRenderer = _vue2.default.extend({
   name: 'GeometryEditorRenderer',
@@ -78856,7 +79646,7 @@ var GeometryEditorRenderer = _vue2.default.extend({
 exports.default = GeometryEditorRenderer;
 
 /***/ }),
-/* 152 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78870,7 +79660,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var THREE = __webpack_require__(18);
 
-var Store = __webpack_require__(9).default;
+var Store = __webpack_require__(10).default;
 
 var GeometryEditorScene = _vue2.default.extend({
   name: 'GeometryEditorScene',
@@ -78929,7 +79719,7 @@ var GeometryEditorScene = _vue2.default.extend({
 exports.default = GeometryEditorScene;
 
 /***/ }),
-/* 153 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78942,8 +79732,8 @@ var _vue2 = _interopRequireDefault(_vue);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var THREE = __webpack_require__(18);
-var Store = __webpack_require__(9).default;
-var util = __webpack_require__(81);
+var Store = __webpack_require__(10).default;
+var util = __webpack_require__(82);
 
 var Camera = _vue2.default.extend({
   name: 'Camera',
@@ -79014,7 +79804,7 @@ var Camera = _vue2.default.extend({
 exports.default = Camera;
 
 /***/ }),
-/* 154 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -79028,7 +79818,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var THREE = __webpack_require__(18);
 
-var Store = __webpack_require__(9).default;
+var Store = __webpack_require__(10).default;
 
 var ThreeEllipsoidParticles = _vue2.default.extend({
   name: 'ThreeEllipsoidParticles',
@@ -79128,7 +79918,7 @@ var ThreeEllipsoidParticles = _vue2.default.extend({
 exports.default = ThreeEllipsoidParticles;
 
 /***/ }),
-/* 155 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -79141,9 +79931,9 @@ var _vue2 = _interopRequireDefault(_vue);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var THREE = __webpack_require__(18);
-var ThreeTrackball = __webpack_require__(80);
+var ThreeTrackball = __webpack_require__(81);
 
-var Store = __webpack_require__(9).default;
+var Store = __webpack_require__(10).default;
 
 var ThreeRenderer = _vue2.default.extend({
   name: 'ThreeRenderer',
@@ -79317,7 +80107,7 @@ var ThreeRenderer = _vue2.default.extend({
 exports.default = ThreeRenderer;
 
 /***/ }),
-/* 156 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -79331,7 +80121,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var THREE = __webpack_require__(18);
 
-var Store = __webpack_require__(9).default;
+var Store = __webpack_require__(10).default;
 
 var ThreeScene = _vue2.default.extend({
   name: 'ThreeScene',
@@ -79390,7 +80180,7 @@ var ThreeScene = _vue2.default.extend({
 exports.default = ThreeScene;
 
 /***/ }),
-/* 157 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -79404,7 +80194,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var THREE = __webpack_require__(18);
 
-var Store = __webpack_require__(9).default;
+var Store = __webpack_require__(10).default;
 
 var ThreeSphere = _vue2.default.extend({
   name: 'ThreeSphere',
@@ -79460,7 +80250,7 @@ var ThreeSphere = _vue2.default.extend({
 exports.default = ThreeSphere;
 
 /***/ }),
-/* 158 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -79472,11 +80262,11 @@ var _vue2 = _interopRequireDefault(_vue);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var vtkActor = __webpack_require__(74);
-var vtkSphereSource = __webpack_require__(73);
-var vtkMapper = __webpack_require__(76);
+var vtkActor = __webpack_require__(75);
+var vtkSphereSource = __webpack_require__(74);
+var vtkMapper = __webpack_require__(77);
 
-var Store = __webpack_require__(9).default;
+var Store = __webpack_require__(10).default;
 
 var VtkEllipsoidParticles = _vue2.default.extend({
 
@@ -79550,7 +80340,7 @@ var VtkEllipsoidParticles = _vue2.default.extend({
 exports.default = VtkEllipsoidParticles;
 
 /***/ }),
-/* 159 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -79562,15 +80352,15 @@ var _vue2 = _interopRequireDefault(_vue);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var vtkRenderWindow = __webpack_require__(197); /* global requestAnimationFrame */
+var vtkRenderWindow = __webpack_require__(198); /* global requestAnimationFrame */
 /* eslint-disable no-duplicate-consts */
 
-var vtkRenderer = __webpack_require__(199);
-var vtkOpenGLRenderWindow = __webpack_require__(78);
-var vtkRenderWindowInteractor = __webpack_require__(198);
-var vtkTexture = __webpack_require__(200);
+var vtkRenderer = __webpack_require__(200);
+var vtkOpenGLRenderWindow = __webpack_require__(79);
+var vtkRenderWindowInteractor = __webpack_require__(199);
+var vtkTexture = __webpack_require__(201);
 
-var Store = __webpack_require__(9).default;
+var Store = __webpack_require__(10).default;
 
 var VtkRenderer = _vue2.default.extend({
   name: 'VtkRenderer',
@@ -79743,7 +80533,7 @@ var VtkRenderer = _vue2.default.extend({
 exports.default = VtkRenderer;
 
 /***/ }),
-/* 160 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -79755,11 +80545,11 @@ var _vue2 = _interopRequireDefault(_vue);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var vtkActor = __webpack_require__(74);
-var vtkSphereSource = __webpack_require__(73);
-var vtkMapper = __webpack_require__(76);
+var vtkActor = __webpack_require__(75);
+var vtkSphereSource = __webpack_require__(74);
+var vtkMapper = __webpack_require__(77);
 
-var Store = __webpack_require__(9).default;
+var Store = __webpack_require__(10).default;
 
 var VtkSphere = _vue2.default.extend({
   name: 'VtkSphere',
@@ -79815,7 +80605,7 @@ var VtkSphere = _vue2.default.extend({
 exports.default = VtkSphere;
 
 /***/ }),
-/* 161 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -79825,22 +80615,76 @@ var _vue = __webpack_require__(3);
 
 var _vue2 = _interopRequireDefault(_vue);
 
+var _LiteGraph = __webpack_require__(53);
+
+var _LiteGraph2 = _interopRequireDefault(_LiteGraph);
+
+var _LGraph = __webpack_require__(224);
+
+var _LGraph2 = _interopRequireDefault(_LGraph);
+
+var _LGraphCanvas = __webpack_require__(225);
+
+var _LGraphCanvas2 = _interopRequireDefault(_LGraphCanvas);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var GeneralInputPanel = _vue2.default.extend({
-  name: 'general-input-panel',
+var TaskGraphEditor = _vue2.default.extend({
+  name: 'TaskGraphEditor',
+
+  props: {},
 
   data: function data() {
     return {
-      id: "GeneralInputPanel"
+      d_editor: null,
+      d_canvas: null
     };
-  }
+  },
+
+
+  computed: {},
+
+  created: function created() {
+    var _this = this;
+
+    this.d_editor = new _LGraph2.default();
+    this.d_canvas = new _LGraphCanvas2.default("#mycanvas");
+    console.log("Created task editor");
+
+    if (this.CanvasRenderingContext2D) {
+      CanvasRenderingContext2D.prototype.roundRect = function (x, y, width, height, radius, radius_low) {
+
+        if (radius === undefined) radius = 5;
+        if (radius_low === undefined) radius_low = radius;
+
+        _this.beginPath();
+        _this.moveTo(x + radius, y);
+        _this.lineTo(x + width - radius, y);
+        _this.quadraticCurveTo(x + width, y, x + width, y + radius);
+
+        _this.lineTo(x + width, y + height - radius_low);
+        _this.quadraticCurveTo(x + width, y + height, x + width - radius_low, y + height);
+        _this.lineTo(x + radius_low, y + height);
+        _this.quadraticCurveTo(x, y + height, x, y + height - radius_low);
+        _this.lineTo(x, y + radius);
+        _this.quadraticCurveTo(x, y, x + radius, y);
+      };
+    }
+  },
+  mounted: function mounted() {
+    console.log("Mounted task editor");
+    window.graphcanvas = this.d_editor.graphcanvas;
+  },
+  beforeDestroy: function beforeDestroy() {},
+
+
+  methods: {}
 });
 
-exports.default = GeneralInputPanel;
+exports.default = TaskGraphEditor;
 
 /***/ }),
-/* 162 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -79877,7 +80721,7 @@ var GeometryEditorGraphicsPanel = _vue2.default.extend({
 exports.default = GeometryEditorGraphicsPanel;
 
 /***/ }),
-/* 163 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -79887,7 +80731,7 @@ var _vue = __webpack_require__(3);
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _vkbeautify = __webpack_require__(118);
+var _vkbeautify = __webpack_require__(115);
 
 var _vkbeautify2 = _interopRequireDefault(_vkbeautify);
 
@@ -80076,7 +80920,7 @@ var ICEInputPanel = _vue2.default.extend({
 exports.default = ICEInputPanel;
 
 /***/ }),
-/* 164 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -80086,7 +80930,7 @@ var _vue = __webpack_require__(3);
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _vkbeautify = __webpack_require__(118);
+var _vkbeautify = __webpack_require__(115);
 
 var _vkbeautify2 = _interopRequireDefault(_vkbeautify);
 
@@ -80378,7 +81222,7 @@ var MPMInputPanel = _vue2.default.extend({
 exports.default = MPMInputPanel;
 
 /***/ }),
-/* 165 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -80390,9 +81234,9 @@ var _vue2 = _interopRequireDefault(_vue);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var $ = __webpack_require__(365);
+var $ = __webpack_require__(376);
 
-var Store = __webpack_require__(9).default;
+var Store = __webpack_require__(10).default;
 
 var MainMenubar = _vue2.default.extend({
   name: 'main-menubar',
@@ -80598,7 +81442,7 @@ var MainMenubar = _vue2.default.extend({
 exports.default = MainMenubar;
 
 /***/ }),
-/* 166 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -80636,7 +81480,7 @@ var MainTextPanel = _vue2.default.extend({
 exports.default = MainTextPanel;
 
 /***/ }),
-/* 167 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -80669,7 +81513,68 @@ var Sidebar = _vue2.default.extend({
 exports.default = Sidebar;
 
 /***/ }),
+/* 167 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _vue = __webpack_require__(3);
+
+var _vue2 = _interopRequireDefault(_vue);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var SimulationComponentPanel = _vue2.default.extend({
+  name: 'simulation-component-panel',
+
+  data: function data() {
+    return {
+      id: "SimulationComponentPanel"
+    };
+  }
+});
+
+exports.default = SimulationComponentPanel;
+
+/***/ }),
 /* 168 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _vue = __webpack_require__(3);
+
+var _vue2 = _interopRequireDefault(_vue);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var TaskGraphEditorPanel = _vue2.default.extend({
+
+  name: 'task-graph-editor-panel',
+
+  data: function data() {
+    return {
+      id: "TaskGraphEditorPanel"
+    };
+  },
+
+
+  methods: {
+    /*
+    detectAction(event: any) {
+      console.log(event);
+      console.log("Click detected in task graph editor panel");
+    }
+    */
+  }
+});
+
+exports.default = TaskGraphEditorPanel;
+
+/***/ }),
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -80706,7 +81611,7 @@ var ThreeGraphicsPanel = _vue2.default.extend({
 exports.default = ThreeGraphicsPanel;
 
 /***/ }),
-/* 169 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -80748,7 +81653,7 @@ var TimeInputPanel = _vue2.default.extend({
 exports.default = TimeInputPanel;
 
 /***/ }),
-/* 170 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -80766,7 +81671,7 @@ var VaangoInputsSidebar = _vue2.default.extend({
   data: function data() {
     return {
       id: "VaangoInputsSidebar",
-      tabNames: ["Simulation type", "Timestep controls", "Create geometry", "MPM parameters", "MPM materials", "ICE parameters", "ICE materials", "Exchange", "Grid and BC"]
+      tabNames: ["Taskgraph editor", "Simulation type", "Timestep controls", "Create geometry", "MPM parameters", "MPM materials", "ICE parameters", "ICE materials", "Exchange", "Grid and BC"]
     };
   },
 
@@ -80782,7 +81687,7 @@ var VaangoInputsSidebar = _vue2.default.extend({
 exports.default = VaangoInputsSidebar;
 
 /***/ }),
-/* 171 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -80828,7 +81733,7 @@ var VaangoMainPanel = _vue2.default.extend({
 exports.default = VaangoMainPanel;
 
 /***/ }),
-/* 172 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -80864,7 +81769,7 @@ var VtkGraphicsPanel = _vue2.default.extend({
 exports.default = VtkGraphicsPanel;
 
 /***/ }),
-/* 173 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -80974,7 +81879,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = Object.assign({ newInstance: newInstance, extend: extend }, STATIC);
 
 /***/ }),
-/* 174 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -80990,15 +81895,15 @@ var _macro = __webpack_require__(0);
 
 var _macro2 = _interopRequireDefault(_macro);
 
-var _Math = __webpack_require__(6);
+var _Math = __webpack_require__(7);
 
 var _Math2 = _interopRequireDefault(_Math);
 
-var _ScalarsToColors = __webpack_require__(176);
+var _ScalarsToColors = __webpack_require__(177);
 
 var _ScalarsToColors2 = _interopRequireDefault(_ScalarsToColors);
 
-var _Constants = __webpack_require__(50);
+var _Constants = __webpack_require__(48);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -81317,7 +82222,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = Object.assign({ newInstance: newInstance, extend: extend });
 
 /***/ }),
-/* 175 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -81425,7 +82330,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 176 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -81447,9 +82352,9 @@ var _DataArray2 = _interopRequireDefault(_DataArray);
 
 var _Constants = __webpack_require__(21);
 
-var _Constants2 = __webpack_require__(50);
+var _Constants2 = __webpack_require__(48);
 
-var _Constants3 = __webpack_require__(51);
+var _Constants3 = __webpack_require__(49);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -81977,7 +82882,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = Object.assign({ newInstance: newInstance, extend: extend });
 
 /***/ }),
-/* 177 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -82037,7 +82942,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 178 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -82254,7 +83159,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 179 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -82270,11 +83175,11 @@ var _macro = __webpack_require__(0);
 
 var _macro2 = _interopRequireDefault(_macro);
 
-var _FieldData = __webpack_require__(178);
+var _FieldData = __webpack_require__(179);
 
 var _FieldData2 = _interopRequireDefault(_FieldData);
 
-var _Constants = __webpack_require__(177);
+var _Constants = __webpack_require__(178);
 
 var _Constants2 = _interopRequireDefault(_Constants);
 
@@ -82496,7 +83401,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 180 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -82512,17 +83417,17 @@ var _macro = __webpack_require__(0);
 
 var _macro2 = _interopRequireDefault(_macro);
 
-var _DataSet = __webpack_require__(71);
+var _DataSet = __webpack_require__(72);
 
 var _DataSet2 = _interopRequireDefault(_DataSet);
 
-var _StructuredData = __webpack_require__(184);
+var _StructuredData = __webpack_require__(185);
 
 var _StructuredData2 = _interopRequireDefault(_StructuredData);
 
-var _Constants = __webpack_require__(72);
+var _Constants = __webpack_require__(73);
 
-var _glMatrix = __webpack_require__(7);
+var _glMatrix = __webpack_require__(8);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -82859,7 +83764,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 181 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -82871,7 +83776,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.newInstance = exports.STATIC = undefined;
 exports.extend = extend;
 
-var _Math = __webpack_require__(6);
+var _Math = __webpack_require__(7);
 
 var _Math2 = _interopRequireDefault(_Math);
 
@@ -83083,7 +83988,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = Object.assign({ newInstance: newInstance, extend: extend }, STATIC);
 
 /***/ }),
-/* 182 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -83103,11 +84008,11 @@ var _macro = __webpack_require__(0);
 
 var _macro2 = _interopRequireDefault(_macro);
 
-var _DataSet = __webpack_require__(71);
+var _DataSet = __webpack_require__(72);
 
 var _DataSet2 = _interopRequireDefault(_DataSet);
 
-var _Points = __webpack_require__(175);
+var _Points = __webpack_require__(176);
 
 var _Points2 = _interopRequireDefault(_Points);
 
@@ -83173,7 +84078,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 183 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -83193,11 +84098,11 @@ var _vtk = __webpack_require__(33);
 
 var _vtk2 = _interopRequireDefault(_vtk);
 
-var _CellArray = __webpack_require__(173);
+var _CellArray = __webpack_require__(174);
 
 var _CellArray2 = _interopRequireDefault(_CellArray);
 
-var _PointSet = __webpack_require__(182);
+var _PointSet = __webpack_require__(183);
 
 var _PointSet2 = _interopRequireDefault(_PointSet);
 
@@ -83273,7 +84178,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 184 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -83284,7 +84189,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.getDataDescriptionFromExtent = getDataDescriptionFromExtent;
 
-var _Constants = __webpack_require__(72);
+var _Constants = __webpack_require__(73);
 
 function getDataDescriptionFromExtent(inExt) {
   var dataDim = 0;
@@ -83324,7 +84229,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 185 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -83340,15 +84245,15 @@ var _macro = __webpack_require__(0);
 
 var _macro2 = _interopRequireDefault(_macro);
 
-var _InteractorStyle = __webpack_require__(190);
+var _InteractorStyle = __webpack_require__(191);
 
 var _InteractorStyle2 = _interopRequireDefault(_InteractorStyle);
 
-var _Math = __webpack_require__(6);
+var _Math = __webpack_require__(7);
 
 var _Math2 = _interopRequireDefault(_Math);
 
-var _Constants = __webpack_require__(75);
+var _Constants = __webpack_require__(76);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -83739,7 +84644,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = Object.assign({ newInstance: newInstance, extend: extend });
 
 /***/ }),
-/* 186 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -83831,7 +84736,7 @@ function extend(publicAPI, model) {
 exports.default = { extend: extend };
 
 /***/ }),
-/* 187 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -83846,11 +84751,11 @@ var _macro = __webpack_require__(0);
 
 var _macro2 = _interopRequireDefault(_macro);
 
-var _AbstractMapper = __webpack_require__(186);
+var _AbstractMapper = __webpack_require__(187);
 
 var _AbstractMapper2 = _interopRequireDefault(_AbstractMapper);
 
-var _Math = __webpack_require__(6);
+var _Math = __webpack_require__(7);
 
 var _Math2 = _interopRequireDefault(_Math);
 
@@ -83964,7 +84869,7 @@ function extend(publicAPI, model) {
 exports.default = { extend: extend };
 
 /***/ }),
-/* 188 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -83976,13 +84881,13 @@ Object.defineProperty(exports, "__esModule", {
 exports.newInstance = exports.DEFAULT_VALUES = undefined;
 exports.extend = extend;
 
-var _glMatrix = __webpack_require__(7);
+var _glMatrix = __webpack_require__(8);
 
 var _macro = __webpack_require__(0);
 
 var _macro2 = _interopRequireDefault(_macro);
 
-var _Math = __webpack_require__(6);
+var _Math = __webpack_require__(7);
 
 var _Math2 = _interopRequireDefault(_Math);
 
@@ -84496,7 +85401,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 189 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -84671,7 +85576,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = Object.assign({ newInstance: newInstance, extend: extend });
 
 /***/ }),
-/* 190 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -84687,11 +85592,11 @@ var _macro = __webpack_require__(0);
 
 var _macro2 = _interopRequireDefault(_macro);
 
-var _InteractorObserver = __webpack_require__(189);
+var _InteractorObserver = __webpack_require__(190);
 
 var _InteractorObserver2 = _interopRequireDefault(_InteractorObserver);
 
-var _Constants = __webpack_require__(75);
+var _Constants = __webpack_require__(76);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -84916,7 +85821,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = Object.assign({ newInstance: newInstance, extend: extend });
 
 /***/ }),
-/* 191 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -84932,7 +85837,7 @@ var _macro = __webpack_require__(0);
 
 var _macro2 = _interopRequireDefault(_macro);
 
-var _Math = __webpack_require__(6);
+var _Math = __webpack_require__(7);
 
 var _Math2 = _interopRequireDefault(_Math);
 
@@ -85052,7 +85957,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = { newInstance: newInstance, extend: extend, LIGHT_TYPES: LIGHT_TYPES };
 
 /***/ }),
-/* 192 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85081,7 +85986,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 193 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85148,7 +86053,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 194 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85299,7 +86204,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 195 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85311,21 +86216,21 @@ Object.defineProperty(exports, "__esModule", {
 exports.newInstance = undefined;
 exports.extend = extend;
 
-var _glMatrix = __webpack_require__(7);
+var _glMatrix = __webpack_require__(8);
 
 var _macro = __webpack_require__(0);
 
 var _macro2 = _interopRequireDefault(_macro);
 
-var _BoundingBox = __webpack_require__(70);
+var _BoundingBox = __webpack_require__(71);
 
 var _BoundingBox2 = _interopRequireDefault(_BoundingBox);
 
-var _Math = __webpack_require__(6);
+var _Math = __webpack_require__(7);
 
 var _Math2 = _interopRequireDefault(_Math);
 
-var _Prop = __webpack_require__(194);
+var _Prop = __webpack_require__(195);
 
 var _Prop2 = _interopRequireDefault(_Prop);
 
@@ -85539,7 +86444,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 196 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85691,7 +86596,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 197 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85826,7 +86731,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 198 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85842,11 +86747,11 @@ var _macro = __webpack_require__(0);
 
 var _macro2 = _interopRequireDefault(_macro);
 
-var _Math = __webpack_require__(6);
+var _Math = __webpack_require__(7);
 
 var _Math2 = _interopRequireDefault(_Math);
 
-var _InteractorStyleTrackballCamera = __webpack_require__(185);
+var _InteractorStyleTrackballCamera = __webpack_require__(186);
 
 var _InteractorStyleTrackballCamera2 = _interopRequireDefault(_InteractorStyleTrackballCamera);
 
@@ -86584,7 +87489,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = Object.assign({ newInstance: newInstance, extend: extend });
 
 /***/ }),
-/* 199 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -86596,29 +87501,29 @@ Object.defineProperty(exports, "__esModule", {
 exports.newInstance = undefined;
 exports.extend = extend;
 
-var _glMatrix = __webpack_require__(7);
+var _glMatrix = __webpack_require__(8);
 
 var _macro = __webpack_require__(0);
 
 var _macro2 = _interopRequireDefault(_macro);
 
-var _Camera = __webpack_require__(188);
+var _Camera = __webpack_require__(189);
 
 var _Camera2 = _interopRequireDefault(_Camera);
 
-var _Light = __webpack_require__(191);
+var _Light = __webpack_require__(192);
 
 var _Light2 = _interopRequireDefault(_Light);
 
-var _Math = __webpack_require__(6);
+var _Math = __webpack_require__(7);
 
 var _Math2 = _interopRequireDefault(_Math);
 
-var _Viewport = __webpack_require__(201);
+var _Viewport = __webpack_require__(202);
 
 var _Viewport2 = _interopRequireDefault(_Viewport);
 
-var _BoundingBox = __webpack_require__(70);
+var _BoundingBox = __webpack_require__(71);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -87215,7 +88120,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 200 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87309,7 +88214,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 201 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87476,7 +88381,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 202 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87496,7 +88401,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 203 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87508,13 +88413,13 @@ Object.defineProperty(exports, "__esModule", {
 exports.newInstance = undefined;
 exports.extend = extend;
 
-var _glMatrix = __webpack_require__(7);
+var _glMatrix = __webpack_require__(8);
 
 var _macro = __webpack_require__(0);
 
 var _macro2 = _interopRequireDefault(_macro);
 
-var _ViewNode = __webpack_require__(12);
+var _ViewNode = __webpack_require__(13);
 
 var _ViewNode2 = _interopRequireDefault(_ViewNode);
 
@@ -87695,7 +88600,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend);
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 204 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87711,7 +88616,7 @@ var _macro = __webpack_require__(0);
 
 var macro = _interopRequireWildcard(_macro);
 
-var _ViewNode = __webpack_require__(12);
+var _ViewNode = __webpack_require__(13);
 
 var _ViewNode2 = _interopRequireDefault(_ViewNode);
 
@@ -87851,7 +88756,7 @@ var newInstance = exports.newInstance = macro.newInstance(extend);
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 205 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87863,13 +88768,13 @@ Object.defineProperty(exports, "__esModule", {
 exports.newInstance = undefined;
 exports.extend = extend;
 
-var _glMatrix = __webpack_require__(7);
+var _glMatrix = __webpack_require__(8);
 
 var _macro = __webpack_require__(0);
 
 var macro = _interopRequireWildcard(_macro);
 
-var _ViewNode = __webpack_require__(12);
+var _ViewNode = __webpack_require__(13);
 
 var _ViewNode2 = _interopRequireDefault(_ViewNode);
 
@@ -87972,7 +88877,7 @@ var newInstance = exports.newInstance = macro.newInstance(extend);
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 206 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87988,7 +88893,7 @@ var _macro = __webpack_require__(0);
 
 var _macro2 = _interopRequireDefault(_macro);
 
-var _BufferObject = __webpack_require__(52);
+var _BufferObject = __webpack_require__(50);
 
 var _BufferObject2 = _interopRequireDefault(_BufferObject);
 
@@ -88284,7 +89189,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend);
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 207 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -88300,11 +89205,11 @@ var _macro = __webpack_require__(0);
 
 var _macro2 = _interopRequireDefault(_macro);
 
-var _Framebuffer = __webpack_require__(77);
+var _Framebuffer = __webpack_require__(78);
 
 var _Framebuffer2 = _interopRequireDefault(_Framebuffer);
 
-var _RenderPass = __webpack_require__(220);
+var _RenderPass = __webpack_require__(221);
 
 var _RenderPass2 = _interopRequireDefault(_RenderPass);
 
@@ -88433,7 +89338,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 208 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -88455,7 +89360,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 209 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -88467,7 +89372,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.newInstance = undefined;
 exports.extend = extend;
 
-var _glMatrix = __webpack_require__(7);
+var _glMatrix = __webpack_require__(8);
 
 var _macro = __webpack_require__(0);
 
@@ -88477,11 +89382,11 @@ var _DataArray = __webpack_require__(19);
 
 var _DataArray2 = _interopRequireDefault(_DataArray);
 
-var _Helper = __webpack_require__(53);
+var _Helper = __webpack_require__(51);
 
 var _Helper2 = _interopRequireDefault(_Helper);
 
-var _Math = __webpack_require__(6);
+var _Math = __webpack_require__(7);
 
 var _Math2 = _interopRequireDefault(_Math);
 
@@ -88493,7 +89398,7 @@ var _ShaderProgram = __webpack_require__(22);
 
 var _ShaderProgram2 = _interopRequireDefault(_ShaderProgram);
 
-var _ViewNode = __webpack_require__(12);
+var _ViewNode = __webpack_require__(13);
 
 var _ViewNode2 = _interopRequireDefault(_ViewNode);
 
@@ -88501,11 +89406,11 @@ var _Constants = __webpack_require__(29);
 
 var _Constants2 = __webpack_require__(31);
 
-var _vtkPolyDataVS = __webpack_require__(117);
+var _vtkPolyDataVS = __webpack_require__(114);
 
 var _vtkPolyDataVS2 = _interopRequireDefault(_vtkPolyDataVS);
 
-var _vtkPolyDataFS = __webpack_require__(47);
+var _vtkPolyDataFS = __webpack_require__(45);
 
 var _vtkPolyDataFS2 = _interopRequireDefault(_vtkPolyDataFS);
 
@@ -88877,7 +89782,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 210 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -88889,13 +89794,13 @@ Object.defineProperty(exports, "__esModule", {
 exports.newInstance = undefined;
 exports.extend = extend;
 
-var _glMatrix = __webpack_require__(7);
+var _glMatrix = __webpack_require__(8);
 
 var _macro = __webpack_require__(0);
 
 var _macro2 = _interopRequireDefault(_macro);
 
-var _ViewNode = __webpack_require__(12);
+var _ViewNode = __webpack_require__(13);
 
 var _ViewNode2 = _interopRequireDefault(_ViewNode);
 
@@ -89052,7 +89957,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 211 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -89068,11 +89973,11 @@ var _macro = __webpack_require__(0);
 
 var _macro2 = _interopRequireDefault(_macro);
 
-var _ViewNode = __webpack_require__(12);
+var _ViewNode = __webpack_require__(13);
 
 var _ViewNode2 = _interopRequireDefault(_ViewNode);
 
-var _Math = __webpack_require__(6);
+var _Math = __webpack_require__(7);
 
 var _Math2 = _interopRequireDefault(_Math);
 
@@ -89272,7 +90177,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 212 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -89392,7 +90297,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 213 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -89404,7 +90309,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.newInstance = undefined;
 exports.extend = extend;
 
-var _blueimpMd = __webpack_require__(244);
+var _blueimpMd = __webpack_require__(247);
 
 var _blueimpMd2 = _interopRequireDefault(_blueimpMd);
 
@@ -89594,7 +90499,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 214 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -89606,7 +90511,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.newInstance = undefined;
 exports.extend = extend;
 
-var _glMatrix = __webpack_require__(7);
+var _glMatrix = __webpack_require__(8);
 
 var _Constants = __webpack_require__(30);
 
@@ -89614,11 +90519,11 @@ var _macro = __webpack_require__(0);
 
 var _macro2 = _interopRequireDefault(_macro);
 
-var _BufferObject = __webpack_require__(52);
+var _BufferObject = __webpack_require__(50);
 
 var _BufferObject2 = _interopRequireDefault(_BufferObject);
 
-var _Math = __webpack_require__(6);
+var _Math = __webpack_require__(7);
 
 var _Math2 = _interopRequireDefault(_Math);
 
@@ -89626,15 +90531,15 @@ var _ShaderProgram = __webpack_require__(22);
 
 var _ShaderProgram2 = _interopRequireDefault(_ShaderProgram);
 
-var _PolyDataMapper = __webpack_require__(54);
+var _PolyDataMapper = __webpack_require__(52);
 
 var _PolyDataMapper2 = _interopRequireDefault(_PolyDataMapper);
 
-var _vtkSphereMapperVS = __webpack_require__(329);
+var _vtkSphereMapperVS = __webpack_require__(338);
 
 var _vtkSphereMapperVS2 = _interopRequireDefault(_vtkSphereMapperVS);
 
-var _vtkPolyDataFS = __webpack_require__(47);
+var _vtkPolyDataFS = __webpack_require__(45);
 
 var _vtkPolyDataFS2 = _interopRequireDefault(_vtkPolyDataFS);
 
@@ -89902,7 +90807,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 215 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -89914,7 +90819,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.newInstance = undefined;
 exports.extend = extend;
 
-var _glMatrix = __webpack_require__(7);
+var _glMatrix = __webpack_require__(8);
 
 var _Constants = __webpack_require__(30);
 
@@ -89922,15 +90827,15 @@ var _macro = __webpack_require__(0);
 
 var macro = _interopRequireWildcard(_macro);
 
-var _BufferObject = __webpack_require__(52);
+var _BufferObject = __webpack_require__(50);
 
 var _BufferObject2 = _interopRequireDefault(_BufferObject);
 
-var _vtkStickMapperVS = __webpack_require__(330);
+var _vtkStickMapperVS = __webpack_require__(339);
 
 var _vtkStickMapperVS2 = _interopRequireDefault(_vtkStickMapperVS);
 
-var _vtkPolyDataFS = __webpack_require__(47);
+var _vtkPolyDataFS = __webpack_require__(45);
 
 var _vtkPolyDataFS2 = _interopRequireDefault(_vtkPolyDataFS);
 
@@ -89938,7 +90843,7 @@ var _ShaderProgram = __webpack_require__(22);
 
 var _ShaderProgram2 = _interopRequireDefault(_ShaderProgram);
 
-var _PolyDataMapper = __webpack_require__(54);
+var _PolyDataMapper = __webpack_require__(52);
 
 var _PolyDataMapper2 = _interopRequireDefault(_PolyDataMapper);
 
@@ -90287,7 +91192,7 @@ var newInstance = exports.newInstance = macro.newInstance(extend, 'vtkOpenGLStic
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 216 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90429,7 +91334,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 217 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90445,47 +91350,47 @@ var _macro = __webpack_require__(0);
 
 var _macro2 = _interopRequireDefault(_macro);
 
-var _ViewNodeFactory = __webpack_require__(221);
+var _ViewNodeFactory = __webpack_require__(222);
 
 var _ViewNodeFactory2 = _interopRequireDefault(_ViewNodeFactory);
 
-var _Actor = __webpack_require__(203);
+var _Actor = __webpack_require__(204);
 
 var _Actor2 = _interopRequireDefault(_Actor);
 
-var _Actor2D = __webpack_require__(204);
+var _Actor2D = __webpack_require__(205);
 
 var _Actor2D2 = _interopRequireDefault(_Actor2D);
 
-var _Camera = __webpack_require__(205);
+var _Camera = __webpack_require__(206);
 
 var _Camera2 = _interopRequireDefault(_Camera);
 
-var _ImageMapper = __webpack_require__(209);
+var _ImageMapper = __webpack_require__(210);
 
 var _ImageMapper2 = _interopRequireDefault(_ImageMapper);
 
-var _ImageSlice = __webpack_require__(210);
+var _ImageSlice = __webpack_require__(211);
 
 var _ImageSlice2 = _interopRequireDefault(_ImageSlice);
 
-var _PolyDataMapper = __webpack_require__(54);
+var _PolyDataMapper = __webpack_require__(52);
 
 var _PolyDataMapper2 = _interopRequireDefault(_PolyDataMapper);
 
-var _RenderWindow = __webpack_require__(78);
+var _RenderWindow = __webpack_require__(79);
 
 var _RenderWindow2 = _interopRequireDefault(_RenderWindow);
 
-var _Renderer = __webpack_require__(211);
+var _Renderer = __webpack_require__(212);
 
 var _Renderer2 = _interopRequireDefault(_Renderer);
 
-var _SphereMapper = __webpack_require__(214);
+var _SphereMapper = __webpack_require__(215);
 
 var _SphereMapper2 = _interopRequireDefault(_SphereMapper);
 
-var _StickMapper = __webpack_require__(215);
+var _StickMapper = __webpack_require__(216);
 
 var _StickMapper2 = _interopRequireDefault(_StickMapper);
 
@@ -90493,11 +91398,11 @@ var _Texture = __webpack_require__(32);
 
 var _Texture2 = _interopRequireDefault(_Texture);
 
-var _Volume = __webpack_require__(218);
+var _Volume = __webpack_require__(219);
 
 var _Volume2 = _interopRequireDefault(_Volume);
 
-var _VolumeMapper = __webpack_require__(219);
+var _VolumeMapper = __webpack_require__(220);
 
 var _VolumeMapper2 = _interopRequireDefault(_VolumeMapper);
 
@@ -90556,7 +91461,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 218 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90568,13 +91473,13 @@ Object.defineProperty(exports, "__esModule", {
 exports.newInstance = undefined;
 exports.extend = extend;
 
-var _glMatrix = __webpack_require__(7);
+var _glMatrix = __webpack_require__(8);
 
 var _macro = __webpack_require__(0);
 
 var _macro2 = _interopRequireDefault(_macro);
 
-var _ViewNode = __webpack_require__(12);
+var _ViewNode = __webpack_require__(13);
 
 var _ViewNode2 = _interopRequireDefault(_ViewNode);
 
@@ -90684,7 +91589,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 219 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90700,7 +91605,7 @@ var _macro = __webpack_require__(0);
 
 var _macro2 = _interopRequireDefault(_macro);
 
-var _glMatrix = __webpack_require__(7);
+var _glMatrix = __webpack_require__(8);
 
 var _DataArray = __webpack_require__(19);
 
@@ -90708,15 +91613,15 @@ var _DataArray2 = _interopRequireDefault(_DataArray);
 
 var _Constants = __webpack_require__(21);
 
-var _Helper = __webpack_require__(53);
+var _Helper = __webpack_require__(51);
 
 var _Helper2 = _interopRequireDefault(_Helper);
 
-var _Math = __webpack_require__(6);
+var _Math = __webpack_require__(7);
 
 var _Math2 = _interopRequireDefault(_Math);
 
-var _Framebuffer = __webpack_require__(77);
+var _Framebuffer = __webpack_require__(78);
 
 var _Framebuffer2 = _interopRequireDefault(_Framebuffer);
 
@@ -90728,11 +91633,11 @@ var _ShaderProgram = __webpack_require__(22);
 
 var _ShaderProgram2 = _interopRequireDefault(_ShaderProgram);
 
-var _VertexArrayObject = __webpack_require__(79);
+var _VertexArrayObject = __webpack_require__(80);
 
 var _VertexArrayObject2 = _interopRequireDefault(_VertexArrayObject);
 
-var _ViewNode = __webpack_require__(12);
+var _ViewNode = __webpack_require__(13);
 
 var _ViewNode2 = _interopRequireDefault(_ViewNode);
 
@@ -90740,13 +91645,13 @@ var _Constants2 = __webpack_require__(29);
 
 var _Constants3 = __webpack_require__(31);
 
-var _Constants4 = __webpack_require__(202);
+var _Constants4 = __webpack_require__(203);
 
-var _vtkVolumeVS = __webpack_require__(332);
+var _vtkVolumeVS = __webpack_require__(341);
 
 var _vtkVolumeVS2 = _interopRequireDefault(_vtkVolumeVS);
 
-var _vtkVolumeFS = __webpack_require__(331);
+var _vtkVolumeFS = __webpack_require__(340);
 
 var _vtkVolumeFS2 = _interopRequireDefault(_vtkVolumeFS);
 
@@ -91605,7 +92510,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 220 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91697,7 +92602,7 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 221 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91774,13 +92679,14 @@ var newInstance = exports.newInstance = _macro2.default.newInstance(extend, 'vtk
 exports.default = { newInstance: newInstance, extend: extend };
 
 /***/ }),
-/* 222 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); //  This is the entry routine for Vaango UI
+
 
 var _vue = __webpack_require__(3);
 
@@ -91790,20 +92696,21 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Store = __webpack_require__(9).default;
+var Store = __webpack_require__(10).default;
 
-var VaangoMainPanel = __webpack_require__(140).default;
-var MainMenubar = __webpack_require__(134).default;
-var Sidebar = __webpack_require__(136).default;
-var VaangoInputsSidebar = __webpack_require__(139).default;
-var MainTextPanel = __webpack_require__(135).default;
-var ThreeGraphicsPanel = __webpack_require__(137).default;
-var VtkGraphicsPanel = __webpack_require__(141).default;
-var GeneralInputPanel = __webpack_require__(130).default;
-var MPMInputPanel = __webpack_require__(133).default;
-var ICEInputPanel = __webpack_require__(132).default;
-var TimeInputPanel = __webpack_require__(138).default;
-var GeometryEditorGraphicsPanel = __webpack_require__(131).default;
+var VaangoMainPanel = __webpack_require__(139).default;
+var MainMenubar = __webpack_require__(131).default;
+var Sidebar = __webpack_require__(133).default;
+var VaangoInputsSidebar = __webpack_require__(138).default;
+var MainTextPanel = __webpack_require__(132).default;
+var ThreeGraphicsPanel = __webpack_require__(136).default;
+var VtkGraphicsPanel = __webpack_require__(140).default;
+var SimulationComponentPanel = __webpack_require__(134).default;
+var MPMInputPanel = __webpack_require__(130).default;
+var ICEInputPanel = __webpack_require__(129).default;
+var TimeInputPanel = __webpack_require__(137).default;
+var GeometryEditorGraphicsPanel = __webpack_require__(128).default;
+var TaskGraphEditorPanel = __webpack_require__(135).default;
 
 _vue2.default.component('vaango-main-panel', VaangoMainPanel);
 _vue2.default.component('main-menubar', MainMenubar);
@@ -91812,17 +92719,18 @@ _vue2.default.component('vaango-inputs-sidebar', VaangoInputsSidebar);
 _vue2.default.component('main-text-panel', MainTextPanel);
 _vue2.default.component('three-graphics-panel', ThreeGraphicsPanel);
 _vue2.default.component('vtk-graphics-panel', VtkGraphicsPanel);
-_vue2.default.component('general-input-panel', GeneralInputPanel);
+_vue2.default.component('simulation-component-panel', SimulationComponentPanel);
 _vue2.default.component('mpm-input-panel', MPMInputPanel);
 _vue2.default.component('ice-input-panel', ICEInputPanel);
 _vue2.default.component('time-input-panel', TimeInputPanel);
 _vue2.default.component('editor-graphics-panel', GeometryEditorGraphicsPanel);
+_vue2.default.component('task-graph-editor-panel', TaskGraphEditorPanel);
 
-var ThreeRenderer = __webpack_require__(124).default;
-var ThreeScene = __webpack_require__(125).default;
-var ThreeCamera = __webpack_require__(122).default;
-var ThreeSphere = __webpack_require__(126).default;
-var ThreeEllipsoidParticles = __webpack_require__(123).default;
+var ThreeRenderer = __webpack_require__(121).default;
+var ThreeScene = __webpack_require__(122).default;
+var ThreeCamera = __webpack_require__(119).default;
+var ThreeSphere = __webpack_require__(123).default;
+var ThreeEllipsoidParticles = __webpack_require__(120).default;
 
 _vue2.default.component('three-renderer', ThreeRenderer);
 _vue2.default.component('three-scene', ThreeScene);
@@ -91830,21 +92738,24 @@ _vue2.default.component('three-camera', ThreeCamera);
 _vue2.default.component('three-sphere', ThreeSphere);
 _vue2.default.component('three-ellipsoid-particles', ThreeEllipsoidParticles);
 
-var VtkSphere = __webpack_require__(129).default;
-var VtkEllipsoidParticles = __webpack_require__(127).default;
-var VtkRenderer = __webpack_require__(128).default;
+var VtkSphere = __webpack_require__(126).default;
+var VtkEllipsoidParticles = __webpack_require__(124).default;
+var VtkRenderer = __webpack_require__(125).default;
 
 _vue2.default.component('vtk-sphere', VtkSphere);
 _vue2.default.component('vtk-ellipsoid-particles', VtkEllipsoidParticles);
 _vue2.default.component('vtk-renderer', VtkRenderer);
 
-var GeometryEditorRenderer = __webpack_require__(120).default;
-var GeometryEditorScene = __webpack_require__(121).default;
-var GeometryEditorCamera = __webpack_require__(119).default;
+var GeometryEditorRenderer = __webpack_require__(117).default;
+var GeometryEditorScene = __webpack_require__(118).default;
+var GeometryEditorCamera = __webpack_require__(116).default;
 
-_vue2.default.component('editor-renderer', GeometryEditorRenderer);
-_vue2.default.component('editor-scene', GeometryEditorScene);
-_vue2.default.component('editor-camera', GeometryEditorCamera);
+_vue2.default.component('geometry-editor-renderer', GeometryEditorRenderer);
+_vue2.default.component('geometry-editor-scene', GeometryEditorScene);
+_vue2.default.component('geometry-editor-camera', GeometryEditorCamera);
+
+var TaskGraphEditor = __webpack_require__(127).default;
+_vue2.default.component('task-graph-editor', TaskGraphEditor);
 
 // import ParticleList = vaango_ui.ParticleList;
 
@@ -92069,7 +92980,3342 @@ export namespace VaangoUI {
 */
 
 /***/ }),
-/* 223 */
+/* 224 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Copyright (C) 2013 by Javi Agenjo
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Permission is hereby granted, free of charge, to any person obtaining a copy
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * of this software and associated documentation files (the "Software"), to deal
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * in the Software without restriction, including without limitation the rights
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * copies of the Software, and to permit persons to whom the Software is
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * furnished to do so, subject to the following conditions:
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * The above copyright notice and this permission notice shall be included in
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * all copies or substantial portions of the Software.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * THE SOFTWARE.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
+
+var _LiteGraph = __webpack_require__(53);
+
+var _LiteGraph2 = _interopRequireDefault(_LiteGraph);
+
+var _LiteGraphStates = __webpack_require__(54);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+* LGraph is the class that contain a full graph. We instantiate one and 
+* add nodes to it, and then we can run the execution loop.
+*
+* @class LGraph
+*/
+var LGraphStatus = {
+  STATUS_STOPPED: 1,
+  STATUS_RUNNING: 2
+};
+
+var LGraph = function () {
+  function LGraph() {
+    _classCallCheck(this, LGraph);
+
+    if (_LiteGraph2.default.d_debug) console.log("Graph created");
+    this.d_list_of_graphcanvas = null;
+    this.clear();
+
+    //default supported types
+    this.d_supported_types = ["number", "string", "boolean"];
+  }
+
+  // used to know which types of connections support this graph 
+  // (some graphs do not allow certain types)
+
+
+  _createClass(LGraph, [{
+    key: "getSupportedTypes",
+    value: function getSupportedTypes() {
+      return this.d_supported_types;
+    }
+
+    /**
+    * Removes all nodes from this graph
+    * @method clear
+    */
+
+  }, {
+    key: "clear",
+    value: function clear() {
+      this.stop();
+      this.d_status = LGraphStatus.STATUS_STOPPED;
+      this.d_last_node_id = 0;
+
+      //nodes
+      this.d_nodes = [];
+      this.d_nodes_by_id = {};
+      //nodes that are executable sorted in execution order
+      this.d_nodes_in_order = null;
+
+      //links
+      this.d_last_link_id = 0;
+      this.d_links = {}; //container with all the links
+
+      //iterations
+      this.d_iteration = 0;
+
+      this.d_config = {};
+
+      //timing
+      this.d_globaltime = 0;
+      this.d_runningtime = 0;
+      this.d_fixedtime = 0;
+      this.d_fixedtime_lapse = 0.01;
+      this.d_elapsed_time = 0.01;
+      this.d_starttime = 0;
+
+      //globals
+      this.d_global_inputs = {};
+      this.d_global_outputs = {};
+
+      this.d_debug = true;
+
+      this.change();
+
+      this.sendActionToCanvas("clear");
+    }
+
+    /**
+    * Stops the execution loop of the graph
+    * @method stop execution
+    */
+
+  }, {
+    key: "stop",
+    value: function stop() {
+      if (this.d_status == LGraphStatus.STATUS_STOPPED) return;
+
+      this.d_status = LGraphStatus.STATUS_STOPPED;
+
+      if (this.d_onStopEvent) this.onStopEvent();
+
+      if (this.d_execution_timer_id != null) clearInterval(this.d_execution_timer_id);
+      this.d_execution_timer_id = null;
+
+      this.sendEventToAllNodes("onStop");
+    }
+
+    /* Called when something visually changed */
+
+  }, {
+    key: "change",
+    value: function change() {
+      if (_LiteGraph2.default.d_debug) console.log("Graph changed");
+
+      this.sendActionToCanvas("setDirty", [true, true]);
+
+      if (this.d_on_change) this.on_change(this);
+    }
+
+    /**
+    * Attach Canvas to this graph
+    * @method attachCanvas
+    * @param {GraphCanvas} graph_canvas 
+    */
+
+  }, {
+    key: "attachCanvas",
+    value: function attachCanvas(graphcanvas) {
+      if (graphcanvas.constructor != LGraphCanvas) throw "attachCanvas expects a LGraphCanvas instance";
+      if (graphcanvas.graph && graphcanvas.graph != this) graphcanvas.graph.detachCanvas(graphcanvas);
+
+      graphcanvas.graph = this;
+      if (!this.d_list_of_graphcanvas) this.d_list_of_graphcanvas = [];
+      this.d_list_of_graphcanvas.push(graphcanvas);
+    }
+
+    /**
+    * Detach Canvas from this graph
+    * @method detachCanvas
+    * @param {GraphCanvas} graph_canvas 
+    */
+
+  }, {
+    key: "detachCanvas",
+    value: function detachCanvas(graphcanvas) {
+      if (!this.d_list_of_graphcanvas) return;
+
+      var pos = this.d_list_of_graphcanvas.indexOf(graphcanvas);
+      if (pos == -1) return;
+      graphcanvas.graph = null;
+      this.d_list_of_graphcanvas.splice(pos, 1);
+    }
+
+    /**
+    * Starts running this graph every interval milliseconds.
+    * @method start
+    * @param {number} interval amount of milliseconds between executions, default is 1
+    */
+
+  }, {
+    key: "start",
+    value: function start(interval) {
+      var _this = this;
+
+      if (this.d_status == LGraphStatus.STATUS_RUNNING) return;
+      this.d_status = LGraphStatus.STATUS_RUNNING;
+
+      if (this.d_onPlayEvent) this.onPlayEvent();
+
+      this.sendEventToAllNodes("onStart");
+
+      //launch
+      this.d_starttime = _LiteGraph2.default.getTime();
+      interval = interval || 1;
+
+      this.d_execution_timer_id = setInterval(function () {
+        //execute
+        _this.runStep(1);
+      }, interval);
+    }
+
+    /**
+    * Run N steps (cycles) of the graph
+    * @method runStep
+    * @param {number} num number of steps to run, default is 1
+    */
+
+  }, {
+    key: "runStep",
+    value: function runStep(num) {
+      num = num || 1;
+
+      var start = _LiteGraph2.default.getTime();
+      this.d_globaltime = 0.001 * (start - this.d_starttime);
+
+      var nodes = this.d_nodes_in_order ? this.d_nodes_in_order : this.d_nodes;
+      if (!nodes) return;
+
+      try {
+        //iterations
+        for (var i = 0; i < num; i++) {
+          for (var j = 0, l = nodes.length; j < l; ++j) {
+            var node = nodes[j];
+            if (node.mode == _LiteGraphStates.LiteGraphStates.ALWAYS && node.onExecute) node.onExecute();
+          }
+
+          this.d_fixedtime += this.d_fixedtime_lapse;
+          if (this.d_onExecuteStep) this.onExecuteStep();
+        }
+
+        if (this.d_onAfterExecute) this.onAfterExecute();
+        this.d_errors_in_execution = false;
+      } catch (err) {
+
+        this.d_errors_in_execution = true;
+        if (_LiteGraph2.default.d_throw_errors) throw err;
+        if (_LiteGraph2.default.d_debug) console.log("Error during execution: " + err);
+        this.stop();
+      }
+
+      var elapsed = _LiteGraph2.default.getTime() - start;
+      if (elapsed == 0) elapsed = 1;
+      this.d_elapsed_time = 0.001 * elapsed;
+      this.d_globaltime += 0.001 * elapsed;
+      this.d_iteration += 1;
+    }
+
+    /**
+    * Updates the graph execution order according to relevance of the nodes (nodes with only outputs have more relevance than
+    * nodes with only inputs.
+    * @method updateExecutionOrder
+    */
+
+  }, {
+    key: "updateExecutionOrder",
+    value: function updateExecutionOrder() {
+      this.d_nodes_in_order = this.computeExecutionOrder(true);
+    }
+
+    //This is more internal, it computes the order and returns it
+
+  }, {
+    key: "computeExecutionOrder",
+    value: function computeExecutionOrder(only_onExecute) {
+      var L = [];
+      var S = [];
+      var M = {};
+      var visited_links = {}; //to avoid repeating links
+      var remaining_links = {}; //to a
+
+      //search for the nodes without inputs (starting nodes)
+      for (var i = 0, l = this.d_nodes.length; i < l; ++i) {
+        var n = this.d_nodes[i];
+        if (only_onExecute && !n.onExecute) continue;
+
+        M[n.id] = n; //add to pending nodes
+
+        var num = 0; //num of input connections
+        if (n.inputs) for (var j = 0, l2 = n.inputs.length; j < l2; j++) {
+          if (n.inputs[j] && n.inputs[j].link != null) num += 1;
+        }if (num == 0) //is a starting node
+          S.push(n);else //num of input links 
+          remaining_links[n.id] = num;
+      }
+
+      while (true) {
+        if (S.length == 0) break;
+
+        //get an starting node
+        var _n = S.shift();
+        L.push(_n); //add to ordered list
+        delete M[_n.id]; //remove from the pending nodes
+
+        //for every output
+        if (_n.outputs) {
+          for (var _i = 0; _i < _n.outputs.length; _i++) {
+            var output = _n.outputs[_i];
+            //not connected
+            if (output == null || output.links == null || output.links.length == 0) continue;
+
+            //for every connection
+            for (var _j = 0; _j < output.links.length; _j++) {
+              var link_id = output.links[_j];
+              var link = this.d_links[link_id];
+              if (!link) continue;
+
+              //already visited link (ignore it)
+              if (visited_links[link.id]) continue;
+
+              var target_node = this.getNodeById(link.target_id);
+              if (target_node == null) {
+                visited_links[link.id] = true;
+                continue;
+              }
+
+              visited_links[link.id] = true; //mark as visited
+              remaining_links[target_node.id] -= 1; //reduce the number of links remaining
+              if (remaining_links[target_node.id] == 0) S.push(target_node); //if no more links, then add to Starters array
+            }
+          }
+        }
+      }
+
+      //the remaining ones (loops)
+      for (var _i2 in M) {
+        L.push(M[_i2]);
+      }if (L.length != this._nodes.length && _LiteGraph2.default.d_debug) console.warn("something went wrong, nodes missing");
+
+      //save order number in the node
+      for (var _i3 = 0; _i3 < L.length; ++_i3) {
+        L[_i3].order = _i3;
+      }return L;
+    }
+
+    /**
+    * Returns the amount of time the graph has been running in milliseconds
+    * @method getTime
+    * @return {number} number of milliseconds the graph has been running
+    */
+
+  }, {
+    key: "getTime",
+    value: function getTime() {
+      return this.d_globaltime;
+    }
+
+    /**
+    * Returns the amount of time accumulated using the fixedtime_lapse var. This is used in context where the time increments should be constant
+    * @method getFixedTime
+    * @return {number} number of milliseconds the graph has been running
+    */
+
+  }, {
+    key: "getFixedTime",
+    value: function getFixedTime() {
+      return this.d_fixedtime;
+    }
+
+    /**
+    * Returns the amount of time it took to compute the latest iteration. Take into account that this number could be not correct
+    * if the nodes are using graphical actions
+    * @method getElapsedTime
+    * @return {number} number of milliseconds it took the last cycle
+    */
+
+  }, {
+    key: "getElapsedTime",
+    value: function getElapsedTime() {
+      return this.d_elapsed_time;
+    }
+
+    /**
+    * Sends an event to all the nodes, useful to trigger stuff
+    * @method sendEventToAllNodes
+    * @param {String} eventname the name of the event (function to be called)
+    * @param {Array} params parameters in array format
+    */
+
+  }, {
+    key: "sendEventToAllNodes",
+    value: function sendEventToAllNodes(eventname, params, mode) {
+      mode = mode || _LiteGraphStates.LiteGraphStates.ALWAYS;
+
+      var nodes = this.d_nodes_in_order ? this.d_nodes_in_order : this.d_nodes;
+      if (!nodes) return;
+
+      for (var j = 0, l = nodes.length; j < l; ++j) {
+        var node = nodes[j];
+        if (node[eventname] && node.mode == mode) {
+          if (params === undefined) node[eventname]();else if (params && params.constructor === Array) node[eventname].apply(node, params);else node[eventname](params);
+        }
+      }
+    }
+  }, {
+    key: "sendActionToCanvas",
+    value: function sendActionToCanvas(action, params) {
+      if (!this.d_list_of_graphcanvas) return;
+
+      for (var i = 0; i < this.d_list_of_graphcanvas.length; ++i) {
+        var c = this.d_list_of_graphcanvas[i];
+        if (c[action]) c[action].apply(c, params);
+      }
+    }
+
+    /**
+    * Adds a new node instasnce to this graph
+    * @method add
+    * @param {LGraphNode} node the instance of the node
+    */
+
+  }, {
+    key: "add",
+    value: function add(node, skip_compute_order) {
+      if (!node || node.id != -1 && this.d_nodes_by_id[node.id] != null) return; //already added
+
+      if (this.d_nodes.length >= _LiteGraphStates.LiteGraphStates.MAX_NUMBER_OF_NODES) throw "LiteGraph: max number of nodes in a graph reached";
+
+      //give him an id
+      if (node.id == null || node.id == -1) node.id = ++this.last_node_id;else if (this.d_last_node_id < node.id) this.d_last_node_id = node.id;
+
+      node.graph = this;
+
+      this.d__nodes.push(node);
+      this.d__nodes_by_id[node.id] = node;
+
+      if (node.onAdded) node.onAdded(this);
+
+      if (this.d_config.align_to_grid) node.alignToGrid();
+
+      if (!skip_compute_order) this.updateExecutionOrder();
+
+      if (this.d_onNodeAdded) this.onNodeAdded(node);
+
+      this.setDirtyCanvas(true);
+
+      this.change();
+
+      return node; //to chain actions
+    }
+
+    /**
+    * Removes a node from the graph
+    * @method remove
+    * @param {LGraphNode} node the instance of the node
+    */
+
+  }, {
+    key: "remove",
+    value: function remove(node) {
+      if (this.d_nodes_by_id[node.id] == null) return; //not found
+
+      if (node.ignore_remove) return; //cannot be removed
+
+      //disconnect inputs
+      if (node.inputs) {
+        for (var i = 0; i < node.inputs.length; i++) {
+          var slot = node.inputs[i];
+          if (slot.link != null) node.disconnectInput(i);
+        }
+      }
+
+      //disconnect outputs
+      if (node.outputs) {
+        for (var _i4 = 0; _i4 < node.outputs.length; _i4++) {
+          var _slot = node.outputs[_i4];
+          if (_slot.links != null && _slot.links.length) node.disconnectOutput(_i4);
+        }
+      }
+
+      //callback
+      if (node.onRemoved) node.onRemoved();
+
+      node.graph = null;
+
+      //remove from canvas render
+      if (this.d_list_of_graphcanvas) {
+        for (var _i5 = 0; _i5 < this.list_of_graphcanvas.length; ++_i5) {
+          var canvas = this.d_list_of_graphcanvas[_i5];
+          if (canvas.selected_nodes[node.id]) delete canvas.selected_nodes[node.id];
+          if (canvas.node_dragged == node) canvas.node_dragged = null;
+        }
+      }
+
+      //remove from containers
+      var pos = this.d_nodes.indexOf(node);
+      if (pos != -1) this.d_nodes.splice(pos, 1);
+      delete this.d_nodes_by_id[node.id];
+
+      if (this.onNodeRemoved) this.onNodeRemoved(node);
+
+      this.setDirtyCanvas(true, true);
+
+      this.change();
+
+      this.updateExecutionOrder();
+    }
+
+    /**
+    * Returns a node by its id.
+    * @method getNodeById
+    * @param {Number} id
+    */
+
+  }, {
+    key: "getNodeById",
+    value: function getNodeById(id) {
+      if (id == null) return null;
+      return this.d_nodes_by_id[id];
+    }
+
+    /**
+    * Returns a list of nodes that matches a class
+    * @method findNodesByClass
+    * @param {Class} classObject the class itself (not an string)
+    * @return {Array} a list with all the nodes of this type
+    */
+
+  }, {
+    key: "findNodesByClass",
+    value: function findNodesByClass(classObject) {
+      var r = [];
+      for (var i = 0, l = this.d_nodes.length; i < l; ++i) {
+        if (this.d_nodes[i].constructor === classObject) r.push(this.d_nodes[i]);
+      }return r;
+    }
+
+    /**
+    * Returns a list of nodes that matches a type
+    * @method findNodesByType
+    * @param {String} type the name of the node type
+    * @return {Array} a list with all the nodes of this type
+    */
+
+  }, {
+    key: "findNodesByType",
+    value: function findNodesByType(type) {
+      type = type.toLowerCase();
+      var r = [];
+      for (var i = 0, l = this.d_nodes.length; i < l; ++i) {
+        if (this.d_nodes[i].type.toLowerCase() == type) r.push(this.d_nodes[i]);
+      }return r;
+    }
+
+    /**
+    * Returns a list of nodes that matches a name
+    * @method findNodesByName
+    * @param {String} name the name of the node to search
+    * @return {Array} a list with all the nodes with this name
+    */
+
+  }, {
+    key: "findNodesByTitle",
+    value: function findNodesByTitle(title) {
+      var result = [];
+      for (var i = 0, l = this.d_nodes.length; i < l; ++i) {
+        if (this.d_nodes[i].title == title) result.push(this.d_nodes[i]);
+      }return result;
+    }
+
+    /**
+    * Returns the top-most node in this position of the canvas
+    * @method getNodeOnPos
+    * @param {number} x the x coordinate in canvas space
+    * @param {number} y the y coordinate in canvas space
+    * @param {Array} nodes_list a list with all the nodes to search from, by default is all the nodes in the graph
+    * @return {Array} a list with all the nodes that intersect this coordinate
+    */
+
+  }, {
+    key: "getNodeOnPos",
+    value: function getNodeOnPos(x, y, nodes_list) {
+      nodes_list = nodes_list || this.d_nodes;
+      for (var i = nodes_list.length - 1; i >= 0; i--) {
+        var n = nodes_list[i];
+        if (n.isPointInsideNode(x, y, 2)) return n;
+      }
+      return null;
+    }
+
+    // ********** GLOBALS *****************
+
+    //Tell this graph has a global input of this type
+
+  }, {
+    key: "addGlobalInput",
+    value: function addGlobalInput(name, type, value) {
+      this.d_global_inputs[name] = { name: name, type: type, value: value };
+
+      if (this.d_onGlobalInputAdded) this.onGlobalInputAdded(name, type);
+
+      if (this.d_onGlobalsChange) this.onGlobalsChange();
+    }
+
+    //assign a data to the global input
+
+  }, {
+    key: "setGlobalInputData",
+    value: function setGlobalInputData(name, data) {
+      var input = this.d_global_inputs[name];
+      if (!input) return;
+      input.value = data;
+    }
+
+    //assign a data to the global input
+
+  }, {
+    key: "getGlobalInputData",
+    value: function getGlobalInputData(name) {
+      var input = this.d_global_inputs[name];
+      if (!input) return null;
+      return input.value;
+    }
+
+    //rename the global input
+
+  }, {
+    key: "renameGlobalInput",
+    value: function renameGlobalInput(old_name, name) {
+      if (name == old_name) return;
+
+      if (!this.d_global_inputs[old_name]) return false;
+
+      if (this.d_global_inputs[name]) {
+        console.error("there is already one input with that name");
+        return false;
+      }
+
+      this.d_global_inputs[name] = this.d_global_inputs[old_name];
+      delete this.d_global_inputs[old_name];
+
+      if (this.d_onGlobalInputRenamed) this.onGlobalInputRenamed(old_name, name);
+
+      if (this.d_onGlobalsChange) this.onGlobalsChange();
+    }
+  }, {
+    key: "changeGlobalInputType",
+    value: function changeGlobalInputType(name, type) {
+      if (!this.d_global_inputs[name]) return false;
+
+      if (this.d_global_inputs[name].type.toLowerCase() == type.toLowerCase()) return;
+
+      this.d_global_inputs[name].type = type;
+      if (this.d_onGlobalInputTypeChanged) this.onGlobalInputTypeChanged(name, type);
+    }
+  }, {
+    key: "removeGlobalInput",
+    value: function removeGlobalInput(name) {
+      if (!this.d_global_inputs[name]) return false;
+
+      delete this.d_global_inputs[name];
+
+      if (this.d_onGlobalInputRemoved) this.onGlobalInputRemoved(name);
+
+      if (this.d_onGlobalsChange) this.onGlobalsChange();
+      return true;
+    }
+  }, {
+    key: "addGlobalOutput",
+    value: function addGlobalOutput(name, type, value) {
+      this.d_global_outputs[name] = { name: name, type: type, value: value };
+
+      if (this.d_onGlobalOutputAdded) this.onGlobalOutputAdded(name, type);
+
+      if (this.d_onGlobalsChange) this.onGlobalsChange();
+    }
+
+    //assign a data to the global output
+
+  }, {
+    key: "setGlobalOutputData",
+    value: function setGlobalOutputData(name, value) {
+      var output = this.d_global_outputs[name];
+      if (!output) return;
+      output.value = value;
+    }
+
+    //assign a data to the global input
+
+  }, {
+    key: "getGlobalOutputData",
+    value: function getGlobalOutputData(name) {
+      var output = this.d_global_outputs[name];
+      if (!output) return null;
+      return output.value;
+    }
+
+    //rename the global output
+
+  }, {
+    key: "renameGlobalOutput",
+    value: function renameGlobalOutput(old_name, name) {
+      if (!this.d_global_outputs[old_name]) return false;
+
+      if (this.d_global_outputs[name]) {
+        console.error("there is already one output with that name");
+        return false;
+      }
+
+      this.d_global_outputs[name] = this.d_global_outputs[old_name];
+      delete this.d_global_outputs[old_name];
+
+      if (this.d_onGlobalOutputRenamed) this.onGlobalOutputRenamed(old_name, name);
+
+      if (this.d_onGlobalsChange) this.onGlobalsChange();
+    }
+  }, {
+    key: "changeGlobalOutputType",
+    value: function changeGlobalOutputType(name, type) {
+      if (!this.d_global_outputs[name]) return false;
+
+      if (this.d_global_outputs[name].type.toLowerCase() == type.toLowerCase()) return;
+
+      this.d_global_outputs[name].type = type;
+      if (this.d_onGlobalOutputTypeChanged) this.onGlobalOutputTypeChanged(name, type);
+    }
+  }, {
+    key: "removeGlobalOutput",
+    value: function removeGlobalOutput(name) {
+      if (!this.d_global_outputs[name]) return false;
+      delete this.d_global_outputs[name];
+
+      if (this.d_onGlobalOutputRemoved) this.onGlobalOutputRemoved(name);
+
+      if (this.d_onGlobalsChange) this.onGlobalsChange();
+      return true;
+    }
+
+    /**
+    * Assigns a value to all the nodes that matches this name. This is used to create global variables of the node that
+    * can be easily accesed from the outside of the graph
+    * @method setInputData
+    * @param {String} name the name of the node
+    * @param {*} value value to assign to this node
+    */
+
+  }, {
+    key: "setInputData",
+    value: function setInputData(name, value) {
+      var nodes = this.findNodesByName(name);
+      for (var i = 0, l = nodes.length; i < l; ++i) {
+        nodes[i].setValue(value);
+      }
+    }
+
+    /**
+    * Returns the value of the first node with this name. This is used to access global variables of the graph from the outside
+    * @method setInputData
+    * @param {String} name the name of the node
+    * @return {*} value of the node
+    */
+
+  }, {
+    key: "getOutputData",
+    value: function getOutputData(name) {
+      var n = this.findNodesByName(name);
+      if (n.length) return m[0].getValue();
+      return null;
+    }
+
+    //This feature is not finished yet, is to create graphs where nodes are not executed unless a trigger message is received
+
+  }, {
+    key: "triggerInput",
+    value: function triggerInput(name, value) {
+      var nodes = this.findNodesByName(name);
+      for (var i = 0; i < nodes.length; ++i) {
+        nodes[i].onTrigger(value);
+      }
+    }
+  }, {
+    key: "setCallback",
+    value: function setCallback(name, func) {
+      var nodes = this.findNodesByName(name);
+      for (var i = 0; i < nodes.length; ++i) {
+        nodes[i].setTrigger(func);
+      }
+    }
+  }, {
+    key: "connectionChange",
+    value: function connectionChange(node) {
+      this.updateExecutionOrder();
+      if (this.d_onConnectionChange) this.onConnectionChange(node);
+      this.sendActionToCanvas("onConnectionChange");
+    }
+
+    /**
+    * returns if the graph is in live mode
+    * @method isLive
+    */
+
+  }, {
+    key: "isLive",
+    value: function isLive() {
+      if (!this.d_list_of_graphcanvas) return false;
+
+      for (var i = 0; i < this.d_list_of_graphcanvas.length; ++i) {
+        var c = this.d_list_of_graphcanvas[i];
+        if (c.live_mode) return true;
+      }
+      return false;
+    }
+  }, {
+    key: "setDirtyCanvas",
+    value: function setDirtyCanvas(fg, bg) {
+      this.sendActionToCanvas("setDirty", [fg, bg]);
+    }
+
+    //save and recover app state ***************************************
+    /**
+    * Creates a Object containing all the info about this graph, it can be serialized
+    * @method serialize
+    * @return {Object} value of the node
+    */
+
+  }, {
+    key: "serialize",
+    value: function serialize() {
+      var nodes_info = [];
+      for (var i = 0, l = this.d_nodes.length; i < l; ++i) {
+        nodes_info.push(this.d_nodes[i].serialize());
+      } //remove data from links, we dont want to store it
+      for (var _i6 in this.d_links) //links is an OBJECT
+      {
+        var link = this.d_links[_i6];
+        link.data = null;
+        delete link.d_last_time;
+      }
+
+      var data = {
+        iteration: this.d_iteration,
+        frame: this.d_frame,
+        last_node_id: this.d_last_node_id,
+        last_link_id: this.d_last_link_id,
+        links: _LiteGraph2.default.cloneObject(this.d_links),
+
+        config: this.d_config,
+        nodes: nodes_info
+      };
+
+      return data;
+    }
+
+    /**
+    * Configure a graph from a JSON string 
+    * @method configure
+    * @param {String} str configure a graph from a JSON string
+    */
+
+  }, {
+    key: "configure",
+    value: function configure(data, keep_old) {
+      if (!keep_old) this.clear();
+
+      var nodes = data.nodes;
+
+      //copy all stored fields
+      for (var i in data) {
+        this[i] = data[i];
+      }var error = false;
+
+      //create nodes
+      this.d_nodes = [];
+      for (var _i7 = 0, l = nodes.length; _i7 < l; ++_i7) {
+        var n_info = nodes[_i7]; //stored info
+        var node = _LiteGraph2.default.createNode(n_info.type, n_info.title);
+        if (!node) {
+          if (_LiteGraph2.default.d_debug) console.log("Node not found: " + n_info.type);
+          error = true;
+          continue;
+        }
+
+        node.id = n_info.id; //id it or it will create a new id
+        this.add(node, true); //add before configure, otherwise configure cannot create links
+      }
+
+      //configure nodes afterwards so they can reach each other
+      for (var _i8 = 0, _l = nodes.length; _i8 < _l; ++_i8) {
+        var _n_info = nodes[_i8];
+        var _node = this.getNodeById(_n_info.id);
+        if (_node) _node.configure(_n_info);
+      }
+
+      this.updateExecutionOrder();
+      this.setDirtyCanvas(true, true);
+      return error;
+    }
+  }, {
+    key: "load",
+    value: function load(url) {
+      var _this2 = this;
+
+      var req = new XMLHttpRequest();
+      req.open('GET', url, true);
+      req.send(null);
+      req.onload = function (oEvent) {
+        if (req.status !== 200) {
+          console.error("Error loading graph:", req.status, req.response);
+          return;
+        }
+        var data = JSON.parse(req.response);
+        _this2.configure(data);
+      };
+      req.onerror = function (err) {
+        console.error("Error loading graph:", err);
+      };
+    }
+  }]);
+
+  return LGraph;
+}();
+
+exports.default = LGraph;
+
+/***/ }),
+/* 225 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Copyright (C) 2013 by Javi Agenjo
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Permission is hereby granted, free of charge, to any person obtaining a copy
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * of this software and associated documentation files (the "Software"), to deal
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * in the Software without restriction, including without limitation the rights
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * copies of the Software, and to permit persons to whom the Software is
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * furnished to do so, subject to the following conditions:
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * The above copyright notice and this permission notice shall be included in
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * all copies or substantial portions of the Software.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * THE SOFTWARE.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
+
+
+var _LiteGraph = __webpack_require__(53);
+
+var _LiteGraph2 = _interopRequireDefault(_LiteGraph);
+
+var _LiteGraphStates = __webpack_require__(54);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var node_colors = {
+  "red": { color: "#FAA", bgcolor: "#A44" },
+  "green": { color: "#AFA", bgcolor: "#4A4" },
+  "blue": { color: "#AAF", bgcolor: "#44A" },
+  "white": { color: "#FFF", bgcolor: "#AAA" }
+};
+
+/**
+ * LGraphCanvas: LGraph renderer CLASS                                  
+ * The Global Scope. It contains all the registered node classes.
+ * Valid callbacks are: onNodeSelected, onNodeDeselected, onShowNodePanel, onNodeDblClicked
+ *
+ * @class LGraphCanvas
+ * @constructor
+ * @param {HTMLCanvas} canvas the canvas where you want to render (it accepts a selector in string format or the canvas itself)
+ * @param {LGraph} graph [optional]
+ * @param {Object} options [optional] { skip_rendering, autoresize }
+ */
+
+var LGraphCanvas = function () {
+  function LGraphCanvas(canvas, graph, options) {
+    _classCallCheck(this, LGraphCanvas);
+
+    options = options || {};
+
+    if (canvas && canvas.constructor === String) {
+      canvas = document.querySelector(canvas);
+    }
+
+    this.d_max_zoom = 10;
+    this.d_min_zoom = 0.1;
+
+    this.d_title_text_font = "bold 14px Arial";
+    this.d_inner_text_font = "normal 12px Arial";
+    this.d_efault_link_color = "#AAC";
+
+    this.d_highquality_render = true;
+    this.d_editor_alpha = 1; //used for transition
+    this.d_pause_rendering = false;
+    this.d_render_shadows = true;
+    this.d_clear_background = true;
+
+    this.d_render_only_selected = true;
+    this.d_live_mode = false;
+    this.d_show_info = true;
+    this.d_allow_dragcanvas = true;
+    this.d_allow_dragnodes = true;
+    this.d_allow_interaction = true; //allow to control widgets, buttons, collapse, etc
+
+    this.d_always_render_background = false;
+    this.d_render_connections_shadows = false; //too much cpu
+    this.d_render_connections_border = true;
+    this.d_render_curved_connections = true;
+    this.d_render_connection_arrows = true;
+
+    this.d_connections_width = 4;
+
+    //link canvas and graph
+    if (graph) graph.attachCanvas(this);
+
+    this.setCanvas(canvas);
+    this.clear();
+
+    if (!options.skip_render) this.startRendering();
+
+    this.d_autoresize = options.autoresize;
+    this.d_link_type_colors = { "-1": "#F85", 'number': "#AAC", "node": "#DCA" };
+  }
+
+  /**
+  * clears all the data inside
+  *
+  * @method clear
+  */
+
+
+  _createClass(LGraphCanvas, [{
+    key: "clear",
+    value: function clear() {
+      this.d_frame = 0;
+      this.d_last_draw_time = 0;
+      this.d_render_time = 0;
+      this.d_fps = 0;
+
+      this.d_scale = 1;
+      this.d_offset = [0, 0];
+
+      this.d_selected_nodes = {};
+      this.d_node_dragged = null;
+      this.d_node_over = null;
+      this.d_node_capturing_input = null;
+      this.d_connecting_node = null;
+
+      this.d_dirty_canvas = true;
+      this.d_dirty_bgcanvas = true;
+      this.d_dirty_area = null;
+
+      this.d_node_in_panel = null;
+
+      this.d_last_mouse = [0, 0];
+      this.d_last_mouseclick = 0;
+
+      if (this.d_onClear) this.onClear();
+      //this.UIinit();
+    }
+
+    /**
+    * assigns a graph, you can reasign graphs to the same canvas
+    *
+    * @method setGraph
+    * @param {LGraph} graph
+    */
+
+  }, {
+    key: "setGraph",
+    value: function setGraph(graph, skip_clear) {
+      if (this.d_graph == graph) return;
+
+      if (!skip_clear) this.clear();
+
+      if (!graph && this.d_graph) {
+        this.d_graph.detachCanvas(this);
+        return;
+      }
+
+      graph.attachCanvas(this);
+      this.setDirty(true, true);
+    }
+
+    /**
+    * opens a graph contained inside a node in the current graph
+    *
+    * @method openSubgraph
+    * @param {LGraph} graph
+    */
+
+  }, {
+    key: "openSubgraph",
+    value: function openSubgraph(graph) {
+      if (!graph) throw "graph cannot be null";
+
+      if (this.d_graph == graph) throw "graph cannot be the same";
+
+      this.clear();
+
+      if (this.d_graph) {
+        if (!this.d_graph_stack) this.d_graph_stack = [];
+        this.d_graph_stack.push(this.d_graph);
+      }
+
+      graph.attachCanvas(this);
+      this.setDirty(true, true);
+    }
+
+    /**
+    * closes a subgraph contained inside a node 
+    *
+    * @method closeSubgraph
+    * @param {LGraph} assigns a graph
+    */
+
+  }, {
+    key: "closeSubgraph",
+    value: function closeSubgraph() {
+      if (!this.d_graph_stack || this.d_graph_stack.length == 0) return;
+      var graph = this.d_graph_stack.pop();
+      graph.attachCanvas(this);
+      this.setDirty(true, true);
+    }
+
+    /**
+    * assigns a canvas
+    *
+    * @method setCanvas
+    * @param {Canvas} assigns a canvas
+    */
+
+  }, {
+    key: "setCanvas",
+    value: function setCanvas(canvas, skip_events) {
+      var that = this;
+
+      if (canvas) {
+        if (canvas.constructor === String) {
+          canvas = document.getElementById(canvas);
+          if (!canvas) throw "Error creating LiteGraph canvas: Canvas not found";
+        }
+      }
+
+      if (canvas === this.d_canvas) return;
+
+      if (!canvas && this.d_canvas) {
+        //maybe detach events from old_canvas
+        if (!skip_events) this.unbindEvents();
+      }
+
+      this.d_canvas = canvas;
+
+      if (!canvas) return;
+
+      //this.d_canvas.tabindex = "1000";
+      canvas.className += " lgraphcanvas";
+      canvas.data = this;
+
+      //bg canvas: used for non changing stuff
+      this.d_bgcanvas = null;
+      if (!this.d_bgcanvas) {
+        this.d_bgcanvas = document.createElement("canvas");
+        this.d_bgcanvas.width = this.d_canvas.width;
+        this.d_bgcanvas.height = this.d_canvas.height;
+      }
+
+      if (canvas.getContext == null) {
+        throw "This browser doesnt support Canvas";
+      }
+
+      var ctx = this.d_ctx = canvas.getContext("2d");
+      if (ctx == null) {
+        console.warn("This canvas seems to be WebGL, enabling WebGL renderer");
+        this.enableWebGL();
+      }
+
+      //input:  (move and up could be unbinded)
+      this.d_mousemove_callback = this.d_processMouseMove.bind(this);
+      this.d_mouseup_callback = this.d_processMouseUp.bind(this);
+
+      if (!skip_events) this.bindEvents();
+    }
+
+    //used in some events to capture them
+
+  }, {
+    key: "_doNothing",
+    value: function _doNothing(e) {
+      e.preventDefault();return false;
+    }
+  }, {
+    key: "_doReturnTrue",
+    value: function _doReturnTrue(e) {
+      e.preventDefault();return true;
+    }
+  }, {
+    key: "bindEvents",
+    value: function bindEvents() {
+      if (this.d_events_binded) {
+        console.warn("LGraphCanvas: events already binded");
+        return;
+      }
+
+      var canvas = this.d_canvas;
+
+      this.d_mousedown_callback = this.d_processMouseDown.bind(this);
+      this.d_mousewheel_callback = this.d_processMouseWheel.bind(this);
+
+      canvas.addEventListener("mousedown", this.d_mousedown_callback, true); //down do not need to store the binded
+      canvas.addEventListener("mousemove", this.d_mousemove_callback);
+      canvas.addEventListener("mousewheel", this.d_mousewheel_callback, false);
+
+      canvas.addEventListener("contextmenu", this.d_oNothing);
+      canvas.addEventListener("DOMMouseScroll", this.d_mousewheel_callback, false);
+
+      //touch events
+      //if( 'touchstart' in document.documentElement )
+      {
+        canvas.addEventListener("touchstart", this.d_touchHandler, true);
+        canvas.addEventListener("touchmove", this.d_touchHandler, true);
+        canvas.addEventListener("touchend", this.d_touchHandler, true);
+        canvas.addEventListener("touchcancel", this.d_touchHandler, true);
+      }
+
+      //Keyboard ******************
+      this.d_key_callback = this.d_processKey.bind(this);
+
+      canvas.addEventListener("keydown", this.d_key_callback);
+      canvas.addEventListener("keyup", this.d_key_callback);
+
+      //Droping Stuff over nodes ************************************
+      this.d_ondrop_callback = this.d_processDrop.bind(this);
+
+      canvas.addEventListener("dragover", this.d_oNothing, false);
+      canvas.addEventListener("dragend", this.d_oNothing, false);
+      canvas.addEventListener("drop", this.d_ondrop_callback, false);
+      canvas.addEventListener("dragenter", this.d_oReturnTrue, false);
+
+      this.d_events_binded = true;
+    }
+  }, {
+    key: "unbindEvents",
+    value: function unbindEvents() {
+      if (!this.d_events_binded) {
+        console.warn("LGraphCanvas: no events binded");
+        return;
+      }
+
+      this.d_canvas.removeEventListener("mousedown", this.d_mousedown_callback);
+      this.d_canvas.removeEventListener("mousewheel", this.d_mousewheel_callback);
+      this.d_canvas.removeEventListener("DOMMouseScroll", this.d_mousewheel_callback);
+      this.d_canvas.removeEventListener("keydown", this.d_key_callback);
+      this.d_canvas.removeEventListener("keyup", this.d_key_callback);
+      this.d_canvas.removeEventListener("contextmenu", this.d_oNothing);
+      this.d_canvas.removeEventListener("drop", this.d_ondrop_callback);
+      this.d_canvas.removeEventListener("dragenter", this.d_oReturnTrue);
+
+      this.d_canvas.removeEventListener("touchstart", this.d_touchHandler);
+      this.d_canvas.removeEventListener("touchmove", this.d_touchHandler);
+      this.d_canvas.removeEventListener("touchend", this.d_touchHandler);
+      this.d_canvas.removeEventListener("touchcancel", this.d_touchHandler);
+
+      this.d_mousedown_callback = null;
+      this.d_mousewheel_callback = null;
+      this.d_key_callback = null;
+      this.d_ondrop_callback = null;
+
+      this.d_events_binded = false;
+    }
+  }, {
+    key: "getFileExtension",
+    value: function getFileExtension(url) {
+      var question = url.indexOf("?");
+      if (question != -1) url = url.substr(0, question);
+      var point = url.lastIndexOf(".");
+      if (point == -1) return "";
+      return url.substr(point + 1).toLowerCase();
+    }
+
+    //this file allows to render the canvas using WebGL instead of Canvas2D
+    //this is useful if you plant to render 3D objects inside your nodes
+
+  }, {
+    key: "enableWebGL",
+    value: function enableWebGL() {
+      if ((typeof GL === "undefined" ? "undefined" : _typeof(GL)) === undefined) throw "litegl.js must be included to use a WebGL canvas";
+      if ((typeof enableWebGLCanvas === "undefined" ? "undefined" : _typeof(enableWebGLCanvas)) === undefined) throw "webglCanvas.js must be included to use this feature";
+
+      this.d_gl = this.d_ctx = enableWebGLCanvas(this.d_canvas);
+      this.d_ctx.webgl = true;
+      this.d_bgcanvas = this.d_canvas;
+      this.d_bgctx = this.d_gl;
+    }
+
+    /**
+    * marks as dirty the canvas, this way it will be rendered again 
+    *
+    * @class LGraphCanvas
+    * @method setDirty
+    * @param {bool} fgcanvas if the foreground canvas is dirty (the one containing the nodes)
+    * @param {bool} bgcanvas if the background canvas is dirty (the one containing the wires)
+    */
+
+  }, {
+    key: "setDirty",
+    value: function setDirty(fgcanvas, bgcanvas) {
+      if (fgcanvas) this.d_dirty_canvas = true;
+      if (bgcanvas) this.d_dirty_bgcanvas = true;
+    }
+
+    /**
+    * Used to attach the canvas in a popup
+    *
+    * @method getCanvasWindow
+    * @return {window} returns the window where the canvas is attached (the DOM root node)
+    */
+
+  }, {
+    key: "getCanvasWindow",
+    value: function getCanvasWindow() {
+      if (!this.d_canvas) return window;
+      var doc = this.d_canvas.ownerDocument;
+      return doc.defaultView || doc.parentWindow;
+    }
+
+    /**
+    * starts rendering the content of the canvas when needed
+    *
+    * @method startRendering
+    */
+
+  }, {
+    key: "startRendering",
+    value: function startRendering() {
+      if (this.d_is_rendering) return; //already rendering
+
+      this.d_is_rendering = true;
+      renderFrame.call(this);
+
+      function renderFrame() {
+        if (!this.d_pause_rendering) this.draw();
+
+        var window = this.getCanvasWindow();
+        if (this.d_is_rendering) window.requestAnimationFrame(renderFrame.bind(this));
+      }
+    }
+
+    /**
+    * stops rendering the content of the canvas (to save resources)
+    *
+    * @method stopRendering
+    */
+
+  }, {
+    key: "stopRendering",
+    value: function stopRendering() {
+      this.d_is_rendering = false;
+    }
+
+    /* LiteGraphCanvas input */
+
+  }, {
+    key: "processMouseDown",
+    value: function processMouseDown(e) {
+      if (!this.d_graph) return;
+
+      this.adjustMouseEvent(e);
+
+      var ref_window = this.getCanvasWindow();
+      var document = ref_window.document;
+
+      //move mouse move event to the window in case it drags outside of the canvas
+      this.d_canvas.removeEventListener("mousemove", this.d_mousemove_callback);
+      ref_window.document.addEventListener("mousemove", this.d_mousemove_callback, true); //catch for the entire window
+      ref_window.document.addEventListener("mouseup", this.d_mouseup_callback, true);
+
+      var n = this.d_graph.getNodeOnPos(e.canvasX, e.canvasY, this.d_visible_nodes);
+      var skip_dragging = false;
+
+      _LiteGraph2.default.closeAllContextMenus(ref_window);
+
+      if (e.which == 1) {
+        //left button mouse
+        if (!e.shiftKey) {
+          //REFACTOR: integrate with function
+          //no node or another node selected
+          if (!n || !this.d_selected_nodes[n.id]) {
+
+            var todeselect = [];
+            for (var i in this.d_selected_nodes) {
+              if (this.d_selected_nodes[i] != n) todeselect.push(this.d_selected_nodes[i]);
+            } //two passes to avoid problems modifying the container
+            for (var _i in todeselect) {
+              this.processNodeDeselected(todeselect[_i]);
+            }
+          }
+        }
+        var clicking_canvas_bg = false;
+
+        //when clicked on top of a node
+        //and it is not interactive
+        if (n && this.d_allow_interaction) {
+          if (!this.d_live_mode && !n.flags.pinned) this.bringToFront(n); //if it wasnt selected?
+          var skip_action = false;
+
+          //not dragging mouse to connect two slots
+          if (!this.d_connecting_node && !n.flags.collapsed && !this.d_live_mode) {
+            //search for outputs
+            if (n.outputs) for (var _i2 = 0, l = n.outputs.length; _i2 < l; ++_i2) {
+              var output = n.outputs[_i2];
+              var link_pos = n.getConnectionPos(false, _i2);
+              if (isInsideRectangle(e.canvasX, e.canvasY, link_pos[0] - 10, link_pos[1] - 5, 20, 10)) {
+                this.d_connecting_node = n;
+                this.d_connecting_output = output;
+                this.d_connecting_pos = n.getConnectionPos(false, _i2);
+                this.d_connecting_slot = _i2;
+
+                skip_action = true;
+                break;
+              }
+            }
+
+            //search for inputs
+            if (n.inputs) for (var _i3 = 0, _l = n.inputs.length; _i3 < _l; ++_i3) {
+              var _input = n.inputs[_i3];
+              var _link_pos = n.getConnectionPos(true, _i3);
+              if (isInsideRectangle(e.canvasX, e.canvasY, _link_pos[0] - 10, _link_pos[1] - 5, 20, 10)) {
+                if (_input.link !== null) {
+                  n.disconnectInput(_i3);
+                  this.d_dirty_bgcanvas = true;
+                  skip_action = true;
+                }
+              }
+            }
+
+            //Search for corner
+            if (!skip_action && isInsideRectangle(e.canvasX, e.canvasY, n.pos[0] + n.size[0] - 5, n.pos[1] + n.size[1] - 5, 5, 5)) {
+              this.d_resizing_node = n;
+              this.d_canvas.style.cursor = "se-resize";
+              skip_action = true;
+            }
+          }
+
+          //Search for corner
+          if (!skip_action && isInsideRectangle(e.canvasX, e.canvasY, n.pos[0], n.pos[1] - _LiteGraphStates.LiteGraphStates.NODE_TITLE_HEIGHT, _LiteGraphStates.LiteGraphStates.NODE_TITLE_HEIGHT, _LiteGraphStates.LiteGraphStates.NODE_TITLE_HEIGHT)) {
+            n.collapse();
+            skip_action = true;
+          }
+
+          //it wasnt clicked on the links boxes
+          if (!skip_action) {
+            var block_drag_node = false;
+
+            //double clicking
+            var now = _LiteGraph2.default.getTime();
+            if (now - this.d_last_mouseclick < 300 && this.d_selected_nodes[n.id]) {
+              //double click node
+              if (n.onDblClick) n.onDblClick(e);
+              this.processNodeDblClicked(n);
+              block_drag_node = true;
+            }
+
+            //if do not capture mouse
+            if (n.onMouseDown && n.onMouseDown(e, [e.canvasX - n.pos[0], e.canvasY - n.pos[1]])) block_drag_node = true;else if (this.d_live_mode) {
+              clicking_canvas_bg = true;
+              block_drag_node = true;
+            }
+
+            if (!block_drag_node) {
+              if (this.d_allow_dragnodes) this.d_node_dragged = n;
+
+              if (!this.d_selected_nodes[n.id]) this.processNodeSelected(n, e);
+            }
+
+            this.d_dirty_canvas = true;
+          }
+        } else clicking_canvas_bg = true;
+
+        if (clicking_canvas_bg && this.d_allow_dragcanvas) {
+          this.d_ragging_canvas = true;
+        }
+      } else if (e.which == 2) //middle button
+        {} else if (e.which == 3) //right button
+        {
+          this.processContextMenu(n, e);
+        }
+
+      this.d_last_mouse[0] = e.localX;
+      this.d_last_mouse[1] = e.localY;
+      this.d_last_mouseclick = _LiteGraph2.default.getTime();
+      this.d_canvas_mouse = [e.canvasX, e.canvasY];
+
+      this.d_graph.change();
+
+      //this is to ensure to defocus(blur) if a text input element is on focus
+      if (!ref_window.document.activeElement || ref_window.document.activeElement.nodeName.toLowerCase() != "input" && ref_window.document.activeElement.nodeName.toLowerCase() != "textarea") e.preventDefault();
+      e.stopPropagation();
+
+      if (this.d_onMouseDown) this.onMouseDown(e);
+
+      return false;
+    }
+  }, {
+    key: "processMouseMove",
+    value: function processMouseMove(e) {
+
+      if (this.d_autoresize) this.resize();
+
+      if (!this.d_graph) return;
+
+      this.adjustMouseEvent(e);
+      var mouse = [e.localX, e.localY];
+      var delta = [mouse[0] - this.d_last_mouse[0], mouse[1] - this.d_last_mouse[1]];
+      this.d_last_mouse = mouse;
+      this.d_canvas_mouse = [e.canvasX, e.canvasY];
+
+      if (this.d_ragging_canvas) {
+        this.d_offset[0] += delta[0] / this.d_scale;
+        this.d_offset[1] += delta[1] / this.d_scale;
+        this.d_dirty_canvas = true;
+        this.d_dirty_bgcanvas = true;
+      } else if (this.d_allow_interaction) {
+        if (this.d_connecting_node) this.d_dirty_canvas = true;
+
+        //get node over
+        var n = this.d_graph.getNodeOnPos(e.canvasX, e.canvasY, this.d_visible_nodes);
+
+        //remove mouseover flag
+        for (var i = 0, l = this.d_graph._nodes.length; i < l; ++i) {
+          if (this.d_graph._nodes[i].mouseOver && n != this.d_graph._nodes[i]) {
+            //mouse leave
+            this.d_graph._nodes[i].mouseOver = false;
+            if (this.d_node_over && this.d_node_over.onMouseLeave) this.d_node_over.onMouseLeave(e);
+            this.d_node_over = null;
+            this.d_dirty_canvas = true;
+          }
+        }
+
+        //mouse over a node
+        if (n) {
+          //this.d_canvas.style.cursor = "move";
+          if (!n.mouseOver) {
+            //mouse enter
+            n.mouseOver = true;
+            this.d_node_over = n;
+            this.d_dirty_canvas = true;
+
+            if (n.onMouseEnter) n.onMouseEnter(e);
+          }
+
+          if (n.onMouseMove) n.onMouseMove(e);
+
+          //on top of input
+          if (this.d_connecting_node) {
+            var pos = this.d_highlight_input || [0, 0]; //to store the output of isOverNodeInput
+
+            if (this.d_isOverNodeBox(n, e.canvasX, e.canvasY)) {
+              //mouse on top of the corner box, dont know what to do
+            } else {
+              var slot = this.d_isOverNodeInput(n, e.canvasX, e.canvasY, pos);
+              if (slot != -1 && n.inputs[slot]) {
+                var slot_type = n.inputs[slot].type;
+                if (_LiteGraph2.default.isValidConnection(this.d_connecting_output.type, slot_type)) {
+                  this.d_highlight_input = pos;
+                }
+              } else {
+                this.d_highlight_input = null;
+              }
+            }
+          }
+
+          //Search for corner
+          if (isInsideRectangle(e.canvasX, e.canvasY, n.pos[0] + n.size[0] - 5, n.pos[1] + n.size[1] - 5, 5, 5)) {
+            this.d_canvas.style.cursor = "se-resize";
+          } else {
+            this.d_canvas.style.cursor = null;
+          }
+        } else {
+          this.d_canvas.style.cursor = null;
+        }
+
+        if (this.d_node_capturing_input && this.d_node_capturing_input != n && this.d_node_capturing_input.onMouseMove) {
+          this.d_node_capturing_input.onMouseMove(e);
+        }
+
+        if (this.d_node_dragged && !this.d_live_mode) {
+          for (var _i4 in this.d_selected_nodes) {
+            var _n = this.d_selected_nodes[_i4];
+
+            _n.pos[0] += delta[0] / this.d_scale;
+            _n.pos[1] += delta[1] / this.d_scale;
+          }
+
+          this.d_dirty_canvas = true;
+          this.d_dirty_bgcanvas = true;
+        }
+
+        if (this.d_resizing_node && !this.d_live_mode) {
+          this.d_resizing_node.size[0] += delta[0] / this.d_scale;
+          this.d_resizing_node.size[1] += delta[1] / this.d_scale;
+          var max_slots = Math.max(this.d_resizing_node.inputs ? this.d_resizing_node.inputs.length : 0, this.d_resizing_node.outputs ? this.d_resizing_node.outputs.length : 0);
+          if (this.d_resizing_node.size[1] < max_slots * _LiteGraphStates.LiteGraphStates.NODE_SLOT_HEIGHT + 4) this.d_resizing_node.size[1] = max_slots * _LiteGraphStates.LiteGraphStates.NODE_SLOT_HEIGHT + 4;
+          if (this.d_resizing_node.size[0] < _LiteGraphStates.LiteGraphStates.NODE_MIN_WIDTH) this.d_resizing_node.size[0] = _LiteGraphStates.LiteGraphStates.NODE_MIN_WIDTH;
+
+          this.d_canvas.style.cursor = "se-resize";
+          this.d_dirty_canvas = true;
+          this.d_dirty_bgcanvas = true;
+        }
+      }
+
+      e.preventDefault();
+      return false;
+    }
+  }, {
+    key: "processMouseUp",
+    value: function processMouseUp(e) {
+      if (!this.d_graph) return;
+
+      var window = this.getCanvasWindow();
+      var document = window.document;
+
+      //restore the mousemove event back to the canvas
+      document.removeEventListener("mousemove", this.d_mousemove_callback, true);
+      this.d_canvas.addEventListener("mousemove", this.d_mousemove_callback, true);
+      document.removeEventListener("mouseup", this.d_mouseup_callback, true);
+
+      this.adjustMouseEvent(e);
+
+      if (e.which == 1) //left button
+        {
+          //dragging a connection
+          if (this.d_connecting_node) {
+            this.d_dirty_canvas = true;
+            this.d_dirty_bgcanvas = true;
+
+            var node = this.d_graph.getNodeOnPos(e.canvasX, e.canvasY, this.d_visible_nodes);
+
+            //node below mouse
+            if (node) {
+              if (this.d_connecting_output.type == _LiteGraph2.default.EVENT && this.d_isOverNodeBox(node, e.canvasX, e.canvasY)) {
+                this.d_connecting_node.connect(this.d_connecting_slot, node, _LiteGraph2.default.EVENT);
+              } else {
+                //slot below mouse? connect
+                var slot = this.d_isOverNodeInput(node, e.canvasX, e.canvasY);
+                if (slot != -1) {
+                  this.d_connecting_node.connect(this.d_connecting_slot, node, slot);
+                } else {
+                  //not on top of an input
+                  var _input2 = node.getInputInfo(0);
+                  //auto connect
+                  if (this.d_connecting_output.type == _LiteGraph2.default.EVENT) this.d_connecting_node.connect(this.d_connecting_slot, node, _LiteGraph2.default.EVENT);else if (_input2 && !_input2.link && _input2.type == this.d_connecting_output.type) //toLowerCase missing
+                    this.d_connecting_node.connect(this.d_connecting_slot, node, 0);
+                }
+              }
+            }
+
+            this.d_connecting_output = null;
+            this.d_connecting_pos = null;
+            this.d_connecting_node = null;
+            this.d_connecting_slot = -1;
+          } //not dragging connection
+          else if (this.d_resizing_node) {
+              this.d_dirty_canvas = true;
+              this.d_dirty_bgcanvas = true;
+              this.d_resizing_node = null;
+            } else if (this.d_node_dragged) //node being dragged?
+              {
+                this.d_dirty_canvas = true;
+                this.d_dirty_bgcanvas = true;
+                this.d_node_dragged.pos[0] = Math.round(this.d_node_dragged.pos[0]);
+                this.d_node_dragged.pos[1] = Math.round(this.d_node_dragged.pos[1]);
+                if (this.d_graph.config.align_to_grid) this.d_node_dragged.alignToGrid();
+                this.d_node_dragged = null;
+              } else //no node being dragged
+              {
+                this.d_dirty_canvas = true;
+                this.d_ragging_canvas = false;
+
+                if (this.d_node_over && this.d_node_over.onMouseUp) this.d_node_over.onMouseUp(e, [e.canvasX - this.d_node_over.pos[0], e.canvasY - this.d_node_over.pos[1]]);
+                if (this.d_node_capturing_input && this.d_node_capturing_input.onMouseUp) this.d_node_capturing_input.onMouseUp(e, [e.canvasX - this.d_node_capturing_input.pos[0], e.canvasY - this.d_node_capturing_input.pos[1]]);
+              }
+        } else if (e.which == 2) //middle button
+        {
+          //trace("middle");
+          this.d_dirty_canvas = true;
+          this.d_ragging_canvas = false;
+        } else if (e.which == 3) //right button
+        {
+          //trace("right");
+          this.d_dirty_canvas = true;
+          this.d_ragging_canvas = false;
+        }
+
+      /*
+      if((this.d_dirty_canvas || this.d_dirty_bgcanvas) && this.d_rendering_timer_id == null)
+          this.draw();
+      */
+
+      this.d_graph.change();
+
+      e.stopPropagation();
+      e.preventDefault();
+      return false;
+    }
+  }, {
+    key: "processMouseWheel",
+    value: function processMouseWheel(e) {
+      if (!this.d_graph || !this.d_allow_dragcanvas) return;
+
+      var delta = e.wheelDeltaY != null ? e.wheelDeltaY : e.detail * -60;
+
+      this.adjustMouseEvent(e);
+
+      var zoom = this.d_scale;
+
+      if (delta > 0) zoom *= 1.1;else if (delta < 0) zoom *= 1 / 1.1;
+
+      this.d_setZoom(zoom, [e.localX, e.localY]);
+
+      /*
+      if(this.d_rendering_timer_id == null)
+          this.draw();
+      */
+
+      this.d_graph.change();
+
+      e.preventDefault();
+      return false; // prevent default
+    }
+  }, {
+    key: "isOverNodeBox",
+    value: function isOverNodeBox(node, canvasx, canvasy) {
+      var title_height = _LiteGraph2.default.NODE_TITLE_HEIGHT;
+      if (isInsideRectangle(canvasx, canvasy, node.pos[0] + 2, node.pos[1] + 2 - title_height, title_height - 4, title_height - 4)) return true;
+      return false;
+    }
+  }, {
+    key: "isOverNodeInput",
+    value: function isOverNodeInput(node, canvasx, canvasy, slot_pos) {
+      if (node.inputs) for (var i = 0, l = node.inputs.length; i < l; ++i) {
+        var _input3 = node.inputs[i];
+        var link_pos = node.getConnectionPos(true, i);
+        if (isInsideRectangle(canvasx, canvasy, link_pos[0] - 10, link_pos[1] - 5, 20, 10)) {
+          if (slot_pos) {
+            slot_pos[0] = link_pos[0];
+            slot_pos[1] = link_pos[1];
+          }
+          return i;
+        }
+      }
+      return -1;
+    }
+  }, {
+    key: "processKey",
+    value: function processKey(e) {
+      if (!this.d_graph) return;
+
+      var block_default = false;
+
+      if (e.type == "keydown") {
+        //select all Control A
+        if (e.keyCode == 65 && e.ctrlKey) {
+          this.selectAllNodes();
+          block_default = true;
+        }
+
+        //delete or backspace
+        if (e.keyCode == 46 || e.keyCode == 8) {
+          this.deleteSelectedNodes();
+          block_default = true;
+        }
+
+        //collapse
+        //...
+
+        //TODO
+        if (this.d_selected_nodes) for (var i in this.d_selected_nodes) {
+          if (this.d_selected_nodes[i].onKeyDown) this.d_selected_nodes[i].onKeyDown(e);
+        }
+      } else if (e.type == "keyup") {
+        if (this.d_selected_nodes) for (var _i5 in this.d_selected_nodes) {
+          if (this.d_selected_nodes[_i5].onKeyUp) this.d_selected_nodes[_i5].onKeyUp(e);
+        }
+      }
+
+      this.d_graph.change();
+
+      if (block_default) {
+        e.preventDefault();
+        return false;
+      }
+    }
+  }, {
+    key: "processDrop",
+    value: function processDrop(e) {
+      e.preventDefault();
+      this.adjustMouseEvent(e);
+
+      var pos = [e.canvasX, e.canvasY];
+      var node = this.d_graph.getNodeOnPos(pos[0], pos[1]);
+
+      if (!node) {
+        var r = null;
+        if (this.d_onDropItem) r = this.onDropItem(event);
+        if (!r) this.checkDropItem(e);
+        return;
+      }
+
+      if (node.onDropFile || node.onDropData) {
+        var files = e.dataTransfer.files;
+        if (files && files.length) {
+          var _loop = function _loop(i) {
+            var file = e.dataTransfer.files[0];
+            var filename = file.name;
+            var ext = LGraphCanvas.getFileExtension(filename);
+            //console.log(file);
+
+            if (node.onDropFile) node.onDropFile(file);
+
+            if (node.onDropData) {
+              //prepare reader
+              var reader = new FileReader();
+              reader.onload = function (event) {
+                //console.log(event.target);
+                var data = event.target.result;
+                node.onDropData(data, filename, file);
+              };
+
+              //read data
+              var type = file.type.split("/")[0];
+              if (type == "text" || type == "") reader.readAsText(file);else if (type == "image") reader.readAsDataURL(file);else reader.readAsArrayBuffer(file);
+            }
+          };
+
+          for (var i = 0; i < files.length; i++) {
+            _loop(i);
+          }
+        }
+      }
+
+      if (node.onDropItem) {
+        if (node.onDropItem(event)) return true;
+      }
+
+      if (this.d_onDropItem) return this.onDropItem(event);
+
+      return false;
+    }
+
+    //called if the graph doesnt have a default drop item behaviour
+
+  }, {
+    key: "checkDropItem",
+    value: function checkDropItem(e) {
+      if (e.dataTransfer.files.length) {
+        var _file = e.dataTransfer.files[0];
+        var ext = LGraphCanvas.getFileExtension(_file.name).toLowerCase();
+        var nodetype = _LiteGraph2.default.node_types_by_file_extension[ext];
+        if (nodetype) {
+          var node = _LiteGraph2.default.createNode(nodetype.type);
+          node.pos = [e.canvasX, e.canvasY];
+          this.d_graph.add(node);
+          if (node.onDropFile) node.onDropFile(_file);
+        }
+      }
+    }
+  }, {
+    key: "processNodeSelected",
+    value: function processNodeSelected(n, e) {
+      n.selected = true;
+      if (n.onSelected) n.onSelected();
+
+      if (e && e.shiftKey) //add to selection
+        this.d_selected_nodes[n.id] = n;else {
+        this.d_selected_nodes = {};
+        this.d_selected_nodes[n.id] = n;
+      }
+
+      this.d_dirty_canvas = true;
+
+      if (this.d_onNodeSelected) this.onNodeSelected(n);
+
+      //if(this.d_node_in_panel) this.d_showNodePanel(n);
+    }
+  }, {
+    key: "processNodeDeselected",
+    value: function processNodeDeselected(n) {
+      n.selected = false;
+      if (n.onDeselected) n.onDeselected();
+
+      delete this.d_selected_nodes[n.id];
+
+      if (this.d_onNodeDeselected) this.onNodeDeselected(n);
+
+      this.d_dirty_canvas = true;
+    }
+  }, {
+    key: "processNodeDblClicked",
+    value: function processNodeDblClicked(n) {
+      if (this.d_onShowNodePanel) this.onShowNodePanel(n);
+
+      if (this.d_onNodeDblClicked) this.onNodeDblClicked(n);
+
+      this.setDirty(true);
+    }
+  }, {
+    key: "selectNode",
+    value: function selectNode(node) {
+      this.deselectAllNodes();
+
+      if (!node) return;
+
+      if (!node.selected && node.onSelected) node.onSelected();
+      node.selected = true;
+      this.d_selected_nodes[node.id] = node;
+      this.setDirty(true);
+    }
+  }, {
+    key: "selectAllNodes",
+    value: function selectAllNodes() {
+      for (var i = 0; i < this.d_graph._nodes.length; ++i) {
+        var n = this.d_graph._nodes[i];
+        if (!n.selected && n.onSelected) n.onSelected();
+        n.selected = true;
+        this.d_selected_nodes[this.d_graph._nodes[i].id] = n;
+      }
+
+      this.setDirty(true);
+    }
+  }, {
+    key: "deselectAllNodes",
+    value: function deselectAllNodes() {
+      for (var i in this.d_selected_nodes) {
+        var n = this.d_selected_nodes;
+        if (n.onDeselected) n.onDeselected();
+        n.selected = false;
+      }
+      this.d_selected_nodes = {};
+      this.setDirty(true);
+    }
+  }, {
+    key: "deleteSelectedNodes",
+    value: function deleteSelectedNodes() {
+      for (var i in this.d_selected_nodes) {
+        var m = this.d_selected_nodes[i];
+        //if(m == this.d_node_in_panel) this.d_showNodePanel(null);
+        this.d_graph.remove(m);
+      }
+      this.d_selected_nodes = {};
+      this.setDirty(true);
+    }
+  }, {
+    key: "centerOnNode",
+    value: function centerOnNode(node) {
+      this.d_offset[0] = -node.pos[0] - node.size[0] * 0.5 + this.d_canvas.width * 0.5 / this.d_scale;
+      this.d_offset[1] = -node.pos[1] - node.size[1] * 0.5 + this.d_canvas.height * 0.5 / this.d_scale;
+      this.setDirty(true, true);
+    }
+  }, {
+    key: "adjustMouseEvent",
+    value: function adjustMouseEvent(e) {
+      var b = this.d_canvas.getBoundingClientRect();
+      e.localX = e.pageX - b.left;
+      e.localY = e.pageY - b.top;
+
+      e.canvasX = e.localX / this.d_scale - this.d_offset[0];
+      e.canvasY = e.localY / this.d_scale - this.d_offset[1];
+    }
+  }, {
+    key: "setZoom",
+    value: function setZoom(value, zooming_center) {
+      if (!zooming_center) zooming_center = [this.d_canvas.width * 0.5, this.d_canvas.height * 0.5];
+
+      var center = this.convertOffsetToCanvas(zooming_center);
+
+      this.d_scale = value;
+
+      if (this.d_scale > this.d_max_zoom) this.d_scale = this.d_max_zoom;else if (this.d_scale < this.d_min_zoom) this.d_scale = this.d_min_zoom;
+
+      var new_center = this.convertOffsetToCanvas(zooming_center);
+      var delta_offset = [new_center[0] - center[0], new_center[1] - center[1]];
+
+      this.d_offset[0] += delta_offset[0];
+      this.d_offset[1] += delta_offset[1];
+
+      this.d_dirty_canvas = true;
+      this.d_dirty_bgcanvas = true;
+    }
+  }, {
+    key: "convertOffsetToCanvas",
+    value: function convertOffsetToCanvas(pos) {
+      return [pos[0] / this.d_scale - this.d_offset[0], pos[1] / this.d_scale - this.d_offset[1]];
+    }
+  }, {
+    key: "convertCanvasToOffset",
+    value: function convertCanvasToOffset(pos) {
+      return [(pos[0] + this.d_offset[0]) * this.d_scale, (pos[1] + this.d_offset[1]) * this.d_scale];
+    }
+  }, {
+    key: "convertEventToCanvas",
+    value: function convertEventToCanvas(e) {
+      var rect = this.d_canvas.getClientRects()[0];
+      return this.convertOffsetToCanvas([e.pageX - rect.left, e.pageY - rect.top]);
+    }
+  }, {
+    key: "bringToFront",
+    value: function bringToFront(n) {
+      var i = this.d_graph.d_nodes.indexOf(n);
+      if (i == -1) return;
+
+      this.d_graph.d_nodes.splice(i, 1);
+      this.d_graph.d_nodes.push(n);
+    }
+  }, {
+    key: "sendToBack",
+    value: function sendToBack(n) {
+      var i = this.d_graph.d_nodes.indexOf(n);
+      if (i == -1) return;
+
+      this.d_graph.d_nodes.splice(i, 1);
+      this.d_graph.d_nodes.unshift(n);
+    }
+
+    /* Interaction */
+
+    /* LGraphCanvas render */
+
+  }, {
+    key: "computeVisibleNodes",
+    value: function computeVisibleNodes() {
+      var visible_nodes = [];
+      for (var i = 0, l = this.d_graph.d_nodes.length; i < l; ++i) {
+        var n = this.d_graph.d_nodes[i];
+
+        //skip rendering nodes in live mode
+        if (this.d_live_mode && !n.onDrawBackground && !n.onDrawForeground) continue;
+
+        if (!overlapBounding(this.d_visible_area, n.getBounding())) continue; //out of the visible area
+
+        visible_nodes.push(n);
+      }
+      return visible_nodes;
+    }
+  }, {
+    key: "draw",
+    value: function draw(force_canvas, force_bgcanvas) {
+      if (!this.d_canvas) return;
+
+      //fps counting
+      var now = _LiteGraph2.default.getTime();
+      this.d_render_time = (now - this.d_last_draw_time) * 0.001;
+      this.d_last_draw_time = now;
+
+      if (this.d_graph) {
+        var start = [-this.d_offset[0], -this.d_offset[1]];
+        var end = [start[0] + this.d_canvas.width / this.d_scale, start[1] + this.d_canvas.height / this.d_scale];
+        this.visible_area = new Float32Array([start[0], start[1], end[0], end[1]]);
+      }
+
+      if (this.d_dirty_bgcanvas || force_bgcanvas || this.d_always_render_background || this.d_graph && this.d_graph._last_trigger_time && now - this.d_graph._last_trigger_time < 1000) this.drawBackCanvas();
+
+      if (this.d_dirty_canvas || force_canvas) this.drawFrontCanvas();
+
+      this.d_fps = this.d_render_time ? 1.0 / this.d_render_time : 0;
+      this.d_frame += 1;
+    }
+  }, {
+    key: "drawFrontCanvas",
+    value: function drawFrontCanvas() {
+      if (!this.d_ctx) this.d_ctx = this.d_bgcanvas.getContext("2d");
+      var ctx = this.d_ctx;
+      if (!ctx) //maybe is using webgl...
+        return;
+
+      if (ctx.start2D) ctx.start2D();
+
+      var canvas = this.d_canvas;
+
+      //reset in case of error
+      ctx.restore();
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+      //clip dirty area if there is one, otherwise work in full canvas
+      if (this.d_dirty_area) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(this.d_dirty_area[0], this.d_dirty_area[1], this.d_dirty_area[2], this.d_dirty_area[3]);
+        ctx.clip();
+      }
+
+      //clear
+      //canvas.width = canvas.width;
+      if (this.d_clear_background) ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      //draw bg canvas
+      if (this.d_bgcanvas == this.d_canvas) this.drawBackCanvas();else ctx.drawImage(this.d_bgcanvas, 0, 0);
+
+      //rendering
+      if (this.d_onRender) this.onRender(canvas, ctx);
+
+      //info widget
+      if (this.d_show_info) this.renderInfo(ctx);
+
+      if (this.d_graph) {
+        //apply transformations
+        ctx.save();
+        ctx.scale(this.d_scale, this.d_scale);
+        ctx.translate(this.d_offset[0], this.d_offset[1]);
+
+        //draw nodes
+        var drawn_nodes = 0;
+        var visible_nodes = this.computeVisibleNodes();
+        this.d_visible_nodes = visible_nodes;
+
+        for (var i = 0; i < visible_nodes.length; ++i) {
+          var node = visible_nodes[i];
+
+          //transform coords system
+          ctx.save();
+          ctx.translate(node.pos[0], node.pos[1]);
+
+          //Draw
+          this.drawNode(node, ctx);
+          drawn_nodes += 1;
+
+          //Restore
+          ctx.restore();
+        }
+
+        //connections ontop?
+        if (this.d_graph.config.links_ontop) if (!this.d_live_mode) this.drawConnections(ctx);
+
+        //current connection
+        if (this.d_connecting_pos != null) {
+          ctx.lineWidth = this.d_connections_width;
+          var link_color = null;
+          switch (this.d_connecting_output.type) {
+            case _LiteGraph2.default.EVENT:
+              link_color = "#F85";break;
+            default:
+              link_color = "#AFA";
+          }
+          this.renderLink(ctx, this.d_connecting_pos, [this.d_canvas_mouse[0], this.d_canvas_mouse[1]], link_color);
+
+          ctx.beginPath();
+
+          if (this.d_connecting_output.type === _LiteGraph2.default.EVENT) ctx.rect(this.d_connecting_pos[0] - 6 + 0.5, this.d_connecting_pos[1] - 5 + 0.5, 14, 10);else ctx.arc(this.d_connecting_pos[0], this.d_connecting_pos[1], 4, 0, Math.PI * 2);
+
+          /*
+          if( this.d_connecting_output.round)
+              ctx.arc( this.d_connecting_pos[0], this.d_connecting_pos[1],4,0,Math.PI*2);
+          else
+              ctx.rect( this.d_connecting_pos[0], this.d_connecting_pos[1],12,6);
+          */
+          ctx.fill();
+
+          ctx.fillStyle = "#ffcc00";
+          if (this.d_highlight_input) {
+            ctx.beginPath();
+            ctx.arc(this.d_highlight_input[0], this.d_highlight_input[1], 6, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+        ctx.restore();
+      }
+
+      if (this.d_dirty_area) {
+        ctx.restore();
+        //this.d_dirty_area = null;
+      }
+
+      if (ctx.finish2D) //this is a function I use in webgl renderer
+        ctx.finish2D();
+
+      this.d_dirty_canvas = false;
+    }
+  }, {
+    key: "renderInfo",
+    value: function renderInfo(ctx, x, y) {
+      x = x || 0;
+      y = y || 0;
+
+      ctx.save();
+      ctx.translate(x, y);
+
+      ctx.font = "10px Arial";
+      ctx.fillStyle = "#888";
+      if (this.d_graph) {
+        ctx.fillText("T: " + this.d_graph.globaltime.toFixed(2) + "s", 5, 13 * 1);
+        ctx.fillText("I: " + this.d_graph.iteration, 5, 13 * 2);
+        ctx.fillText("F: " + this.d_frame, 5, 13 * 3);
+        ctx.fillText("FPS:" + this.d_fps.toFixed(2), 5, 13 * 4);
+      } else ctx.fillText("No graph selected", 5, 13 * 1);
+      ctx.restore();
+    }
+  }, {
+    key: "drawBackCanvas",
+    value: function drawBackCanvas() {
+      var canvas = this.d_bgcanvas;
+      if (canvas.width != this.d_canvas.width || canvas.height != this.d_canvas.height) {
+        canvas.width = this.d_canvas.width;
+        canvas.height = this.d_canvas.height;
+      }
+
+      if (!this.d_bgctx) this.d_bgctx = this.d_bgcanvas.getContext("2d");
+      var ctx = this.d_bgctx;
+      if (ctx.start) ctx.start();
+
+      //clear
+      if (this.d_clear_background) ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      //reset in case of error
+      ctx.restore();
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+      if (this.d_graph) {
+        //apply transformations
+        ctx.save();
+        ctx.scale(this.d_scale, this.d_scale);
+        ctx.translate(this.d_offset[0], this.d_offset[1]);
+
+        //render BG
+        if (this.d_background_image && this.d_scale > 0.5) {
+          ctx.globalAlpha = (1.0 - 0.5 / this.d_scale) * this.d_editor_alpha;
+          ctx.imageSmoothingEnabled = ctx.mozImageSmoothingEnabled = ctx.imageSmoothingEnabled = false;
+          if (!this.d_bg_img || this.d_bg_img.name != this.d_background_image) {
+            this._bg_img = new Image();
+            this.d_bg_img.name = this.d_background_image;
+            this.d_bg_img.src = this.d_background_image;
+            var that = this;
+            this.d_bg_img.onload = function () {
+              that.draw(true, true);
+            };
+          }
+
+          var pattern = null;
+          if (this.d_pattern == null && this.d_bg_img.width > 0) {
+            pattern = ctx.createPattern(this.d_bg_img, 'repeat');
+            this.d_pattern_img = this.d_bg_img;
+            this.d_pattern = pattern;
+          } else pattern = this.d_pattern;
+          if (pattern) {
+            ctx.fillStyle = pattern;
+            ctx.fillRect(this.d_visible_area[0], this.d_visible_area[1], this.d_visible_area[2] - this.d_visible_area[0], this.d_visible_area[3] - this.d_visible_area[1]);
+            ctx.fillStyle = "transparent";
+          }
+
+          ctx.globalAlpha = 1.0;
+          ctx.imageSmoothingEnabled = ctx.mozImageSmoothingEnabled = ctx.imageSmoothingEnabled = true;
+        }
+
+        if (this.d_onBackgroundRender) this.onBackgroundRender(canvas, ctx);
+
+        //DEBUG: show clipping area
+        //ctx.fillStyle = "red";
+        //ctx.fillRect( this.d_visible_area[0] + 10, this.d_visible_area[1] + 10, this.d_visible_area[2] - this.d_visible_area[0] - 20, this.d_visible_area[3] - this.d_visible_area[1] - 20);
+
+        //bg
+        ctx.strokeStyle = "#235";
+        ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
+        if (this.d_render_connections_shadows) {
+          ctx.shadowColor = "#000";
+          ctx.shadowOffsetX = 0;
+          ctx.shadowOffsetY = 0;
+          ctx.shadowBlur = 6;
+        } else ctx.shadowColor = "rgba(0,0,0,0)";
+
+        //draw connections
+        if (!this.d_live_mode) this.drawConnections(ctx);
+
+        ctx.shadowColor = "rgba(0,0,0,0)";
+
+        //restore state
+        ctx.restore();
+      }
+
+      if (ctx.finish) ctx.finish();
+
+      this.d_dirty_bgcanvas = false;
+      this.d_dirty_canvas = true; //to force to repaint the front canvas with the bgcanvas 
+    }
+
+    /* Renders the LGraphNode on the canvas */
+
+  }, {
+    key: "drawNode",
+    value: function drawNode(node, ctx) {
+      var glow = false;
+
+      var color = node.color || _LiteGraph2.default.NODE_DEFAULT_COLOR;
+      //if (this.d_selected) color = "#88F";
+
+      var render_title = true;
+      if (node.flags.skip_title_render || node.graph.isLive()) render_title = false;
+      if (node.mouseOver) render_title = true;
+
+      //shadow and glow
+      if (node.mouseOver) glow = true;
+
+      if (node.selected) {
+        /*
+        ctx.shadowColor = "#EEEEFF";//glow ? "#AAF" : "#000";
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
+        ctx.shadowBlur = 1;
+        */
+      } else if (this.d_render_shadows) {
+        ctx.shadowColor = "rgba(0,0,0,0.5)";
+        ctx.shadowOffsetX = 2;
+        ctx.shadowOffsetY = 2;
+        ctx.shadowBlur = 3;
+      } else ctx.shadowColor = "transparent";
+
+      //only render if it forces it to do it
+      if (this.d_live_mode) {
+        if (!node.flags.collapsed) {
+          ctx.shadowColor = "transparent";
+          //if(node.onDrawBackground)
+          //	node.onDrawBackground(ctx);
+          if (node.onDrawForeground) node.onDrawForeground(ctx);
+        }
+
+        return;
+      }
+
+      //draw in collapsed form
+      /*
+      if(node.flags.collapsed)
+      {
+          if(!node.onDrawCollapsed || node.onDrawCollapsed(ctx) == false)
+              this.d_rawNodeCollapsed(node, ctx, color, node.bgcolor);
+          return;
+      }
+      */
+
+      var editor_alpha = this.d_editor_alpha;
+      ctx.globalAlpha = editor_alpha;
+
+      //clip if required (mask)
+      var shape = node.shape || "box";
+      var size = new Float32Array(node.size);
+      if (node.flags.collapsed) {
+        size[0] = _LiteGraph2.default.NODE_COLLAPSED_WIDTH;
+        size[1] = 0;
+      }
+
+      //Start clipping
+      if (node.flags.clip_area) {
+        ctx.save();
+        if (shape == "box") {
+          ctx.beginPath();
+          ctx.rect(0, 0, size[0], size[1]);
+        } else if (shape == "round") {
+          ctx.roundRect(0, 0, size[0], size[1], 10);
+        } else if (shape == "circle") {
+          ctx.beginPath();
+          ctx.arc(size[0] * 0.5, size[1] * 0.5, size[0] * 0.5, 0, Math.PI * 2);
+        }
+        ctx.clip();
+      }
+
+      //draw shape
+      this.d_rawNodeShape(node, ctx, size, color, node.bgcolor, !render_title, node.selected);
+      ctx.shadowColor = "transparent";
+
+      //connection slots
+      ctx.textAlign = "left";
+      ctx.font = this.d_inner_text_font;
+
+      var render_text = this.d_scale > 0.6;
+
+      var out_slot = this.d_connecting_output;
+
+      //render inputs and outputs
+      if (!node.flags.collapsed) {
+        //input connection slots
+        if (node.inputs) for (var i = 0; i < node.inputs.length; i++) {
+          var slot = node.inputs[i];
+
+          ctx.globalAlpha = editor_alpha;
+          //change opacity of incompatible slots
+          if (this.d_connecting_node && _LiteGraph2.default.isValidConnection(slot.type && out_slot.type)) ctx.globalAlpha = 0.4 * editor_alpha;
+
+          ctx.fillStyle = slot.link != null ? "#7F7" : "#AAA";
+
+          var pos = node.getConnectionPos(true, i);
+          pos[0] -= node.pos[0];
+          pos[1] -= node.pos[1];
+
+          ctx.beginPath();
+
+          if (slot.type === _LiteGraph2.default.EVENT) ctx.rect(pos[0] - 6 + 0.5, pos[1] - 5 + 0.5, 14, 10);else ctx.arc(pos[0], pos[1], 4, 0, Math.PI * 2);
+
+          ctx.fill();
+
+          //render name
+          if (render_text) {
+            var text = slot.label != null ? slot.label : slot.name;
+            if (text) {
+              ctx.fillStyle = color;
+              ctx.fillText(text, pos[0] + 10, pos[1] + 5);
+            }
+          }
+        }
+
+        //output connection slots
+        if (this.d_connecting_node) ctx.globalAlpha = 0.4 * editor_alpha;
+
+        ctx.lineWidth = 1;
+
+        ctx.textAlign = "right";
+        ctx.strokeStyle = "black";
+        if (node.outputs) for (var _i6 = 0; _i6 < node.outputs.length; _i6++) {
+          var _slot = node.outputs[_i6];
+
+          var _pos = node.getConnectionPos(false, _i6);
+          _pos[0] -= node.pos[0];
+          _pos[1] -= node.pos[1];
+
+          ctx.fillStyle = _slot.links && _slot.links.length ? "#7F7" : "#AAA";
+          ctx.beginPath();
+          //ctx.rect( node.size[0] - 14,i*14,10,10);
+
+          if (_slot.type === _LiteGraph2.default.EVENT) ctx.rect(_pos[0] - 6 + 0.5, _pos[1] - 5 + 0.5, 14, 10);else ctx.arc(_pos[0], _pos[1], 4, 0, Math.PI * 2);
+
+          //trigger
+          //if(slot.node_id != null && slot.slot == -1)
+          //	ctx.fillStyle = "#F85";
+
+          //if(slot.links != null && slot.links.length)
+          ctx.fill();
+          ctx.stroke();
+
+          //render output name
+          if (render_text) {
+            var _text = _slot.label != null ? _slot.label : _slot.name;
+            if (_text) {
+              ctx.fillStyle = color;
+              ctx.fillText(_text, _pos[0] - 10, _pos[1] + 5);
+            }
+          }
+        }
+
+        ctx.textAlign = "left";
+        ctx.globalAlpha = 1;
+
+        if (node.onDrawForeground) node.onDrawForeground(ctx);
+      } //!collapsed
+
+      if (node.flags.clip_area) ctx.restore();
+
+      ctx.globalAlpha = 1.0;
+    }
+
+    /* Renders the node shape */
+
+  }, {
+    key: "drawNodeShape",
+    value: function drawNodeShape(node, ctx, size, fgcolor, bgcolor, no_title, selected) {
+      //bg rect
+      ctx.strokeStyle = fgcolor || _LiteGraph2.default.NODE_DEFAULT_COLOR;
+      ctx.fillStyle = bgcolor || _LiteGraph2.default.NODE_DEFAULT_BGCOLOR;
+
+      /* gradient test
+      let grad = ctx.createLinearGradient(0,0,0,node.size[1]);
+      grad.addColorStop(0, "#AAA");
+      grad.addColorStop(0.5, fgcolor || LiteGraph.NODE_DEFAULT_COLOR);
+      grad.addColorStop(1, bgcolor || LiteGraph.NODE_DEFAULT_BGCOLOR);
+      ctx.fillStyle = grad;
+      //*/
+
+      var title_height = _LiteGraph2.default.NODE_TITLE_HEIGHT;
+
+      //render depending on shape
+      var shape = node.shape || "box";
+      if (shape == "box") {
+        ctx.beginPath();
+        ctx.rect(0, no_title ? 0 : -title_height, size[0] + 1, no_title ? size[1] : size[1] + title_height);
+        ctx.fill();
+        ctx.shadowColor = "transparent";
+
+        if (selected) {
+          ctx.strokeStyle = "#CCC";
+          ctx.strokeRect(-0.5, no_title ? -0.5 : -title_height + -0.5, size[0] + 2, no_title ? size[1] + 2 : size[1] + title_height + 2 - 1);
+          ctx.strokeStyle = fgcolor;
+        }
+      } else if (node.shape == "round") {
+        ctx.roundRect(0, no_title ? 0 : -title_height, size[0], no_title ? size[1] : size[1] + title_height, 10);
+        ctx.fill();
+      } else if (node.shape == "circle") {
+        ctx.beginPath();
+        ctx.arc(size[0] * 0.5, size[1] * 0.5, size[0] * 0.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.shadowColor = "transparent";
+
+      //ctx.stroke();
+
+      //image
+      if (node.bgImage && node.bgImage.width) ctx.drawImage(node.bgImage, (size[0] - node.bgImage.width) * 0.5, (size[1] - node.bgImage.height) * 0.5);
+
+      if (node.bgImageUrl && !node.bgImage) node.bgImage = node.loadImage(node.bgImageUrl);
+
+      if (node.onDrawBackground) node.onDrawBackground(ctx);
+
+      //title bg (remember, it is rendered ABOVE the node
+      if (!no_title) {
+        ctx.fillStyle = fgcolor || _LiteGraph2.default.NODE_DEFAULT_COLOR;
+        var old_alpha = ctx.globalAlpha;
+        ctx.globalAlpha = 0.5 * old_alpha;
+        if (shape == "box") {
+          ctx.beginPath();
+          ctx.rect(0, -title_height, size[0] + 1, title_height);
+          ctx.fill();
+          //ctx.stroke();
+        } else if (shape == "round") {
+          ctx.roundRect(0, -title_height, size[0], title_height, 10, 0);
+          //ctx.fillRect(0,8,size[0],NODE_TITLE_HEIGHT - 12);
+          ctx.fill();
+          //ctx.stroke();
+        }
+
+        //title box
+        ctx.fillStyle = node.boxcolor || _LiteGraph2.default.NODE_DEFAULT_BOXCOLOR;
+        ctx.beginPath();
+        if (shape == "round") ctx.arc(title_height * 0.5, title_height * -0.5, (title_height - 6) * 0.5, 0, Math.PI * 2);else ctx.rect(3, -title_height + 3, title_height - 6, title_height - 6);
+        ctx.fill();
+        ctx.globalAlpha = old_alpha;
+
+        //title text
+        ctx.font = this.d_title_text_font;
+        var title = node.getTitle();
+        if (title && this.d_scale > 0.5) {
+          ctx.fillStyle = _LiteGraph2.default.NODE_TITLE_COLOR;
+          ctx.fillText(title, 16, 13 - title_height);
+        }
+      }
+    }
+
+    /* Renders the node when collapsed */
+
+  }, {
+    key: "drawNodeCollapsed",
+    value: function drawNodeCollapsed(node, ctx, fgcolor, bgcolor) {
+      //draw default collapsed shape
+      ctx.strokeStyle = fgcolor || _LiteGraph2.default.NODE_DEFAULT_COLOR;
+      ctx.fillStyle = bgcolor || _LiteGraph2.default.NODE_DEFAULT_BGCOLOR;
+
+      var collapsed_radius = _LiteGraph2.default.NODE_COLLAPSED_RADIUS;
+
+      //circle shape
+      var shape = node.shape || "box";
+      if (shape == "circle") {
+        ctx.beginPath();
+        ctx.arc(node.size[0] * 0.5, node.size[1] * 0.5, collapsed_radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowColor = "rgba(0,0,0,0)";
+        ctx.stroke();
+
+        ctx.fillStyle = node.boxcolor || _LiteGraph2.default.NODE_DEFAULT_BOXCOLOR;
+        ctx.beginPath();
+        ctx.arc(node.size[0] * 0.5, node.size[1] * 0.5, collapsed_radius * 0.5, 0, Math.PI * 2);
+        ctx.fill();
+      } else if (shape == "round") //rounded box
+        {
+          ctx.beginPath();
+          ctx.roundRect(node.size[0] * 0.5 - collapsed_radius, node.size[1] * 0.5 - collapsed_radius, 2 * collapsed_radius, 2 * collapsed_radius, 5);
+          ctx.fill();
+          ctx.shadowColor = "rgba(0,0,0,0)";
+          ctx.stroke();
+
+          ctx.fillStyle = node.boxcolor || _LiteGraph2.default.NODE_DEFAULT_BOXCOLOR;
+          ctx.beginPath();
+          ctx.roundRect(node.size[0] * 0.5 - collapsed_radius * 0.5, node.size[1] * 0.5 - collapsed_radius * 0.5, collapsed_radius, collapsed_radius, 2);
+          ctx.fill();
+        } else //flat box
+        {
+          ctx.beginPath();
+          //ctx.rect(node.size[0] * 0.5 - collapsed_radius, node.size[1] * 0.5 - collapsed_radius, 2*collapsed_radius, 2*collapsed_radius);
+          ctx.rect(0, 0, node.size[0], collapsed_radius * 2);
+          ctx.fill();
+          ctx.shadowColor = "rgba(0,0,0,0)";
+          ctx.stroke();
+
+          ctx.fillStyle = node.boxcolor || _LiteGraph2.default.NODE_DEFAULT_BOXCOLOR;
+          ctx.beginPath();
+          //ctx.rect(node.size[0] * 0.5 - collapsed_radius*0.5, node.size[1] * 0.5 - collapsed_radius*0.5, collapsed_radius,collapsed_radius);
+          ctx.rect(collapsed_radius * 0.5, collapsed_radius * 0.5, collapsed_radius, collapsed_radius);
+          ctx.fill();
+        }
+    }
+
+    //OPTIMIZE THIS: precatch connections position instead of recomputing them every time
+
+  }, {
+    key: "drawConnections",
+    value: function drawConnections(ctx) {
+      var now = _LiteGraph2.default.getTime();
+
+      //draw connections
+      ctx.lineWidth = this.d_connections_width;
+
+      ctx.fillStyle = "#AAA";
+      ctx.strokeStyle = "#AAA";
+      ctx.globalAlpha = this.d_editor_alpha;
+      //for every node
+      for (var n = 0, l = this.d_graph._nodes.length; n < l; ++n) {
+        var node = this.d_graph._nodes[n];
+        //for every input (we render just inputs because it is easier as every slot can only have one input)
+        if (node.inputs && node.inputs.length) for (var i = 0; i < node.inputs.length; ++i) {
+          var _input4 = node.inputs[i];
+          if (!_input4 || _input4.link == null) continue;
+          var link_id = _input4.link;
+          var link = this.d_graph.links[link_id];
+          if (!link) continue;
+
+          var start_node = this.d_graph.getNodeById(link.origin_id);
+          if (start_node == null) continue;
+          var start_node_slot = link.origin_slot;
+          var start_node_slotpos = null;
+
+          if (start_node_slot == -1) start_node_slotpos = [start_node.pos[0] + 10, start_node.pos[1] + 10];else start_node_slotpos = start_node.getConnectionPos(false, start_node_slot);
+
+          var color = LGraphCanvas.link_type_colors[node.inputs[i].type] || this.d_efault_link_color;
+
+          this.d_renderLink(ctx, start_node_slotpos, node.getConnectionPos(true, i), color);
+
+          if (link && link._last_time && now - link._last_time < 1000) {
+            var f = 2.0 - (now - link._last_time) * 0.002;
+            var _color = "rgba(255,255,255, " + f.toFixed(2) + ")";
+            this.d_renderLink(ctx, start_node_slotpos, node.getConnectionPos(true, i), _color, true, f);
+          }
+        }
+      }
+      ctx.globalAlpha = 1;
+    }
+  }, {
+    key: "renderLink",
+    value: function renderLink(ctx, a, b, color, skip_border, flow) {
+      if (!this.d_highquality_render) {
+        ctx.beginPath();
+        ctx.moveTo(a[0], a[1]);
+        ctx.lineTo(b[0], b[1]);
+        ctx.stroke();
+        return;
+      }
+
+      var dist = distance(a, b);
+
+      if (this.d_render_connections_border && this.d_scale > 0.6) ctx.lineWidth = this.d_connections_width + 4;
+
+      ctx.beginPath();
+
+      if (this.d_render_curved_connections) //splines
+        {
+          ctx.moveTo(a[0], a[1]);
+          ctx.bezierCurveTo(a[0] + dist * 0.25, a[1], b[0] - dist * 0.25, b[1], b[0], b[1]);
+        } else //lines
+        {
+          ctx.moveTo(a[0] + 10, a[1]);
+          ctx.lineTo((a[0] + 10 + (b[0] - 10)) * 0.5, a[1]);
+          ctx.lineTo((a[0] + 10 + (b[0] - 10)) * 0.5, b[1]);
+          ctx.lineTo(b[0] - 10, b[1]);
+        }
+
+      if (this.d_render_connections_border && this.d_scale > 0.6 && !skip_border) {
+        ctx.strokeStyle = "rgba(0,0,0,0.5)";
+        ctx.stroke();
+      }
+
+      ctx.lineWidth = this.d_connections_width;
+      ctx.fillStyle = ctx.strokeStyle = color;
+      ctx.stroke();
+
+      //no symbols
+      if (!this.d_render_connection_arrows || this.d_scale < 0.6) return;
+
+      //render arrow
+      if (this.d_render_connection_arrows && this.d_scale > 0.6) {
+        var pos = this.d_computeConnectionPoint(a, b, 0.5);
+        var pos2 = this.d_computeConnectionPoint(a, b, 0.51);
+
+        //get two points in the bezier curve
+        var angle = 0;
+        if (this.d_render_curved_connections) angle = -Math.atan2(pos2[0] - pos[0], pos2[1] - pos[1]);else angle = b[1] > a[1] ? 0 : Math.PI;
+
+        ctx.save();
+        ctx.translate(pos[0], pos[1]);
+        ctx.rotate(angle);
+        ctx.beginPath();
+        ctx.moveTo(-5, -5);
+        ctx.lineTo(0, +5);
+        ctx.lineTo(+5, -5);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      if (flow) {
+        for (var i = 0; i < 5; ++i) {
+          var f = (_LiteGraph2.default.getTime() * 0.001 + i * 0.2) % 1;
+          var _pos2 = this.computeConnectionPoint(a, b, f);
+          ctx.beginPath();
+          ctx.arc(_pos2[0], _pos2[1], 5, 0, 2 * Math.PI);
+          ctx.fill();
+        }
+      }
+    }
+  }, {
+    key: "computeConnectionPoint",
+    value: function computeConnectionPoint(a, b, t) {
+      var dist = distance(a, b);
+      var p0 = a;
+      var p1 = [a[0] + dist * 0.25, a[1]];
+      var p2 = [b[0] - dist * 0.25, b[1]];
+      var p3 = b;
+
+      var c1 = (1 - t) * (1 - t) * (1 - t);
+      var c2 = 3 * ((1 - t) * (1 - t)) * t;
+      var c3 = 3 * (1 - t) * (t * t);
+      var c4 = t * t * t;
+
+      var x = c1 * p0[0] + c2 * p1[0] + c3 * p2[0] + c4 * p3[0];
+      var y = c1 * p0[1] + c2 * p1[1] + c3 * p2[1] + c4 * p3[1];
+      return [x, y];
+    }
+
+    /*
+    resizeCanvas (width,height)
+    {
+      this.d_canvas.width = width;
+      if(height)
+          this.d_canvas.height = height;
+    
+      this.d_bgcanvas.width = this.d_canvas.width;
+      this.d_bgcanvas.height = this.d_canvas.height;
+      this.draw(true,true);
+    }
+    */
+
+  }, {
+    key: "resize",
+    value: function resize(width, height) {
+      if (!width && !height) {
+        var parent = this.d_canvas.parentNode;
+        width = parent.offsetWidth;
+        height = parent.offsetHeight;
+      }
+
+      if (this.d_canvas.width == width && this.d_canvas.height == height) return;
+
+      this.d_canvas.width = width;
+      this.d_canvas.height = height;
+      this.d_bgcanvas.width = this.d_canvas.width;
+      this.d_bgcanvas.height = this.d_canvas.height;
+      this.setDirty(true, true);
+    }
+  }, {
+    key: "switchLiveMode",
+    value: function switchLiveMode(transition) {
+      if (!transition) {
+        this.d_live_mode = !this.d_live_mode;
+        this.d_dirty_canvas = true;
+        this.d_dirty_bgcanvas = true;
+        return;
+      }
+
+      var self = this;
+      var delta = this.d_live_mode ? 1.1 : 0.9;
+      if (this.d_live_mode) {
+        this.d_live_mode = false;
+        this.d_editor_alpha = 0.1;
+      }
+
+      var t = setInterval(function () {
+        self.editor_alpha *= delta;
+        self.dirty_canvas = true;
+        self.dirty_bgcanvas = true;
+
+        if (delta < 1 && self.editor_alpha < 0.01) {
+          clearInterval(t);
+          if (delta < 1) self.live_mode = true;
+        }
+        if (delta > 1 && self.editor_alpha > 0.99) {
+          clearInterval(t);
+          self.editor_alpha = 1;
+        }
+      }, 1);
+    }
+  }, {
+    key: "onNodeSelectionChange",
+    value: function onNodeSelectionChange(node) {
+      return; //disabled
+      //if(this.d_node_in_panel) this.d_showNodePanel(node);
+    }
+  }, {
+    key: "touchHandler",
+    value: function touchHandler(event) {
+      //alert("foo");
+      var touches = event.changedTouches,
+          first = touches[0],
+          type = "";
+
+      switch (event.type) {
+        case "touchstart":
+          type = "mousedown";break;
+        case "touchmove":
+          type = "mousemove";break;
+        case "touchend":
+          type = "mouseup";break;
+        default:
+          return;
+      }
+
+      //initMouseEvent(type, canBubble, cancelable, view, clickCount,
+      //           screenX, screenY, clientX, clientY, ctrlKey,
+      //           altKey, shiftKey, metaKey, button, relatedTarget);
+
+      var window = this.getCanvasWindow();
+      var document = window.document;
+
+      var simulatedEvent = document.createEvent("MouseEvent");
+      simulatedEvent.initMouseEvent(type, true, true, window, 1, first.screenX, first.screenY, first.clientX, first.clientY, false, false, false, false, 0 /*left*/, null);
+      first.target.dispatchEvent(simulatedEvent);
+      event.preventDefault();
+    }
+
+    /* CONTEXT MENU ********************/
+
+  }, {
+    key: "showEditPropertyValue",
+    value: function showEditPropertyValue(node, property, options) {
+      if (!node || node.properties[property] === undefined) return;
+
+      options = options || {};
+      var that = this;
+
+      var type = "string";
+
+      if (node.properties[property] !== null) type = _typeof(node.properties[property]);
+
+      var info = null;
+      if (node.getPropertyInfo) info = node.getPropertyInfo(property);
+      if (node.properties_info) {
+        for (var i = 0; i < node.properties_info.length; ++i) {
+          if (node.properties_info[i].name == property) {
+            info = node.properties_info[i];
+            break;
+          }
+        }
+      }
+
+      if (info !== undefined && info !== null && info.type) type = info.type;
+
+      var input_html = "";
+
+      if (type == "string" || type == "number") input_html = "<input autofocus type='text' class='value'/>";else if (type == "enum" && info.values) {
+        input_html = "<select autofocus type='text' class='value'>";
+        for (var _i7 in info.values) {
+          var v = info.values.constructor === Array ? info.values[_i7] : _i7;
+          input_html += "<option value='" + v + "' " + (v == node.properties[property] ? "selected" : "") + ">" + info.values[_i7] + "</option>";
+        }
+        input_html += "</select>";
+      } else if (type == "boolean") {
+        input_html = "<input autofocus type='checkbox' class='value' " + (node.properties[property] ? "checked" : "") + "/>";
+      }
+
+      var dialog = document.createElement("div");
+      dialog.className = "graphdialog";
+      dialog.innerHTML = "<span class='name'>" + property + "</span>" + input_html + "<button>OK</button>";
+
+      if (type == "enum" && info.values) {
+        var _input5 = dialog.querySelector("select");
+        _input5.addEventListener("change", function (e) {
+          setValue(e.target.value);
+          //let index = e.target.value;
+          //setValue( e.options[e.selectedIndex].value );
+        });
+      } else if (type == "boolean") {
+        var _input6 = dialog.querySelector("input");
+        if (_input6) {
+          _input6.addEventListener("click", function (e) {
+            setValue(!!_input6.checked);
+          });
+        }
+      } else {
+        var _input7 = dialog.querySelector("input");
+        if (_input7) {
+          _input7.value = node.properties[property] !== undefined ? node.properties[property] : "";
+          _input7.addEventListener("keydown", function (e) {
+            if (e.keyCode != 13) return;
+            inner();
+            e.preventDefault();
+            e.stopPropagation();
+          });
+        }
+      }
+
+      var rect = this.d_canvas.getClientRects()[0];
+      var offsetx = -20;
+      var offsety = -20;
+      if (rect) {
+        offsetx -= rect.left;
+        offsety -= rect.top;
+      }
+
+      if (options.event) {
+        dialog.style.left = options.event.pageX + offsetx + "px";
+        dialog.style.top = options.event.pageY + offsety + "px";
+      } else {
+        dialog.style.left = this.d_canvas.width * 0.5 + offsetx + "px";
+        dialog.style.top = this.d_canvas.height * 0.5 + offsety + "px";
+      }
+
+      var button = dialog.querySelector("button");
+      button.addEventListener("click", inner);
+
+      this.d_canvas.parentNode.appendChild(dialog);
+
+      function inner() {
+        setValue(input.value);
+      }
+
+      function setValue(value) {
+        if (typeof node.properties[property] == "number") value = Number(value);
+        node.properties[property] = value;
+
+        if (node.onPropertyChanged) node.onPropertyChanged(property, value);
+        dialog.parentNode.removeChild(dialog);
+        node.setDirtyCanvas(true, true);
+      }
+    }
+  }, {
+    key: "getCanvasMenuOptions",
+    value: function getCanvasMenuOptions() {
+      var options = null;
+      if (this.d_getMenuOptions) options = this.getMenuOptions();else {
+        options = [{ content: "Add Node", is_menu: true, callback: LGraphCanvas.onMenuAdd
+          //{content:"Collapse All", callback: LGraphCanvas.onMenuCollapseAll }
+        }];
+
+        if (this.d_graph_stack && this.d_graph_stack.length > 0) options = [{ content: "Close subgraph", callback: this.d_closeSubgraph.bind(this) }, null].concat(options);
+      }
+
+      if (this.d_getExtraMenuOptions) {
+        var extra = this.getExtraMenuOptions(this, options);
+        if (extra) options = options.concat(extra);
+      }
+
+      return options;
+    }
+  }, {
+    key: "getNodeMenuOptions",
+    value: function getNodeMenuOptions(node) {
+      var options = null;
+
+      if (node.getMenuOptions) options = node.getMenuOptions(this);else options = [{ content: "Inputs", is_menu: true, disabled: true, callback: LGraphCanvas.showMenuNodeInputs }, { content: "Outputs", is_menu: true, disabled: true, callback: LGraphCanvas.showMenuNodeOutputs }, null, { content: "Properties", is_menu: true, callback: LGraphCanvas.onShowMenuNodeProperties }, null, { content: "Title", callback: LGraphCanvas.onShowTitleEditor }, { content: "Mode", is_menu: true, callback: LGraphCanvas.onMenuNodeMode }, { content: "Collapse", callback: LGraphCanvas.onMenuNodeCollapse }, { content: "Pin", callback: LGraphCanvas.onMenuNodePin }, { content: "Colors", is_menu: true, callback: LGraphCanvas.onMenuNodeColors }, { content: "Shapes", is_menu: true, callback: LGraphCanvas.onMenuNodeShapes }, null];
+
+      if (node.getExtraMenuOptions) {
+        var extra = node.getExtraMenuOptions(this);
+        if (extra) {
+          extra.push(null);
+          options = extra.concat(options);
+        }
+      }
+
+      if (node.clonable !== false) options.push({ content: "Clone", callback: LGraphCanvas.onMenuNodeClone });
+      if (node.removable !== false) options.push(null, { content: "Remove", callback: LGraphCanvas.onMenuNodeRemove });
+
+      if (node.onGetInputs) {
+        var inputs = node.onGetInputs();
+        if (inputs && inputs.length) options[0].disabled = false;
+      }
+
+      if (node.onGetOutputs) {
+        var outputs = node.onGetOutputs();
+        if (outputs && outputs.length) options[1].disabled = false;
+      }
+
+      return options;
+    }
+  }, {
+    key: "processContextMenu",
+    value: function processContextMenu(node, event) {
+      var that = this;
+      var win = this.getCanvasWindow();
+
+      var menu_info = null;
+      var options = { event: event, callback: inner_option_clicked };
+
+      //check if mouse is in input
+      var slot = null;
+      if (node) slot = node.getSlotInPosition(event.canvasX, event.canvasY);
+
+      if (slot) {
+        menu_info = slot.locked ? ["Cannot remove"] : { "Remove Slot": slot };
+        options.title = slot.input ? slot.input.type : slot.output.type;
+        if (slot.input && slot.input.type == _LiteGraph2.default.EVENT) options.title = "Event";
+      } else menu_info = node ? this.d_getNodeMenuOptions(node) : this.d_getCanvasMenuOptions();
+
+      //show menu
+      if (!menu_info) return;
+
+      var menu = _LiteGraph2.default.createContextMenu(menu_info, options, win);
+
+      function inner_option_clicked(v, e) {
+        if (!v) return;
+
+        if (v == slot) {
+          if (v.input) node.removeInput(slot.slot);else if (v.output) node.removeOutput(slot.slot);
+          return;
+        }
+
+        if (v.callback) return v.callback.call(that, node, e, menu, that, event);
+      }
+    }
+  }], [{
+    key: "onMenuAdd",
+    value: function onMenuAdd(node, e, prev_menu, canvas, first_event) {
+      var ref_window = canvas.getCanvasWindow();
+
+      var values = _LiteGraph2.default.getNodeTypesCategories();
+      var entries = {};
+      for (var i in values) {
+        if (values[i]) entries[i] = { value: values[i], content: values[i], is_menu: true };
+      }var menu = _LiteGraph2.default.createContextMenu(entries, { event: e, callback: inner_clicked, from: prev_menu }, ref_window);
+
+      function inner_clicked(v, e) {
+        var category = v.value;
+        var node_types = _LiteGraph2.default.getNodeTypesInCategory(category);
+        var values = [];
+        for (var _i8 in node_types) {
+          values.push({ content: node_types[_i8].title, value: node_types[_i8].type });
+        }_LiteGraph2.default.createContextMenu(values, { event: e, callback: inner_create, from: menu }, ref_window);
+        return false;
+      }
+
+      function inner_create(v, e) {
+        var node = _LiteGraph2.default.createNode(v.value);
+        if (node) {
+          node.pos = canvas.convertEventToCanvas(first_event);
+          canvas.graph.add(node);
+        }
+      }
+
+      return false;
+    }
+  }, {
+    key: "showMenuNodeInputs",
+    value: function showMenuNodeInputs(node, e, prev_menu) {
+      if (!node) return;
+
+      var that = this;
+      var ref_window = this.getCanvasWindow();
+
+      var options = node.optional_inputs;
+      if (node.onGetInputs) options = node.onGetInputs();
+
+      var entries = [];
+      if (options) for (var i in options) {
+        var entry = options[i];
+        if (!entry) {
+          entries.push(null);
+          continue;
+        }
+        var label = entry[0];
+        if (entry[2] && entry[2].label) label = entry[2].label;
+        entries.push({ content: label, value: entry });
+      }
+
+      if (this.d_onMenuNodeInputs) entries = this.onMenuNodeInputs(entries);
+
+      if (!entries.length) return;
+
+      var menu = _LiteGraph2.default.createContextMenu(entries, { event: e, callback: inner_clicked, from: prev_menu }, ref_window);
+
+      function inner_clicked(v, e, prev) {
+        if (!node) return;
+
+        if (v.callback) v.callback.call(that, node, v, e, prev);
+
+        if (v.value) node.addInput(v.value[0], v.value[1], v.value[2]);
+      }
+
+      return false;
+    }
+  }, {
+    key: "showMenuNodeOutputs",
+    value: function showMenuNodeOutputs(node, e, prev_menu) {
+      if (!node) return;
+
+      var that = this;
+      var ref_window = this.getCanvasWindow();
+
+      var options = node.optional_outputs;
+      if (node.onGetOutputs) options = node.onGetOutputs();
+
+      var entries = [];
+      if (options) for (var i in options) {
+        var entry = options[i];
+        if (!entry) //separator?
+          {
+            entries.push(null);
+            continue;
+          }
+
+        if (node.findOutputSlot(entry[0]) != -1) continue; //skip the ones already on
+        var label = entry[0];
+        if (entry[2] && entry[2].label) label = entry[2].label;
+        var data = { content: label, value: entry };
+        if (entry[1] == _LiteGraph2.default.EVENT) data.className = "event";
+        entries.push(data);
+      }
+
+      if (this.d_onMenuNodeOutputs) entries = this.onMenuNodeOutputs(entries);
+
+      if (!entries.length) return;
+
+      var menu = _LiteGraph2.default.createContextMenu(entries, { event: e, callback: inner_clicked, from: prev_menu }, ref_window);
+
+      function inner_clicked(v, e, prev) {
+        if (!node) return;
+
+        if (v.callback) v.callback.call(that, node, v, e, prev);
+
+        if (!v.value) return;
+
+        var value = v.value[1];
+
+        if (value && (value.constructor === Object || value.constructor === Array)) //submenu why?
+          {
+            var _entries = [];
+            for (var _i9 in value) {
+              _entries.push({ content: _i9, value: value[_i9] });
+            }_LiteGraph2.default.createContextMenu(_entries, { event: e, callback: inner_clicked, from: prev_menu });
+            return false;
+          } else node.addOutput(v.value[0], v.value[1], v.value[2]);
+      }
+
+      return false;
+    }
+  }, {
+    key: "onShowMenuNodeProperties",
+    value: function onShowMenuNodeProperties(node, e, prev_menu) {
+      if (!node || !node.properties) return;
+
+      var that = this;
+      var ref_window = this.getCanvasWindow();
+
+      var entries = [];
+      for (var i in node.properties) {
+        var value = node.properties[i] !== undefined ? node.properties[i] : " ";
+        //value could contain invalid html characters, clean that
+        value = LGraphCanvas.decodeHTML(value);
+        entries.push({ content: "<span class='property_name'>" + i + "</span>" + "<span class='property_value'>" + value + "</span>", value: i });
+      }
+      if (!entries.length) return;
+
+      var menu = _LiteGraph2.default.createContextMenu(entries, { event: e, callback: inner_clicked, from: prev_menu, allow_html: true }, ref_window);
+
+      function inner_clicked(v, e, prev) {
+        if (!node) return;
+        that.showEditPropertyValue(node, v.value, { event: e });
+      }
+
+      return false;
+    }
+  }, {
+    key: "decodeHTML",
+    value: function decodeHTML(str) {
+      var e = document.createElement("div");
+      e.innerText = str;
+      return e.innerHTML;
+    }
+  }, {
+    key: "onShowTitleEditor",
+    value: function onShowTitleEditor(node, event) {
+      var input_html = "";
+
+      var dialog = document.createElement("div");
+      dialog.className = "graphdialog";
+      dialog.innerHTML = "<span class='name'>Title</span><input autofocus type='text' class='value'/><button>OK</button>";
+      var input = dialog.querySelector("input");
+      if (input) {
+        input.value = node.title;
+        input.addEventListener("keydown", function (e) {
+          if (e.keyCode != 13) return;
+          inner();
+          e.preventDefault();
+          e.stopPropagation();
+        });
+      }
+
+      var rect = this.d_canvas.getClientRects()[0];
+      var offsetx = -20;
+      var offsety = -20;
+      if (rect) {
+        offsetx -= rect.left;
+        offsety -= rect.top;
+      }
+
+      if (event) {
+        dialog.style.left = event.pageX + offsetx + "px";
+        dialog.style.top = event.pageY + offsety + "px";
+      } else {
+        dialog.style.left = this.d_canvas.width * 0.5 + offsetx + "px";
+        dialog.style.top = this.d_canvas.height * 0.5 + offsety + "px";
+      }
+
+      var button = dialog.querySelector("button");
+      button.addEventListener("click", inner);
+      this.d_canvas.parentNode.appendChild(dialog);
+
+      function inner() {
+        setValue(input.value);
+      }
+
+      function setValue(value) {
+        node.title = value;
+        dialog.parentNode.removeChild(dialog);
+        node.setDirtyCanvas(true, true);
+      }
+    }
+  }, {
+    key: "onMenuNodeCollapse",
+    value: function onMenuNodeCollapse(node) {
+      node.flags.collapsed = !node.flags.collapsed;
+      node.setDirtyCanvas(true, true);
+    }
+  }, {
+    key: "onMenuNodePin",
+    value: function onMenuNodePin(node) {
+      node.pin();
+    }
+  }, {
+    key: "onMenuNodeMode",
+    value: function onMenuNodeMode(node, e, prev_menu) {
+      _LiteGraph2.default.createContextMenu(["Always", "On Event", "Never"], { event: e, callback: inner_clicked, from: prev_menu });
+
+      function inner_clicked(v) {
+        if (!node) return;
+        switch (v) {
+          case "On Event":
+            node.mode = _LiteGraph2.default.ON_EVENT;break;
+          case "Never":
+            node.mode = _LiteGraph2.default.NEVER;break;
+          case "Always":
+          default:
+            node.mode = _LiteGraph2.default.ALWAYS;break;
+        }
+      }
+
+      return false;
+    }
+  }, {
+    key: "onMenuNodeColors",
+    value: function onMenuNodeColors(node, e, prev_menu) {
+      var values = [];
+      for (var i in LGraphCanvas.node_colors) {
+        var color = LGraphCanvas.node_colors[i];
+        var value = { value: i, content: "<span style='display: block; color:" + color.color + "; background-color:" + color.bgcolor + "'>" + i + "</span>" };
+        values.push(value);
+      }
+      _LiteGraph2.default.createContextMenu(values, { event: e, callback: inner_clicked, from: prev_menu });
+
+      function inner_clicked(v) {
+        if (!node) return;
+        var color = LGraphCanvas.node_colors[v.value];
+        if (color) {
+          node.color = color.color;
+          node.bgcolor = color.bgcolor;
+          node.setDirtyCanvas(true);
+        }
+      }
+
+      return false;
+    }
+  }, {
+    key: "onMenuNodeShapes",
+    value: function onMenuNodeShapes(node, e) {
+      _LiteGraph2.default.createContextMenu(["box", "round"], { event: e, callback: inner_clicked });
+
+      function inner_clicked(v) {
+        if (!node) return;
+        node.shape = v;
+        node.setDirtyCanvas(true);
+      }
+
+      return false;
+    }
+  }, {
+    key: "onMenuNodeRemove",
+    value: function onMenuNodeRemove(node) {
+      if (node.removable == false) return;
+      node.graph.remove(node);
+      node.setDirtyCanvas(true, true);
+    }
+  }, {
+    key: "onMenuNodeClone",
+    value: function onMenuNodeClone(node) {
+      if (node.clonable == false) return;
+      var newnode = node.clone();
+      if (!newnode) return;
+      newnode.pos = [node.pos[0] + 5, node.pos[1] + 5];
+      node.graph.add(newnode);
+      node.setDirtyCanvas(true, true);
+    }
+  }]);
+
+  return LGraphCanvas;
+}();
+
+exports.default = LGraphCanvas;
+
+/***/ }),
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92117,7 +96363,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 224 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92146,7 +96392,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 225 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92154,10 +96400,10 @@ exports.default = {
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var EditorGraphicsState = __webpack_require__(227).default;
-var EditorGraphicsGetters = __webpack_require__(224);
-var EditorGraphicsActions = __webpack_require__(223);
-var EditorGraphicsMutations = __webpack_require__(226);
+var EditorGraphicsState = __webpack_require__(230).default;
+var EditorGraphicsGetters = __webpack_require__(227);
+var EditorGraphicsActions = __webpack_require__(226);
+var EditorGraphicsMutations = __webpack_require__(229);
 
 var EditorGraphicsModule = function EditorGraphicsModule() {
     _classCallCheck(this, EditorGraphicsModule);
@@ -92173,7 +96419,7 @@ var EditorGraphicsModule = function EditorGraphicsModule() {
 exports.default = EditorGraphicsModule;
 
 /***/ }),
-/* 226 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92226,7 +96472,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 227 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92245,7 +96491,7 @@ var EditorGraphicsState = function EditorGraphicsState(w, h) {
 exports.default = EditorGraphicsState;
 
 /***/ }),
-/* 228 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92269,7 +96515,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 229 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92292,7 +96538,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 230 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92300,10 +96546,10 @@ exports.default = {
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var ParticleState = __webpack_require__(232).default;
-var ParticleGetters = __webpack_require__(229);
-var ParticleActions = __webpack_require__(228);
-var ParticleMutations = __webpack_require__(231);
+var ParticleState = __webpack_require__(235).default;
+var ParticleGetters = __webpack_require__(232);
+var ParticleActions = __webpack_require__(231);
+var ParticleMutations = __webpack_require__(234);
 
 var ParticleModule = function ParticleModule() {
     _classCallCheck(this, ParticleModule);
@@ -92317,7 +96563,7 @@ var ParticleModule = function ParticleModule() {
 exports.default = ParticleModule;
 
 /***/ }),
-/* 231 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92344,7 +96590,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 232 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92362,7 +96608,7 @@ var ParticleState = function ParticleState() {
 exports.default = ParticleState;
 
 /***/ }),
-/* 233 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92410,7 +96656,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 234 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92439,7 +96685,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 235 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92447,10 +96693,10 @@ exports.default = {
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var ThreeGraphicsState = __webpack_require__(237).default;
-var ThreeGraphicsGetters = __webpack_require__(234);
-var ThreeGraphicsActions = __webpack_require__(233);
-var ThreeGraphicsMutations = __webpack_require__(236);
+var ThreeGraphicsState = __webpack_require__(240).default;
+var ThreeGraphicsGetters = __webpack_require__(237);
+var ThreeGraphicsActions = __webpack_require__(236);
+var ThreeGraphicsMutations = __webpack_require__(239);
 
 var ThreeGraphicsModule = function ThreeGraphicsModule() {
     _classCallCheck(this, ThreeGraphicsModule);
@@ -92466,7 +96712,7 @@ var ThreeGraphicsModule = function ThreeGraphicsModule() {
 exports.default = ThreeGraphicsModule;
 
 /***/ }),
-/* 236 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92519,7 +96765,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 237 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92538,7 +96784,7 @@ var ThreeGraphicsState = function ThreeGraphicsState(w, h) {
 exports.default = ThreeGraphicsState;
 
 /***/ }),
-/* 238 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92573,7 +96819,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 239 */
+/* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92608,7 +96854,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 240 */
+/* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92616,10 +96862,10 @@ exports.default = {
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var VTKGraphicsState = __webpack_require__(242).default;
-var VTKGraphicsGetters = __webpack_require__(239);
-var VTKGraphicsActions = __webpack_require__(238);
-var VTKGraphicsMutations = __webpack_require__(241);
+var VTKGraphicsState = __webpack_require__(245).default;
+var VTKGraphicsGetters = __webpack_require__(242);
+var VTKGraphicsActions = __webpack_require__(241);
+var VTKGraphicsMutations = __webpack_require__(244);
 
 var VTKGraphicsModule = function VTKGraphicsModule() {
     _classCallCheck(this, VTKGraphicsModule);
@@ -92633,7 +96879,7 @@ var VTKGraphicsModule = function VTKGraphicsModule() {
 exports.default = VTKGraphicsModule;
 
 /***/ }),
-/* 241 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92672,7 +96918,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 242 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92692,7 +96938,7 @@ var VTKGraphicsState = function VTKGraphicsState() {
 exports.default = VTKGraphicsState;
 
 /***/ }),
-/* 243 */
+/* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92813,7 +97059,7 @@ function fromByteArray (uint8) {
 
 
 /***/ }),
-/* 244 */
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/*
@@ -93099,31 +97345,31 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*
 
 
 /***/ }),
-/* 245 */
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {var aes = __webpack_require__(39)
+var AuthCipher = __webpack_require__(84)
+var Buffer = __webpack_require__(4).Buffer
+var MODES = __webpack_require__(56)
+var StreamCipher = __webpack_require__(87)
 var Transform = __webpack_require__(20)
-var inherits = __webpack_require__(2)
-var modes = __webpack_require__(40)
-var StreamCipher = __webpack_require__(90)
-var AuthCipher = __webpack_require__(83)
-var ebtk = __webpack_require__(44)
+var aes = __webpack_require__(39)
+var ebtk = __webpack_require__(42)
+var inherits = __webpack_require__(1)
 
-inherits(Decipher, Transform)
 function Decipher (mode, key, iv) {
-  if (!(this instanceof Decipher)) {
-    return new Decipher(mode, key, iv)
-  }
   Transform.call(this)
+
   this._cache = new Splitter()
   this._last = void 0
   this._cipher = new aes.AES(key)
-  this._prev = new Buffer(iv.length)
-  iv.copy(this._prev)
+  this._prev = Buffer.from(iv)
   this._mode = mode
   this._autopadding = true
 }
+
+inherits(Decipher, Transform)
+
 Decipher.prototype._update = function (data) {
   this._cache.add(data)
   var chunk
@@ -93135,6 +97381,7 @@ Decipher.prototype._update = function (data) {
   }
   return Buffer.concat(out)
 }
+
 Decipher.prototype._final = function () {
   var chunk = this._cache.flush()
   if (this._autopadding) {
@@ -93143,16 +97390,16 @@ Decipher.prototype._final = function () {
     throw new Error('data not multiple of block length')
   }
 }
+
 Decipher.prototype.setAutoPadding = function (setTo) {
   this._autopadding = !!setTo
   return this
 }
+
 function Splitter () {
-  if (!(this instanceof Splitter)) {
-    return new Splitter()
-  }
-  this.cache = new Buffer('')
+  this.cache = Buffer.allocUnsafe(0)
 }
+
 Splitter.prototype.add = function (data) {
   this.cache = Buffer.concat([this.cache, data])
 }
@@ -93172,13 +97419,14 @@ Splitter.prototype.get = function (autoPadding) {
       return out
     }
   }
+
   return null
 }
+
 Splitter.prototype.flush = function () {
-  if (this.cache.length) {
-    return this.cache
-  }
+  if (this.cache.length) return this.cache
 }
+
 function unpad (last) {
   var padded = last[15]
   var i = -1
@@ -93187,118 +97435,106 @@ function unpad (last) {
       throw new Error('unable to decrypt data')
     }
   }
-  if (padded === 16) {
-    return
-  }
+  if (padded === 16) return
+
   return last.slice(0, 16 - padded)
 }
 
-var modelist = {
-  ECB: __webpack_require__(88),
-  CBC: __webpack_require__(84),
-  CFB: __webpack_require__(85),
-  CFB8: __webpack_require__(87),
-  CFB1: __webpack_require__(86),
-  OFB: __webpack_require__(89),
-  CTR: __webpack_require__(41),
-  GCM: __webpack_require__(41)
-}
-
 function createDecipheriv (suite, password, iv) {
-  var config = modes[suite.toLowerCase()]
-  if (!config) {
-    throw new TypeError('invalid suite type')
-  }
-  if (typeof iv === 'string') {
-    iv = new Buffer(iv)
-  }
-  if (typeof password === 'string') {
-    password = new Buffer(password)
-  }
-  if (password.length !== config.key / 8) {
-    throw new TypeError('invalid key length ' + password.length)
-  }
-  if (iv.length !== config.iv) {
-    throw new TypeError('invalid iv length ' + iv.length)
-  }
+  var config = MODES[suite.toLowerCase()]
+  if (!config) throw new TypeError('invalid suite type')
+
+  if (typeof iv === 'string') iv = Buffer.from(iv)
+  if (iv.length !== config.iv) throw new TypeError('invalid iv length ' + iv.length)
+
+  if (typeof password === 'string') password = Buffer.from(password)
+  if (password.length !== config.key / 8) throw new TypeError('invalid key length ' + password.length)
+
   if (config.type === 'stream') {
-    return new StreamCipher(modelist[config.mode], password, iv, true)
+    return new StreamCipher(config.module, password, iv, true)
   } else if (config.type === 'auth') {
-    return new AuthCipher(modelist[config.mode], password, iv, true)
+    return new AuthCipher(config.module, password, iv, true)
   }
-  return new Decipher(modelist[config.mode], password, iv)
+
+  return new Decipher(config.module, password, iv)
 }
 
 function createDecipher (suite, password) {
-  var config = modes[suite.toLowerCase()]
-  if (!config) {
-    throw new TypeError('invalid suite type')
-  }
+  var config = MODES[suite.toLowerCase()]
+  if (!config) throw new TypeError('invalid suite type')
+
   var keys = ebtk(password, false, config.key, config.iv)
   return createDecipheriv(suite, keys.key, keys.iv)
 }
+
 exports.createDecipher = createDecipher
 exports.createDecipheriv = createDecipheriv
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ }),
-/* 246 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {var aes = __webpack_require__(39)
+var MODES = __webpack_require__(56)
+var AuthCipher = __webpack_require__(84)
+var Buffer = __webpack_require__(4).Buffer
+var StreamCipher = __webpack_require__(87)
 var Transform = __webpack_require__(20)
-var inherits = __webpack_require__(2)
-var modes = __webpack_require__(40)
-var ebtk = __webpack_require__(44)
-var StreamCipher = __webpack_require__(90)
-var AuthCipher = __webpack_require__(83)
-inherits(Cipher, Transform)
+var aes = __webpack_require__(39)
+var ebtk = __webpack_require__(42)
+var inherits = __webpack_require__(1)
+
 function Cipher (mode, key, iv) {
-  if (!(this instanceof Cipher)) {
-    return new Cipher(mode, key, iv)
-  }
   Transform.call(this)
+
   this._cache = new Splitter()
   this._cipher = new aes.AES(key)
-  this._prev = new Buffer(iv.length)
-  iv.copy(this._prev)
+  this._prev = Buffer.from(iv)
   this._mode = mode
   this._autopadding = true
 }
+
+inherits(Cipher, Transform)
+
 Cipher.prototype._update = function (data) {
   this._cache.add(data)
   var chunk
   var thing
   var out = []
+
   while ((chunk = this._cache.get())) {
     thing = this._mode.encrypt(this, chunk)
     out.push(thing)
   }
+
   return Buffer.concat(out)
 }
+
+var PADDING = Buffer.alloc(16, 0x10)
+
 Cipher.prototype._final = function () {
   var chunk = this._cache.flush()
   if (this._autopadding) {
     chunk = this._mode.encrypt(this, chunk)
     this._cipher.scrub()
     return chunk
-  } else if (chunk.toString('hex') !== '10101010101010101010101010101010') {
+  }
+
+  if (!chunk.equals(PADDING)) {
     this._cipher.scrub()
     throw new Error('data not multiple of block length')
   }
 }
+
 Cipher.prototype.setAutoPadding = function (setTo) {
   this._autopadding = !!setTo
   return this
 }
 
 function Splitter () {
-  if (!(this instanceof Splitter)) {
-    return new Splitter()
-  }
-  this.cache = new Buffer('')
+  this.cache = Buffer.allocUnsafe(0)
 }
+
 Splitter.prototype.add = function (data) {
   this.cache = Buffer.concat([this.cache, data])
 }
@@ -93311,57 +97547,42 @@ Splitter.prototype.get = function () {
   }
   return null
 }
+
 Splitter.prototype.flush = function () {
   var len = 16 - this.cache.length
-  var padBuff = new Buffer(len)
+  var padBuff = Buffer.allocUnsafe(len)
 
   var i = -1
   while (++i < len) {
     padBuff.writeUInt8(len, i)
   }
-  var out = Buffer.concat([this.cache, padBuff])
-  return out
-}
-var modelist = {
-  ECB: __webpack_require__(88),
-  CBC: __webpack_require__(84),
-  CFB: __webpack_require__(85),
-  CFB8: __webpack_require__(87),
-  CFB1: __webpack_require__(86),
-  OFB: __webpack_require__(89),
-  CTR: __webpack_require__(41),
-  GCM: __webpack_require__(41)
+
+  return Buffer.concat([this.cache, padBuff])
 }
 
 function createCipheriv (suite, password, iv) {
-  var config = modes[suite.toLowerCase()]
-  if (!config) {
-    throw new TypeError('invalid suite type')
-  }
-  if (typeof iv === 'string') {
-    iv = new Buffer(iv)
-  }
-  if (typeof password === 'string') {
-    password = new Buffer(password)
-  }
-  if (password.length !== config.key / 8) {
-    throw new TypeError('invalid key length ' + password.length)
-  }
-  if (iv.length !== config.iv) {
-    throw new TypeError('invalid iv length ' + iv.length)
-  }
+  var config = MODES[suite.toLowerCase()]
+  if (!config) throw new TypeError('invalid suite type')
+
+  if (typeof password === 'string') password = Buffer.from(password)
+  if (password.length !== config.key / 8) throw new TypeError('invalid key length ' + password.length)
+
+  if (typeof iv === 'string') iv = Buffer.from(iv)
+  if (iv.length !== config.iv) throw new TypeError('invalid iv length ' + iv.length)
+
   if (config.type === 'stream') {
-    return new StreamCipher(modelist[config.mode], password, iv)
+    return new StreamCipher(config.module, password, iv)
   } else if (config.type === 'auth') {
-    return new AuthCipher(modelist[config.mode], password, iv)
+    return new AuthCipher(config.module, password, iv)
   }
-  return new Cipher(modelist[config.mode], password, iv)
+
+  return new Cipher(config.module, password, iv)
 }
+
 function createCipher (suite, password) {
-  var config = modes[suite.toLowerCase()]
-  if (!config) {
-    throw new TypeError('invalid suite type')
-  }
+  var config = MODES[suite.toLowerCase()]
+  if (!config) throw new TypeError('invalid suite type')
+
   var keys = ebtk(password, false, config.key, config.iv)
   return createCipheriv(suite, keys.key, keys.iv)
 }
@@ -93369,21 +97590,38 @@ function createCipher (suite, password) {
 exports.createCipheriv = createCipheriv
 exports.createCipher = createCipher
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ }),
-/* 247 */
+/* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {var zeros = new Buffer(16)
-zeros.fill(0)
-module.exports = GHASH
+var Buffer = __webpack_require__(4).Buffer
+var ZEROES = Buffer.alloc(16, 0)
+
+function toArray (buf) {
+  return [
+    buf.readUInt32BE(0),
+    buf.readUInt32BE(4),
+    buf.readUInt32BE(8),
+    buf.readUInt32BE(12)
+  ]
+}
+
+function fromArray (out) {
+  var buf = Buffer.allocUnsafe(16)
+  buf.writeUInt32BE(out[0] >>> 0, 0)
+  buf.writeUInt32BE(out[1] >>> 0, 4)
+  buf.writeUInt32BE(out[2] >>> 0, 8)
+  buf.writeUInt32BE(out[3] >>> 0, 12)
+  return buf
+}
+
 function GHASH (key) {
   this.h = key
-  this.state = new Buffer(16)
-  this.state.fill(0)
-  this.cache = new Buffer('')
+  this.state = Buffer.alloc(16, 0)
+  this.cache = Buffer.allocUnsafe(0)
 }
+
 // from http://bitwiseshiftleft.github.io/sjcl/doc/symbols/src/core_gcm.js.html
 // by Juho Vähä-Herttua
 GHASH.prototype.ghash = function (block) {
@@ -93397,17 +97635,20 @@ GHASH.prototype.ghash = function (block) {
 GHASH.prototype._multiply = function () {
   var Vi = toArray(this.h)
   var Zi = [0, 0, 0, 0]
-  var j, xi, lsb_Vi
+  var j, xi, lsbVi
   var i = -1
   while (++i < 128) {
-    xi = (this.state[~~(i / 8)] & (1 << (7 - i % 8))) !== 0
+    xi = (this.state[~~(i / 8)] & (1 << (7 - (i % 8)))) !== 0
     if (xi) {
       // Z_i+1 = Z_i ^ V_i
-      Zi = xor(Zi, Vi)
+      Zi[0] ^= Vi[0]
+      Zi[1] ^= Vi[1]
+      Zi[2] ^= Vi[2]
+      Zi[3] ^= Vi[3]
     }
 
     // Store the value of LSB(V_i)
-    lsb_Vi = (Vi[3] & 1) !== 0
+    lsbVi = (Vi[3] & 1) !== 0
 
     // V_i+1 = V_i >> 1
     for (j = 3; j > 0; j--) {
@@ -93416,12 +97657,13 @@ GHASH.prototype._multiply = function () {
     Vi[0] = Vi[0] >>> 1
 
     // If LSB(V_i) is 1, V_i+1 = (V_i >> 1) ^ R
-    if (lsb_Vi) {
+    if (lsbVi) {
       Vi[0] = Vi[0] ^ (0xe1 << 24)
     }
   }
   this.state = fromArray(Zi)
 }
+
 GHASH.prototype.update = function (buf) {
   this.cache = Buffer.concat([this.cache, buf])
   var chunk
@@ -93431,60 +97673,204 @@ GHASH.prototype.update = function (buf) {
     this.ghash(chunk)
   }
 }
+
 GHASH.prototype.final = function (abl, bl) {
   if (this.cache.length) {
-    this.ghash(Buffer.concat([this.cache, zeros], 16))
+    this.ghash(Buffer.concat([this.cache, ZEROES], 16))
   }
-  this.ghash(fromArray([
-    0, abl,
-    0, bl
-  ]))
+
+  this.ghash(fromArray([0, abl, 0, bl]))
   return this.state
 }
 
-function toArray (buf) {
-  return [
-    buf.readUInt32BE(0),
-    buf.readUInt32BE(4),
-    buf.readUInt32BE(8),
-    buf.readUInt32BE(12)
-  ]
-}
-function fromArray (out) {
-  out = out.map(fixup_uint32)
-  var buf = new Buffer(16)
-  buf.writeUInt32BE(out[0], 0)
-  buf.writeUInt32BE(out[1], 4)
-  buf.writeUInt32BE(out[2], 8)
-  buf.writeUInt32BE(out[3], 12)
-  return buf
-}
-var uint_max = Math.pow(2, 32)
-function fixup_uint32 (x) {
-  var ret, x_pos
-  ret = x > uint_max || x < 0 ? (x_pos = Math.abs(x) % uint_max, x < 0 ? uint_max - x_pos : x_pos) : x
-  return ret
-}
-function xor (a, b) {
-  return [
-    a[0] ^ b[0],
-    a[1] ^ b[1],
-    a[2] ^ b[2],
-    a[3] ^ b[3]
-  ]
-}
+module.exports = GHASH
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ }),
-/* 248 */
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var ebtk = __webpack_require__(44)
+var xor = __webpack_require__(34)
+
+exports.encrypt = function (self, block) {
+  var data = xor(block, self._prev)
+
+  self._prev = self._cipher.encryptBlock(data)
+  return self._prev
+}
+
+exports.decrypt = function (self, block) {
+  var pad = self._prev
+
+  self._prev = block
+  var out = self._cipher.decryptBlock(block)
+
+  return xor(out, pad)
+}
+
+
+/***/ }),
+/* 252 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Buffer = __webpack_require__(4).Buffer
+var xor = __webpack_require__(34)
+
+function encryptStart (self, data, decrypt) {
+  var len = data.length
+  var out = xor(data, self._cache)
+  self._cache = self._cache.slice(len)
+  self._prev = Buffer.concat([self._prev, decrypt ? data : out])
+  return out
+}
+
+exports.encrypt = function (self, data, decrypt) {
+  var out = Buffer.allocUnsafe(0)
+  var len
+
+  while (data.length) {
+    if (self._cache.length === 0) {
+      self._cache = self._cipher.encryptBlock(self._prev)
+      self._prev = Buffer.allocUnsafe(0)
+    }
+
+    if (self._cache.length <= data.length) {
+      len = self._cache.length
+      out = Buffer.concat([out, encryptStart(self, data.slice(0, len), decrypt)])
+      data = data.slice(len)
+    } else {
+      out = Buffer.concat([out, encryptStart(self, data, decrypt)])
+      break
+    }
+  }
+
+  return out
+}
+
+
+/***/ }),
+/* 253 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Buffer = __webpack_require__(4).Buffer
+
+function encryptByte (self, byteParam, decrypt) {
+  var pad
+  var i = -1
+  var len = 8
+  var out = 0
+  var bit, value
+  while (++i < len) {
+    pad = self._cipher.encryptBlock(self._prev)
+    bit = (byteParam & (1 << (7 - i))) ? 0x80 : 0
+    value = pad[0] ^ bit
+    out += ((value & 0x80) >> (i % 8))
+    self._prev = shiftIn(self._prev, decrypt ? bit : value)
+  }
+  return out
+}
+
+function shiftIn (buffer, value) {
+  var len = buffer.length
+  var i = -1
+  var out = Buffer.allocUnsafe(buffer.length)
+  buffer = Buffer.concat([buffer, Buffer.from([value])])
+
+  while (++i < len) {
+    out[i] = buffer[i] << 1 | buffer[i + 1] >> (7)
+  }
+
+  return out
+}
+
+exports.encrypt = function (self, chunk, decrypt) {
+  var len = chunk.length
+  var out = Buffer.allocUnsafe(len)
+  var i = -1
+
+  while (++i < len) {
+    out[i] = encryptByte(self, chunk[i], decrypt)
+  }
+
+  return out
+}
+
+
+/***/ }),
+/* 254 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(Buffer) {function encryptByte (self, byteParam, decrypt) {
+  var pad = self._cipher.encryptBlock(self._prev)
+  var out = pad[0] ^ byteParam
+
+  self._prev = Buffer.concat([
+    self._prev.slice(1),
+    Buffer.from([decrypt ? byteParam : out])
+  ])
+
+  return out
+}
+
+exports.encrypt = function (self, chunk, decrypt) {
+  var len = chunk.length
+  var out = Buffer.allocUnsafe(len)
+  var i = -1
+
+  while (++i < len) {
+    out[i] = encryptByte(self, chunk[i], decrypt)
+  }
+
+  return out
+}
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2).Buffer))
+
+/***/ }),
+/* 255 */
+/***/ (function(module, exports) {
+
+exports.encrypt = function (self, block) {
+  return self._cipher.encryptBlock(block)
+}
+
+exports.decrypt = function (self, block) {
+  return self._cipher.decryptBlock(block)
+}
+
+
+/***/ }),
+/* 256 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(Buffer) {var xor = __webpack_require__(34)
+
+function getBlock (self) {
+  self._prev = self._cipher.encryptBlock(self._prev)
+  return self._prev
+}
+
+exports.encrypt = function (self, chunk) {
+  while (self._cache.length < chunk.length) {
+    self._cache = Buffer.concat([self._cache, getBlock(self)])
+  }
+
+  var pad = self._cache.slice(0, chunk.length)
+  self._cache = self._cache.slice(chunk.length)
+  return xor(chunk, pad)
+}
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2).Buffer))
+
+/***/ }),
+/* 257 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var ebtk = __webpack_require__(42)
 var aes = __webpack_require__(55)
-var DES = __webpack_require__(249)
-var desModes = __webpack_require__(250)
-var aesModes = __webpack_require__(40)
+var DES = __webpack_require__(258)
+var desModes = __webpack_require__(259)
+var aesModes = __webpack_require__(56)
 function createCipher (suite, password) {
   var keyLen, ivLen
   suite = suite.toLowerCase()
@@ -93556,12 +97942,12 @@ exports.listCiphers = exports.getCiphers = getCiphers
 
 
 /***/ }),
-/* 249 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var CipherBase = __webpack_require__(20)
-var des = __webpack_require__(58)
-var inherits = __webpack_require__(2)
+var des = __webpack_require__(59)
+var inherits = __webpack_require__(1)
 
 var modes = {
   'des-ede3-cbc': des.CBC.instantiate(des.EDE),
@@ -93603,10 +97989,10 @@ DES.prototype._final = function () {
   return new Buffer(this._des.final())
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2).Buffer))
 
 /***/ }),
-/* 250 */
+/* 259 */
 /***/ (function(module, exports) {
 
 exports['des-ecb'] = {
@@ -93636,23 +98022,23 @@ exports['des-ede'] = {
 
 
 /***/ }),
-/* 251 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(91)
+module.exports = __webpack_require__(88)
 
 
 /***/ }),
-/* 252 */
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var createHash = __webpack_require__(36)
-var stream = __webpack_require__(48)
-var inherits = __webpack_require__(2)
-var sign = __webpack_require__(253)
-var verify = __webpack_require__(254)
+var stream = __webpack_require__(46)
+var inherits = __webpack_require__(1)
+var sign = __webpack_require__(262)
+var verify = __webpack_require__(263)
 
-var algorithms = __webpack_require__(91)
+var algorithms = __webpack_require__(88)
 Object.keys(algorithms).forEach(function (key) {
   algorithms[key].id = new Buffer(algorithms[key].id, 'hex')
   algorithms[key.toLowerCase()] = algorithms[key]
@@ -93738,19 +98124,19 @@ module.exports = {
   createVerify: createVerify
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2).Buffer))
 
 /***/ }),
-/* 253 */
+/* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {// much of this based on https://github.com/indutny/self-signed/blob/gh-pages/lib/rsa.js
-var createHmac = __webpack_require__(93)
-var crt = __webpack_require__(56)
-var EC = __webpack_require__(8).ec
-var BN = __webpack_require__(5)
-var parseKeys = __webpack_require__(45)
-var curves = __webpack_require__(92)
+var createHmac = __webpack_require__(90)
+var crt = __webpack_require__(57)
+var EC = __webpack_require__(9).ec
+var BN = __webpack_require__(6)
+var parseKeys = __webpack_require__(43)
+var curves = __webpack_require__(89)
 
 function sign (hash, key, hashType, signType, tag) {
   var priv = parseKeys(key)
@@ -93890,17 +98276,17 @@ module.exports = sign
 module.exports.getKey = getKey
 module.exports.makeKey = makeKey
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2).Buffer))
 
 /***/ }),
-/* 254 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {// much of this based on https://github.com/indutny/self-signed/blob/gh-pages/lib/rsa.js
-var BN = __webpack_require__(5)
-var EC = __webpack_require__(8).ec
-var parseKeys = __webpack_require__(45)
-var curves = __webpack_require__(92)
+var BN = __webpack_require__(6)
+var EC = __webpack_require__(9).ec
+var parseKeys = __webpack_require__(43)
+var curves = __webpack_require__(89)
 
 function verify (sig, hash, key, signType, tag) {
   var pub = parseKeys(key)
@@ -93980,14 +98366,14 @@ function checkValue (b, q) {
 
 module.exports = verify
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2).Buffer))
 
 /***/ }),
-/* 255 */
+/* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {var elliptic = __webpack_require__(8);
-var BN = __webpack_require__(5);
+/* WEBPACK VAR INJECTION */(function(Buffer) {var elliptic = __webpack_require__(9);
+var BN = __webpack_require__(6);
 
 module.exports = function createECDH(curve) {
 	return new ECDH(curve);
@@ -94109,10 +98495,10 @@ function formatReturnValue(bn, enc, len) {
 	}
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2).Buffer))
 
 /***/ }),
-/* 256 */
+/* 265 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -94147,16 +98533,16 @@ module.exports = function hash (buf, fn) {
   return buf
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2).Buffer))
 
 /***/ }),
-/* 257 */
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var inherits = __webpack_require__(2)
-var Buffer = __webpack_require__(13).Buffer
+var inherits = __webpack_require__(1)
+var Buffer = __webpack_require__(4).Buffer
 
 var Base = __webpack_require__(20)
 
@@ -94203,7 +98589,7 @@ module.exports = Hmac
 
 
 /***/ }),
-/* 258 */
+/* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -94211,20 +98597,20 @@ module.exports = Hmac
 
 exports.randomBytes = exports.rng = exports.pseudoRandomBytes = exports.prng = __webpack_require__(38)
 exports.createHash = exports.Hash = __webpack_require__(36)
-exports.createHmac = exports.Hmac = __webpack_require__(93)
+exports.createHmac = exports.Hmac = __webpack_require__(90)
 
-var algos = __webpack_require__(251)
+var algos = __webpack_require__(260)
 var algoKeys = Object.keys(algos)
 var hashes = ['sha1', 'sha224', 'sha256', 'sha384', 'sha512', 'md5', 'rmd160'].concat(algoKeys)
 exports.getHashes = function () {
   return hashes
 }
 
-var p = __webpack_require__(104)
+var p = __webpack_require__(101)
 exports.pbkdf2 = p.pbkdf2
 exports.pbkdf2Sync = p.pbkdf2Sync
 
-var aes = __webpack_require__(248)
+var aes = __webpack_require__(257)
 
 exports.Cipher = aes.Cipher
 exports.createCipher = aes.createCipher
@@ -94237,7 +98623,7 @@ exports.createDecipheriv = aes.createDecipheriv
 exports.getCiphers = aes.getCiphers
 exports.listCiphers = aes.listCiphers
 
-var dh = __webpack_require__(268)
+var dh = __webpack_require__(277)
 
 exports.DiffieHellmanGroup = dh.DiffieHellmanGroup
 exports.createDiffieHellmanGroup = dh.createDiffieHellmanGroup
@@ -94245,16 +98631,16 @@ exports.getDiffieHellman = dh.getDiffieHellman
 exports.createDiffieHellman = dh.createDiffieHellman
 exports.DiffieHellman = dh.DiffieHellman
 
-var sign = __webpack_require__(252)
+var sign = __webpack_require__(261)
 
 exports.createSign = sign.createSign
 exports.Sign = sign.Sign
 exports.createVerify = sign.createVerify
 exports.Verify = sign.Verify
 
-exports.createECDH = __webpack_require__(255)
+exports.createECDH = __webpack_require__(264)
 
-var publicEncrypt = __webpack_require__(307)
+var publicEncrypt = __webpack_require__(316)
 
 exports.publicEncrypt = publicEncrypt.publicEncrypt
 exports.privateEncrypt = publicEncrypt.privateEncrypt
@@ -94302,10 +98688,10 @@ exports.constants = {
 
 
 /***/ }),
-/* 259 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(42)();
+exports = module.exports = __webpack_require__(40)();
 // imports
 
 
@@ -94316,10 +98702,10 @@ exports.push([module.i, "\n.uk-container {\n  padding-left: 5px;\n  padding-righ
 
 
 /***/ }),
-/* 260 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(42)();
+exports = module.exports = __webpack_require__(40)();
 // imports
 
 
@@ -94330,10 +98716,10 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 
 /***/ }),
-/* 261 */
+/* 270 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(42)();
+exports = module.exports = __webpack_require__(40)();
 // imports
 
 
@@ -94344,10 +98730,10 @@ exports.push([module.i, "\n.main-menubar {\n  height: 3em;\n}\n.main-menubar-dro
 
 
 /***/ }),
-/* 262 */
+/* 271 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(42)();
+exports = module.exports = __webpack_require__(40)();
 // imports
 
 
@@ -94358,14 +98744,14 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 
 /***/ }),
-/* 263 */
+/* 272 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var assert = __webpack_require__(10);
-var inherits = __webpack_require__(2);
+var assert = __webpack_require__(11);
+var inherits = __webpack_require__(1);
 
 var proto = {};
 
@@ -94430,13 +98816,13 @@ proto._update = function _update(inp, inOff, out, outOff) {
 
 
 /***/ }),
-/* 264 */
+/* 273 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var assert = __webpack_require__(10);
+var assert = __webpack_require__(11);
 
 function Cipher(options) {
   this.options = options;
@@ -94578,16 +98964,16 @@ Cipher.prototype._finalDecrypt = function _finalDecrypt() {
 
 
 /***/ }),
-/* 265 */
+/* 274 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var assert = __webpack_require__(10);
-var inherits = __webpack_require__(2);
+var assert = __webpack_require__(11);
+var inherits = __webpack_require__(1);
 
-var des = __webpack_require__(58);
+var des = __webpack_require__(59);
 var utils = des.utils;
 var Cipher = des.Cipher;
 
@@ -94728,16 +99114,16 @@ DES.prototype._decrypt = function _decrypt(state, lStart, rStart, out, off) {
 
 
 /***/ }),
-/* 266 */
+/* 275 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var assert = __webpack_require__(10);
-var inherits = __webpack_require__(2);
+var assert = __webpack_require__(11);
+var inherits = __webpack_require__(1);
 
-var des = __webpack_require__(58);
+var des = __webpack_require__(59);
 var Cipher = des.Cipher;
 var DES = des.DES;
 
@@ -94790,7 +99176,7 @@ EDE.prototype._unpad = DES.prototype._unpad;
 
 
 /***/ }),
-/* 267 */
+/* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -95053,13 +99439,13 @@ exports.padSplit = function padSplit(num, size, group) {
 
 
 /***/ }),
-/* 268 */
+/* 277 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {var generatePrime = __webpack_require__(94)
-var primes = __webpack_require__(270)
+/* WEBPACK VAR INJECTION */(function(Buffer) {var generatePrime = __webpack_require__(91)
+var primes = __webpack_require__(279)
 
-var DH = __webpack_require__(269)
+var DH = __webpack_require__(278)
 
 function getDiffieHellman (mod) {
   var prime = new Buffer(primes[mod].prime, 'hex')
@@ -95099,21 +99485,21 @@ function createDiffieHellman (prime, enc, generator, genc) {
 exports.DiffieHellmanGroup = exports.createDiffieHellmanGroup = exports.getDiffieHellman = getDiffieHellman
 exports.createDiffieHellman = exports.DiffieHellman = createDiffieHellman
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2).Buffer))
 
 /***/ }),
-/* 269 */
+/* 278 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {var BN = __webpack_require__(5);
-var MillerRabin = __webpack_require__(102);
+/* WEBPACK VAR INJECTION */(function(Buffer) {var BN = __webpack_require__(6);
+var MillerRabin = __webpack_require__(99);
 var millerRabin = new MillerRabin();
 var TWENTYFOUR = new BN(24);
 var ELEVEN = new BN(11);
 var TEN = new BN(10);
 var THREE = new BN(3);
 var SEVEN = new BN(7);
-var primes = __webpack_require__(94);
+var primes = __webpack_require__(91);
 var randomBytes = __webpack_require__(38);
 module.exports = DH;
 
@@ -95270,10 +99656,10 @@ function formatReturnValue(bn, enc) {
   }
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2).Buffer))
 
 /***/ }),
-/* 270 */
+/* 279 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -95312,14 +99698,14 @@ module.exports = {
 };
 
 /***/ }),
-/* 271 */
+/* 280 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var BN = __webpack_require__(5);
-var elliptic = __webpack_require__(8);
+var BN = __webpack_require__(6);
+var elliptic = __webpack_require__(9);
 var utils = elliptic.utils;
 var getNAF = utils.getNAF;
 var getJSF = utils.getJSF;
@@ -95694,16 +100080,16 @@ BasePoint.prototype.dblp = function dblp(k) {
 
 
 /***/ }),
-/* 272 */
+/* 281 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var curve = __webpack_require__(43);
-var elliptic = __webpack_require__(8);
-var BN = __webpack_require__(5);
-var inherits = __webpack_require__(2);
+var curve = __webpack_require__(41);
+var elliptic = __webpack_require__(9);
+var BN = __webpack_require__(6);
+var inherits = __webpack_require__(1);
 var Base = curve.base;
 
 var assert = elliptic.utils.assert;
@@ -96134,18 +100520,18 @@ Point.prototype.mixedAdd = Point.prototype.add;
 
 
 /***/ }),
-/* 273 */
+/* 282 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var curve = __webpack_require__(43);
-var BN = __webpack_require__(5);
-var inherits = __webpack_require__(2);
+var curve = __webpack_require__(41);
+var BN = __webpack_require__(6);
+var inherits = __webpack_require__(1);
 var Base = curve.base;
 
-var elliptic = __webpack_require__(8);
+var elliptic = __webpack_require__(9);
 var utils = elliptic.utils;
 
 function MontCurve(conf) {
@@ -96321,16 +100707,16 @@ Point.prototype.getX = function getX() {
 
 
 /***/ }),
-/* 274 */
+/* 283 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var curve = __webpack_require__(43);
-var elliptic = __webpack_require__(8);
-var BN = __webpack_require__(5);
-var inherits = __webpack_require__(2);
+var curve = __webpack_require__(41);
+var elliptic = __webpack_require__(9);
+var BN = __webpack_require__(6);
+var inherits = __webpack_require__(1);
 var Base = curve.base;
 
 var assert = elliptic.utils.assert;
@@ -97266,7 +101652,7 @@ JPoint.prototype.isInfinity = function isInfinity() {
 
 
 /***/ }),
-/* 275 */
+/* 284 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -97274,8 +101660,8 @@ JPoint.prototype.isInfinity = function isInfinity() {
 
 var curves = exports;
 
-var hash = __webpack_require__(60);
-var elliptic = __webpack_require__(8);
+var hash = __webpack_require__(61);
+var elliptic = __webpack_require__(9);
 
 var assert = elliptic.utils.assert;
 
@@ -97439,7 +101825,7 @@ defineCurve('ed25519', {
 
 var pre;
 try {
-  pre = __webpack_require__(282);
+  pre = __webpack_require__(291);
 } catch (e) {
   pre = undefined;
 }
@@ -97478,20 +101864,20 @@ defineCurve('secp256k1', {
 
 
 /***/ }),
-/* 276 */
+/* 285 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var BN = __webpack_require__(5);
-var HmacDRBG = __webpack_require__(297);
-var elliptic = __webpack_require__(8);
+var BN = __webpack_require__(6);
+var HmacDRBG = __webpack_require__(306);
+var elliptic = __webpack_require__(9);
 var utils = elliptic.utils;
 var assert = utils.assert;
 
-var KeyPair = __webpack_require__(277);
-var Signature = __webpack_require__(278);
+var KeyPair = __webpack_require__(286);
+var Signature = __webpack_require__(287);
 
 function EC(options) {
   if (!(this instanceof EC))
@@ -97725,14 +102111,14 @@ EC.prototype.getKeyRecoveryParam = function(e, signature, Q, enc) {
 
 
 /***/ }),
-/* 277 */
+/* 286 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var BN = __webpack_require__(5);
-var elliptic = __webpack_require__(8);
+var BN = __webpack_require__(6);
+var elliptic = __webpack_require__(9);
 var utils = elliptic.utils;
 var assert = utils.assert;
 
@@ -97851,15 +102237,15 @@ KeyPair.prototype.inspect = function inspect() {
 
 
 /***/ }),
-/* 278 */
+/* 287 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var BN = __webpack_require__(5);
+var BN = __webpack_require__(6);
 
-var elliptic = __webpack_require__(8);
+var elliptic = __webpack_require__(9);
 var utils = elliptic.utils;
 var assert = utils.assert;
 
@@ -97993,19 +102379,19 @@ Signature.prototype.toDER = function toDER(enc) {
 
 
 /***/ }),
-/* 279 */
+/* 288 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var hash = __webpack_require__(60);
-var elliptic = __webpack_require__(8);
+var hash = __webpack_require__(61);
+var elliptic = __webpack_require__(9);
 var utils = elliptic.utils;
 var assert = utils.assert;
 var parseBytes = utils.parseBytes;
-var KeyPair = __webpack_require__(280);
-var Signature = __webpack_require__(281);
+var KeyPair = __webpack_require__(289);
+var Signature = __webpack_require__(290);
 
 function EDDSA(curve) {
   assert(curve === 'ed25519', 'only tested with ed25519 so far');
@@ -98118,13 +102504,13 @@ EDDSA.prototype.isPoint = function isPoint(val) {
 
 
 /***/ }),
-/* 280 */
+/* 289 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var elliptic = __webpack_require__(8);
+var elliptic = __webpack_require__(9);
 var utils = elliptic.utils;
 var assert = utils.assert;
 var parseBytes = utils.parseBytes;
@@ -98221,14 +102607,14 @@ module.exports = KeyPair;
 
 
 /***/ }),
-/* 281 */
+/* 290 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var BN = __webpack_require__(5);
-var elliptic = __webpack_require__(8);
+var BN = __webpack_require__(6);
+var elliptic = __webpack_require__(9);
 var utils = elliptic.utils;
 var assert = utils.assert;
 var cachedProperty = utils.cachedProperty;
@@ -98294,7 +102680,7 @@ module.exports = Signature;
 
 
 /***/ }),
-/* 282 */
+/* 291 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -99080,16 +103466,16 @@ module.exports = {
 
 
 /***/ }),
-/* 283 */
+/* 292 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = exports;
-var BN = __webpack_require__(5);
-var minAssert = __webpack_require__(10);
-var minUtils = __webpack_require__(103);
+var BN = __webpack_require__(6);
+var minAssert = __webpack_require__(11);
+var minUtils = __webpack_require__(100);
 
 utils.assert = minAssert;
 utils.toArray = minUtils.toArray;
@@ -99207,7 +103593,7 @@ utils.intFromLE = intFromLE;
 
 
 /***/ }),
-/* 284 */
+/* 293 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -99334,7 +103720,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 285 */
+/* 294 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* Copyright (c) 2015, Brandon Jones, Colin MacKenzie IV.
@@ -99642,7 +104028,7 @@ module.exports = mat2;
 
 
 /***/ }),
-/* 286 */
+/* 295 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* Copyright (c) 2015, Brandon Jones, Colin MacKenzie IV.
@@ -99965,7 +104351,7 @@ module.exports = mat2d;
 
 
 /***/ }),
-/* 287 */
+/* 296 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* Copyright (c) 2015, Brandon Jones, Colin MacKenzie IV.
@@ -101254,7 +105640,7 @@ module.exports = mat4;
 
 
 /***/ }),
-/* 288 */
+/* 297 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* Copyright (c) 2015, Brandon Jones, Colin MacKenzie IV.
@@ -101278,9 +105664,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE. */
 
 var glMatrix = __webpack_require__(16);
-var mat3 = __webpack_require__(95);
-var vec3 = __webpack_require__(96);
-var vec4 = __webpack_require__(97);
+var mat3 = __webpack_require__(92);
+var vec3 = __webpack_require__(93);
+var vec4 = __webpack_require__(94);
 
 /**
  * @class Quaternion
@@ -101813,7 +106199,7 @@ module.exports = quat;
 
 
 /***/ }),
-/* 289 */
+/* 298 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* Copyright (c) 2015, Brandon Jones, Colin MacKenzie IV.
@@ -102342,13 +106728,13 @@ module.exports = vec2;
 
 
 /***/ }),
-/* 290 */
+/* 299 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(Buffer) {
-var Transform = __webpack_require__(48).Transform
-var inherits = __webpack_require__(2)
+var Transform = __webpack_require__(46).Transform
+var inherits = __webpack_require__(1)
 
 function HashBase (blockSize) {
   Transform.call(this)
@@ -102430,17 +106816,17 @@ HashBase.prototype._digest = function () {
 
 module.exports = HashBase
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2).Buffer))
 
 /***/ }),
-/* 291 */
+/* 300 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(14);
-var assert = __webpack_require__(10);
+var assert = __webpack_require__(11);
 
 function Hmac(hash, key, enc) {
   if (!(this instanceof Hmac))
@@ -102487,7 +106873,7 @@ Hmac.prototype.digest = function digest(enc) {
 
 
 /***/ }),
-/* 292 */
+/* 301 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -102640,21 +107026,21 @@ var sh = [
 
 
 /***/ }),
-/* 293 */
+/* 302 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-exports.sha1 = __webpack_require__(294);
-exports.sha224 = __webpack_require__(295);
-exports.sha256 = __webpack_require__(98);
-exports.sha384 = __webpack_require__(296);
-exports.sha512 = __webpack_require__(99);
+exports.sha1 = __webpack_require__(303);
+exports.sha224 = __webpack_require__(304);
+exports.sha256 = __webpack_require__(95);
+exports.sha384 = __webpack_require__(305);
+exports.sha512 = __webpack_require__(96);
 
 
 /***/ }),
-/* 294 */
+/* 303 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -102662,7 +107048,7 @@ exports.sha512 = __webpack_require__(99);
 
 var utils = __webpack_require__(14);
 var common = __webpack_require__(37);
-var shaCommon = __webpack_require__(100);
+var shaCommon = __webpack_require__(97);
 
 var rotl32 = utils.rotl32;
 var sum32 = utils.sum32;
@@ -102735,14 +107121,14 @@ SHA1.prototype._digest = function digest(enc) {
 
 
 /***/ }),
-/* 295 */
+/* 304 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(14);
-var SHA256 = __webpack_require__(98);
+var SHA256 = __webpack_require__(95);
 
 function SHA224() {
   if (!(this instanceof SHA224))
@@ -102772,7 +107158,7 @@ SHA224.prototype._digest = function digest(enc) {
 
 
 /***/ }),
-/* 296 */
+/* 305 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -102780,7 +107166,7 @@ SHA224.prototype._digest = function digest(enc) {
 
 var utils = __webpack_require__(14);
 
-var SHA512 = __webpack_require__(99);
+var SHA512 = __webpack_require__(96);
 
 function SHA384() {
   if (!(this instanceof SHA384))
@@ -102814,15 +107200,15 @@ SHA384.prototype._digest = function digest(enc) {
 
 
 /***/ }),
-/* 297 */
+/* 306 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var hash = __webpack_require__(60);
-var utils = __webpack_require__(103);
-var assert = __webpack_require__(10);
+var hash = __webpack_require__(61);
+var utils = __webpack_require__(100);
+var assert = __webpack_require__(11);
 
 function HmacDRBG(options) {
   if (!(this instanceof HmacDRBG))
@@ -102934,7 +107320,7 @@ HmacDRBG.prototype.generate = function generate(len, enc, add, addEnc) {
 
 
 /***/ }),
-/* 298 */
+/* 307 */
 /***/ (function(module, exports) {
 
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -103024,7 +107410,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 
 /***/ }),
-/* 299 */
+/* 308 */
 /***/ (function(module, exports) {
 
 
@@ -103039,13 +107425,13 @@ module.exports = function(arr, obj){
 };
 
 /***/ }),
-/* 300 */
+/* 309 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(Buffer) {
-var inherits = __webpack_require__(2)
-var HashBase = __webpack_require__(301)
+var inherits = __webpack_require__(1)
+var HashBase = __webpack_require__(310)
 
 var ARRAY16 = new Array(16)
 
@@ -103189,17 +107575,17 @@ function fnI (a, b, c, d, m, k, s) {
 
 module.exports = MD5
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2).Buffer))
 
 /***/ }),
-/* 301 */
+/* 310 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var Buffer = __webpack_require__(13).Buffer
-var Transform = __webpack_require__(48).Transform
-var inherits = __webpack_require__(2)
+var Buffer = __webpack_require__(4).Buffer
+var Transform = __webpack_require__(46).Transform
+var inherits = __webpack_require__(1)
 
 function throwIfNotStringOrBuffer (val, prefix) {
   if (!Buffer.isBuffer(val) && typeof val !== 'string') {
@@ -103294,7 +107680,7 @@ module.exports = HashBase
 
 
 /***/ }),
-/* 302 */
+/* 311 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -103313,7 +107699,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 303 */
+/* 312 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -103323,7 +107709,7 @@ module.exports = {
 
 var asn1 = __webpack_require__(27)
 
-exports.certificate = __webpack_require__(304)
+exports.certificate = __webpack_require__(313)
 
 var RSAPrivateKey = asn1.define('RSAPrivateKey', function () {
   this.seq().obj(
@@ -103442,7 +107828,7 @@ exports.signature = asn1.define('signature', function () {
 
 
 /***/ }),
-/* 304 */
+/* 313 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -103537,14 +107923,14 @@ module.exports = X509Certificate
 
 
 /***/ }),
-/* 305 */
+/* 314 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {// adapted from https://github.com/apatil/pemstrip
 var findProc = /Proc-Type: 4,ENCRYPTED\n\r?DEK-Info: AES-((?:128)|(?:192)|(?:256))-CBC,([0-9A-H]+)\n\r?\n\r?([0-9A-z\n\r\+\/\=]+)\n\r?/m
 var startRegex = /^-----BEGIN ((?:.* KEY)|CERTIFICATE)-----\n/m
 var fullRegex = /^-----BEGIN ((?:.* KEY)|CERTIFICATE)-----\n\r?([0-9A-z\n\r\+\/\=]+)\n\r?-----END \1-----$/m
-var evp = __webpack_require__(44)
+var evp = __webpack_require__(42)
 var ciphers = __webpack_require__(55)
 module.exports = function (okey, password) {
   var key = okey.toString()
@@ -103571,16 +107957,16 @@ module.exports = function (okey, password) {
   }
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2).Buffer))
 
 /***/ }),
-/* 306 */
+/* 315 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global, process) {var checkParameters = __webpack_require__(106)
-var defaultEncoding = __webpack_require__(105)
-var sync = __webpack_require__(107)
-var Buffer = __webpack_require__(13).Buffer
+/* WEBPACK VAR INJECTION */(function(global, process) {var checkParameters = __webpack_require__(103)
+var defaultEncoding = __webpack_require__(102)
+var sync = __webpack_require__(104)
+var Buffer = __webpack_require__(4).Buffer
 
 var ZERO_BUF
 var subtle = global.crypto && global.crypto.subtle
@@ -103679,11 +108065,11 @@ module.exports = function (password, salt, iterations, keylen, digest, callback)
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(15), __webpack_require__(17)))
 
 /***/ }),
-/* 307 */
+/* 316 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports.publicEncrypt = __webpack_require__(309);
-exports.privateDecrypt = __webpack_require__(308);
+exports.publicEncrypt = __webpack_require__(318);
+exports.privateDecrypt = __webpack_require__(317);
 
 exports.privateEncrypt = function privateEncrypt(key, buf) {
   return exports.publicEncrypt(key, buf, true);
@@ -103694,16 +108080,16 @@ exports.publicDecrypt = function publicDecrypt(key, buf) {
 };
 
 /***/ }),
-/* 308 */
+/* 317 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {var parseKeys = __webpack_require__(45);
-var mgf = __webpack_require__(108);
-var xor = __webpack_require__(110);
-var bn = __webpack_require__(5);
-var crt = __webpack_require__(56);
+/* WEBPACK VAR INJECTION */(function(Buffer) {var parseKeys = __webpack_require__(43);
+var mgf = __webpack_require__(105);
+var xor = __webpack_require__(107);
+var bn = __webpack_require__(6);
+var crt = __webpack_require__(57);
 var createHash = __webpack_require__(36);
-var withPublic = __webpack_require__(109);
+var withPublic = __webpack_require__(106);
 module.exports = function privateDecrypt(private_key, enc, reverse) {
   var padding;
   if (private_key.padding) {
@@ -103805,20 +108191,20 @@ function compare(a, b){
   }
   return dif;
 }
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2).Buffer))
 
 /***/ }),
-/* 309 */
+/* 318 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {var parseKeys = __webpack_require__(45);
+/* WEBPACK VAR INJECTION */(function(Buffer) {var parseKeys = __webpack_require__(43);
 var randomBytes = __webpack_require__(38);
 var createHash = __webpack_require__(36);
-var mgf = __webpack_require__(108);
-var xor = __webpack_require__(110);
-var bn = __webpack_require__(5);
-var withPublic = __webpack_require__(109);
-var crt = __webpack_require__(56);
+var mgf = __webpack_require__(105);
+var xor = __webpack_require__(107);
+var bn = __webpack_require__(6);
+var withPublic = __webpack_require__(106);
+var crt = __webpack_require__(57);
 
 var constants = {
   RSA_PKCS1_OAEP_PADDING: 4,
@@ -103906,17 +108292,17 @@ function nonZero(len, crypto) {
   }
   return out;
 }
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2).Buffer))
 
 /***/ }),
-/* 310 */
+/* 319 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(23);
 
 
 /***/ }),
-/* 311 */
+/* 320 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -103949,11 +108335,11 @@ module.exports = __webpack_require__(23);
 
 module.exports = PassThrough;
 
-var Transform = __webpack_require__(112);
+var Transform = __webpack_require__(109);
 
 /*<replacement>*/
 var util = __webpack_require__(35);
-util.inherits = __webpack_require__(2);
+util.inherits = __webpack_require__(1);
 /*</replacement>*/
 
 util.inherits(PassThrough, Transform);
@@ -103969,7 +108355,7 @@ PassThrough.prototype._transform = function (chunk, encoding, cb) {
 };
 
 /***/ }),
-/* 312 */
+/* 321 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -103979,7 +108365,7 @@ PassThrough.prototype._transform = function (chunk, encoding, cb) {
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Buffer = __webpack_require__(13).Buffer;
+var Buffer = __webpack_require__(4).Buffer;
 /*</replacement>*/
 
 function copyBuffer(src, target, offset) {
@@ -104049,28 +108435,28 @@ module.exports = function () {
 }();
 
 /***/ }),
-/* 313 */
+/* 322 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(62).PassThrough
+module.exports = __webpack_require__(63).PassThrough
 
 
 /***/ }),
-/* 314 */
+/* 323 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(62).Transform
+module.exports = __webpack_require__(63).Transform
 
 
 /***/ }),
-/* 315 */
+/* 324 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(61);
+module.exports = __webpack_require__(62);
 
 
 /***/ }),
-/* 316 */
+/* 325 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // A library of seedable RNGs implemented in Javascript.
@@ -104085,17 +108471,17 @@ module.exports = __webpack_require__(61);
 // alea, a 53-bit multiply-with-carry generator by Johannes Baagøe.
 // Period: ~2^116
 // Reported to pass all BigCrush tests.
-var alea = __webpack_require__(317);
+var alea = __webpack_require__(326);
 
 // xor128, a pure xor-shift generator by George Marsaglia.
 // Period: 2^128-1.
 // Reported to fail: MatrixRank and LinearComp.
-var xor128 = __webpack_require__(319);
+var xor128 = __webpack_require__(328);
 
 // xorwow, George Marsaglia's 160-bit xor-shift combined plus weyl.
 // Period: 2^192-2^32
 // Reported to fail: CollisionOver, SimpPoker, and LinearComp.
-var xorwow = __webpack_require__(322);
+var xorwow = __webpack_require__(331);
 
 // xorshift7, by François Panneton and Pierre L'ecuyer, takes
 // a different approach: it adds robustness by allowing more shifts
@@ -104103,7 +108489,7 @@ var xorwow = __webpack_require__(322);
 // with 256 bits, that passes BigCrush with no systmatic failures.
 // Period 2^256-1.
 // No systematic BigCrush failures reported.
-var xorshift7 = __webpack_require__(321);
+var xorshift7 = __webpack_require__(330);
 
 // xor4096, by Richard Brent, is a 4096-bit xor-shift with a
 // very long period that also adds a Weyl generator. It also passes
@@ -104112,18 +108498,18 @@ var xorshift7 = __webpack_require__(321);
 // collisions.
 // Period: 2^4128-2^32.
 // No systematic BigCrush failures reported.
-var xor4096 = __webpack_require__(320);
+var xor4096 = __webpack_require__(329);
 
 // Tyche-i, by Samuel Neves and Filipe Araujo, is a bit-shifting random
 // number generator derived from ChaCha, a modern stream cipher.
 // https://eden.dei.uc.pt/~sneves/pubs/2011-snfa2.pdf
 // Period: ~2^127
 // No systematic BigCrush failures reported.
-var tychei = __webpack_require__(318);
+var tychei = __webpack_require__(327);
 
 // The original ARC4-based prng included in this library.
 // Period: ~2^1600
-var sr = __webpack_require__(323);
+var sr = __webpack_require__(332);
 
 sr.alea = alea;
 sr.xor128 = xor128;
@@ -104136,7 +108522,7 @@ module.exports = sr;
 
 
 /***/ }),
-/* 317 */
+/* 326 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_RESULT__;// A port of an algorithm by Johannes Baagøe <baagoe@baagoe.com>, 2010
@@ -104240,7 +108626,7 @@ function Mash() {
 
 if (module && module.exports) {
   module.exports = impl;
-} else if (__webpack_require__(11) && __webpack_require__(26)) {
+} else if (__webpack_require__(12) && __webpack_require__(26)) {
   !(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return impl; }.call(exports, __webpack_require__, exports, module),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 } else {
@@ -104250,7 +108636,7 @@ if (module && module.exports) {
 })(
   this,
   (typeof module) == 'object' && module,    // present in node.js
-  __webpack_require__(11)   // present with an AMD loader
+  __webpack_require__(12)   // present with an AMD loader
 );
 
 
@@ -104258,7 +108644,7 @@ if (module && module.exports) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(24)(module)))
 
 /***/ }),
-/* 318 */
+/* 327 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_RESULT__;// A Javascript implementaion of the "Tyche-i" prng algorithm by
@@ -104351,7 +108737,7 @@ function impl(seed, opts) {
 
 if (module && module.exports) {
   module.exports = impl;
-} else if (__webpack_require__(11) && __webpack_require__(26)) {
+} else if (__webpack_require__(12) && __webpack_require__(26)) {
   !(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return impl; }.call(exports, __webpack_require__, exports, module),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 } else {
@@ -104361,7 +108747,7 @@ if (module && module.exports) {
 })(
   this,
   (typeof module) == 'object' && module,    // present in node.js
-  __webpack_require__(11)   // present with an AMD loader
+  __webpack_require__(12)   // present with an AMD loader
 );
 
 
@@ -104369,7 +108755,7 @@ if (module && module.exports) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(24)(module)))
 
 /***/ }),
-/* 319 */
+/* 328 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_RESULT__;// A Javascript implementaion of the "xor128" prng algorithm by
@@ -104440,7 +108826,7 @@ function impl(seed, opts) {
 
 if (module && module.exports) {
   module.exports = impl;
-} else if (__webpack_require__(11) && __webpack_require__(26)) {
+} else if (__webpack_require__(12) && __webpack_require__(26)) {
   !(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return impl; }.call(exports, __webpack_require__, exports, module),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 } else {
@@ -104450,7 +108836,7 @@ if (module && module.exports) {
 })(
   this,
   (typeof module) == 'object' && module,    // present in node.js
-  __webpack_require__(11)   // present with an AMD loader
+  __webpack_require__(12)   // present with an AMD loader
 );
 
 
@@ -104458,7 +108844,7 @@ if (module && module.exports) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(24)(module)))
 
 /***/ }),
-/* 320 */
+/* 329 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_RESULT__;// A Javascript implementaion of Richard Brent's Xorgens xor4096 algorithm.
@@ -104596,7 +108982,7 @@ function impl(seed, opts) {
 
 if (module && module.exports) {
   module.exports = impl;
-} else if (__webpack_require__(11) && __webpack_require__(26)) {
+} else if (__webpack_require__(12) && __webpack_require__(26)) {
   !(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return impl; }.call(exports, __webpack_require__, exports, module),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 } else {
@@ -104606,13 +108992,13 @@ if (module && module.exports) {
 })(
   this,                                     // window object or global
   (typeof module) == 'object' && module,    // present in node.js
-  __webpack_require__(11)   // present with an AMD loader
+  __webpack_require__(12)   // present with an AMD loader
 );
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(24)(module)))
 
 /***/ }),
-/* 321 */
+/* 330 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_RESULT__;// A Javascript implementaion of the "xorshift7" algorithm by
@@ -104700,7 +109086,7 @@ function impl(seed, opts) {
 
 if (module && module.exports) {
   module.exports = impl;
-} else if (__webpack_require__(11) && __webpack_require__(26)) {
+} else if (__webpack_require__(12) && __webpack_require__(26)) {
   !(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return impl; }.call(exports, __webpack_require__, exports, module),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 } else {
@@ -104710,14 +109096,14 @@ if (module && module.exports) {
 })(
   this,
   (typeof module) == 'object' && module,    // present in node.js
-  __webpack_require__(11)   // present with an AMD loader
+  __webpack_require__(12)   // present with an AMD loader
 );
 
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(24)(module)))
 
 /***/ }),
-/* 322 */
+/* 331 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_RESULT__;// A Javascript implementaion of the "xorwow" prng algorithm by
@@ -104793,7 +109179,7 @@ function impl(seed, opts) {
 
 if (module && module.exports) {
   module.exports = impl;
-} else if (__webpack_require__(11) && __webpack_require__(26)) {
+} else if (__webpack_require__(12) && __webpack_require__(26)) {
   !(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return impl; }.call(exports, __webpack_require__, exports, module),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 } else {
@@ -104803,7 +109189,7 @@ if (module && module.exports) {
 })(
   this,
   (typeof module) == 'object' && module,    // present in node.js
-  __webpack_require__(11)   // present with an AMD loader
+  __webpack_require__(12)   // present with an AMD loader
 );
 
 
@@ -104811,7 +109197,7 @@ if (module && module.exports) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(24)(module)))
 
 /***/ }),
-/* 323 */
+/* 332 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/*
@@ -105045,7 +109431,7 @@ if ((typeof module) == 'object' && module.exports) {
   module.exports = seedrandom;
   // When in node.js, try using crypto package for autoseeding.
   try {
-    nodecrypto = __webpack_require__(258);
+    nodecrypto = __webpack_require__(267);
   } catch (ex) {}
 } else if (true) {
   !(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return seedrandom; }.call(exports, __webpack_require__, exports, module),
@@ -105060,7 +109446,7 @@ if ((typeof module) == 'object' && module.exports) {
 
 
 /***/ }),
-/* 324 */
+/* 333 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -105253,10 +109639,10 @@ if ((typeof module) == 'object' && module.exports) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(15), __webpack_require__(17)))
 
 /***/ }),
-/* 325 */
+/* 334 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {/*
+/*
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-0, as defined
  * in FIPS PUB 180-1
  * This source code is derived from sha1.js of the same repository.
@@ -105264,8 +109650,9 @@ if ((typeof module) == 'object' && module.exports) {
  * operation was added.
  */
 
-var inherits = __webpack_require__(2)
+var inherits = __webpack_require__(1)
 var Hash = __webpack_require__(25)
+var Buffer = __webpack_require__(4).Buffer
 
 var K = [
   0x5a827999, 0x6ed9eba1, 0x8f1bbcdc | 0, 0xca62c1d6 | 0
@@ -105337,7 +109724,7 @@ Sha.prototype._update = function (M) {
 }
 
 Sha.prototype._hash = function () {
-  var H = new Buffer(20)
+  var H = Buffer.allocUnsafe(20)
 
   H.writeInt32BE(this._a | 0, 0)
   H.writeInt32BE(this._b | 0, 4)
@@ -105350,13 +109737,12 @@ Sha.prototype._hash = function () {
 
 module.exports = Sha
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ }),
-/* 326 */
+/* 335 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {/*
+/*
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-1, as defined
  * in FIPS PUB 180-1
  * Version 2.1a Copyright Paul Johnston 2000 - 2002.
@@ -105365,8 +109751,9 @@ module.exports = Sha
  * See http://pajhome.org.uk/crypt/md5 for details.
  */
 
-var inherits = __webpack_require__(2)
+var inherits = __webpack_require__(1)
 var Hash = __webpack_require__(25)
+var Buffer = __webpack_require__(4).Buffer
 
 var K = [
   0x5a827999, 0x6ed9eba1, 0x8f1bbcdc | 0, 0xca62c1d6 | 0
@@ -105442,7 +109829,7 @@ Sha1.prototype._update = function (M) {
 }
 
 Sha1.prototype._hash = function () {
-  var H = new Buffer(20)
+  var H = Buffer.allocUnsafe(20)
 
   H.writeInt32BE(this._a | 0, 0)
   H.writeInt32BE(this._b | 0, 4)
@@ -105455,13 +109842,12 @@ Sha1.prototype._hash = function () {
 
 module.exports = Sha1
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ }),
-/* 327 */
+/* 336 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {/**
+/**
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-256, as defined
  * in FIPS 180-2
  * Version 2.2-beta Copyright Angel Marin, Paul Johnston 2000 - 2009.
@@ -105469,9 +109855,10 @@ module.exports = Sha1
  *
  */
 
-var inherits = __webpack_require__(2)
-var Sha256 = __webpack_require__(115)
+var inherits = __webpack_require__(1)
+var Sha256 = __webpack_require__(112)
 var Hash = __webpack_require__(25)
+var Buffer = __webpack_require__(4).Buffer
 
 var W = new Array(64)
 
@@ -105499,7 +109886,7 @@ Sha224.prototype.init = function () {
 }
 
 Sha224.prototype._hash = function () {
-  var H = new Buffer(28)
+  var H = Buffer.allocUnsafe(28)
 
   H.writeInt32BE(this._a, 0)
   H.writeInt32BE(this._b, 4)
@@ -105514,15 +109901,15 @@ Sha224.prototype._hash = function () {
 
 module.exports = Sha224
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ }),
-/* 328 */
+/* 337 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {var inherits = __webpack_require__(2)
-var SHA512 = __webpack_require__(116)
+var inherits = __webpack_require__(1)
+var SHA512 = __webpack_require__(113)
 var Hash = __webpack_require__(25)
+var Buffer = __webpack_require__(4).Buffer
 
 var W = new Array(160)
 
@@ -105558,7 +109945,7 @@ Sha384.prototype.init = function () {
 }
 
 Sha384.prototype._hash = function () {
-  var H = new Buffer(48)
+  var H = Buffer.allocUnsafe(48)
 
   function writeInt64BE (h, l, offset) {
     H.writeInt32BE(h, offset)
@@ -105577,34 +109964,33 @@ Sha384.prototype._hash = function () {
 
 module.exports = Sha384
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ }),
-/* 329 */
+/* 338 */
 /***/ (function(module, exports) {
 
 module.exports = "//VTK::System::Dec\n\n/*=========================================================================\n\n  Program:   Visualization Toolkit\n  Module:    vtkSphereMapperVS.glsl\n\n  Copyright (c) Ken Martin, Will Schroeder, Bill Lorensen\n  All rights reserved.\n  See Copyright.txt or http://www.kitware.com/Copyright.htm for details.\n\n     This software is distributed WITHOUT ANY WARRANTY; without even\n     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR\n     PURPOSE.  See the above copyright notice for more information.\n\n=========================================================================*/\n// this shader implements imposters in OpenGL for Spheres\n\nattribute vec4 vertexMC;\nattribute vec2 offsetMC;\n\n// optional normal declaration\n//VTK::Normal::Dec\n\n// Texture coordinates\n//VTK::TCoord::Dec\n\nuniform mat3 normalMatrix; // transform model coordinate directions to view coordinates\n\n// material property values\n//VTK::Color::Dec\n\n// clipping plane vars\n//VTK::Clip::Dec\n\n// camera and actor matrix values\n//VTK::Camera::Dec\n\nvarying vec4 vertexVCVSOutput;\nvarying float radiusVCVSOutput;\nvarying vec3 centerVCVSOutput;\n\nuniform int cameraParallel;\n\nvoid main()\n{\n  //VTK::Color::Impl\n\n  //VTK::Normal::Impl\n\n  //VTK::TCoord::Impl\n\n  //VTK::Clip::Impl\n\n  // compute the projected vertex position\n  vertexVCVSOutput = MCVCMatrix * vertexMC;\n  centerVCVSOutput = vertexVCVSOutput.xyz;\n  radiusVCVSOutput = length(offsetMC)*0.5;\n\n  // make the triangle face the camera\n  if (cameraParallel == 0)\n    {\n    vec3 dir = normalize(-vertexVCVSOutput.xyz);\n    vec3 base2 = normalize(cross(dir,vec3(1.0,0.0,0.0)));\n    vec3 base1 = cross(base2,dir);\n    vertexVCVSOutput.xyz = vertexVCVSOutput.xyz + offsetMC.x*base1 + offsetMC.y*base2;\n    }\n  else\n    {\n    // add in the offset\n    vertexVCVSOutput.xy = vertexVCVSOutput.xy + offsetMC;\n    }\n\n  gl_Position = VCDCMatrix * vertexVCVSOutput;\n}\n"
 
 /***/ }),
-/* 330 */
+/* 339 */
 /***/ (function(module, exports) {
 
 module.exports = "//VTK::System::Dec\n\n/*=========================================================================\n\n  Program:   Visualization Toolkit\n  Module:    vtkStickMapperVS.glsl\n\n  Copyright (c) Ken Martin, Will Schroeder, Bill Lorensen\n  All rights reserved.\n  See Copyright.txt or http://www.kitware.com/Copyright.htm for details.\n\n     This software is distributed WITHOUT ANY WARRANTY; without even\n     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR\n     PURPOSE.  See the above copyright notice for more information.\n\n=========================================================================*/\n// this shader implements imposters in OpenGL for Sticks\n\nattribute vec4 vertexMC;\nattribute vec3 orientMC;\nattribute vec4 offsetMC;\nattribute float radiusMC;\n\n// optional normal declaration\n//VTK::Normal::Dec\n\n//VTK::Picking::Dec\n\n// Texture coordinates\n//VTK::TCoord::Dec\n\nuniform mat3 normalMatrix; // transform model coordinate directions to view coordinates\n\n// material property values\n//VTK::Color::Dec\n\n// clipping plane vars\n//VTK::Clip::Dec\n\n// camera and actor matrix values\n//VTK::Camera::Dec\n\nvarying vec4 vertexVCVSOutput;\nvarying float radiusVCVSOutput;\nvarying float lengthVCVSOutput;\nvarying vec3 centerVCVSOutput;\nvarying vec3 orientVCVSOutput;\n\nuniform int cameraParallel;\n\nvoid main()\n{\n  //VTK::Picking::Impl\n\n  //VTK::Color::Impl\n\n  //VTK::Normal::Impl\n\n  //VTK::TCoord::Impl\n\n  //VTK::Clip::Impl\n\n  vertexVCVSOutput = MCVCMatrix * vertexMC;\n  centerVCVSOutput = vertexVCVSOutput.xyz;\n  radiusVCVSOutput = radiusMC;\n  lengthVCVSOutput = length(orientMC);\n  orientVCVSOutput = normalMatrix * normalize(orientMC);\n\n  // make sure it is pointing out of the screen\n  if (orientVCVSOutput.z < 0.0)\n    {\n    orientVCVSOutput = -orientVCVSOutput;\n    }\n\n  // make the basis\n  vec3 xbase;\n  vec3 ybase;\n  vec3 dir = vec3(0.0,0.0,1.0);\n  if (cameraParallel == 0)\n    {\n    dir = normalize(-vertexVCVSOutput.xyz);\n    }\n  if (abs(dot(dir,orientVCVSOutput)) == 1.0)\n    {\n    xbase = normalize(cross(vec3(0.0,1.0,0.0),orientVCVSOutput));\n    ybase = cross(xbase,orientVCVSOutput);\n    }\n  else\n    {\n    xbase = normalize(cross(orientVCVSOutput,dir));\n    ybase = cross(orientVCVSOutput,xbase);\n    }\n\n  vec3 offsets = offsetMC.xyz*2.0-1.0;\n  vertexVCVSOutput.xyz = vertexVCVSOutput.xyz +\n    radiusVCVSOutput*offsets.x*xbase +\n    radiusVCVSOutput*offsets.y*ybase +\n    0.5*lengthVCVSOutput*offsets.z*orientVCVSOutput;\n\n  gl_Position = VCDCMatrix * vertexVCVSOutput;\n}\n"
 
 /***/ }),
-/* 331 */
+/* 340 */
 /***/ (function(module, exports) {
 
 module.exports = "//VTK::System::Dec\n\n/*=========================================================================\n\n  Program:   Visualization Toolkit\n  Module:    vtkPolyDataFS.glsl\n\n  Copyright (c) Ken Martin, Will Schroeder, Bill Lorensen\n  All rights reserved.\n  See Copyright.txt or http://www.kitware.com/Copyright.htm for details.\n\n     This software is distributed WITHOUT ANY WARRANTY; without even\n     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR\n     PURPOSE.  See the above copyright notice for more information.\n\n=========================================================================*/\n// Template for the polydata mappers fragment shader\n\n// the output of this shader\n//VTK::Output::Dec\n\nvarying vec3 vertexVCVSOutput;\n\n// camera values\nuniform float camThick;\nuniform float camNear;\nuniform float camFar;\n\n// values describing the volume geometry\nuniform vec3 vOriginVC;\nuniform vec3 vSize;\nuniform vec3 vPlaneNormal0;\nuniform float vPlaneDistance0;\nuniform vec3 vPlaneNormal1;\nuniform float vPlaneDistance1;\nuniform vec3 vPlaneNormal2;\nuniform float vPlaneDistance2;\nuniform vec3 vPlaneNormal3;\nuniform float vPlaneDistance3;\nuniform vec3 vPlaneNormal4;\nuniform float vPlaneDistance4;\nuniform vec3 vPlaneNormal5;\nuniform float vPlaneDistance5;\n\n// opacity and color textures\nuniform sampler2D otexture;\nuniform float oshift;\nuniform float oscale;\nuniform sampler2D ctexture;\nuniform float cshift;\nuniform float cscale;\n\n// some 3D texture values\nuniform sampler2D texture1;\nuniform float sampleDistance;\nuniform vec3 vVCToIJK;\nuniform float texWidth;\nuniform float texHeight;\nuniform int xreps;\nuniform float xstride;\nuniform float ystride;\nuniform int repWidth;\nuniform int repHeight;\nuniform int repDepth;\n\n// declaration for intermixed geometry\n//VTK::ZBuffer::Dec\n\n// Lighting values\n//VTK::Light::Dec\n\n// normal calc\n//VTK::Normal::Dec\n\n// gradient opacity\n//VTK::GradientOpacity::Dec\n\nvec2 getTextureCoord(vec3 ijk, float offset)\n{\n  // uncomment the following line to see  the  packed  texture\n  // return vec2(ijk.x/float(repWidth), ijk.y/float(repHeight));\n  int z = int(ijk.z + offset);\n  int yz = z / xreps;\n  int xz = z - yz*xreps;\n\n  float ni = (ijk.x + float(xz * repWidth))/xstride;\n  float nj = (ijk.y + float(yz * repHeight))/ystride;\n\n  vec2 tpos = vec2(ni/texWidth, nj/texHeight);\n\n  return tpos;\n}\n\n// because scalars may be encoded\n// this func will decode them as needed\nfloat getScalarValue(vec2 tpos)\n{\n  //VTK::ScalarValueFunction::Impl\n}\n\nvec2 getRayPointIntersectionBounds(\n  vec3 rayPos, vec3 rayDir,\n  vec3 planeDir, float planeDist,\n  vec2 tbounds, vec3 vPlaneX, vec3 vPlaneY,\n  float vSize1, float vSize2)\n{\n  float result = dot(rayDir, planeDir);\n  if (result == 0.0)\n  {\n    return tbounds;\n  }\n  result = -1.0 * (dot(rayPos, planeDir) + planeDist) / result;\n  vec3 xposVC = rayPos + rayDir*result;\n  vec3 vxpos = xposVC - vOriginVC;\n  vec2 vpos = vec2(\n    dot(vxpos, vPlaneX),\n    dot(vxpos, vPlaneY));\n\n  // on some apple nvidia systems this does not work\n  // if (vpos.x < 0.0 || vpos.x > vSize1 ||\n  //     vpos.y < 0.0 || vpos.y > vSize2)\n  // even just\n  // if (vpos.x < 0.0 || vpos.y < 0.0)\n  // fails\n  // so instead we compute a value that represents in and out\n  //and then compute the return using this value\n  float xcheck = max(0.0, vpos.x * (vpos.x - vSize1)); //  0 means in bounds\n  float check = sign(max(xcheck, vpos.y * (vpos.y - vSize2))); //  0 means in bounds, 1 = out\n\n  return mix(\n   vec2(min(tbounds.x, result), max(tbounds.y, result)), // in value\n   tbounds, // out value\n   check);  // 0 in 1 out\n}\n\nvoid main()\n{\n  float scalar;\n  vec4 scalarComps;\n\n  // camera is at 0,0,0 so rayDir for perspective is just the vc coord\n  vec3 rayDir = normalize(vertexVCVSOutput);\n  vec2 tbounds = vec2(100.0*camFar, -1.0);\n\n  // all this is in View Coordinates\n  tbounds = getRayPointIntersectionBounds(vertexVCVSOutput, rayDir,\n    vPlaneNormal0, vPlaneDistance0, tbounds, vPlaneNormal2, vPlaneNormal4,\n    vSize.y, vSize.z);\n  tbounds = getRayPointIntersectionBounds(vertexVCVSOutput, rayDir,\n    vPlaneNormal1, vPlaneDistance1, tbounds, vPlaneNormal2, vPlaneNormal4,\n    vSize.y, vSize.z);\n  tbounds = getRayPointIntersectionBounds(vertexVCVSOutput, rayDir,\n    vPlaneNormal2, vPlaneDistance2, tbounds, vPlaneNormal0, vPlaneNormal4,\n    vSize.x, vSize.z);\n  tbounds = getRayPointIntersectionBounds(vertexVCVSOutput, rayDir,\n    vPlaneNormal3, vPlaneDistance3, tbounds, vPlaneNormal0, vPlaneNormal4,\n    vSize.x, vSize.z);\n  tbounds = getRayPointIntersectionBounds(vertexVCVSOutput, rayDir,\n    vPlaneNormal4, vPlaneDistance4, tbounds, vPlaneNormal0, vPlaneNormal2,\n    vSize.x, vSize.y);\n  tbounds = getRayPointIntersectionBounds(vertexVCVSOutput, rayDir,\n    vPlaneNormal5, vPlaneDistance5, tbounds, vPlaneNormal0, vPlaneNormal2,\n    vSize.x, vSize.y);\n\n  // do not go behind front clipping plane\n  tbounds.x = max(0.0,tbounds.x);\n\n  // do not go PAST far clipping plane\n  float farDist = -camThick/rayDir.z;\n  tbounds.y = min(farDist,tbounds.y);\n\n  // Do not go past the zbuffer value if set\n  // This is used for intermixing opaque geometry\n  //VTK::ZBuffer::Impl\n\n  // do we need to composite?\n  if (tbounds.y > tbounds.x)\n  {\n    // compute starting and ending values in volume space\n    vec3 startVC = vertexVCVSOutput + tbounds.x*rayDir;\n    startVC = startVC - vOriginVC;\n\n    // vpos and endvpos are in VolumeCoords not Index yet\n    vec3 vpos = vec3(\n      dot(startVC, vPlaneNormal0),\n      dot(startVC, vPlaneNormal2),\n      dot(startVC, vPlaneNormal4));\n    vec3 endVC = vertexVCVSOutput + tbounds.y*rayDir;\n    endVC = endVC - vOriginVC;\n    vec3 endvpos = vec3(\n      dot(endVC, vPlaneNormal0),\n      dot(endVC, vPlaneNormal2),\n      dot(endVC, vPlaneNormal4));\n    vec3 vdelta = endvpos - vpos;\n    float numSteps = length(vdelta) / sampleDistance;\n    vdelta = vdelta / numSteps;\n\n    // start slightly inside\n    vpos = vpos + vdelta*0.1;\n    bool done = false;\n    vec4 color = vec4(0.0, 0.0, 0.0, 0.0);\n    int count = int(numSteps - 0.2); // end slightly inside\n\n    vec3 ijk = vpos * vVCToIJK;\n    vdelta = vdelta * vVCToIJK;\n    for (int i = 0; i < //VTK::MaximumSamplesValue ; ++i)\n    {\n      // compute the 2d texture coordinate/s\n      //VTK::ComputeTCoords\n\n      // compute the scalar\n      //VTK::ScalarFunction\n\n      // now map through opacity and color\n      vec4 tcolor = texture2D(ctexture, vec2(scalar * cscale + cshift, 0.5));\n      tcolor.a = texture2D(otexture, vec2(scalar * oscale + oshift, 0.5)).r;\n\n      // compute the normal if needed\n      //VTK::Normal::Impl\n\n      // handle gradient opacity\n      //VTK::GradientOpacity::Impl\n\n      // handle lighting\n      //VTK::Light::Impl\n\n      float mix = (1.0 - color.a);\n\n      // this line should not be needed but nvidia seems to not handle\n      // the break correctly on windows/chrome 58 angle\n      mix = mix * sign(max(float(count - i + 1), 0.0));\n\n      color = color + vec4(tcolor.rgb*tcolor.a, tcolor.a)*mix;\n      if (i >= count) { break; }\n      if (color.a > 0.99) { color.a = 1.0; break; }\n      ijk += vdelta;\n    }\n\n    gl_FragData[0] = vec4(color.rgb/color.a, color.a);\n    // gl_FragData[0] = vec4(tbounds.y/farDist, tbounds.x/farDist, color.b/color.a, 1.0);\n  }\n  else\n  {\n    discard;\n  }\n}\n"
 
 /***/ }),
-/* 332 */
+/* 341 */
 /***/ (function(module, exports) {
 
 module.exports = "//VTK::System::Dec\n\n/*=========================================================================\n\n  Program:   Visualization Toolkit\n  Module:    vtkPolyDataVS.glsl\n\n  Copyright (c) Ken Martin, Will Schroeder, Bill Lorensen\n  All rights reserved.\n  See Copyright.txt or http://www.kitware.com/Copyright.htm for details.\n\n     This software is distributed WITHOUT ANY WARRANTY; without even\n     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR\n     PURPOSE.  See the above copyright notice for more information.\n\n=========================================================================*/\n\nattribute vec4 vertexDC;\n\nvarying vec3 vertexVCVSOutput;\nuniform mat4 DCVCMatrix;\n\nuniform float dcxmin;\nuniform float dcxmax;\nuniform float dcymin;\nuniform float dcymax;\n\nvoid main()\n{\n  // dcsmall is the device coords reduced to the\n  // x y area covered by the volume\n  vec4 dcsmall = vec4(\n    dcxmin + 0.5 * (vertexDC.x + 1.0) * (dcxmax - dcxmin),\n    dcymin + 0.5 * (vertexDC.y + 1.0) * (dcymax - dcymin),\n    vertexDC.z,\n    vertexDC.w);\n  vec4 vcpos = DCVCMatrix * dcsmall;\n  vertexVCVSOutput = vcpos.xyz/vcpos.w;\n  gl_Position = dcsmall;\n}\n"
 
 /***/ }),
-/* 333 */
+/* 342 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {
@@ -105678,10 +110064,10 @@ function config (name) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(15)))
 
 /***/ }),
-/* 334 */
+/* 343 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var indexOf = __webpack_require__(299);
+var indexOf = __webpack_require__(308);
 
 var Object_keys = function (obj) {
     if (Object.keys) return Object.keys(obj)
@@ -105822,11 +110208,92 @@ exports.createContext = Script.createContext = function (context) {
 
 
 /***/ }),
-/* 335 */
+/* 344 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { attrs: { id: "simulation-component-container" } }, [
+      _c("form", { staticClass: "uk-form-stacked" }, [
+        _c("div", { staticClass: "uk-margin" }, [
+          _c(
+            "label",
+            {
+              staticClass: "uk-form-label",
+              attrs: { for: "form-stacked-text" }
+            },
+            [_vm._v("Simulation title")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "uk-form-controls" }, [
+            _c("input", {
+              staticClass: "uk-input",
+              attrs: {
+                id: "form-stacked-text",
+                type: "text",
+                placeholder: "Test simulation"
+              }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "uk-margin" }, [
+          _c("div", { staticClass: "uk-form-label" }, [
+            _vm._v("Simulation component")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "uk-form-controls" }, [
+            _c("label", [
+              _c("input", {
+                staticClass: "uk-radio",
+                attrs: { type: "radio", name: "radio1" }
+              }),
+              _vm._v(" MPM")
+            ]),
+            _c("br"),
+            _vm._v(" "),
+            _c("label", [
+              _c("input", {
+                staticClass: "uk-radio",
+                attrs: { type: "radio", name: "radio1" }
+              }),
+              _vm._v(" MPMICE")
+            ])
+          ])
+        ])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-06a1fa92", esExports)
+  }
+}
+
+/***/ }),
+/* 345 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
   return _c("div")
 }
 var staticRenderFns = []
@@ -105841,613 +110308,898 @@ if (false) {
 }
 
 /***/ }),
-/* 336 */
+/* 346 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticStyle: {
-      "font-size": "0.75rem"
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticStyle: { "font-size": "0.75rem" },
+      attrs: { id: "mpm-input-container" }
     },
-    attrs: {
-      "id": "mpm-input-container"
-    }
-  }, [_c('form', {
-    staticClass: "uk-form-horizontal"
-  }, [_c('div', {
-    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-  }, [_c('span', {
-    staticClass: "uk-form-label"
-  }, [_vm._v("Dimensions")]), _vm._v(" "), _c('div', {
-    staticClass: "uk-form-controls uk-form-controls-text"
-  }, _vm._l((_vm.d_dimensionLabels), function(dimLabel, dimIndex) {
-    return _c('label', [_c('input', {
-      directives: [{
-        name: "model",
-        rawName: "v-model",
-        value: (_vm.d_dimension),
-        expression: "d_dimension"
-      }],
-      staticClass: "uk-radio",
-      attrs: {
-        "type": "radio",
-        "name": "dimRadioBtn"
-      },
-      domProps: {
-        "value": dimIndex,
-        "checked": _vm._q(_vm.d_dimension, dimIndex)
-      },
-      on: {
-        "__c": function($event) {
-          _vm.d_dimension = dimIndex
-        }
-      }
-    }), _vm._v(" " + _vm._s(dimLabel) + " \n        ")])
-  }))]), _vm._v(" "), _c('div', {
-    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-  }, [_c('label', {
-    staticClass: "uk-form-label",
-    attrs: {
-      "for": "integration-type"
-    }
-  }, [_vm._v("Time integration")]), _vm._v(" "), _c('div', {
-    staticClass: "uk-form-controls"
-  }, [_c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.d_integration),
-      expression: "d_integration"
-    }],
-    staticClass: "uk-select uk-form-width-small",
-    attrs: {
-      "id": "integration-type"
-    },
-    domProps: {
-      "value": _vm.d_integration
-    },
-    on: {
-      "change": [function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.d_integration = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }, function($event) {
-        _vm.updateIntegrationIndex()
-      }]
-    }
-  }, _vm._l((_vm.d_integrationTypeLabels), function(label, index) {
-    return _c('option', [_vm._v(_vm._s(label))])
-  }))])]), _vm._v(" "), _c('div', {
-    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-  }, [_c('label', {
-    staticClass: "uk-form-label",
-    attrs: {
-      "for": "interpolation-type"
-    }
-  }, [_vm._v("MPM interpolation")]), _vm._v(" "), _c('div', {
-    staticClass: "uk-form-controls"
-  }, [_c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.d_interpolation),
-      expression: "d_interpolation"
-    }],
-    staticClass: "uk-select uk-form-width-small",
-    attrs: {
-      "id": "interpolation-type"
-    },
-    domProps: {
-      "value": _vm.d_interpolation
-    },
-    on: {
-      "change": function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.d_interpolation = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }
-    }
-  }, _vm._l((_vm.d_interpolationTypeLabels), function(label, index) {
-    return _c('option', [_vm._v(_vm._s(label))])
-  }))])]), _vm._v(" "), _c('div', {
-    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-  }, [_c('label', {
-    staticClass: "uk-form-label",
-    attrs: {
-      "for": "mpm-flags"
-    }
-  }, [_vm._v("MPM Options")]), _vm._v(" "), _c('div', {
-    staticClass: "uk-form-controls"
-  }, [_c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.d_mpmFlags),
-      expression: "d_mpmFlags"
-    }],
-    staticClass: "uk-select uk-form-width-medium",
-    attrs: {
-      "id": "mpm-flags",
-      "multiple": ""
-    },
-    on: {
-      "change": [function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.d_mpmFlags = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }, function($event) {
-        _vm.updateMPMFlags()
-      }]
-    }
-  }, _vm._l((_vm.d_mpmFlagLabels), function(label, index) {
-    return _c('option', {
-      domProps: {
-        "value": {
-          label: label,
-          index: index
-        }
-      }
-    }, [_vm._v(_vm._s(label))])
-  }))])]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c('div', {
-    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-  }, [_c('label', {
-    staticClass: "uk-form-label-large",
-    attrs: {
-      "for": "min-part-mass"
-    }
-  }, [_vm._v("Minimum particle mass")]), _vm._v(" "), _c('div', {
-    staticClass: "uk-form-controls"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.d_minPartMass),
-      expression: "d_minPartMass"
-    }],
-    staticClass: "uk-input uk-form-width-small",
-    attrs: {
-      "id": "min-part-mass",
-      "type": "text"
-    },
-    domProps: {
-      "value": _vm.d_minPartMass,
-      "value": (_vm.d_minPartMass)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.d_minPartMass = $event.target.value
-      }
-    }
-  })]), _vm._v(" "), _c('label', {
-    staticClass: "uk-form-label-large",
-    attrs: {
-      "for": "max-part-vel"
-    }
-  }, [_vm._v("Maximum particle velocity")]), _vm._v(" "), _c('div', {
-    staticClass: "uk-form-controls"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.d_maxPartVel),
-      expression: "d_maxPartVel"
-    }],
-    staticClass: "uk-input uk-form-width-small",
-    attrs: {
-      "id": "max-part-vel",
-      "type": "text"
-    },
-    domProps: {
-      "value": _vm.d_maxPartVel,
-      "value": (_vm.d_maxPartVel)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.d_maxPartVel = $event.target.value
-      }
-    }
-  })])]), _vm._v(" "), (_vm.c_doNumericalDamping) ? _c('div', {
-    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right",
-    staticStyle: {
-      "background-color": "rgba(218, 247, 166, 100)"
-    }
-  }, [_c('hr', {
-    staticClass: "uk-hr"
-  }), _vm._v(" "), _c('div', {
-    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-  }, [_c('label', {
-    staticClass: "uk-form-label",
-    attrs: {
-      "for": "dampCoeff"
-    }
-  }, [_vm._v("Damping Coefficient")]), _vm._v(" "), _c('div', {
-    staticClass: "uk-form-controls"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.artViscC1),
-      expression: "artViscC1"
-    }],
-    staticClass: "uk-input uk-form-width-small",
-    attrs: {
-      "id": "dampCoeff",
-      "type": "text",
-      "placeholder": "0.2"
-    },
-    domProps: {
-      "value": (_vm.artViscC1)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.artViscC1 = $event.target.value
-      }
-    }
-  })])])]) : _vm._e(), _vm._v(" "), (_vm.c_doArtificialViscosity) ? _c('div', {
-    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right",
-    staticStyle: {
-      "background-color": "rgba(218, 247, 166, 100)"
-    }
-  }, [_c('hr', {
-    staticClass: "uk-hr"
-  }), _vm._v("\n      Artificial viscosity parameters \n      "), _c('div', {
-    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-  }, [_c('label', {
-    staticClass: "uk-form-label",
-    attrs: {
-      "for": "c1"
-    }
-  }, [_vm._v("C1")]), _vm._v(" "), _c('div', {
-    staticClass: "uk-form-controls"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.artViscC1),
-      expression: "artViscC1"
-    }],
-    staticClass: "uk-input uk-form-width-small",
-    attrs: {
-      "id": "c1",
-      "type": "text",
-      "placeholder": "0.2"
-    },
-    domProps: {
-      "value": (_vm.artViscC1)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.artViscC1 = $event.target.value
-      }
-    }
-  })]), _vm._v(" "), _c('label', {
-    staticClass: "uk-form-label",
-    attrs: {
-      "for": "c2"
-    }
-  }, [_vm._v("C2")]), _vm._v(" "), _c('div', {
-    staticClass: "uk-form-controls"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.artViscC2),
-      expression: "artViscC2"
-    }],
-    staticClass: "uk-input uk-form-width-small",
-    attrs: {
-      "id": "c2",
-      "type": "text",
-      "placeholder": "0.05"
-    },
-    domProps: {
-      "value": (_vm.artViscC2)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.artViscC2 = $event.target.value
-      }
-    }
-  })])])]) : _vm._e(), _vm._v(" "), _c('div', {
-    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-  }, [_c('hr', {
-    staticClass: "uk-hr"
-  }), _vm._v("\n      Deformation gradient\n      "), _c('div', {
-    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-  }, [_c('label', {
-    staticClass: "uk-form-label"
-  }, [_vm._v("Algorithm")]), _vm._v(" "), _c('div', {
-    staticClass: "uk-form-controls"
-  }, [_c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.d_defGradAlgo),
-      expression: "d_defGradAlgo"
-    }],
-    staticClass: "uk-select uk-form-width-small",
-    attrs: {
-      "id": "def-grad-algo"
-    },
-    on: {
-      "change": [function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.d_defGradAlgo = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }, function($event) {
-        _vm.updateDefGradAlgo()
-      }]
-    }
-  }, _vm._l((_vm.d_defGradAlgoLabels), function(label, index) {
-    return _c('option', [_vm._v(_vm._s(label))])
-  }))])]), _vm._v(" "), (_vm.c_doPrescribedDefGrad) ? _c('div', {
-    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right",
-    staticStyle: {
-      "background-color": "rgba(218, 247, 166, 100)"
-    }
-  }, [_c('label', {
-    staticClass: "uk-form-label",
-    attrs: {
-      "for": "def-grad-file"
-    }
-  }, [_vm._v("Prescribed def.grad. file")]), _vm._v(" "), _c('div', {
-    staticClass: "uk-form-controls"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.defGradFile),
-      expression: "defGradFile"
-    }],
-    staticClass: "uk-input uk-form-width-medium",
-    attrs: {
-      "id": "def-grad-file",
-      "type": "text",
-      "placeholder": "None"
-    },
-    domProps: {
-      "value": (_vm.defGradFile)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.defGradFile = $event.target.value
-      }
-    }
-  })])]) : _vm._e(), _vm._v(" "), (_vm.c_doTaylorDefGrad) ? _c('div', {
-    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right",
-    staticStyle: {
-      "background-color": "rgba(218, 247, 166, 100)"
-    }
-  }, [_c('label', {
-    staticClass: "uk-form-label",
-    attrs: {
-      "for": "def-grad-taylor-terms"
-    }
-  }, [_vm._v("# Taylor terms")]), _vm._v(" "), _c('div', {
-    staticClass: "uk-form-controls"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.defGradTaylorTerms),
-      expression: "defGradTaylorTerms"
-    }],
-    staticClass: "uk-input uk-form-width-xsmall",
-    attrs: {
-      "id": "def-grad-taylor-terms",
-      "type": "text",
-      "placeholder": "5"
-    },
-    domProps: {
-      "value": (_vm.defGradTaylorTerms)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.defGradTaylorTerms = $event.target.value
-      }
-    }
-  })])]) : _vm._e()]), _vm._v(" "), (_vm.c_useRotatingCoord) ? _c('div', {
-    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-  }, [_c('hr', {
-    staticClass: "uk-hr"
-  }), _vm._v("\n      Rotating coordinate system\n      "), _c('div', {
-    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-  }, [_c('label', {
-    staticClass: "uk-form-label",
-    attrs: {
-      "for": "form-rot-cen"
-    }
-  }, [_vm._v("Rotation center")]), _vm._v(" "), _c('div', {
-    staticClass: "uk-form-controls"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.d_rotCen),
-      expression: "d_rotCen"
-    }],
-    staticClass: "uk-input uk-form-width-small",
-    attrs: {
-      "id": "form-rot-cen",
-      "type": "text"
-    },
-    domProps: {
-      "value": (_vm.d_rotCen)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.d_rotCen = $event.target.value
-      }
-    }
-  })]), _vm._v(" "), _c('label', {
-    staticClass: "uk-form-label",
-    attrs: {
-      "for": "form-rot-axis"
-    }
-  }, [_vm._v("Rotation axis")]), _vm._v(" "), _c('div', {
-    staticClass: "uk-form-controls"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.d_rotAxis),
-      expression: "d_rotAxis"
-    }],
-    staticClass: "uk-input uk-form-width-small",
-    attrs: {
-      "id": "form-rot-axis",
-      "type": "text"
-    },
-    domProps: {
-      "value": (_vm.d_rotAxis)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.d_rotAxis = $event.target.value
-      }
-    }
-  })]), _vm._v(" "), _c('label', {
-    staticClass: "uk-form-label",
-    attrs: {
-      "for": "form-rot-vel"
-    }
-  }, [_vm._v("Angular velocity")]), _vm._v(" "), _c('div', {
-    staticClass: "uk-form-controls"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.d_rotVel),
-      expression: "d_rotVel"
-    }],
-    staticClass: "uk-input uk-form-width-small",
-    attrs: {
-      "id": "form-rot-vel",
-      "type": "text"
-    },
-    domProps: {
-      "value": (_vm.d_rotVel)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.d_rotVel = $event.target.value
-      }
-    }
-  })])])]) : _vm._e(), _vm._v(" "), (_vm.c_doAdaptiveRefine) ? _c('div', {
-    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-  }, [_c('hr', {
-    staticClass: "uk-hr"
-  }), _vm._v("\n      Adaptive refinement\n      "), _c('div', {
-    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-  }, [_c('div', {
-    staticClass: "uk-form-controls uk-form-controls-text"
-  }, [_c('label', [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.d_doGridAMR),
-      expression: "d_doGridAMR"
-    }],
-    staticClass: "uk-checkbox",
-    attrs: {
-      "type": "checkbox",
-      "name": "do_grid_amr"
-    },
-    domProps: {
-      "checked": Array.isArray(_vm.d_doGridAMR) ? _vm._i(_vm.d_doGridAMR, null) > -1 : (_vm.d_doGridAMR)
-    },
-    on: {
-      "__c": function($event) {
-        var $$a = _vm.d_doGridAMR,
-          $$el = $event.target,
-          $$c = $$el.checked ? (true) : (false);
-        if (Array.isArray($$a)) {
-          var $$v = null,
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.d_doGridAMR = $$a.concat($$v))
-          } else {
-            $$i > -1 && (_vm.d_doGridAMR = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
-          }
-        } else {
-          _vm.d_doGridAMR = $$c
-        }
-      }
-    }
-  }), _vm._v(" Do grid refinement")]), _vm._v(" "), _c('br'), _vm._v(" "), _c('label', [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.d_doPartAMR),
-      expression: "d_doPartAMR"
-    }],
-    staticClass: "uk-checkbox",
-    attrs: {
-      "type": "checkbox",
-      "name": "do_part_amr"
-    },
-    domProps: {
-      "checked": Array.isArray(_vm.d_doPartAMR) ? _vm._i(_vm.d_doPartAMR, null) > -1 : (_vm.d_doPartAMR)
-    },
-    on: {
-      "__c": function($event) {
-        var $$a = _vm.d_doPartAMR,
-          $$el = $event.target,
-          $$c = $$el.checked ? (true) : (false);
-        if (Array.isArray($$a)) {
-          var $$v = null,
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.d_doPartAMR = $$a.concat($$v))
-          } else {
-            $$i > -1 && (_vm.d_doPartAMR = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
-          }
-        } else {
-          _vm.d_doPartAMR = $$c
-        }
-      }
-    }
-  }), _vm._v(" Do particle refinement")])])])]) : _vm._e()]), _vm._v(" "), _c('button', {
-    staticClass: "uk-button uk-button-default",
-    on: {
-      "click": _vm.printMPMParameters
-    }
-  }, [_vm._v("Print")])])
+    [
+      _c("form", { staticClass: "uk-form-horizontal" }, [
+        _c(
+          "div",
+          {
+            staticClass:
+              "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+          },
+          [
+            _c("span", { staticClass: "uk-form-label" }, [
+              _vm._v("Dimensions")
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "uk-form-controls uk-form-controls-text" },
+              _vm._l(_vm.d_dimensionLabels, function(dimLabel, dimIndex) {
+                return _c("label", [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.d_dimension,
+                        expression: "d_dimension"
+                      }
+                    ],
+                    staticClass: "uk-radio",
+                    attrs: { type: "radio", name: "dimRadioBtn" },
+                    domProps: {
+                      value: dimIndex,
+                      checked: _vm._q(_vm.d_dimension, dimIndex)
+                    },
+                    on: {
+                      __c: function($event) {
+                        _vm.d_dimension = dimIndex
+                      }
+                    }
+                  }),
+                  _vm._v(" " + _vm._s(dimLabel) + " \n        ")
+                ])
+              })
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+          },
+          [
+            _c(
+              "label",
+              {
+                staticClass: "uk-form-label",
+                attrs: { for: "integration-type" }
+              },
+              [_vm._v("Time integration")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "uk-form-controls" }, [
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.d_integration,
+                      expression: "d_integration"
+                    }
+                  ],
+                  staticClass: "uk-select uk-form-width-small",
+                  attrs: { id: "integration-type" },
+                  domProps: { value: _vm.d_integration },
+                  on: {
+                    change: [
+                      function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.d_integration = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      },
+                      function($event) {
+                        _vm.updateIntegrationIndex()
+                      }
+                    ]
+                  }
+                },
+                _vm._l(_vm.d_integrationTypeLabels, function(label, index) {
+                  return _c("option", [_vm._v(_vm._s(label))])
+                })
+              )
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+          },
+          [
+            _c(
+              "label",
+              {
+                staticClass: "uk-form-label",
+                attrs: { for: "interpolation-type" }
+              },
+              [_vm._v("MPM interpolation")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "uk-form-controls" }, [
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.d_interpolation,
+                      expression: "d_interpolation"
+                    }
+                  ],
+                  staticClass: "uk-select uk-form-width-small",
+                  attrs: { id: "interpolation-type" },
+                  domProps: { value: _vm.d_interpolation },
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.d_interpolation = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    }
+                  }
+                },
+                _vm._l(_vm.d_interpolationTypeLabels, function(label, index) {
+                  return _c("option", [_vm._v(_vm._s(label))])
+                })
+              )
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+          },
+          [
+            _c(
+              "label",
+              { staticClass: "uk-form-label", attrs: { for: "mpm-flags" } },
+              [_vm._v("MPM Options")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "uk-form-controls" }, [
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.d_mpmFlags,
+                      expression: "d_mpmFlags"
+                    }
+                  ],
+                  staticClass: "uk-select uk-form-width-medium",
+                  attrs: { id: "mpm-flags", multiple: "" },
+                  on: {
+                    change: [
+                      function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.d_mpmFlags = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      },
+                      function($event) {
+                        _vm.updateMPMFlags()
+                      }
+                    ]
+                  }
+                },
+                _vm._l(_vm.d_mpmFlagLabels, function(label, index) {
+                  return _c(
+                    "option",
+                    { domProps: { value: { label: label, index: index } } },
+                    [_vm._v(_vm._s(label))]
+                  )
+                })
+              )
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _vm._m(0),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+          },
+          [
+            _c(
+              "label",
+              {
+                staticClass: "uk-form-label-large",
+                attrs: { for: "min-part-mass" }
+              },
+              [_vm._v("Minimum particle mass")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "uk-form-controls" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.d_minPartMass,
+                    expression: "d_minPartMass"
+                  }
+                ],
+                staticClass: "uk-input uk-form-width-small",
+                attrs: { id: "min-part-mass", type: "text" },
+                domProps: {
+                  value: _vm.d_minPartMass,
+                  value: _vm.d_minPartMass
+                },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.d_minPartMass = $event.target.value
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c(
+              "label",
+              {
+                staticClass: "uk-form-label-large",
+                attrs: { for: "max-part-vel" }
+              },
+              [_vm._v("Maximum particle velocity")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "uk-form-controls" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.d_maxPartVel,
+                    expression: "d_maxPartVel"
+                  }
+                ],
+                staticClass: "uk-input uk-form-width-small",
+                attrs: { id: "max-part-vel", type: "text" },
+                domProps: { value: _vm.d_maxPartVel, value: _vm.d_maxPartVel },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.d_maxPartVel = $event.target.value
+                  }
+                }
+              })
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _vm.c_doNumericalDamping
+          ? _c(
+              "div",
+              {
+                staticClass:
+                  "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right",
+                staticStyle: { "background-color": "rgba(218, 247, 166, 100)" }
+              },
+              [
+                _c("hr", { staticClass: "uk-hr" }),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "uk-form-label",
+                        attrs: { for: "dampCoeff" }
+                      },
+                      [_vm._v("Damping Coefficient")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "uk-form-controls" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.artViscC1,
+                            expression: "artViscC1"
+                          }
+                        ],
+                        staticClass: "uk-input uk-form-width-small",
+                        attrs: {
+                          id: "dampCoeff",
+                          type: "text",
+                          placeholder: "0.2"
+                        },
+                        domProps: { value: _vm.artViscC1 },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.artViscC1 = $event.target.value
+                          }
+                        }
+                      })
+                    ])
+                  ]
+                )
+              ]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.c_doArtificialViscosity
+          ? _c(
+              "div",
+              {
+                staticClass:
+                  "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right",
+                staticStyle: { "background-color": "rgba(218, 247, 166, 100)" }
+              },
+              [
+                _c("hr", { staticClass: "uk-hr" }),
+                _vm._v("\n      Artificial viscosity parameters \n      "),
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+                  },
+                  [
+                    _c(
+                      "label",
+                      { staticClass: "uk-form-label", attrs: { for: "c1" } },
+                      [_vm._v("C1")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "uk-form-controls" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.artViscC1,
+                            expression: "artViscC1"
+                          }
+                        ],
+                        staticClass: "uk-input uk-form-width-small",
+                        attrs: { id: "c1", type: "text", placeholder: "0.2" },
+                        domProps: { value: _vm.artViscC1 },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.artViscC1 = $event.target.value
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "label",
+                      { staticClass: "uk-form-label", attrs: { for: "c2" } },
+                      [_vm._v("C2")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "uk-form-controls" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.artViscC2,
+                            expression: "artViscC2"
+                          }
+                        ],
+                        staticClass: "uk-input uk-form-width-small",
+                        attrs: { id: "c2", type: "text", placeholder: "0.05" },
+                        domProps: { value: _vm.artViscC2 },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.artViscC2 = $event.target.value
+                          }
+                        }
+                      })
+                    ])
+                  ]
+                )
+              ]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+          },
+          [
+            _c("hr", { staticClass: "uk-hr" }),
+            _vm._v("\n      Deformation gradient\n      "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+              },
+              [
+                _c("label", { staticClass: "uk-form-label" }, [
+                  _vm._v("Algorithm")
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "uk-form-controls" }, [
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.d_defGradAlgo,
+                          expression: "d_defGradAlgo"
+                        }
+                      ],
+                      staticClass: "uk-select uk-form-width-small",
+                      attrs: { id: "def-grad-algo" },
+                      on: {
+                        change: [
+                          function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.d_defGradAlgo = $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          },
+                          function($event) {
+                            _vm.updateDefGradAlgo()
+                          }
+                        ]
+                      }
+                    },
+                    _vm._l(_vm.d_defGradAlgoLabels, function(label, index) {
+                      return _c("option", [_vm._v(_vm._s(label))])
+                    })
+                  )
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _vm.c_doPrescribedDefGrad
+              ? _c(
+                  "div",
+                  {
+                    staticClass:
+                      "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right",
+                    staticStyle: {
+                      "background-color": "rgba(218, 247, 166, 100)"
+                    }
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "uk-form-label",
+                        attrs: { for: "def-grad-file" }
+                      },
+                      [_vm._v("Prescribed def.grad. file")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "uk-form-controls" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.defGradFile,
+                            expression: "defGradFile"
+                          }
+                        ],
+                        staticClass: "uk-input uk-form-width-medium",
+                        attrs: {
+                          id: "def-grad-file",
+                          type: "text",
+                          placeholder: "None"
+                        },
+                        domProps: { value: _vm.defGradFile },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.defGradFile = $event.target.value
+                          }
+                        }
+                      })
+                    ])
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.c_doTaylorDefGrad
+              ? _c(
+                  "div",
+                  {
+                    staticClass:
+                      "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right",
+                    staticStyle: {
+                      "background-color": "rgba(218, 247, 166, 100)"
+                    }
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "uk-form-label",
+                        attrs: { for: "def-grad-taylor-terms" }
+                      },
+                      [_vm._v("# Taylor terms")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "uk-form-controls" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.defGradTaylorTerms,
+                            expression: "defGradTaylorTerms"
+                          }
+                        ],
+                        staticClass: "uk-input uk-form-width-xsmall",
+                        attrs: {
+                          id: "def-grad-taylor-terms",
+                          type: "text",
+                          placeholder: "5"
+                        },
+                        domProps: { value: _vm.defGradTaylorTerms },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.defGradTaylorTerms = $event.target.value
+                          }
+                        }
+                      })
+                    ])
+                  ]
+                )
+              : _vm._e()
+          ]
+        ),
+        _vm._v(" "),
+        _vm.c_useRotatingCoord
+          ? _c(
+              "div",
+              {
+                staticClass:
+                  "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+              },
+              [
+                _c("hr", { staticClass: "uk-hr" }),
+                _vm._v("\n      Rotating coordinate system\n      "),
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "uk-form-label",
+                        attrs: { for: "form-rot-cen" }
+                      },
+                      [_vm._v("Rotation center")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "uk-form-controls" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.d_rotCen,
+                            expression: "d_rotCen"
+                          }
+                        ],
+                        staticClass: "uk-input uk-form-width-small",
+                        attrs: { id: "form-rot-cen", type: "text" },
+                        domProps: { value: _vm.d_rotCen },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.d_rotCen = $event.target.value
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "label",
+                      {
+                        staticClass: "uk-form-label",
+                        attrs: { for: "form-rot-axis" }
+                      },
+                      [_vm._v("Rotation axis")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "uk-form-controls" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.d_rotAxis,
+                            expression: "d_rotAxis"
+                          }
+                        ],
+                        staticClass: "uk-input uk-form-width-small",
+                        attrs: { id: "form-rot-axis", type: "text" },
+                        domProps: { value: _vm.d_rotAxis },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.d_rotAxis = $event.target.value
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "label",
+                      {
+                        staticClass: "uk-form-label",
+                        attrs: { for: "form-rot-vel" }
+                      },
+                      [_vm._v("Angular velocity")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "uk-form-controls" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.d_rotVel,
+                            expression: "d_rotVel"
+                          }
+                        ],
+                        staticClass: "uk-input uk-form-width-small",
+                        attrs: { id: "form-rot-vel", type: "text" },
+                        domProps: { value: _vm.d_rotVel },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.d_rotVel = $event.target.value
+                          }
+                        }
+                      })
+                    ])
+                  ]
+                )
+              ]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.c_doAdaptiveRefine
+          ? _c(
+              "div",
+              {
+                staticClass:
+                  "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+              },
+              [
+                _c("hr", { staticClass: "uk-hr" }),
+                _vm._v("\n      Adaptive refinement\n      "),
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+                  },
+                  [
+                    _c(
+                      "div",
+                      { staticClass: "uk-form-controls uk-form-controls-text" },
+                      [
+                        _c("label", [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.d_doGridAMR,
+                                expression: "d_doGridAMR"
+                              }
+                            ],
+                            staticClass: "uk-checkbox",
+                            attrs: { type: "checkbox", name: "do_grid_amr" },
+                            domProps: {
+                              checked: Array.isArray(_vm.d_doGridAMR)
+                                ? _vm._i(_vm.d_doGridAMR, null) > -1
+                                : _vm.d_doGridAMR
+                            },
+                            on: {
+                              __c: function($event) {
+                                var $$a = _vm.d_doGridAMR,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = null,
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      (_vm.d_doGridAMR = $$a.concat([$$v]))
+                                  } else {
+                                    $$i > -1 &&
+                                      (_vm.d_doGridAMR = $$a
+                                        .slice(0, $$i)
+                                        .concat($$a.slice($$i + 1)))
+                                  }
+                                } else {
+                                  _vm.d_doGridAMR = $$c
+                                }
+                              }
+                            }
+                          }),
+                          _vm._v(" Do grid refinement")
+                        ]),
+                        _vm._v(" "),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c("label", [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.d_doPartAMR,
+                                expression: "d_doPartAMR"
+                              }
+                            ],
+                            staticClass: "uk-checkbox",
+                            attrs: { type: "checkbox", name: "do_part_amr" },
+                            domProps: {
+                              checked: Array.isArray(_vm.d_doPartAMR)
+                                ? _vm._i(_vm.d_doPartAMR, null) > -1
+                                : _vm.d_doPartAMR
+                            },
+                            on: {
+                              __c: function($event) {
+                                var $$a = _vm.d_doPartAMR,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = null,
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      (_vm.d_doPartAMR = $$a.concat([$$v]))
+                                  } else {
+                                    $$i > -1 &&
+                                      (_vm.d_doPartAMR = $$a
+                                        .slice(0, $$i)
+                                        .concat($$a.slice($$i + 1)))
+                                  }
+                                } else {
+                                  _vm.d_doPartAMR = $$c
+                                }
+                              }
+                            }
+                          }),
+                          _vm._v(" Do particle refinement")
+                        ])
+                      ]
+                    )
+                  ]
+                )
+              ]
+            )
+          : _vm._e()
+      ]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "uk-button uk-button-default",
+          on: { click: _vm.printMPMParameters }
+        },
+        [_vm._v("Print")]
+      )
+    ]
+  )
 }
-var staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-  }, [_c('hr', {
-    staticClass: "uk-hr"
-  }), _vm._v("\n      Simulation limits\n    ")])
-}]
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass:
+          "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+      },
+      [
+        _c("hr", { staticClass: "uk-hr" }),
+        _vm._v("\n      Simulation limits\n    ")
+      ]
+    )
+  }
+]
 render._withStripped = true
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
@@ -106459,16 +111211,15 @@ if (false) {
 }
 
 /***/ }),
-/* 337 */
+/* 347 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    attrs: {
-      "id": "three-scene-div"
-    }
-  }, [_vm._t("default")], 2)
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { attrs: { id: "three-scene-div" } }, [_vm._t("default")], 2)
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -106482,11 +111233,14 @@ if (false) {
 }
 
 /***/ }),
-/* 338 */
+/* 348 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
   return _c("div")
 }
 var staticRenderFns = []
@@ -106501,45 +111255,75 @@ if (false) {
 }
 
 /***/ }),
-/* 339 */
+/* 349 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "uk-container uk-container-center uk-margin-remove-top uk-margin-remove-left uk-margin-remove-right uk-margin-large-bottom",
-    attrs: {
-      "id": "vaango-main-panel"
-    }
-  }, [_c('main-menubar', {
-    staticClass: "uk-child-width-1-1"
-  }), _vm._v(" "), _c('div', {
-    staticClass: "uk-flex uk-flex-around",
-    attrs: {
-      "id": "container"
-    }
-  }, [_c('div', {
-    staticClass: "uk-flex-vertical uk-flex-around"
-  }, [_c('sidebar', {
-    staticClass: "uk-width-small",
-    on: {
-      "propagateActiveTab": _vm.updateActiveTab
-    }
-  }), _vm._v(" "), _c('main-text-panel', {
-    staticClass: "uk-width-medium",
-    attrs: {
-      "sidebar-tab-index": _vm.sidebarTabIndex,
-      "sidebar-tab-name": _vm.sidebarTabName
-    }
-  })], 1), _vm._v(" "), _c('div', {
-    staticClass: "uk-flex-vertical"
-  }, [_c('three-graphics-panel', {
-    staticClass: "uk-width-xxlarge"
-  }), _vm._v(" "), (_vm.editorWindowActive == false) ? _c('div', {
-    staticClass: "uk-width-xxlarge"
-  }, [_c('vtk-graphics-panel')], 1) : _c('div', {
-    staticClass: "uk-width-xxlarge"
-  }, [_c('editor-graphics-panel')], 1)], 1)])], 1)
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass:
+        "uk-container uk-container-center uk-margin-remove-top uk-margin-remove-left uk-margin-remove-right uk-margin-large-bottom",
+      attrs: { id: "vaango-main-panel" }
+    },
+    [
+      _c("main-menubar", { staticClass: "uk-child-width-1-1" }),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "uk-flex uk-flex-around", attrs: { id: "container" } },
+        [
+          _c(
+            "div",
+            { staticClass: "uk-flex-vertical uk-flex-around" },
+            [
+              _c("sidebar", {
+                staticClass: "uk-width-small",
+                on: { propagateActiveTab: _vm.updateActiveTab }
+              }),
+              _vm._v(" "),
+              _c("main-text-panel", {
+                staticClass: "uk-width-medium",
+                attrs: {
+                  "sidebar-tab-index": _vm.sidebarTabIndex,
+                  "sidebar-tab-name": _vm.sidebarTabName
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "uk-flex-vertical" },
+            [
+              _c("three-graphics-panel", { staticClass: "uk-width-xxlarge" }),
+              _vm._v(" "),
+              _vm.editorWindowActive == false
+                ? _c(
+                    "div",
+                    { staticClass: "uk-width-xxlarge" },
+                    [_c("vtk-graphics-panel")],
+                    1
+                  )
+                : _c(
+                    "div",
+                    { staticClass: "uk-width-xxlarge" },
+                    [_c("editor-graphics-panel")],
+                    1
+                  )
+            ],
+            1
+          )
+        ]
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -106553,11 +111337,14 @@ if (false) {
 }
 
 /***/ }),
-/* 340 */
+/* 350 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
   return _c("div")
 }
 var staticRenderFns = []
@@ -106572,11 +111359,14 @@ if (false) {
 }
 
 /***/ }),
-/* 341 */
+/* 351 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
   return _c("div")
 }
 var staticRenderFns = []
@@ -106591,11 +111381,14 @@ if (false) {
 }
 
 /***/ }),
-/* 342 */
+/* 352 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
   return _c("div")
 }
 var staticRenderFns = []
@@ -106610,30 +111403,36 @@ if (false) {
 }
 
 /***/ }),
-/* 343 */
+/* 353 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "uk-card uk-card-default"
-  }, [_c('ul', {
-    staticClass: "uk_nav-sub",
-    attrs: {
-      "id": "vaango-input-tabnames"
-    }
-  }, _vm._l((_vm.tabNames), function(tabName, tabIndex) {
-    return _c('li', [_c('a', {
-      attrs: {
-        "href": "#"
-      },
-      on: {
-        "click": function($event) {
-          _vm.activateSidebarTab(tabIndex, tabName)
-        }
-      }
-    }, [_vm._v(_vm._s(tabName))])])
-  }))])
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "uk-card uk-card-default" }, [
+    _c(
+      "ul",
+      { staticClass: "uk_nav-sub", attrs: { id: "vaango-input-tabnames" } },
+      _vm._l(_vm.tabNames, function(tabName, tabIndex) {
+        return _c("li", [
+          _c(
+            "a",
+            {
+              attrs: { href: "#" },
+              on: {
+                click: function($event) {
+                  _vm.activateSidebarTab(tabIndex, tabName)
+                }
+              }
+            },
+            [_vm._v(_vm._s(tabName))]
+          )
+        ])
+      })
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -106647,99 +111446,164 @@ if (false) {
 }
 
 /***/ }),
-/* 344 */
+/* 354 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "main-menubar uk-child-width-1-1@m",
-    attrs: {
-      "id": "main-menubar-container"
-    }
-  }, [_c('nav', {
-    staticClass: "uk-navbar uk-navbar-container uk-background-primary"
-  }, [_c('div', {
-    staticClass: "uk-navbar-left"
-  }, [_c('div', [_c('a', {
-    staticClass: "uk-navbar-toggle",
-    attrs: {
-      "href": "#menu",
-      "id": "main-menubar-dropdown-icon",
-      "uk-navbar-toggle-icon": ""
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { attrs: { id: "task-graph-editor-div" } },
+    [_vm._t("default")],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-64ba1650", esExports)
+  }
+}
+
+/***/ }),
+/* 355 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "main-menubar uk-child-width-1-1@m",
+      attrs: { id: "main-menubar-container" }
     },
-    on: {
-      "mouseover": function($event) {
-        _vm.addToggleMenu()
-      }
-    }
-  }), _vm._v(" "), _c('div', {
-    staticClass: "main-menubar-dropdown uk-navbar-dropdown uk-width-auto",
-    attrs: {
-      "id": "main-menubar-dropdown-menu",
-      "uk-drop": "mode: click; offset: -20;"
-    }
-  }, [_c('ul', {
-    staticClass: "main-menubar-ul uk_nav uk-nav-default uk-link-reset",
-    attrs: {
-      "id": "main-menubar-names"
-    }
-  }, _vm._l((_vm.menuItems), function(menuItem, menuIndex) {
-    return _c('li', {
-      staticClass: "main-menubar-li",
-      class: {
-        'main-menubar-li-active': _vm.getSelectedMenuIndex === menuIndex
-      },
-      on: {
-        "mouseover": function($event) {
-          _vm.selectMenu(menuItem, menuIndex)
-        },
-        "click": function($event) {
-          _vm.removeToggleMenu(menuItem, menuIndex)
-        }
-      }
-    }, [_c('div', {
-      staticClass: "uk-grid uk-visible-toggle"
-    }, [_c('a', {
-      attrs: {
-        "href": "#"
-      }
-    }, [_vm._v(_vm._s(menuItem))]), _vm._v(" "), (menuIndex === 0) ? _c('input', {
-      staticClass: "main-menubar-input uk-input uk-width-auto uk-hidden-hover",
-      attrs: {
-        "type": "file"
-      },
-      on: {
-        "change": _vm.readVTKXMLParticleFile
-      }
-    }) : (menuIndex === 1) ? _c('input', {
-      staticClass: "main-menubar-input uk-input uk-width-auto uk-hidden-hover",
-      attrs: {
-        "type": "file"
-      },
-      on: {
-        "change": _vm.readGeneratedParticleFile
-      }
-    }) : (menuIndex === 2) ? _c('input', {
-      staticClass: "main-menubar-input uk-input uk-width-auto uk-hidden-hover",
-      attrs: {
-        "type": "file"
-      },
-      on: {
-        "change": _vm.readVaangoInputFile
-      }
-    }) : (menuIndex === 3) ? _c('input', {
-      staticClass: "main-menubar-input uk-input uk-width-auto uk-hidden-hover",
-      attrs: {
-        "type": "file"
-      },
-      on: {
-        "change": _vm.saveVaangoInputFile
-      }
-    }) : _vm._e()])])
-  }))])])]), _vm._v(" "), _c('div', {
-    staticClass: "product-name uk-navbar-right"
-  }, [_vm._v("\n       VaangoUI 0.0.1\n    ")])])])
+    [
+      _c(
+        "nav",
+        { staticClass: "uk-navbar uk-navbar-container uk-background-primary" },
+        [
+          _c("div", { staticClass: "uk-navbar-left" }, [
+            _c("div", [
+              _c("a", {
+                staticClass: "uk-navbar-toggle",
+                attrs: {
+                  href: "#menu",
+                  id: "main-menubar-dropdown-icon",
+                  "uk-navbar-toggle-icon": ""
+                },
+                on: {
+                  mouseover: function($event) {
+                    _vm.addToggleMenu()
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "main-menubar-dropdown uk-navbar-dropdown uk-width-auto",
+                  attrs: {
+                    id: "main-menubar-dropdown-menu",
+                    "uk-drop": "mode: click; offset: -20;"
+                  }
+                },
+                [
+                  _c(
+                    "ul",
+                    {
+                      staticClass:
+                        "main-menubar-ul uk_nav uk-nav-default uk-link-reset",
+                      attrs: { id: "main-menubar-names" }
+                    },
+                    _vm._l(_vm.menuItems, function(menuItem, menuIndex) {
+                      return _c(
+                        "li",
+                        {
+                          staticClass: "main-menubar-li",
+                          class: {
+                            "main-menubar-li-active":
+                              _vm.getSelectedMenuIndex === menuIndex
+                          },
+                          on: {
+                            mouseover: function($event) {
+                              _vm.selectMenu(menuItem, menuIndex)
+                            },
+                            click: function($event) {
+                              _vm.removeToggleMenu(menuItem, menuIndex)
+                            }
+                          }
+                        },
+                        [
+                          _c(
+                            "div",
+                            { staticClass: "uk-grid uk-visible-toggle" },
+                            [
+                              _c("a", { attrs: { href: "#" } }, [
+                                _vm._v(_vm._s(menuItem))
+                              ]),
+                              _vm._v(" "),
+                              menuIndex === 0
+                                ? _c("input", {
+                                    staticClass:
+                                      "main-menubar-input uk-input uk-width-auto uk-hidden-hover",
+                                    attrs: { type: "file" },
+                                    on: { change: _vm.readVTKXMLParticleFile }
+                                  })
+                                : menuIndex === 1
+                                  ? _c("input", {
+                                      staticClass:
+                                        "main-menubar-input uk-input uk-width-auto uk-hidden-hover",
+                                      attrs: { type: "file" },
+                                      on: {
+                                        change: _vm.readGeneratedParticleFile
+                                      }
+                                    })
+                                  : menuIndex === 2
+                                    ? _c("input", {
+                                        staticClass:
+                                          "main-menubar-input uk-input uk-width-auto uk-hidden-hover",
+                                        attrs: { type: "file" },
+                                        on: { change: _vm.readVaangoInputFile }
+                                      })
+                                    : menuIndex === 3
+                                      ? _c("input", {
+                                          staticClass:
+                                            "main-menubar-input uk-input uk-width-auto uk-hidden-hover",
+                                          attrs: { type: "file" },
+                                          on: {
+                                            change: _vm.saveVaangoInputFile
+                                          }
+                                        })
+                                      : _vm._e()
+                            ]
+                          )
+                        ]
+                      )
+                    })
+                  )
+                ]
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "product-name uk-navbar-right" }, [
+            _vm._v("\n       VaangoUI 0.0.1\n    ")
+          ])
+        ]
+      )
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -106753,16 +111617,20 @@ if (false) {
 }
 
 /***/ }),
-/* 345 */
+/* 356 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    attrs: {
-      "id": "editor-scene-div"
-    }
-  }, [_vm._t("default")], 2)
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { attrs: { id: "geometry-editor-scene-div" } },
+    [_vm._t("default")],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -106776,48 +111644,59 @@ if (false) {
 }
 
 /***/ }),
-/* 346 */
+/* 357 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    attrs: {
-      "id": "three-graphics-container"
-    }
-  }, [_c('div', {
-    staticClass: "uk-card uk-card-default uk-card-large"
-  }, [_vm._m(0), _vm._v(" "), _c('div', {
-    staticClass: "uk-card-body"
-  }, [_c('three-renderer', {
-    attrs: {
-      "size": {
-        w: 500,
-        h: 500
-      }
-    }
-  }, [_c('three-scene', {
-    attrs: {
-      "size": _vm.size
-    }
-  }, [_c('three-camera', {
-    attrs: {
-      "size": _vm.size,
-      "position": {
-        x: 5,
-        y: 5,
-        z: 5
-      }
-    }
-  }), _vm._v(" "), _c('three-ellipsoid-particles')], 1)], 1)], 1)])])
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { attrs: { id: "three-graphics-container" } }, [
+    _c("div", { staticClass: "uk-card uk-card-default uk-card-large" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "uk-card-body" },
+        [
+          _c(
+            "three-renderer",
+            { attrs: { size: { w: 500, h: 500 } } },
+            [
+              _c(
+                "three-scene",
+                { attrs: { size: _vm.size } },
+                [
+                  _c("three-camera", {
+                    attrs: { size: _vm.size, position: { x: 5, y: 5, z: 5 } }
+                  }),
+                  _vm._v(" "),
+                  _c("three-ellipsoid-particles")
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ])
+  ])
 }
-var staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "uk-card-header"
-  }, [_c('h3', {
-    staticClass: "uk-card-title"
-  }, [_vm._v("THREE Graphics panel")])])
-}]
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "uk-card-header" }, [
+      _c("h3", { staticClass: "uk-card-title" }, [
+        _vm._v("THREE Graphics panel")
+      ])
+    ])
+  }
+]
 render._withStripped = true
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
@@ -106829,26 +111708,82 @@ if (false) {
 }
 
 /***/ }),
-/* 347 */
+/* 358 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    attrs: {
-      "id": "main-text-input-container"
-    }
-  }, [_c('div', {
-    staticClass: "uk-card uk-card-default uk-card-large"
-  }, [_c('div', {
-    staticClass: "uk-card-header"
-  }, [(_vm.sidebarTabName === "") ? _c('h3', {
-    staticClass: "uk-card-title"
-  }, [_vm._v("Main panel")]) : _c('h3', {
-    staticClass: "uk-card-title"
-  }, [_vm._v(_vm._s(_vm.sidebarTabName))])]), _vm._v(" "), _c('div', {
-    staticClass: "uk-card-body"
-  }, [_c('keep-alive', [(_vm.sidebarTabIndex === 0) ? _c('general-input-panel') : _vm._e()], 1), _vm._v(" "), _c('keep-alive', [(_vm.sidebarTabName === "Timestep controls") ? _c('time-input-panel') : _vm._e()], 1), _vm._v(" "), _c('keep-alive', [(_vm.sidebarTabIndex === 3) ? _c('mpm-input-panel') : _vm._e()], 1), _vm._v(" "), _c('keep-alive', [(_vm.sidebarTabIndex === 5) ? _c('ice-input-panel') : _vm._e()], 1)], 1)])])
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { attrs: { id: "main-text-input-container" } }, [
+    _c("div", { staticClass: "uk-card uk-card-default uk-card-large" }, [
+      _c("div", { staticClass: "uk-card-header" }, [
+        _vm.sidebarTabName === ""
+          ? _c("h3", { staticClass: "uk-card-title" }, [_vm._v("Main panel")])
+          : _c("h3", { staticClass: "uk-card-title" }, [
+              _vm._v(_vm._s(_vm.sidebarTabName))
+            ])
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "uk-card-body" },
+        [
+          _c(
+            "keep-alive",
+            [
+              _vm.sidebarTabName === "Taskgraph editor"
+                ? _c("task-graph-editor-panel")
+                : _vm._e()
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "keep-alive",
+            [
+              _vm.sidebarTabName === "Simulation type"
+                ? _c("simulation-component-panel")
+                : _vm._e()
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "keep-alive",
+            [
+              _vm.sidebarTabName === "Timestep controls"
+                ? _c("time-input-panel")
+                : _vm._e()
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "keep-alive",
+            [
+              _vm.sidebarTabName === "MPM parameters"
+                ? _c("mpm-input-panel")
+                : _vm._e()
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "keep-alive",
+            [
+              _vm.sidebarTabName === "ICE parameters"
+                ? _c("ice-input-panel")
+                : _vm._e()
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -106862,22 +111797,35 @@ if (false) {
 }
 
 /***/ }),
-/* 348 */
+/* 359 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_vm._t("vtk"), _vm._v(" "), _c('div', {
-    ref: "vtk-graphics-container",
-    on: {
-      "click": function($event) {
-        _vm.zoomIn($event)
-      },
-      "dblclick": function($event) {
-        _vm.zoomOut($event)
-      }
-    }
-  }), _vm._v(" "), _vm._t("default")], 2)
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _vm._t("vtk"),
+      _vm._v(" "),
+      _c("div", {
+        ref: "vtk-graphics-container",
+        on: {
+          click: function($event) {
+            _vm.zoomIn($event)
+          },
+          dblclick: function($event) {
+            _vm.zoomOut($event)
+          }
+        }
+      }),
+      _vm._v(" "),
+      _vm._t("default")
+    ],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -106891,50 +111839,66 @@ if (false) {
 }
 
 /***/ }),
-/* 349 */
+/* 360 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    attrs: {
-      "id": "geometry-editor-div"
-    }
-  }, [_vm._t("default"), _vm._v(" "), _c('div', {
-    ref: "editor-container",
-    attrs: {
-      "id": "editor-graphics-div"
-    },
-    on: {
-      "keydown": function($event) {
-        _vm.keydown($event)
-      },
-      "keyup": function($event) {
-        _vm.keyup($event)
-      },
-      "mousedown": [function($event) {
-        _vm.mousedown($event)
-      }, function($event) {
-        if (!$event.ctrlKey) { return null; }
-        _vm.startRotation($event)
-      }],
-      "mousemove": function($event) {
-        _vm.mousemove($event)
-      },
-      "mouseup": [function($event) {
-        _vm.mouseup($event)
-      }, function($event) {
-        if (!$event.ctrlKey) { return null; }
-        _vm.endRotation($event)
-      }],
-      "mousewheel": function($event) {
-        _vm.mousewheel($event)
-      },
-      "contextmenu": function($event) {
-        _vm.contextmenu($event)
-      }
-    }
-  })], 2)
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { attrs: { id: "geometry-editor-div" } },
+    [
+      _vm._t("default"),
+      _vm._v(" "),
+      _c("div", {
+        ref: "editor-container",
+        attrs: { id: "editor-graphics-div" },
+        on: {
+          keydown: function($event) {
+            _vm.keydown($event)
+          },
+          keyup: function($event) {
+            _vm.keyup($event)
+          },
+          mousedown: [
+            function($event) {
+              _vm.mousedown($event)
+            },
+            function($event) {
+              if (!$event.ctrlKey) {
+                return null
+              }
+              _vm.startRotation($event)
+            }
+          ],
+          mousemove: function($event) {
+            _vm.mousemove($event)
+          },
+          mouseup: [
+            function($event) {
+              _vm.mouseup($event)
+            },
+            function($event) {
+              if (!$event.ctrlKey) {
+                return null
+              }
+              _vm.endRotation($event)
+            }
+          ],
+          mousewheel: function($event) {
+            _vm.mousewheel($event)
+          },
+          contextmenu: function($event) {
+            _vm.contextmenu($event)
+          }
+        }
+      })
+    ],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -106948,50 +111912,66 @@ if (false) {
 }
 
 /***/ }),
-/* 350 */
+/* 361 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    attrs: {
-      "id": "three-renderer-div"
-    }
-  }, [_vm._t("default"), _vm._v(" "), _c('div', {
-    ref: "three-graphics-container",
-    attrs: {
-      "id": "three-renderer-graphics-div"
-    },
-    on: {
-      "keydown": function($event) {
-        _vm.keydown($event)
-      },
-      "keyup": function($event) {
-        _vm.keyup($event)
-      },
-      "mousedown": [function($event) {
-        _vm.mousedown($event)
-      }, function($event) {
-        if (!$event.ctrlKey) { return null; }
-        _vm.startRotation($event)
-      }],
-      "mousemove": function($event) {
-        _vm.mousemove($event)
-      },
-      "mouseup": [function($event) {
-        _vm.mouseup($event)
-      }, function($event) {
-        if (!$event.ctrlKey) { return null; }
-        _vm.endRotation($event)
-      }],
-      "mousewheel": function($event) {
-        _vm.mousewheel($event)
-      },
-      "contextmenu": function($event) {
-        _vm.contextmenu($event)
-      }
-    }
-  })], 2)
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { attrs: { id: "three-renderer-div" } },
+    [
+      _vm._t("default"),
+      _vm._v(" "),
+      _c("div", {
+        ref: "three-graphics-container",
+        attrs: { id: "three-renderer-graphics-div" },
+        on: {
+          keydown: function($event) {
+            _vm.keydown($event)
+          },
+          keyup: function($event) {
+            _vm.keyup($event)
+          },
+          mousedown: [
+            function($event) {
+              _vm.mousedown($event)
+            },
+            function($event) {
+              if (!$event.ctrlKey) {
+                return null
+              }
+              _vm.startRotation($event)
+            }
+          ],
+          mousemove: function($event) {
+            _vm.mousemove($event)
+          },
+          mouseup: [
+            function($event) {
+              _vm.mouseup($event)
+            },
+            function($event) {
+              if (!$event.ctrlKey) {
+                return null
+              }
+              _vm.endRotation($event)
+            }
+          ],
+          mousewheel: function($event) {
+            _vm.mousewheel($event)
+          },
+          contextmenu: function($event) {
+            _vm.contextmenu($event)
+          }
+        }
+      })
+    ],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -107005,111 +111985,54 @@ if (false) {
 }
 
 /***/ }),
-/* 351 */
+/* 362 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _vm._m(0)
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { attrs: { id: "vtk-graphics-container" } }, [
+    _c("div", { staticClass: "uk-card uk-card-default uk-card-large" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "uk-card-body" },
+        [
+          _c(
+            "vtk-renderer",
+            { attrs: { size: _vm.size } },
+            [
+              _c("vtk-sphere", {
+                attrs: { center: { x: -0.5, y: 0.0, z: 0.0 }, radius: 0.5 }
+              }),
+              _vm._v(" "),
+              _c("vtk-sphere", {
+                attrs: { center: { x: 0.5, y: 0.0, z: 0.0 }, radius: 0.5 }
+              }),
+              _vm._v(" "),
+              _c("vtk-ellipsoid-particles")
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ])
+  ])
 }
-var staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    attrs: {
-      "id": "general-input-container"
-    }
-  }, [_c('form', {
-    staticClass: "uk-form-stacked"
-  }, [_c('div', {
-    staticClass: "uk-margin"
-  }, [_c('label', {
-    staticClass: "uk-form-label",
-    attrs: {
-      "for": "form-stacked-text"
-    }
-  }, [_vm._v("Simulation title")]), _vm._v(" "), _c('div', {
-    staticClass: "uk-form-controls"
-  }, [_c('input', {
-    staticClass: "uk-input",
-    attrs: {
-      "id": "form-stacked-text",
-      "type": "text",
-      "placeholder": "Test simulation"
-    }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "uk-margin"
-  }, [_c('div', {
-    staticClass: "uk-form-label"
-  }, [_vm._v("Simulation component")]), _vm._v(" "), _c('div', {
-    staticClass: "uk-form-controls"
-  }, [_c('label', [_c('input', {
-    staticClass: "uk-radio",
-    attrs: {
-      "type": "radio",
-      "name": "radio1"
-    }
-  }), _vm._v(" MPM")]), _c('br'), _vm._v(" "), _c('label', [_c('input', {
-    staticClass: "uk-radio",
-    attrs: {
-      "type": "radio",
-      "name": "radio1"
-    }
-  }), _vm._v(" MPMICE")])])])])])
-}]
-render._withStripped = true
-var esExports = { render: render, staticRenderFns: staticRenderFns }
-/* harmony default export */ __webpack_exports__["a"] = (esExports);
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-c2eb802e", esExports)
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "uk-card-header" }, [
+      _c("h3", { staticClass: "uk-card-title" }, [_vm._v("VTK Graphics panel")])
+    ])
   }
-}
-
-/***/ }),
-/* 352 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    attrs: {
-      "id": "vtk-graphics-container"
-    }
-  }, [_c('div', {
-    staticClass: "uk-card uk-card-default uk-card-large"
-  }, [_vm._m(0), _vm._v(" "), _c('div', {
-    staticClass: "uk-card-body"
-  }, [_c('vtk-renderer', {
-    attrs: {
-      "size": _vm.size
-    }
-  }, [_c('vtk-sphere', {
-    attrs: {
-      "center": {
-        x: -0.5,
-        y: 0.0,
-        z: 0.0
-      },
-      "radius": 0.5
-    }
-  }), _vm._v(" "), _c('vtk-sphere', {
-    attrs: {
-      "center": {
-        x: 0.5,
-        y: 0.0,
-        z: 0.0
-      },
-      "radius": 0.5
-    }
-  }), _vm._v(" "), _c('vtk-ellipsoid-particles')], 1)], 1)])])
-}
-var staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "uk-card-header"
-  }, [_c('h3', {
-    staticClass: "uk-card-title"
-  }, [_vm._v("VTK Graphics panel")])])
-}]
+]
 render._withStripped = true
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
@@ -107121,48 +112044,56 @@ if (false) {
 }
 
 /***/ }),
-/* 353 */
+/* 363 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    attrs: {
-      "id": "sidebar-tab-list"
-    }
-  }, [_c('ul', {
-    staticClass: "uk_nav-default uk-nav-parent-icon",
-    attrs: {
-      "id": "sidebar-tabnames",
-      "uk-nav": ""
-    }
-  }, [_c('li', {
-    staticClass: "uk-active uk-parent",
-    attrs: {
-      "id": "sidebar-tab1"
-    }
-  }, [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("Vaango inputs")]), _vm._v(" "), _c('vaango-inputs-sidebar', {
-    on: {
-      "activateSidebarTab": _vm.propagateActiveTab
-    }
-  })], 1), _vm._v(" "), _vm._m(0)])])
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { attrs: { id: "sidebar-tab-list" } }, [
+    _c(
+      "ul",
+      {
+        staticClass: "uk_nav-default uk-nav-parent-icon",
+        attrs: { id: "sidebar-tabnames", "uk-nav": "" }
+      },
+      [
+        _c(
+          "li",
+          { staticClass: "uk-active uk-parent", attrs: { id: "sidebar-tab1" } },
+          [
+            _c("a", { attrs: { href: "#" } }, [_vm._v("Vaango inputs")]),
+            _vm._v(" "),
+            _c("vaango-inputs-sidebar", {
+              on: { activateSidebarTab: _vm.propagateActiveTab }
+            })
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _vm._m(0)
+      ]
+    )
+  ])
 }
-var staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('li', {
-    staticClass: "uk-parent",
-    attrs: {
-      "id": "sidebar-tab2"
-    }
-  }, [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("Generate particle distribution")])])
-}]
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "li",
+      { staticClass: "uk-parent", attrs: { id: "sidebar-tab2" } },
+      [
+        _c("a", { attrs: { href: "#" } }, [
+          _vm._v("Generate particle distribution")
+        ])
+      ]
+    )
+  }
+]
 render._withStripped = true
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
@@ -107174,269 +112105,398 @@ if (false) {
 }
 
 /***/ }),
-/* 354 */
+/* 364 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticStyle: {
-      "font-size": "0.75rem"
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticStyle: { "font-size": "0.75rem" },
+      attrs: { id: "time-control-container" }
     },
-    attrs: {
-      "id": "time-control-container"
-    }
-  }, [_c('form', {
-    staticClass: "uk-form-horizontal"
-  }, [_c('div', {
-    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-  }, [_c('label', {
-    staticClass: "uk-form-label",
-    attrs: {
-      "for": "init-time-entry"
-    }
-  }, [_vm._v("Initial time")]), _vm._v(" "), _c('div', {
-    staticClass: "uk-form-controls"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.initTime),
-      expression: "initTime"
-    }],
-    staticClass: "uk-input uk-form-width-small",
-    attrs: {
-      "id": "init-time-entry",
-      "type": "text",
-      "placeholder": _vm.initTime
-    },
-    domProps: {
-      "value": (_vm.initTime)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.initTime = $event.target.value
-      }
-    }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-  }, [_c('label', {
-    staticClass: "uk-form-label",
-    attrs: {
-      "for": "max-time-entry"
-    }
-  }, [_vm._v("Maximum time")]), _vm._v(" "), _c('div', {
-    staticClass: "uk-form-controls"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.maxTime),
-      expression: "maxTime"
-    }],
-    staticClass: "uk-input uk-form-width-small",
-    attrs: {
-      "id": "max-time-entry",
-      "type": "text",
-      "placeholder": "1.0"
-    },
-    domProps: {
-      "value": (_vm.maxTime)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.maxTime = $event.target.value
-      }
-    }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-  }, [_c('label', {
-    staticClass: "uk-form-label",
-    attrs: {
-      "for": "max-num-steps-entry"
-    }
-  }, [_vm._v("Maximum timesteps")]), _vm._v(" "), _c('div', {
-    staticClass: "uk-form-controls"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.maxNumSteps),
-      expression: "maxNumSteps"
-    }],
-    staticClass: "uk-input uk-form-width-small",
-    attrs: {
-      "id": "max-num-steps-entry",
-      "type": "text",
-      "placeholder": "99999"
-    },
-    domProps: {
-      "value": (_vm.maxNumSteps)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.maxNumSteps = $event.target.value
-      }
-    }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-  }, [_c('label', {
-    staticClass: "uk-form-label",
-    attrs: {
-      "for": "delt-init-entry"
-    }
-  }, [_vm._v("Initial timestep size")]), _vm._v(" "), _c('div', {
-    staticClass: "uk-form-controls"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.deltInit),
-      expression: "deltInit"
-    }],
-    staticClass: "uk-input uk-form-width-small",
-    attrs: {
-      "id": "delt-init-entry",
-      "type": "text",
-      "placeholder": "1.0e-9"
-    },
-    domProps: {
-      "value": (_vm.deltInit)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.deltInit = $event.target.value
-      }
-    }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-  }, [_c('label', {
-    staticClass: "uk-form-label-large",
-    attrs: {
-      "for": "delt-min-entry"
-    }
-  }, [_vm._v("Minimum timestep size")]), _vm._v(" "), _c('div', {
-    staticClass: "uk-form-controls"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.deltMin),
-      expression: "deltMin"
-    }],
-    staticClass: "uk-input uk-form-width-small",
-    attrs: {
-      "id": "delt-min-entry",
-      "type": "text",
-      "placeholder": "0.0"
-    },
-    domProps: {
-      "value": (_vm.deltMin)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.deltMin = $event.target.value
-      }
-    }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-  }, [_c('label', {
-    staticClass: "uk-form-label-large",
-    attrs: {
-      "for": "delt-max-entry"
-    }
-  }, [_vm._v("Maximum timestep size")]), _vm._v(" "), _c('div', {
-    staticClass: "uk-form-controls"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.deltMax),
-      expression: "deltMax"
-    }],
-    staticClass: "uk-input uk-form-width-small",
-    attrs: {
-      "id": "delt-max-entry",
-      "type": "text",
-      "placeholder": "0.1"
-    },
-    domProps: {
-      "value": (_vm.deltMax)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.deltMax = $event.target.value
-      }
-    }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-  }, [_c('label', {
-    staticClass: "uk-form-label-large",
-    attrs: {
-      "for": "max-delt-inc-entry"
-    }
-  }, [_vm._v("Maximum timestep increase factor")]), _vm._v(" "), _c('div', {
-    staticClass: "uk-form-controls"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.maxDeltInc),
-      expression: "maxDeltInc"
-    }],
-    staticClass: "uk-input uk-form-width-small",
-    attrs: {
-      "id": "max-delt-inc-entry",
-      "type": "text",
-      "placeholder": "1.0"
-    },
-    domProps: {
-      "value": (_vm.maxDeltInc)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.maxDeltInc = $event.target.value
-      }
-    }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-  }, [_c('label', {
-    staticClass: "uk-form-label-large",
-    attrs: {
-      "for": "delt-multiplier-entry"
-    }
-  }, [_vm._v("CFL timestep mutiplier")]), _vm._v(" "), _c('div', {
-    staticClass: "uk-form-controls"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.deltMultiplier),
-      expression: "deltMultiplier"
-    }],
-    staticClass: "uk-input uk-form-width-small",
-    attrs: {
-      "id": "delt-multiplier-entry",
-      "type": "text",
-      "placeholder": "0.3"
-    },
-    domProps: {
-      "value": (_vm.deltMultiplier)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.deltMultiplier = $event.target.value
-      }
-    }
-  })])])]), _vm._v(" "), _c('div', [_c('p', [_vm._v("\n    Init time = " + _vm._s(_vm.initTime) + "\n    ")])])])
+    [
+      _c("form", { staticClass: "uk-form-horizontal" }, [
+        _c(
+          "div",
+          {
+            staticClass:
+              "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+          },
+          [
+            _c(
+              "label",
+              {
+                staticClass: "uk-form-label",
+                attrs: { for: "init-time-entry" }
+              },
+              [_vm._v("Initial time")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "uk-form-controls" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.initTime,
+                    expression: "initTime"
+                  }
+                ],
+                staticClass: "uk-input uk-form-width-small",
+                attrs: {
+                  id: "init-time-entry",
+                  type: "text",
+                  placeholder: _vm.initTime
+                },
+                domProps: { value: _vm.initTime },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.initTime = $event.target.value
+                  }
+                }
+              })
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+          },
+          [
+            _c(
+              "label",
+              {
+                staticClass: "uk-form-label",
+                attrs: { for: "max-time-entry" }
+              },
+              [_vm._v("Maximum time")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "uk-form-controls" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.maxTime,
+                    expression: "maxTime"
+                  }
+                ],
+                staticClass: "uk-input uk-form-width-small",
+                attrs: {
+                  id: "max-time-entry",
+                  type: "text",
+                  placeholder: "1.0"
+                },
+                domProps: { value: _vm.maxTime },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.maxTime = $event.target.value
+                  }
+                }
+              })
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+          },
+          [
+            _c(
+              "label",
+              {
+                staticClass: "uk-form-label",
+                attrs: { for: "max-num-steps-entry" }
+              },
+              [_vm._v("Maximum timesteps")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "uk-form-controls" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.maxNumSteps,
+                    expression: "maxNumSteps"
+                  }
+                ],
+                staticClass: "uk-input uk-form-width-small",
+                attrs: {
+                  id: "max-num-steps-entry",
+                  type: "text",
+                  placeholder: "99999"
+                },
+                domProps: { value: _vm.maxNumSteps },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.maxNumSteps = $event.target.value
+                  }
+                }
+              })
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+          },
+          [
+            _c(
+              "label",
+              {
+                staticClass: "uk-form-label",
+                attrs: { for: "delt-init-entry" }
+              },
+              [_vm._v("Initial timestep size")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "uk-form-controls" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.deltInit,
+                    expression: "deltInit"
+                  }
+                ],
+                staticClass: "uk-input uk-form-width-small",
+                attrs: {
+                  id: "delt-init-entry",
+                  type: "text",
+                  placeholder: "1.0e-9"
+                },
+                domProps: { value: _vm.deltInit },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.deltInit = $event.target.value
+                  }
+                }
+              })
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+          },
+          [
+            _c(
+              "label",
+              {
+                staticClass: "uk-form-label-large",
+                attrs: { for: "delt-min-entry" }
+              },
+              [_vm._v("Minimum timestep size")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "uk-form-controls" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.deltMin,
+                    expression: "deltMin"
+                  }
+                ],
+                staticClass: "uk-input uk-form-width-small",
+                attrs: {
+                  id: "delt-min-entry",
+                  type: "text",
+                  placeholder: "0.0"
+                },
+                domProps: { value: _vm.deltMin },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.deltMin = $event.target.value
+                  }
+                }
+              })
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+          },
+          [
+            _c(
+              "label",
+              {
+                staticClass: "uk-form-label-large",
+                attrs: { for: "delt-max-entry" }
+              },
+              [_vm._v("Maximum timestep size")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "uk-form-controls" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.deltMax,
+                    expression: "deltMax"
+                  }
+                ],
+                staticClass: "uk-input uk-form-width-small",
+                attrs: {
+                  id: "delt-max-entry",
+                  type: "text",
+                  placeholder: "0.1"
+                },
+                domProps: { value: _vm.deltMax },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.deltMax = $event.target.value
+                  }
+                }
+              })
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+          },
+          [
+            _c(
+              "label",
+              {
+                staticClass: "uk-form-label-large",
+                attrs: { for: "max-delt-inc-entry" }
+              },
+              [_vm._v("Maximum timestep increase factor")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "uk-form-controls" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.maxDeltInc,
+                    expression: "maxDeltInc"
+                  }
+                ],
+                staticClass: "uk-input uk-form-width-small",
+                attrs: {
+                  id: "max-delt-inc-entry",
+                  type: "text",
+                  placeholder: "1.0"
+                },
+                domProps: { value: _vm.maxDeltInc },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.maxDeltInc = $event.target.value
+                  }
+                }
+              })
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+          },
+          [
+            _c(
+              "label",
+              {
+                staticClass: "uk-form-label-large",
+                attrs: { for: "delt-multiplier-entry" }
+              },
+              [_vm._v("CFL timestep mutiplier")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "uk-form-controls" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.deltMultiplier,
+                    expression: "deltMultiplier"
+                  }
+                ],
+                staticClass: "uk-input uk-form-width-small",
+                attrs: {
+                  id: "delt-multiplier-entry",
+                  type: "text",
+                  placeholder: "0.3"
+                },
+                domProps: { value: _vm.deltMultiplier },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.deltMultiplier = $event.target.value
+                  }
+                }
+              })
+            ])
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", [
+        _c("p", [
+          _vm._v("\n    Init time = " + _vm._s(_vm.initTime) + "\n    ")
+        ])
+      ])
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -107450,393 +112510,535 @@ if (false) {
 }
 
 /***/ }),
-/* 355 */
+/* 365 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticStyle: {
-      "font-size": "0.75rem"
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticStyle: { "font-size": "0.75rem" },
+      attrs: { id: "ice-input-container" }
     },
-    attrs: {
-      "id": "ice-input-container"
-    }
-  }, [_c('form', {
-    staticClass: "uk-form-horizontal"
-  }, [_c('div', {
-    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-  }, [_c('span', {
-    staticClass: "uk-form-label"
-  }, [_vm._v("Dimensions")]), _vm._v(" "), _c('div', {
-    staticClass: "uk-form-controls uk-form-controls-text"
-  }, _vm._l((_vm.d_dimensionLabels), function(dimLabel, dimIndex) {
-    return _c('label', [_c('input', {
-      directives: [{
-        name: "model",
-        rawName: "v-model",
-        value: (_vm.d_dimension),
-        expression: "d_dimension"
-      }],
-      staticClass: "uk-radio",
-      attrs: {
-        "type": "radio",
-        "name": "dimRadioBtn"
-      },
-      domProps: {
-        "value": dimIndex,
-        "checked": _vm._q(_vm.d_dimension, dimIndex)
-      },
-      on: {
-        "__c": function($event) {
-          _vm.d_dimension = dimIndex
-        }
-      }
-    }), _vm._v(" " + _vm._s(dimLabel) + " \n        ")])
-  }))]), _vm._v(" "), _c('div', {
-    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-  }, [_c('label', {
-    staticClass: "uk-form-label",
-    attrs: {
-      "for": "integration-type"
-    }
-  }, [_vm._v(_vm._s(_vm.d_iceAlgoLabel))]), _vm._v(" "), _c('div', {
-    staticClass: "uk-form-controls"
-  }, [_c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.d_iceAlgo),
-      expression: "d_iceAlgo"
-    }],
-    staticClass: "uk-select uk-form-width-small",
-    attrs: {
-      "id": "integration-type"
-    },
-    domProps: {
-      "value": _vm.d_iceAlgo
-    },
-    on: {
-      "change": [function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.d_iceAlgo = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }, function($event) {
-        _vm.updateICEAlgo()
-      }]
-    }
-  }, _vm._l((_vm.d_iceAlgoItems), function(label, index) {
-    return _c('option', [_vm._v(_vm._s(label))])
-  }))])]), _vm._v(" "), _c('div', {
-    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-  }, [_c('label', {
-    staticClass: "uk-form-label",
-    attrs: {
-      "for": "interpolation-type"
-    }
-  }, [_vm._v(_vm._s(_vm.d_advectAlgoLabel))]), _vm._v(" "), _c('div', {
-    staticClass: "uk-form-controls"
-  }, [_c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.d_advectAlgo),
-      expression: "d_advectAlgo"
-    }],
-    staticClass: "uk-select uk-form-width-small",
-    attrs: {
-      "id": "interpolation-type"
-    },
-    domProps: {
-      "value": _vm.d_advectAlgo
-    },
-    on: {
-      "change": [function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.d_advectAlgo = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }, function($event) {
-        _vm.updateAdvectAlgo()
-      }]
-    }
-  }, _vm._l((_vm.d_advectAlgoItems), function(label, index) {
-    return _c('option', [_vm._v(_vm._s(label))])
-  }))])]), _vm._v(" "), _c('div', {
-    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-  }, [_c('label', {
-    staticClass: "uk-form-label",
-    attrs: {
-      "for": "ice-flags"
-    }
-  }, [_vm._v(_vm._s(_vm.d_iceFlagLabel))]), _vm._v(" "), _c('div', {
-    staticClass: "uk-form-controls"
-  }, [_c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.d_iceFlags),
-      expression: "d_iceFlags"
-    }],
-    staticClass: "uk-select uk-form-width-medium",
-    attrs: {
-      "id": "ice-flags",
-      "multiple": ""
-    },
-    on: {
-      "change": [function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.d_iceFlags = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }, function($event) {
-        _vm.updateICEFlags()
-      }]
-    }
-  }, _vm._l((_vm.d_iceFlagItems), function(label, index) {
-    return _c('option', {
-      domProps: {
-        "value": {
-          label: label,
-          index: index
-        }
-      }
-    }, [_vm._v(_vm._s(label))])
-  }))])]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c('div', {
-    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-  }, [_c('label', {
-    staticClass: "uk-form-label-large",
-    attrs: {
-      "for": "cfl"
-    }
-  }, [_vm._v(_vm._s(_vm.d_cflLabel))]), _vm._v(" "), _c('div', {
-    staticClass: "uk-form-controls"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.d_cfl),
-      expression: "d_cfl"
-    }],
-    staticClass: "uk-input uk-form-width-small",
-    attrs: {
-      "id": "cfl",
-      "type": "text"
-    },
-    domProps: {
-      "value": _vm.d_cfl,
-      "value": (_vm.d_cfl)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.d_cfl = $event.target.value
-      }
-    }
-  })]), _vm._v(" "), _c('label', {
-    staticClass: "uk-form-label-large",
-    attrs: {
-      "for": "eqit"
-    }
-  }, [_vm._v(_vm._s(_vm.d_maxEqItLabel))]), _vm._v(" "), _c('div', {
-    staticClass: "uk-form-controls"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.d_maxEqIt),
-      expression: "d_maxEqIt"
-    }],
-    staticClass: "uk-input uk-form-width-small",
-    attrs: {
-      "id": "eqit",
-      "type": "text"
-    },
-    domProps: {
-      "value": _vm.d_maxEqIt,
-      "value": (_vm.d_maxEqIt)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.d_maxEqIt = $event.target.value
-      }
-    }
-  })]), _vm._v(" "), _c('label', {
-    staticClass: "uk-form-label-large",
-    attrs: {
-      "for": "minlevel"
-    }
-  }, [_vm._v(_vm._s(_vm.d_minLevelLabel))]), _vm._v(" "), _c('div', {
-    staticClass: "uk-form-controls"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.d_minLevel),
-      expression: "d_minLevel"
-    }],
-    staticClass: "uk-input uk-form-width-small",
-    attrs: {
-      "id": "minlevel",
-      "type": "text"
-    },
-    domProps: {
-      "value": _vm.d_minLevel,
-      "value": (_vm.d_minLevel)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.d_minLevel = $event.target.value
-      }
-    }
-  })]), _vm._v(" "), _c('label', {
-    staticClass: "uk-form-label-large",
-    attrs: {
-      "for": "maxlevel"
-    }
-  }, [_vm._v(_vm._s(_vm.d_maxLevelLabel))]), _vm._v(" "), _c('div', {
-    staticClass: "uk-form-controls"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.d_maxLevel),
-      expression: "d_maxLevel"
-    }],
-    staticClass: "uk-input uk-form-width-small",
-    attrs: {
-      "id": "maxlevel",
-      "type": "text"
-    },
-    domProps: {
-      "value": _vm.d_maxLevel,
-      "value": (_vm.d_maxLevel)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.d_maxLevel = $event.target.value
-      }
-    }
-  })])]), _vm._v(" "), (_vm.c_addHeat) ? _c('div', {
-    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right",
-    staticStyle: {
-      "background-color": "rgba(218, 247, 166, 100)"
-    }
-  }, [_c('hr', {
-    staticClass: "uk-hr"
-  }), _vm._v("\n      Heat addition\n      "), _c('div', {
-    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-  }, [_c('label', {
-    staticClass: "uk-form-label",
-    attrs: {
-      "for": "num-mat"
-    }
-  }, [_vm._v(_vm._s(_vm.d_numAddHeatMatLabel))]), _vm._v(" "), _c('div', {
-    staticClass: "uk-form-controls"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.d_numAddHeatMat),
-      expression: "d_numAddHeatMat"
-    }],
-    staticClass: "uk-input uk-form-width-small",
-    attrs: {
-      "id": "num-mat",
-      "type": "text"
-    },
-    domProps: {
-      "value": (_vm.d_numAddHeatMat)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.d_numAddHeatMat = $event.target.value
-      }
-    }
-  })]), _vm._v(" "), _c('label', {
-    staticClass: "uk-form-label",
-    attrs: {
-      "for": "start-time"
-    }
-  }, [_vm._v(_vm._s(_vm.d_addHeatStartTimeLabel))]), _vm._v(" "), _c('div', {
-    staticClass: "uk-form-controls"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.d_addHeatStartTime),
-      expression: "d_addHeatStartTime"
-    }],
-    staticClass: "uk-input uk-form-width-small",
-    attrs: {
-      "id": "start-time",
-      "type": "text"
-    },
-    domProps: {
-      "value": (_vm.d_addHeatStartTime)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.d_addHeatStartTime = $event.target.value
-      }
-    }
-  })]), _vm._v(" "), _c('label', {
-    staticClass: "uk-form-label",
-    attrs: {
-      "for": "end-time"
-    }
-  }, [_vm._v(_vm._s(_vm.d_addHeatEndTimeLabel))]), _vm._v(" "), _c('div', {
-    staticClass: "uk-form-controls"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.d_addHeatEndTime),
-      expression: "d_addHeatEndTime"
-    }],
-    staticClass: "uk-input uk-form-width-small",
-    attrs: {
-      "id": "end-time",
-      "type": "text"
-    },
-    domProps: {
-      "value": (_vm.d_addHeatEndTime)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.d_addHeatEndTime = $event.target.value
-      }
-    }
-  })])])]) : _vm._e()]), _vm._v(" "), _c('button', {
-    staticClass: "uk-button uk-button-default",
-    on: {
-      "click": _vm.printICEParameters
-    }
-  }, [_vm._v("Print")])])
+    [
+      _c("form", { staticClass: "uk-form-horizontal" }, [
+        _c(
+          "div",
+          {
+            staticClass:
+              "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+          },
+          [
+            _c("span", { staticClass: "uk-form-label" }, [
+              _vm._v("Dimensions")
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "uk-form-controls uk-form-controls-text" },
+              _vm._l(_vm.d_dimensionLabels, function(dimLabel, dimIndex) {
+                return _c("label", [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.d_dimension,
+                        expression: "d_dimension"
+                      }
+                    ],
+                    staticClass: "uk-radio",
+                    attrs: { type: "radio", name: "dimRadioBtn" },
+                    domProps: {
+                      value: dimIndex,
+                      checked: _vm._q(_vm.d_dimension, dimIndex)
+                    },
+                    on: {
+                      __c: function($event) {
+                        _vm.d_dimension = dimIndex
+                      }
+                    }
+                  }),
+                  _vm._v(" " + _vm._s(dimLabel) + " \n        ")
+                ])
+              })
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+          },
+          [
+            _c(
+              "label",
+              {
+                staticClass: "uk-form-label",
+                attrs: { for: "integration-type" }
+              },
+              [_vm._v(_vm._s(_vm.d_iceAlgoLabel))]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "uk-form-controls" }, [
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.d_iceAlgo,
+                      expression: "d_iceAlgo"
+                    }
+                  ],
+                  staticClass: "uk-select uk-form-width-small",
+                  attrs: { id: "integration-type" },
+                  domProps: { value: _vm.d_iceAlgo },
+                  on: {
+                    change: [
+                      function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.d_iceAlgo = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      },
+                      function($event) {
+                        _vm.updateICEAlgo()
+                      }
+                    ]
+                  }
+                },
+                _vm._l(_vm.d_iceAlgoItems, function(label, index) {
+                  return _c("option", [_vm._v(_vm._s(label))])
+                })
+              )
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+          },
+          [
+            _c(
+              "label",
+              {
+                staticClass: "uk-form-label",
+                attrs: { for: "interpolation-type" }
+              },
+              [_vm._v(_vm._s(_vm.d_advectAlgoLabel))]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "uk-form-controls" }, [
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.d_advectAlgo,
+                      expression: "d_advectAlgo"
+                    }
+                  ],
+                  staticClass: "uk-select uk-form-width-small",
+                  attrs: { id: "interpolation-type" },
+                  domProps: { value: _vm.d_advectAlgo },
+                  on: {
+                    change: [
+                      function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.d_advectAlgo = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      },
+                      function($event) {
+                        _vm.updateAdvectAlgo()
+                      }
+                    ]
+                  }
+                },
+                _vm._l(_vm.d_advectAlgoItems, function(label, index) {
+                  return _c("option", [_vm._v(_vm._s(label))])
+                })
+              )
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+          },
+          [
+            _c(
+              "label",
+              { staticClass: "uk-form-label", attrs: { for: "ice-flags" } },
+              [_vm._v(_vm._s(_vm.d_iceFlagLabel))]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "uk-form-controls" }, [
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.d_iceFlags,
+                      expression: "d_iceFlags"
+                    }
+                  ],
+                  staticClass: "uk-select uk-form-width-medium",
+                  attrs: { id: "ice-flags", multiple: "" },
+                  on: {
+                    change: [
+                      function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.d_iceFlags = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      },
+                      function($event) {
+                        _vm.updateICEFlags()
+                      }
+                    ]
+                  }
+                },
+                _vm._l(_vm.d_iceFlagItems, function(label, index) {
+                  return _c(
+                    "option",
+                    { domProps: { value: { label: label, index: index } } },
+                    [_vm._v(_vm._s(label))]
+                  )
+                })
+              )
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _vm._m(0),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+          },
+          [
+            _c(
+              "label",
+              { staticClass: "uk-form-label-large", attrs: { for: "cfl" } },
+              [_vm._v(_vm._s(_vm.d_cflLabel))]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "uk-form-controls" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.d_cfl,
+                    expression: "d_cfl"
+                  }
+                ],
+                staticClass: "uk-input uk-form-width-small",
+                attrs: { id: "cfl", type: "text" },
+                domProps: { value: _vm.d_cfl, value: _vm.d_cfl },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.d_cfl = $event.target.value
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c(
+              "label",
+              { staticClass: "uk-form-label-large", attrs: { for: "eqit" } },
+              [_vm._v(_vm._s(_vm.d_maxEqItLabel))]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "uk-form-controls" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.d_maxEqIt,
+                    expression: "d_maxEqIt"
+                  }
+                ],
+                staticClass: "uk-input uk-form-width-small",
+                attrs: { id: "eqit", type: "text" },
+                domProps: { value: _vm.d_maxEqIt, value: _vm.d_maxEqIt },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.d_maxEqIt = $event.target.value
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c(
+              "label",
+              {
+                staticClass: "uk-form-label-large",
+                attrs: { for: "minlevel" }
+              },
+              [_vm._v(_vm._s(_vm.d_minLevelLabel))]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "uk-form-controls" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.d_minLevel,
+                    expression: "d_minLevel"
+                  }
+                ],
+                staticClass: "uk-input uk-form-width-small",
+                attrs: { id: "minlevel", type: "text" },
+                domProps: { value: _vm.d_minLevel, value: _vm.d_minLevel },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.d_minLevel = $event.target.value
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c(
+              "label",
+              {
+                staticClass: "uk-form-label-large",
+                attrs: { for: "maxlevel" }
+              },
+              [_vm._v(_vm._s(_vm.d_maxLevelLabel))]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "uk-form-controls" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.d_maxLevel,
+                    expression: "d_maxLevel"
+                  }
+                ],
+                staticClass: "uk-input uk-form-width-small",
+                attrs: { id: "maxlevel", type: "text" },
+                domProps: { value: _vm.d_maxLevel, value: _vm.d_maxLevel },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.d_maxLevel = $event.target.value
+                  }
+                }
+              })
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _vm.c_addHeat
+          ? _c(
+              "div",
+              {
+                staticClass:
+                  "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right",
+                staticStyle: { "background-color": "rgba(218, 247, 166, 100)" }
+              },
+              [
+                _c("hr", { staticClass: "uk-hr" }),
+                _vm._v("\n      Heat addition\n      "),
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+                  },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "uk-form-label",
+                        attrs: { for: "num-mat" }
+                      },
+                      [_vm._v(_vm._s(_vm.d_numAddHeatMatLabel))]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "uk-form-controls" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.d_numAddHeatMat,
+                            expression: "d_numAddHeatMat"
+                          }
+                        ],
+                        staticClass: "uk-input uk-form-width-small",
+                        attrs: { id: "num-mat", type: "text" },
+                        domProps: { value: _vm.d_numAddHeatMat },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.d_numAddHeatMat = $event.target.value
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "label",
+                      {
+                        staticClass: "uk-form-label",
+                        attrs: { for: "start-time" }
+                      },
+                      [_vm._v(_vm._s(_vm.d_addHeatStartTimeLabel))]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "uk-form-controls" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.d_addHeatStartTime,
+                            expression: "d_addHeatStartTime"
+                          }
+                        ],
+                        staticClass: "uk-input uk-form-width-small",
+                        attrs: { id: "start-time", type: "text" },
+                        domProps: { value: _vm.d_addHeatStartTime },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.d_addHeatStartTime = $event.target.value
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "label",
+                      {
+                        staticClass: "uk-form-label",
+                        attrs: { for: "end-time" }
+                      },
+                      [_vm._v(_vm._s(_vm.d_addHeatEndTimeLabel))]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "uk-form-controls" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.d_addHeatEndTime,
+                            expression: "d_addHeatEndTime"
+                          }
+                        ],
+                        staticClass: "uk-input uk-form-width-small",
+                        attrs: { id: "end-time", type: "text" },
+                        domProps: { value: _vm.d_addHeatEndTime },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.d_addHeatEndTime = $event.target.value
+                          }
+                        }
+                      })
+                    ])
+                  ]
+                )
+              ]
+            )
+          : _vm._e()
+      ]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "uk-button uk-button-default",
+          on: { click: _vm.printICEParameters }
+        },
+        [_vm._v("Print")]
+      )
+    ]
+  )
 }
-var staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
-  }, [_c('hr', {
-    staticClass: "uk-hr"
-  }), _vm._v("\n      Simulation limits\n    ")])
-}]
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass:
+          "uk-margin-small uk-margin-small-top uk-margin-small-left uk-margin-small-right"
+      },
+      [
+        _c("hr", { staticClass: "uk-hr" }),
+        _vm._v("\n      Simulation limits\n    ")
+      ]
+    )
+  }
+]
 render._withStripped = true
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
@@ -107848,48 +113050,55 @@ if (false) {
 }
 
 /***/ }),
-/* 356 */
+/* 366 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    attrs: {
-      "id": "editor-graphics-container"
-    }
-  }, [_c('div', {
-    staticClass: "uk-card uk-card-default uk-card-large"
-  }, [_vm._m(0), _vm._v(" "), _c('div', {
-    staticClass: "uk-card-body"
-  }, [_c('editor-renderer', {
-    attrs: {
-      "size": {
-        w: 500,
-        h: 500
-      }
-    }
-  }, [_c('editor-scene', {
-    attrs: {
-      "size": _vm.size
-    }
-  }, [_c('editor-camera', {
-    attrs: {
-      "size": _vm.size,
-      "position": {
-        x: 5,
-        y: 5,
-        z: 5
-      }
-    }
-  })], 1)], 1)], 1)])])
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { attrs: { id: "editor-graphics-container" } }, [
+    _c("div", { staticClass: "uk-card uk-card-default uk-card-large" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "uk-card-body" },
+        [
+          _c(
+            "geometry-editor-renderer",
+            { attrs: { size: { w: 500, h: 500 } } },
+            [
+              _c(
+                "geometry-editor-scene",
+                { attrs: { size: _vm.size } },
+                [
+                  _c("geometry-editor-camera", {
+                    attrs: { size: _vm.size, position: { x: 5, y: 5, z: 5 } }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ])
+  ])
 }
-var staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "uk-card-header"
-  }, [_c('h3', {
-    staticClass: "uk-card-title"
-  }, [_vm._v("Geometry editor")])])
-}]
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "uk-card-header" }, [
+      _c("h3", { staticClass: "uk-card-title" }, [_vm._v("Geometry editor")])
+    ])
+  }
+]
 render._withStripped = true
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
@@ -107901,11 +113110,14 @@ if (false) {
 }
 
 /***/ }),
-/* 357 */
+/* 367 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
   return _c("div")
 }
 var staticRenderFns = []
@@ -107920,17 +113132,54 @@ if (false) {
 }
 
 /***/ }),
-/* 358 */
+/* 368 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { attrs: { id: "task-graph-editor-container" } }, [
+    _c("div", { staticClass: "uk-card uk-card-default uk-card-large" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "uk-card-body" }, [_c("task-graph-editor")], 1)
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "uk-card-header" }, [
+      _c("h3", { staticClass: "uk-card-title" }, [_vm._v("Task graph editor")])
+    ])
+  }
+]
+render._withStripped = true
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-f1a2d752", esExports)
+  }
+}
+
+/***/ }),
+/* 369 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(259);
+var content = __webpack_require__(268);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(49)("afa97608", content, false);
+var update = __webpack_require__(47)("afa97608", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -107946,17 +113195,17 @@ if(false) {
 }
 
 /***/ }),
-/* 359 */
+/* 370 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(260);
+var content = __webpack_require__(269);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(49)("a78d8e14", content, false);
+var update = __webpack_require__(47)("a78d8e14", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -107972,17 +113221,17 @@ if(false) {
 }
 
 /***/ }),
-/* 360 */
+/* 371 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(261);
+var content = __webpack_require__(270);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(49)("335b8bc3", content, false);
+var update = __webpack_require__(47)("335b8bc3", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -107998,17 +113247,17 @@ if(false) {
 }
 
 /***/ }),
-/* 361 */
+/* 372 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(262);
+var content = __webpack_require__(271);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(49)("783b2931", content, false);
+var update = __webpack_require__(47)("783b2931", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -108024,7 +113273,7 @@ if(false) {
 }
 
 /***/ }),
-/* 362 */
+/* 373 */
 /***/ (function(module, exports) {
 
 /**
@@ -108057,19 +113306,20 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 363 */
+/* 374 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */(function(process) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Store", function() { return Store; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "install", function() { return install; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapState", function() { return mapState; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapMutations", function() { return mapMutations; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapGetters", function() { return mapGetters; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapActions", function() { return mapActions; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createNamespacedHelpers", function() { return createNamespacedHelpers; });
 /**
- * vuex v2.4.0
+ * vuex v2.4.1
  * (c) 2017 Evan You
  * @license MIT
  */
@@ -108175,7 +113425,7 @@ var Module = function Module (rawModule, runtime) {
   this.state = (typeof rawState === 'function' ? rawState() : rawState) || {};
 };
 
-var prototypeAccessors$1 = { namespaced: {} };
+var prototypeAccessors$1 = { namespaced: { configurable: true } };
 
 prototypeAccessors$1.namespaced.get = function () {
   return !!this._rawModule.namespaced
@@ -108343,6 +113593,13 @@ var Store = function Store (options) {
   var this$1 = this;
   if ( options === void 0 ) options = {};
 
+  // Auto install if it is not done yet and `window` has `Vue`.
+  // To allow users to avoid auto-installation in some cases,
+  // this code should be placed here. See #731
+  if (!Vue && typeof window !== 'undefined' && window.Vue) {
+    install(window.Vue);
+  }
+
   if (process.env.NODE_ENV !== 'production') {
     assert(Vue, "must call Vue.use(Vuex) before creating a store instance.");
     assert(typeof Promise !== 'undefined', "vuex requires a Promise polyfill in this browser.");
@@ -108399,7 +113656,7 @@ var Store = function Store (options) {
   }
 };
 
-var prototypeAccessors = { state: {} };
+var prototypeAccessors = { state: { configurable: true } };
 
 prototypeAccessors.state.get = function () {
   return this._vm._data.$$state
@@ -108797,7 +114054,7 @@ function unifyObjectStyle (type, payload, options) {
 }
 
 function install (_Vue) {
-  if (Vue) {
+  if (Vue && _Vue === Vue) {
     if (process.env.NODE_ENV !== 'production') {
       console.error(
         '[vuex] already installed. Vue.use(Vuex) should be called only once.'
@@ -108807,11 +114064,6 @@ function install (_Vue) {
   }
   Vue = _Vue;
   applyMixin(Vue);
-}
-
-// auto install in dist mode
-if (typeof window !== 'undefined' && window.Vue) {
-  install(window.Vue);
 }
 
 var mapState = normalizeNamespace(function (namespace, states) {
@@ -108847,15 +114099,21 @@ var mapMutations = normalizeNamespace(function (namespace, mutations) {
     var key = ref.key;
     var val = ref.val;
 
-    val = namespace + val;
     res[key] = function mappedMutation () {
       var args = [], len = arguments.length;
       while ( len-- ) args[ len ] = arguments[ len ];
 
-      if (namespace && !getModuleByNamespace(this.$store, 'mapMutations', namespace)) {
-        return
+      var commit = this.$store.commit;
+      if (namespace) {
+        var module = getModuleByNamespace(this.$store, 'mapMutations', namespace);
+        if (!module) {
+          return
+        }
+        commit = module.context.commit;
       }
-      return this.$store.commit.apply(this.$store, [val].concat(args))
+      return typeof val === 'function'
+        ? val.apply(this, [commit].concat(args))
+        : commit.apply(this.$store, [val].concat(args))
     };
   });
   return res
@@ -108890,15 +114148,21 @@ var mapActions = normalizeNamespace(function (namespace, actions) {
     var key = ref.key;
     var val = ref.val;
 
-    val = namespace + val;
     res[key] = function mappedAction () {
       var args = [], len = arguments.length;
       while ( len-- ) args[ len ] = arguments[ len ];
 
-      if (namespace && !getModuleByNamespace(this.$store, 'mapActions', namespace)) {
-        return
+      var dispatch = this.$store.dispatch;
+      if (namespace) {
+        var module = getModuleByNamespace(this.$store, 'mapActions', namespace);
+        if (!module) {
+          return
+        }
+        dispatch = module.context.dispatch;
       }
-      return this.$store.dispatch.apply(this.$store, [val].concat(args))
+      return typeof val === 'function'
+        ? val.apply(this, [dispatch].concat(args))
+        : dispatch.apply(this.$store, [val].concat(args))
     };
   });
   return res
@@ -108940,7 +114204,7 @@ function getModuleByNamespace (store, helper, namespace) {
 var index_esm = {
   Store: Store,
   install: install,
-  version: '2.4.0',
+  version: '2.4.1',
   mapState: mapState,
   mapMutations: mapMutations,
   mapGetters: mapGetters,
@@ -108948,12 +114212,13 @@ var index_esm = {
   createNamespacedHelpers: createNamespacedHelpers
 };
 
+
 /* harmony default export */ __webpack_exports__["default"] = (index_esm);
 
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(17)))
 
 /***/ }),
-/* 364 */
+/* 375 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var apply = Function.prototype.apply;
@@ -109006,31 +114271,31 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(324);
+__webpack_require__(333);
 exports.setImmediate = setImmediate;
 exports.clearImmediate = clearImmediate;
 
 
 /***/ }),
-/* 365 */
+/* 376 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE_365__;
+module.exports = __WEBPACK_EXTERNAL_MODULE_376__;
 
 /***/ }),
-/* 366 */
-/***/ (function(module, exports) {
-
-/* (ignored) */
-
-/***/ }),
-/* 367 */
+/* 377 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
 
 /***/ }),
-/* 368 */
+/* 378 */
+/***/ (function(module, exports) {
+
+/* (ignored) */
+
+/***/ }),
+/* 379 */
 /***/ (function(module, exports) {
 
 /* (ignored) */

@@ -1,6 +1,8 @@
 var path    = require("path");
 var webpack = require("webpack");
 
+/* process.traceDeprecation = true; */
+
 module.exports = {
   cache: true,
   entry: {
@@ -22,6 +24,7 @@ module.exports = {
       {
        test: /\.js$/,
         include: [/node_modules(\/|\\)vtk\.js(\/|\\)/],
+                  /* /assets\/libs\/litegraph\.min\.js/], */
         loader: "babel-loader",
         query: {
           presets: ['es2015']

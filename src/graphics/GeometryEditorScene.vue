@@ -1,5 +1,5 @@
 <template>
-    <div id="editor-scene-div">
+    <div id="geometry-editor-scene-div">
         <slot></slot>
     </div>
 </template>
