@@ -54,15 +54,19 @@ let TaskGraphEditor = Vue.extend(
 
       console.log("Element = ", this.$el);
 
-      // Add the canvas to the DOM
+      // Add the canvas div to the DOM
       let element = document.createElement("div");
       element.className = "vaango-taskgraph-editor";
       element.innerHTML = "<canvas class='taskgraph-canvas' width='1000' height='500' tabindex=10></canvas>";
       this.$el.appendChild(element);
 
+      // Set the canvas
       let canvas = element.querySelector(".taskgraph-canvas");
       this.d_canvas.setCanvas(canvas);
       console.log("Mounted task editor");
+
+      // Assign the graph to the canvas
+      this.d_canvas.setGraph(this.d_taskgraph);
     },
 
     beforeDestroy() {
@@ -70,6 +74,15 @@ let TaskGraphEditor = Vue.extend(
 
     methods: {
 
+      processMouseWheel(e) {
+        e.preventDefault();
+        this.d_canvas.processMouseWheel(e);
+      },
+
+      resize(e) {
+        e.preventDefault();
+        this.d_canvas.resize();
+      }
     }
   }
 );

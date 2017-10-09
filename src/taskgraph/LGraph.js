@@ -22,6 +22,7 @@
 
 import LiteGraph from "./LiteGraph.js"
 import {LiteGraphStates} from "./LiteGraphStates.js"
+import LGraphCanvas from "./LGraphCanvas.js"
 
 /**
 * LGraph is the class that contain a full graph. We instantiate one and 

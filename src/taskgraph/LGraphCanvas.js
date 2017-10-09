@@ -80,6 +80,7 @@ export default class LGraphCanvas {
     this.d_connections_width = 4;
 
     //link canvas and graph
+    this.d_graph = graph;
     if (graph)
       graph.attachCanvas(this);
 
@@ -145,6 +146,7 @@ export default class LGraphCanvas {
       return;
     }
 
+    this.d_graph = graph;
     graph.attachCanvas(this);
     this.setDirty(true, true);
   }
@@ -607,10 +609,10 @@ export default class LGraphCanvas {
       let n = this.d_graph.getNodeOnPos(e.canvasX, e.canvasY, this.d_visible_nodes);
 
       //remove mouseover flag
-      for (let i = 0, l = this.d_graph._nodes.length; i < l; ++i) {
-        if (this.d_graph._nodes[i].mouseOver && n != this.d_graph._nodes[i]) {
+      for (let i = 0, l = this.d_graph.d_nodes.length; i < l; ++i) {
+        if (this.d_graph.d_nodes[i].mouseOver && n != this.d_graph.d_nodes[i]) {
           //mouse leave
-          this.d_graph._nodes[i].mouseOver = false;
+          this.d_graph.d_nodes[i].mouseOver = false;
           if (this.d_node_over && this.d_node_over.onMouseLeave)
             this.d_node_over.onMouseLeave(e);
           this.d_node_over = null;
@@ -763,7 +765,7 @@ export default class LGraphCanvas {
         this.d_dirty_bgcanvas = true;
         this.d_node_dragged.pos[0] = Math.round(this.d_node_dragged.pos[0]);
         this.d_node_dragged.pos[1] = Math.round(this.d_node_dragged.pos[1]);
-        if (this.d_graph.config.align_to_grid)
+        if (this.d_graph.d_config.align_to_grid)
           this.d_node_dragged.alignToGrid();
         this.d_node_dragged = null;
       }
@@ -819,7 +821,7 @@ export default class LGraphCanvas {
     else if (delta < 0)
       zoom *= 1 / (1.1);
 
-    this.d_setZoom(zoom, [e.localX, e.localY]);
+    this.setZoom(zoom, [e.localX, e.localY]);
 
     /*
     if(this.d_rendering_timer_id == null)
@@ -1034,12 +1036,12 @@ export default class LGraphCanvas {
   }
 
   selectAllNodes ()  {
-    for (let i = 0; i < this.d_graph._nodes.length; ++i) {
-      let n = this.d_graph._nodes[i];
+    for (let i = 0; i < this.d_graph.d_nodes.length; ++i) {
+      let n = this.d_graph.d_nodes[i];
       if (!n.selected && n.onSelected)
         n.onSelected();
       n.selected = true;
-      this.d_selected_nodes[this.d_graph._nodes[i].id] = n;
+      this.d_selected_nodes[this.d_graph.d_nodes[i].id] = n;
     }
 
     this.setDirty(true);
@@ -1171,7 +1173,7 @@ export default class LGraphCanvas {
       this.visible_area = new Float32Array([start[0], start[1], end[0], end[1]]);
     }
 
-    if (this.d_dirty_bgcanvas || force_bgcanvas || this.d_always_render_background || (this.d_graph && this.d_graph._last_trigger_time && (now - this.d_graph._last_trigger_time) < 1000))
+    if (this.d_dirty_bgcanvas || force_bgcanvas || this.d_always_render_background || (this.d_graph && this.d_graph.d_last_trigger_time && (now - this.d_graph.d_last_trigger_time) < 1000))
       this.drawBackCanvas();
 
     if (this.d_dirty_canvas || force_canvas)
@@ -1251,7 +1253,7 @@ export default class LGraphCanvas {
       }
 
       //connections ontop?
-      if (this.d_graph.config.links_ontop)
+      if (this.d_graph.d_config.links_ontop)
         if (!this.d_live_mode)
           this.drawConnections(ctx);
 
@@ -1312,8 +1314,8 @@ export default class LGraphCanvas {
     ctx.font = "10px Arial";
     ctx.fillStyle = "#888";
     if (this.d_graph) {
-      ctx.fillText("T: " + this.d_graph.globaltime.toFixed(2) + "s", 5, 13 * 1);
-      ctx.fillText("I: " + this.d_graph.iteration, 5, 13 * 2);
+      ctx.fillText("T: " + this.d_graph.d_globaltime.toFixed(2) + "s", 5, 13 * 1);
+      ctx.fillText("I: " + this.d_graph.d_iteration, 5, 13 * 2);
       ctx.fillText("F: " + this.d_frame, 5, 13 * 3);
       ctx.fillText("FPS:" + this.d_fps.toFixed(2), 5, 13 * 4);
     }
@@ -1763,8 +1765,8 @@ export default class LGraphCanvas {
     ctx.strokeStyle = "#AAA";
     ctx.globalAlpha = this.d_editor_alpha;
     //for every node
-    for (let n = 0, l = this.d_graph._nodes.length; n < l; ++n) {
-      let node = this.d_graph._nodes[n];
+    for (let n = 0, l = this.d_graph.d_nodes.length; n < l; ++n) {
+      let node = this.d_graph.d_nodes[n];
       //for every input (we render just inputs because it is easier as every slot can only have one input)
       if (node.inputs && node.inputs.length)
         for (let i = 0; i < node.inputs.length; ++i) {
@@ -1772,7 +1774,7 @@ export default class LGraphCanvas {
           if (!input || input.link == null)
             continue;
           let link_id = input.link;
-          let link = this.d_graph.links[link_id];
+          let link = this.d_graph.d_links[link_id];
           if (!link)
             continue;
 

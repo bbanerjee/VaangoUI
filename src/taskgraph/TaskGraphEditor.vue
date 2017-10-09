@@ -1,5 +1,7 @@
 <template>
-  <div id = "taskgraph-editor-div">
+  <div id = "taskgraph-editor-div"
+       v-on:mousewheel="processMouseWheel($event)"
+       v-on:resize="resize($event)">
     <slot></slot>
   </div>
 </template>
