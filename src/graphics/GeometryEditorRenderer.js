@@ -162,7 +162,10 @@ let GeometryEditorRenderer = Vue.extend(
       },
 
       render() {
-        this.d_renderer.render(Store.getters.editorScene, Store.getters.editorCamera);
+        // Render only if camera exists
+        if (Store.getters.editorCamera) {
+          this.d_renderer.render(Store.getters.editorScene, Store.getters.editorCamera);
+        }
         //console.log("Done rendering");
       },
 

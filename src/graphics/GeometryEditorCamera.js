@@ -3,9 +3,9 @@ const THREE = require("three");
 const Store = require("../vuex/Store").default;
 const util = require('./util');
 
-let EditorCamera = Vue.extend(
+let GeometryEditorCamera = Vue.extend(
   {
-    name: 'EditorCamera',
+    name: 'GeometryEditorCamera',
 
     props: {
       size : {
@@ -44,7 +44,7 @@ let EditorCamera = Vue.extend(
           camera.updateProjectionMatrix();
         }
         Store.commit('SET_EDITOR_CAMERA', camera);
-        console.log(Store.getters.camera.position);
+        console.log(Store.getters.editorCamera.position);
       }
     },
 
@@ -61,5 +61,5 @@ let EditorCamera = Vue.extend(
   }
 );
 
-exports.default = EditorCamera;
+exports.default = GeometryEditorCamera;
 

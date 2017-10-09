@@ -178,13 +178,21 @@ let VtkRenderer = Vue.extend(
           // console.log(actor.getMapper());
         });
         this._renderer.getActiveCamera().zoom(1.1);
-        this._renderWindow.render();
+
+        //  Render only if the camera exists
+        if (this._renderer.getActiveCamera()) {
+          this._renderer.getActiveCamera().zoom(1.1);
+          this._renderWindow.render();
+        }
       },
 
       zoomOut(e) {
         //console.log("key press detected");
-        this._renderer.getActiveCamera().zoom(0.8);
-        this._renderWindow.render();
+        //  Render only if the camera exists
+        if (this._renderer.getActiveCamera()) {
+          this._renderer.getActiveCamera().zoom(0.8);
+          this._renderWindow.render();
+        }
       }
     }
   }

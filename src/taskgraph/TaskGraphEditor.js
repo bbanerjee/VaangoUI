@@ -1,5 +1,4 @@
 import Vue from "vue";
-import LiteGraph from "./LiteGraph.js";
 import LGraph from "./LGraph.js";
 import LGraphCanvas from "./LGraphCanvas.js";
 
@@ -13,7 +12,7 @@ let TaskGraphEditor = Vue.extend(
 
     data() {
       return {
-        d_editor: null,
+        d_taskgraph: null,
         d_canvas: null
       };
     }, 
@@ -22,9 +21,12 @@ let TaskGraphEditor = Vue.extend(
     }, 
 
     created() {
-      this.d_editor = new LGraph();
-      this.d_canvas = new LGraphCanvas("#mycanvas");
-      console.log("Created task editor");
+
+      this.d_taskgraph = new LGraph();
+      console.log("Created task graph");
+
+      this.d_canvas = new LGraphCanvas(null);
+      console.log("Created empty task graph canvas");
 
       if(this.CanvasRenderingContext2D) {
         CanvasRenderingContext2D.prototype.roundRect = (
@@ -49,8 +51,18 @@ let TaskGraphEditor = Vue.extend(
     },
 
     mounted() {
+
+      console.log("Element = ", this.$el);
+
+      // Add the canvas to the DOM
+      let element = document.createElement("div");
+      element.className = "vaango-taskgraph-editor";
+      element.innerHTML = "<canvas class='taskgraph-canvas' width='1000' height='500' tabindex=10></canvas>";
+      this.$el.appendChild(element);
+
+      let canvas = element.querySelector(".taskgraph-canvas");
+      this.d_canvas.setCanvas(canvas);
       console.log("Mounted task editor");
-      window.graphcanvas = this.d_editor.graphcanvas;
     },
 
     beforeDestroy() {

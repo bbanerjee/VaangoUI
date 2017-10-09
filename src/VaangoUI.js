@@ -28,7 +28,7 @@ Vue.component('simulation-component-panel', SimulationComponentPanel);
 Vue.component('mpm-input-panel', MPMInputPanel);
 Vue.component('ice-input-panel', ICEInputPanel);
 Vue.component('time-input-panel', TimeInputPanel);
-Vue.component('editor-graphics-panel', GeometryEditorGraphicsPanel);
+Vue.component('geometry-editor-graphics-panel', GeometryEditorGraphicsPanel);
 Vue.component('task-graph-editor-panel', TaskGraphEditorPanel);
 
 var ThreeRenderer = require("./graphics/ThreeRenderer.vue").default;

@@ -241,12 +241,14 @@ export default class LGraphCanvas {
       this.enableWebGL();
     }
 
+    /*
     //input:  (move and up could be unbinded)
     this.d_mousemove_callback = this.d_processMouseMove.bind(this);
     this.d_mouseup_callback = this.d_processMouseUp.bind(this);
 
     if (!skip_events)
       this.bindEvents();
+    */
   }
 
   //used in some events to capture them

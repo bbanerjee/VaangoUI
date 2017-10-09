@@ -9,7 +9,8 @@ let VaangoMainPanel = Vue.extend(
         id : "VaangoMainPanel", 
         sidebarTabIndex : 0, 
         sidebarTabName : "",
-        editorWindowActive : false,
+        taskgraphEditorIsActive : false,
+        geometryEditorIsActive : false,
         size : { x: 500, y: 500 }
       }
     },
@@ -20,12 +21,20 @@ let VaangoMainPanel = Vue.extend(
         this.sidebarTabIndex = index;
         this.sidebarTabName = name;
 
-        // If the "Create geometry" tab has been selected than
-        // turn on the editor window
-        if (this.sidebarTabName === "Create geometry") {
-          this.editorWindowActive = true;
+        // If the "Taskgraph editor" tab has been selected than
+        // turn on the taskgraph editor window
+        if (this.sidebarTabName === "Taskgraph editor") {
+          this.taskgraphEditorIsActive = true;
         } else {
-          this.editorWindowActive = false;
+          this.taskgraphEditorIsActive = false;
+        }
+
+        // If the "Create geometry" tab has been selected than
+        // turn on the geometry editor window
+        if (this.sidebarTabName === "Create geometry") {
+          this.geometryEditorIsActive = true;
+        } else {
+          this.geometryEditorIsActive = false;
         }
       }
     }

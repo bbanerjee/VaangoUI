@@ -4,7 +4,7 @@ import Vue from "vue";
 let GeometryEditorGraphicsPanel = Vue.extend(
   {
 
-    name: 'editor-graphics-panel',
+    name: 'geometry-editor-graphics-panel',
 
     data() {
       return {

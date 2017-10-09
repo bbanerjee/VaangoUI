@@ -107,8 +107,12 @@ let ThreeRenderer = Vue.extend(
     // a component is destroyed.
     // http://rc.vuejs.org/guide/migration.html#ready-deprecated
     beforeDestroy() {
-      Store.commit('DELETE_SCENE');
-      Store.commit('DELETE_CAMERA');
+      if (Store.getters.camera) {
+        Store.commit('DELETE_CAMERA');
+      }
+      if (Store.getters.scene) {
+        Store.commit('DELETE_SCENE');
+      }
     },
 
     methods: {
@@ -123,7 +127,11 @@ let ThreeRenderer = Vue.extend(
 
       animate() {
         requestAnimationFrame( this.animate );
-        this.render();
+
+        // Render only if there is a camera available
+        if (Store.getters.camera) {
+          this.render();
+        }
       },
 
       render() {

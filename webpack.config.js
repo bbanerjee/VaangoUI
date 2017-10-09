@@ -16,6 +16,7 @@ module.exports = {
     library: ["[name]"],
     libraryTarget: "umd"
   },
+  devtool: "inline-source-map",
   module: {
     loaders: [
       {test: /\.css$/, loader: "css-loader"},
