@@ -1,0 +1,32 @@
+{
+    "env": {
+        "myDefaultIncludePath": [
+            "${workspaceFolder}/src/",
+            "${workspaceFolder}/src/Utils",
+            "/home/banerjee/Packages/OCCT-7_6_2/install/include/opencascade",
+            "/home/banerjee/Simo/VaangoUI/Prototype/imgui"
+        ],
+        "myCompilerPath": "/home/banerjee/Packages/gcc-8.5.0-install/bin/g++-8.5"
+    },
+    "configurations": [
+        {
+            "name": "Linux",
+            "intelliSenseMode": "gcc-x64",
+            "includePath": [
+                "${myDefaultIncludePath}"
+            ],
+            "compilerPath": "/home/banerjee/Packages/gcc-8.5.0-install/bin/g++-8.5",
+            "cStandard": "gnu11",
+            "cppStandard": "gnu++17",
+            "compileCommands": "${workspaceFolder}/build/compile_commands.json",
+            "browse": {
+                "path": [
+                    "${workspaceFolder}"
+                ],
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
+            }
+        }
+    ],
+    "version": 4
+}
