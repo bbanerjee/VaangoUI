@@ -15,7 +15,7 @@
   "devDependencies": {
     "@types/jquery": "^2.0.40",
     "@types/node": "^7.0.1",
-    "@types/three": "^0.83.0",
+    "@types/three": ">=0.125.0",
     "@types/vue": ">=2.0.0",
     "@types/webgl-ext": ">=0.0.27",
     "css-loader": "^0.26.1",
