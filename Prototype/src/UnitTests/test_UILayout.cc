@@ -109,7 +109,7 @@ TEST(Test_UILayout, genericTests) {
   std::cout << "Window = " << Vaango_UIEnv::s_window << std::endl;
 
   // Initialize console
-  layout.init();
+  //layout.init();
 
   // Main loop
   int console_width = 600, console_height = 100;

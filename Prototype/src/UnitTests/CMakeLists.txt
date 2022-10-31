@@ -59,6 +59,8 @@ target_include_directories(test_UILayout PRIVATE
                            ${IMGUI_BACKEND_DIR}
                            ${GLAD_DIR})
 target_link_libraries(test_UILayout 
+                      ${VAANGO_UI_LIB}
+                      VaangoUI_Utils
                       ${IMGUI_LIB}
                       ${IMGUI_BACKEND_LIB}
                       ${GLAD_LIB}
