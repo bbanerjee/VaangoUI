@@ -6,6 +6,9 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE INTERNAL "")
 set(CMAKE_TOOLCHAIN_FILE toolchain.cmake)
 
+# Copy assets
+configure_file(assets/Fonts/static/Ruda-Bold.ttf assets/Fonts/static/Ruda-Bold.ttf COPYONLY)
+
 # For glad
 set(GLAD_LIB /home/banerjee/Packages/glad/libglad.a)
 
@@ -70,7 +73,7 @@ IF(UNIX AND NOT APPLE)
 ENDIF()
 
 # for stb image loader
-set(STB_DIR /home/banerjee/Simo/VaangoUI/Prototype/stb)
+set(STB_DIR /home/banerjee/VaangoUI/Prototype/stb)
 set(STB_SRC
    ${STB_DIR}/stb_c_lexer.h
    ${STB_DIR}/stb_connected_components.h
@@ -97,9 +100,9 @@ add_library(${STB_LIB} INTERFACE)
 target_include_directories(${STB_LIB} INTERFACE ${STB_DIR})
 
 # for imgui
-set(IMGUI_DIR /home/banerjee/Simo/VaangoUI/Prototype/imgui)
-set(IMGUI_BACKEND_DIR /home/banerjee/Simo/VaangoUI/Prototype/imgui/backends)
-set(GLAD_DIR /home/banerjee/Simo/VaangoUI/Prototype/glad)
+set(IMGUI_DIR /home/banerjee/VaangoUI/Prototype/imgui)
+set(IMGUI_BACKEND_DIR /home/banerjee/VaangoUI/Prototype/imgui/backends)
+set(GLAD_DIR /home/banerjee/VaangoUI/Prototype/glad)
 
 set(IMGUI_SRC
     ${IMGUI_DIR}/imgui.cpp
@@ -136,6 +139,7 @@ add_subdirectory(Utils)
 # Base UI
 set(VAANGO_UI_LIB vaango_ui_lib)
 add_library(${VAANGO_UI_LIB} 
+            Vaango_UIApplication.cc
             Vaango_UIBase.cc
             Vaango_UIComponentBase.cc
             Vaango_UIEnvironment.cc
@@ -151,6 +155,20 @@ target_include_directories(${VAANGO_UI_LIB} PRIVATE
 
 # Unit tests
 add_subdirectory(UnitTests)
+
+# Executable
+add_executable(vaango_ui
+               Vaango_UI.cc)
+target_include_directories(vaango_ui PRIVATE 
+                           ${CMAKE_CURRENT_SOURCE_DIR})
+target_link_libraries (vaango_ui
+                       ${VAANGO_UI_LIB}
+                       ${IMGUI_LIB}
+                       ${IMGUI_BACKEND_LIB}
+                       ${GLAD_LIB}
+                       ${GLFW_LIBRARIES}
+                       OpenGL::GL
+                       ${CMAKE_DL_LIBS})
 
 ## Standalone tests
 #add_executable (test_occ_imgui 

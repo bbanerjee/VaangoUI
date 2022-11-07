@@ -4,7 +4,7 @@
             "${workspaceFolder}/src/",
             "${workspaceFolder}/src/Utils",
             "/home/banerjee/Packages/OCCT-7_6_2/install/include/opencascade",
-            "/home/banerjee/Simo/VaangoUI/Prototype/imgui"
+            "/home/banerjee/VaangoUI/Prototype/imgui"
         ],
         "myCompilerPath": "/home/banerjee/Packages/gcc-8.5.0-install/bin/g++-8.5"
     },
