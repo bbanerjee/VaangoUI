@@ -20,8 +20,8 @@ namespace VaangoUI {
     Vaango_UIMainMenuComponent mainMenu;
     components.push_back(&mainMenu);
 
-    Vaango_UITestComponent component("test component", 300, 200);
-    components.push_back(&component);
+    //Vaango_UITestComponent component("test component", 300, 200);
+    //components.push_back(&component);
 
     uiEnv.startImGui();
     uiEnv.runMainLoop(components);

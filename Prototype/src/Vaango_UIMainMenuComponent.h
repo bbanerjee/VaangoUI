@@ -2,13 +2,19 @@
 #define __Vaango_UI_MAINMENU_COMPONENT_H__
 
 #include <Vaango_UIComponentBase.h>
+#include <Vaango_UICreateParticleMainPanel.h>
 
 #include <imgui.h>
+#include <iostream>
 
 namespace VaangoUI {
 
 class Vaango_UIMainMenuComponent final : public Vaango_UIComponentBase
 {
+private:
+
+  Vaango_UICreateParticleMainPanel d_mainPanel;
+
 public:
 
   Vaango_UIMainMenuComponent()
@@ -60,6 +66,12 @@ public:
       }
       ImGui::EndMainMenuBar();
     }
+
+    if (d_mainPanel.d_isVisible) {
+      d_mainPanel.draw("Create particle distribution", 400, 400);
+      //std::cout << "Draw main panel done\n";
+    }
+
   }
 
   void showFileMenu() {
@@ -75,8 +87,8 @@ public:
   }
 
   void showInputsMenu() {
-    if (ImGui::MenuItem("Create particles")) {
-
+    if (ImGui::MenuItem("Create particles", nullptr, &d_mainPanel.d_isVisible)) {
+      d_mainPanel.d_isVisible = true;
     }
     if (ImGui::MenuItem("Create input data")) {
 

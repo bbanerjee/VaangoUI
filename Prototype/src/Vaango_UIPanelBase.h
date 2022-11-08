@@ -26,6 +26,11 @@ public:
   virtual void draw(const std::string& title,
                     int width, int height) = 0;
 
+  void isVisible(bool flag)
+  {
+    d_isVisible = flag;
+  }
+
 public:
 
   bool d_isVisible;
