@@ -142,6 +142,7 @@ add_library(${VAANGO_UI_LIB}
             Vaango_UIApplication.cc
             Vaango_UIBase.cc
             Vaango_UIComponentBase.cc
+            Vaango_UIData.cc
             Vaango_UIEnvironment.cc
             Vaango_UILayout.cc)
 target_include_directories(${VAANGO_UI_LIB} PRIVATE 
