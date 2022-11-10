@@ -102,6 +102,7 @@ target_include_directories(${STB_LIB} INTERFACE ${STB_DIR})
 # for imgui
 set(IMGUI_DIR /home/banerjee/VaangoUI/Prototype/imgui)
 set(IMGUI_BACKEND_DIR /home/banerjee/VaangoUI/Prototype/imgui/backends)
+set(IMGUI_FILE_DIALOG_DIR /home/banerjee/VaangoUI/Prototype/imguidialog)
 set(GLAD_DIR /home/banerjee/VaangoUI/Prototype/glad)
 
 set(IMGUI_SRC
@@ -115,6 +116,9 @@ set(IMGUI_BACKEND_SRC
     ${IMGUI_BACKEND_DIR}/imgui_impl_opengl3.cpp)
 set(IMGUI_LIB imgui_lib)
 set(IMGUI_BACKEND_LIB imgui_backend_lib)
+set(IMGUI_FILE_DIALOG_SRC 
+    ${IMGUI_FILE_DIALOG_DIR}/ImGuiFileDialog.cpp)
+    
 
 add_library(${IMGUI_LIB} ${IMGUI_SRC})
 target_include_directories(imgui_lib PRIVATE ${IMGUI_DIR})
@@ -146,6 +150,7 @@ add_library(${VAANGO_UI_LIB}
             Vaango_UIEnvironment.cc
             Vaango_UILayout.cc)
 target_include_directories(${VAANGO_UI_LIB} PRIVATE 
+                           ${IMGUI_FILE_DIALOG_DIR}
                            ${CMAKE_CURRENT_SOURCE_DIR}
                            ${CMAKE_CURRENT_SOURCE_DIR}/Utils
                            ${IMGUI_DIR}
@@ -159,8 +164,11 @@ add_subdirectory(UnitTests)
 
 # Executable
 add_executable(vaango_ui
+               ${IMGUI_FILE_DIALOG_SRC}
                Vaango_UI.cc)
 target_include_directories(vaango_ui PRIVATE 
+                           ${IMGUI_DIR}
+                           ${IMGUI_FILE_DIALOG_DIR}
                            ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries (vaango_ui
                        ${VAANGO_UI_LIB}

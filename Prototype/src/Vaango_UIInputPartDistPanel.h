@@ -5,12 +5,16 @@
 #include <Vaango_UIData.h>
 
 #include <imgui.h>
+#include <ImGuiFileDialog.h>
 #include <iostream>
 
 namespace VaangoUI {
 
 class Vaango_UIInputPartDistPanel : public Vaango_UIPanelBase
 {
+private:
+
+
 public:
 
   Vaango_UIInputPartDistPanel()
@@ -28,7 +32,7 @@ public:
   {
     {
       ImGui::BeginChild("input part dist", ImVec2(0, 0));
-      getInput(); 
+      getInputSizeDist(); 
       ImGui::EndChild();
     }
     ImGui::SameLine();
@@ -40,11 +44,14 @@ public:
 
   }
 
-  void getInput() {
+  void getInputSizeDist() {
 
     if (ImGui::Button("Read distribution from file")) {
-      readFromFile();
+      ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".json", ".");
     }
+
+    std::string file = getFileName();
+    readFromFile(file);
 
     static ImGuiTableFlags flags = ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersOuter | 
                                    ImGuiTableFlags_BordersV | ImGuiTableFlags_Resizable | 
@@ -95,6 +102,24 @@ public:
       }
       ImGui::EndTable();
     }
+  }
+
+  std::string getFileName() {
+
+    std::string filePathName;
+    if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey")) {
+      if (ImGuiFileDialog::Instance()->IsOk()) {
+        filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+        std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
+        std::cout << filePathName << " " << filePath << "\n";
+      }
+    
+      ImGuiFileDialog::Instance()->Close();
+    }
+    return filePathName;
+  }
+
+  void readFromFile(const std::string& file) {
   }
 
   void drawSizeDist() {
