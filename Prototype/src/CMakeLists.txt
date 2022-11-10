@@ -128,6 +128,9 @@ target_include_directories(imgui_backend_lib PRIVATE
                            ${IMGUI_DIR}
                            ${IMGUI_BACKEND_DIR})
 
+# for nlohmann JSON parser
+set(JSON_DIR /home/banerjee/VaangoUI/Prototype/nlohmann)
+
 # for googletests
 include(FetchContent)
 FetchContent_Declare(
@@ -151,6 +154,7 @@ add_library(${VAANGO_UI_LIB}
             Vaango_UILayout.cc)
 target_include_directories(${VAANGO_UI_LIB} PRIVATE 
                            ${IMGUI_FILE_DIALOG_DIR}
+                           ${JSON_DIR}
                            ${CMAKE_CURRENT_SOURCE_DIR}
                            ${CMAKE_CURRENT_SOURCE_DIR}/Utils
                            ${IMGUI_DIR}

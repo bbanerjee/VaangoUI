@@ -6,7 +6,11 @@
 
 #include <imgui.h>
 #include <ImGuiFileDialog.h>
+#include <json.hpp>
 #include <iostream>
+#include <fstream>
+
+using json = nlohmann::json;
 
 namespace VaangoUI {
 
@@ -14,6 +18,8 @@ class Vaango_UIInputPartDistPanel : public Vaango_UIPanelBase
 {
 private:
 
+  bool d_haveFileName = false;
+  bool d_doneReading = false;
 
 public:
 
@@ -58,9 +64,10 @@ public:
                                    ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable;
 
     ImVec2 outer_size = ImVec2(0.0f,  ImGui::GetTextLineHeightWithSpacing()* 3);
-    float vol_frac = 0.0f;
-    float max_size = 1000.0f;
-    int num_sizes = 10;
+    char* name = &s_sizeDist.materialName[0];
+    float vol_frac = static_cast<float>(s_sizeDist.particleVolFrac);
+    float max_size = static_cast<float>(s_sizeDist.maxParticleSize);
+    int num_sizes = s_sizeDist.numSizes;
     if (ImGui::BeginTable("particle_vol_frac", 3, flags, outer_size)) {
       ImGui::TableSetupScrollFreeze(0, 1); // Make top row always visible
       ImGui::TableSetupColumn("Material name", ImGuiTableColumnFlags_None);
@@ -69,7 +76,7 @@ public:
       ImGui::TableHeadersRow();
       ImGui::TableNextRow();
       ImGui::TableSetColumnIndex(0);
-      static char buf[64] = "Composite"; ImGui::InputText("", buf, 64);
+      ImGui::InputText("", name, 64);
       ImGui::TableSetColumnIndex(1);
       ImGui::SliderFloat("%", &vol_frac, 0.0f, 100.0f); 
       ImGui::TableSetColumnIndex(2);
@@ -110,8 +117,10 @@ public:
     if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey")) {
       if (ImGuiFileDialog::Instance()->IsOk()) {
         filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
-        std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
-        std::cout << filePathName << " " << filePath << "\n";
+        //std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
+        //std::cout << filePathName << " " << filePath << "\n";
+        d_haveFileName = true;
+        d_doneReading = false;
       }
     
       ImGuiFileDialog::Instance()->Close();
@@ -120,6 +129,25 @@ public:
   }
 
   void readFromFile(const std::string& file) {
+
+    if (d_haveFileName && !d_doneReading) {
+      s_sizeDist.size.clear();
+      s_sizeDist.volFrac.clear();
+      std::ifstream f(file);
+      json data = json::parse(f);
+      s_sizeDist.materialName = data["name"];
+      s_sizeDist.particleVolFrac = data["particle_vol_frac"];
+      for (auto val : data["data"]) {
+        s_sizeDist.size.push_back(val["size"]);
+        s_sizeDist.volFrac.push_back(val["frac"]);
+      }
+      s_sizeDist.numSizes = s_sizeDist.size.size();
+      auto elem = std::max_element(s_sizeDist.size.begin(),
+                                   s_sizeDist.size.end());
+      s_sizeDist.maxParticleSize = *elem;
+
+      d_doneReading = true;
+    }
   }
 
   void drawSizeDist() {
