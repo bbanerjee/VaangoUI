@@ -3,6 +3,7 @@
 
 #include <Vaango_UIPanelBase.h>
 #include <Vaango_UIData.h>
+#include <Vaango_UIParticleSizeHistogramCanvas.h>
 
 #include <imgui.h>
 #include <ImGuiFileDialog.h>
@@ -37,20 +38,20 @@ public:
   void draw(const std::string& title, int width, int height)
   {
     {
-      ImGui::BeginChild("input part dist", ImVec2(0, 0));
-      getInputSizeDist(); 
+      ImGui::BeginChild("input part dist", ImVec2(2*width/3, 0));
+      getInputSizeDist(2*width/3, height); 
       ImGui::EndChild();
     }
     ImGui::SameLine();
     {
-      ImGui::BeginChild("input part dist", ImVec2(0, 0));
-      drawSizeDist(); 
+      ImGui::BeginChild("display input part dist", ImVec2(0, -ImGui::GetFrameHeightWithSpacing()));
+      drawSizeDist(width/3, height); 
       ImGui::EndChild();
     }
 
   }
 
-  void getInputSizeDist() {
+  void getInputSizeDist(int width, int height) {
 
     if (ImGui::Button("Read distribution from file")) {
       ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".json", ".");
@@ -71,8 +72,8 @@ public:
     if (ImGui::BeginTable("particle_vol_frac", 3, flags, outer_size)) {
       ImGui::TableSetupScrollFreeze(0, 1); // Make top row always visible
       ImGui::TableSetupColumn("Material name", ImGuiTableColumnFlags_None);
-      ImGui::TableSetupColumn("Volume fraction of particles", ImGuiTableColumnFlags_None);
-      ImGui::TableSetupColumn("Maximum particle size", ImGuiTableColumnFlags_None);
+      ImGui::TableSetupColumn("Total vol. fraction", ImGuiTableColumnFlags_None);
+      ImGui::TableSetupColumn("Max. size", ImGuiTableColumnFlags_None);
       ImGui::TableHeadersRow();
       ImGui::TableNextRow();
       ImGui::TableSetColumnIndex(0);
@@ -150,8 +151,28 @@ public:
     }
   }
 
-  void drawSizeDist() {
+  void drawSizeDist(int width, int height) {
+  
+    Vaango_UIParticleSizeHistogramCanvas inputSizeCanvas("input size histogram",
+                                                          width, height,
+                                                          ParticleSizeSource::INPUT);
+    inputSizeCanvas.draw();
 
+    /*
+    ImDrawList* draw_list = ImGui::GetWindowDrawList();
+
+    // Get the current ImGui cursor position
+    ImVec2 p = ImGui::GetCursorScreenPos();
+
+    // Draw a red circle
+    draw_list->AddCircleFilled(ImVec2(p.x + 50, p.y + 50), 30.0f, IM_COL32(255, 0, 0, 255), 16);
+
+    // Draw a 3 pixel thick yellow line
+    draw_list->AddLine(ImVec2(p.x, p.y), ImVec2(p.x + 100.0f, p.y + 100.0f), IM_COL32(255, 255, 0, 255), 3.0f);
+    */
+
+    // Advance the ImGui cursor to claim space in the window (otherwise the window will appear small and needs to be resized)
+    ImGui::Dummy(ImVec2(200, 200));
   }
 
 };

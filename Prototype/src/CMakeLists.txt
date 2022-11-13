@@ -10,6 +10,7 @@ set(CMAKE_TOOLCHAIN_FILE toolchain.cmake)
 configure_file(assets/Fonts/static/Ruda-Bold.ttf assets/Fonts/static/Ruda-Bold.ttf COPYONLY)
 
 # For glad
+set(GLAD_DIR /home/banerjee/VaangoUI/Prototype/glad)
 set(GLAD_LIB /home/banerjee/Packages/glad/libglad.a)
 
 # For glfw
@@ -72,6 +73,10 @@ IF(UNIX AND NOT APPLE)
   message(STATUS "${FontConfig_INCLUDE_DIRS}")
 ENDIF()
 
+# for raylib
+set(RAYLIB_INCLUDE_DIR /home/banerjee/Packages/raylib-4.2.0_linux_amd64/include)
+set(RAYLIB_LIB /home/banerjee/Packages/raylib-4.2.0_linux_amd64/lib/libraylib.so)
+
 # for stb image loader
 set(STB_DIR /home/banerjee/VaangoUI/Prototype/stb)
 set(STB_SRC
@@ -103,7 +108,6 @@ target_include_directories(${STB_LIB} INTERFACE ${STB_DIR})
 set(IMGUI_DIR /home/banerjee/VaangoUI/Prototype/imgui)
 set(IMGUI_BACKEND_DIR /home/banerjee/VaangoUI/Prototype/imgui/backends)
 set(IMGUI_FILE_DIALOG_DIR /home/banerjee/VaangoUI/Prototype/imguidialog)
-set(GLAD_DIR /home/banerjee/VaangoUI/Prototype/glad)
 
 set(IMGUI_SRC
     ${IMGUI_DIR}/imgui.cpp
@@ -119,7 +123,6 @@ set(IMGUI_BACKEND_LIB imgui_backend_lib)
 set(IMGUI_FILE_DIALOG_SRC 
     ${IMGUI_FILE_DIALOG_DIR}/ImGuiFileDialog.cpp)
     
-
 add_library(${IMGUI_LIB} ${IMGUI_SRC})
 target_include_directories(imgui_lib PRIVATE ${IMGUI_DIR})
 
@@ -127,6 +130,18 @@ add_library(${IMGUI_BACKEND_LIB} ${IMGUI_BACKEND_SRC})
 target_include_directories(imgui_backend_lib PRIVATE 
                            ${IMGUI_DIR}
                            ${IMGUI_BACKEND_DIR})
+
+# for raylib backend for imgui
+set(RLIMGUI_DIR /home/banerjee/Packages/rlImGui)
+set(RLIMGUI_SRC
+    ${RLIMGUI_DIR}/rlImGui.cpp)
+set(RLIMGUI_LIB rlimgui_lib)
+
+add_library(${RLIMGUI_LIB} ${RLIMGUI_SRC})
+target_include_directories(${RLIMGUI_LIB} PRIVATE 
+                           ${RAYLIB_INCLUDE_DIR}
+                           ${IMGUI_DIR}
+                           ${RLIMGUI_DIR})
 
 # for nlohmann JSON parser
 set(JSON_DIR /home/banerjee/VaangoUI/Prototype/nlohmann)
@@ -155,6 +170,8 @@ add_library(${VAANGO_UI_LIB}
 target_include_directories(${VAANGO_UI_LIB} PRIVATE 
                            ${IMGUI_FILE_DIALOG_DIR}
                            ${JSON_DIR}
+                           ${RAYLIB_INCLUDE_DIR}
+                           ${RLIMGUI_DIR}
                            ${CMAKE_CURRENT_SOURCE_DIR}
                            ${CMAKE_CURRENT_SOURCE_DIR}/Utils
                            ${IMGUI_DIR}
@@ -180,6 +197,8 @@ target_link_libraries (vaango_ui
                        ${IMGUI_BACKEND_LIB}
                        ${GLAD_LIB}
                        ${GLFW_LIBRARIES}
+                       ${RAYLIB_LIB}
+                       ${RLIMGUI_LIB}
                        OpenGL::GL
                        ${CMAKE_DL_LIBS})
 

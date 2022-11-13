@@ -13,16 +13,20 @@ struct ParticleSizeDist
   double particleVolFrac;
   double maxParticleSize;
   double numSizes;
+  double numSizesCalc;
   std::vector<double> size;
+  std::vector<double> sizeCalc;
   std::vector<double> volFrac;
 
   ParticleSizeDist() {
     materialName = "default";
     particleVolFrac = 50.0;
     numSizes = 10; 
+    numSizesCalc = -1; 
     maxParticleSize = 1000;
     for (int ii = 0; ii < numSizes; ii++) {
       size.push_back(ii/(float)numSizes*maxParticleSize);
+      sizeCalc.push_back(-1.0);
       volFrac.push_back(10.0);
     }
   }

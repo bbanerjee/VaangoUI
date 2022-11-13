@@ -40,11 +40,11 @@ public:
         ImGui::BeginChild("create particles", ImVec2(0, 0));
         if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None)) {
           if (ImGui::BeginTabItem("Particle size distribution")) {
-            d_inputPartDist.draw("input_part_dist", 100, 100);
+            d_inputPartDist.draw("input_part_dist", width, height);
             ImGui::EndTabItem();
           }
           if (ImGui::BeginTabItem("Generate particles")) {
-            d_displayPartDist.draw("display_part_dist", 100, 100);
+            d_displayPartDist.draw("generate_part", width, height);
             ImGui::EndTabItem();
           }
           ImGui::EndTabBar();
