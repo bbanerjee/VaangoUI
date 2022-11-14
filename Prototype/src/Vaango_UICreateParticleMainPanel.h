@@ -3,7 +3,7 @@
 
 #include <Vaango_UIPanelBase.h>
 #include <Vaango_UIInputPartDistPanel.h>
-#include <Vaango_UIDisplayPartDistPanel.h>
+#include <Vaango_UIGenerateParticlesPanel.h>
 
 #include <imgui.h>
 
@@ -14,7 +14,7 @@ class Vaango_UICreateParticleMainPanel : public Vaango_UIPanelBase
 private:
 
   Vaango_UIInputPartDistPanel d_inputPartDist;
-  Vaango_UIDisplayPartDistPanel d_displayPartDist;
+  Vaango_UIGenerateParticlesPanel d_displayPartDist;
 
 public:
 
@@ -31,10 +31,21 @@ public:
 
   void draw(const std::string& title, int width, int height)
   {
-    ImGui::SetNextWindowSize(ImVec2(width, height), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(width, height+40), ImGuiCond_FirstUseEver);
     //io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     //std::cout << "visible = " << d_isVisible << "\n";
     if (ImGui::Begin(title.c_str(), &d_isVisible, 0)) {
+      ImVec2 vMin = ImGui::GetWindowContentRegionMin();
+      ImVec2 vMax = ImGui::GetWindowContentRegionMax();
+      int actual_width = vMax.x - vMin.x;
+      int actual_height = vMax.y - vMin.y;
+      if (actual_width > width) {
+        width = actual_width;
+      }
+      if (actual_height > height) {
+        height = actual_height;
+      }
+
       {
         ImGui::BeginGroup();
         ImGui::BeginChild("create particles", ImVec2(0, 0));
@@ -54,7 +65,9 @@ public:
           isVisible(false);
         }
         ImGui::SameLine();
-        if (ImGui::Button("Save")) {}
+        if (ImGui::Button("Save")) {
+
+        }
         ImGui::EndGroup();
       }
       ImGui::End();
