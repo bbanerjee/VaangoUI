@@ -5,6 +5,8 @@
 #include <Vaango_UIInputPartDistPanel.h>
 #include <Vaango_UIGenerateParticlesPanel.h>
 
+#include <Core/Enums.h>
+
 #include <imgui.h>
 
 namespace VaangoUI {

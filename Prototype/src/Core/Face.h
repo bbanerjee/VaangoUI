@@ -17,41 +17,29 @@ class Face {
 
 private:
 
-  Vertex d_vertex[3];
-  Edge d_edge[3];
+  Vertex* d_vertex[3];
+  Edge* d_edge[3];
   bool d_visible; // True if face is visible from new point
 
 public:
 
   Face(); 
 
-  Face(const Vertex& v1, const Vertex& v2, const Vertex& v3);
+  Face(Vertex* v1, Vertex* v2, Vertex* v3);
 
-  Face(const Vertex& v1, const Vertex& v2, const Vertex& v3, 
-       const Edge& e12, const Edge& e23, const Edge& e31);
+  Face(Vertex* v1, Vertex* v2, Vertex* v3, 
+       Edge* e12, Edge* e23, Edge* e31);
 
   Face(const Face& f);
 
-  const Vertex& vertex(int index) const;
-  void vertex(int index, const Vertex& v);
+  Vertex* vertex(int index) const;
+  void vertex(int index, Vertex* v);
 
-  const Edge& edge(int index) const;
-  void edge(int index, const Edge& e);
+  Edge* edge(int index) const;
+  void edge(int index, Edge* e);
 
   bool visible() const;
   void visible(bool flag);
-
-  /**
-   *  Find if the face is a "top" face, i.e., if the outward pointing normal
-   *  to the face points upward (has a +ve dot product with the z-axis vector)
-   */
-  bool topFace(const Face& face);
-  
-  /**
-   * Calculate the location of the Voronoi vertex for this face
-   * (the center of the circumcircle)
-   */
-  void getVoronoiVertex(const Face& face, Vertex& v) const;
 
   friend std::ostream& operator<< (std::ostream &out, const Edge& data);
 

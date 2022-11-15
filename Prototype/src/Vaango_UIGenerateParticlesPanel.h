@@ -4,6 +4,8 @@
 #include <Vaango_UIPanelBase.h>
 #include <Vaango_UIData.h>
 
+#include <Core/Enums.h>
+
 #include <imgui.h>
 
 namespace VaangoUI {

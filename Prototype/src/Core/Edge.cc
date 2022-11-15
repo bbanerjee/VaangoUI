@@ -78,62 +78,60 @@ std::ostream& operator<< (std::ostream &out, const Edge& data) {
   return out;
 }
 
-  /*
-  void printFaceOrientation() {
+void 
+Edge::printFaceOrientation() const {
 
-    // Endpoints of the edge should be in opposite order in the
-    // adjacent face
-    std::cout << "Face 1 :";
-    for (int ii = 0; ii < 3; ii++) {
-      if (this == left()->edge(ii)) {
-        std::cout << " Edge :" << ii;
-        System.out.print(" ("+ adjFace(0).vertex(0).x()+
-                ","+ adjFace(0).vertex(0).y()+");");
-        System.out.print(" ("+ adjFace(0).vertex(1).x()+
-                ","+ adjFace(0).vertex(1).y()+");");
-        System.out.print(" ("+ adjFace(0).vertex(2).x()+
-                ","+ adjFace(0).vertex(2).y()+");");
-        System.out.println(" ");
-      }
-    }
-    System.out.print("Face 2 :");
-    for (int ii = 0; ii < 3; ii++) {
-      if (this == right().edge(ii)) {
-        System.out.print(" Edge :"+ii);
-        System.out.print(" ("+ adjFace(1).vertex(0).x()+
-                ","+ adjFace(1).vertex(0).y()+");");
-        System.out.print(" ("+ adjFace(1).vertex(1).x()+
-                ","+ adjFace(1).vertex(1).y()+");");
-        System.out.print(" ("+ adjFace(1).vertex(2).x()+
-                ","+ adjFace(1).vertex(2).y()+");");
-        System.out.println(" ");
-      }
+  // Endpoints of the edge should be in opposite order in the
+  // adjacent face
+  std::cout << "Face 1 :";
+  for (int ii = 0; ii < 3; ii++) {
+    if (this == left()->edge(ii)) {
+      std::cout << " Edge :" << ii;
+      std::cout << " (" << adjFace(0)->vertex(0)->x() <<
+              "," << adjFace(0)->vertex(0)->y() <<");";
+      std::cout << " (" << adjFace(0)->vertex(1)->x() <<
+              "," << adjFace(0)->vertex(1)->y() <<");";
+      std::cout << " (" << adjFace(0)->vertex(2)->x() <<
+              "," << adjFace(0)->vertex(2)->y() <<");";
+      std::cout << "\n";
     }
   }
-  */
-
-  /*
-  bool checkFaceOrientation() {
-
-    // Endpoints of the edge should be in opposite order in the
-    // adjacent face
-    Vertex v1 = null;
-    Vertex v2 = null;
-    Vertex v3 = null;
-    Vertex v4 = null;
-    for (int ii = 0; ii < 3; ii++) {
-      if (adjFace(0).edge(ii) == this) {
-        v1 = adjFace(0).vertex(ii);
-        v2 = adjFace(0).vertex((ii+1)%3);
-      }
-	  if (adjFace(1).edge(ii) == this) {
-	    v3 = adjFace(1).vertex(ii);
-	    v4 = adjFace(1).vertex((ii+1)%3);
-	  }
+  std::cout << "Face 2 :";
+  for (int ii = 0; ii < 3; ii++) {
+    if (this == right()->edge(ii)) {
+      std::cout << " Edge :" << ii;
+      std::cout << " (" << adjFace(1)->vertex(0)->x() <<
+              "," << adjFace(1)->vertex(0)->y() <<");";
+      std::cout << " (" << adjFace(1)->vertex(1)->x() <<
+              "," << adjFace(1)->vertex(1)->y() <<");";
+      std::cout << " (" << adjFace(1)->vertex(2)->x() <<
+              "," << adjFace(1)->vertex(2)->y() <<");";
+      std::cout << "\n";
     }
-    if (v1 == v4 && v2 == v3) return true;
-    return false;
   }
-  */
+}
+
+bool 
+Edge::checkFaceOrientation() const {
+
+  // Endpoints of the edge should be in opposite order in the
+  // adjacent face
+  Vertex* v1 = nullptr;
+  Vertex* v2 = nullptr;
+  Vertex* v3 = nullptr;
+  Vertex* v4 = nullptr;
+  for (int ii = 0; ii < 3; ii++) {
+    if (adjFace(0)->edge(ii) == this) {
+      v1 = adjFace(0)->vertex(ii);
+      v2 = adjFace(0)->vertex((ii+1)%3);
+    }
+  if (adjFace(1)->edge(ii) == this) {
+    v3 = adjFace(1)->vertex(ii);
+    v4 = adjFace(1)->vertex((ii+1)%3);
+  }
+  }
+  if (v1 == v4 && v2 == v3) return true;
+  return false;
+}
 
 } // end namespace VaangoUI

@@ -9,6 +9,7 @@
 
 #include <vector>
 #include <list>
+#include <memory>
 
 namespace VaangoUI {
 
@@ -26,12 +27,12 @@ private:
   int d_nofVert = 0;
   std::list<Vertex> d_vertex;
   std::list<Edge> d_edge;
-  std::list<Face> d_face;
+  std::list<std::shared_ptr<Face>> d_face;
   ParticlesInRVE d_pl;
 
 public:
 
-  Voronoi()  = default;
+  Voronoi() = default;
 
   Voronoi(const ParticlesInRVE& pl) {
     d_nofVert = pl.size(); 
@@ -77,12 +78,12 @@ public:
     // Find 3 non-collinear points
     auto vertexIter = d_vertex.begin();
     Vertex v1 = *vertexIter;  // 1st pt.in tetra base
-    ++iter;
+    ++vertexIter;
     Vertex v2 = *vertexIter;  // 2nd pt. in tetra base
-    ++iter;
+    ++vertexIter;
     Vertex v3 = *vertexIter;  // 3rd pt. in tetra base
     while (collinear(v1, v2, v3)) {
-      if (index == nofVerts-1) {
+      if (vertexIter == d_vertex.end()) {
 	      std::cout << "All points are collinear" << "\n";
 	      return false;
       } else {
@@ -103,16 +104,16 @@ public:
     d_edge.push_back(e3);
 
     // Create the face for the triangle forming base of tetrahedron
-    Face base(&v1, &v2, &v3, &e1, &e2, &e3); 
+    std::shared_ptr<Face> base = std::make_shared<Face>(&v1, &v2, &v3, &e1, &e2, &e3); 
     d_face.push_back(base);
 
     // Link edges to face
-    e1.adjFace(0, &base); e2.adjFace(0, &base); e3.adjFace(0, &base);
+    e1.adjFace(0, base.get()); e2.adjFace(0, base.get()); e3.adjFace(0, base.get());
 
     // Find a fourth non-coplanar point to form a tetrahedron
     ++vertexIter;
     Vertex v4 = *vertexIter;
-    long vol = volume6(base, v4); // Volume for ccw test 
+    long vol = volume6(base.get(), v4); // Volume for ccw test 
     while (vol == 0) {
       if (vertexIter == d_vertex.end()) {
 	      std::cout << "All points are coplanar" << "\n";
@@ -120,7 +121,7 @@ public:
       } else {
 	      ++vertexIter;
 	      v4 = *vertexIter;
-	      vol = volume6(base, v4);
+	      vol = volume6(base.get(), v4);
       }
     }
     v4.mark(VoronoiFlags::PROCESSED);
@@ -135,9 +136,15 @@ public:
 
     // Construct the faces and edges between the original triangle
     // and the fourth point
-    e1.adjFace(1, makeFace(e1, v4));
-    e2.adjFace(1, makeFace(e2, v4));
-    e3.adjFace(1, makeFace(e3, v4));
+    auto f1 = makeFace(&e1, &v4);
+    auto f2 = makeFace(&e2, &v4);
+    auto f3 = makeFace(&e3, &v4);
+    d_face.push_back(f1);
+    d_face.push_back(f2);
+    d_face.push_back(f3);
+    e1.adjFace(1, f1.get());
+    e2.adjFace(1, f2.get());
+    e3.adjFace(1, f3.get());
 
     // Cleanup
     cleanup();
@@ -151,7 +158,7 @@ public:
     int size = d_vertex.size();
     auto vertexIter = d_vertex.begin();
     Vertex v;
-    while (index < size) {
+    while (vertexIter != d_vertex.end()) {
       v = *vertexIter;
       if (!v.isMarked()) {
 	      v.mark(VoronoiFlags::PROCESSED);
@@ -187,13 +194,13 @@ public:
   /** 
    * Calculate the volume of a tetrahedron
    */
-  long volume6(const Face& f, const Vertex& p) {
-    long ax = f.vertex(0)->v(0); long ay = f.vertex(0)->v(1); 
-    long az = f.vertex(0)->v(2); 
-    long bx = f.vertex(1)->v(0); long by = f.vertex(1)->v(1); 
-    long bz = f.vertex(1)->v(2); 
-    long cx = f.vertex(2)->v(0); long cy = f.vertex(2)->v(1); 
-    long cz = f.vertex(2)->v(2); 
+  long volume6(const Face* f, const Vertex& p) {
+    long ax = f->vertex(0)->v(0); long ay = f->vertex(0)->v(1); 
+    long az = f->vertex(0)->v(2); 
+    long bx = f->vertex(1)->v(0); long by = f->vertex(1)->v(1); 
+    long bz = f->vertex(1)->v(2); 
+    long cx = f->vertex(2)->v(0); long cy = f->vertex(2)->v(1); 
+    long cz = f->vertex(2)->v(2); 
     long dx = p.v(0); long dy = p.v(1); long dz = p.v(2); 
     long vol = - az*by*cx + ay*bz*cx + az*bx*cy - ax*bz*cy
                  - ay*bx*cz + ax*by*cz + az*by*dx - ay*bz*dx
@@ -207,70 +214,73 @@ public:
   /** 
    * Make a new face based on an edge and a vertex
    */
-  Face makeFace(Edge e, Vertex p) {
+  std::shared_ptr<Face> makeFace(Edge* e, Vertex* p) {
 
     // Make two new edges (if they don't already exist)
-    Edge[] newEdge = new Edge[2];
+    Edge newEdge[2];
     for (int ii = 0; ii < 2; ++ii) {
-      if ((newEdge[ii] = e.endPt(ii).duplicate()) == null) {
-	newEdge[ii] = new Edge(e.endPt(ii), p);
-	d_edge.add(newEdge[ii]);
-	e.endPt(ii).duplicate(newEdge[ii]);
+      Vertex* vert = e->endPt(ii);
+      Edge* edup = vert->duplicate(); 
+      newEdge[ii] = *edup;
+      if (edup == nullptr) {
+	      newEdge[ii] = Edge(vert, p);
+	      d_edge.push_back(newEdge[ii]);
+      	vert->duplicate(&newEdge[ii]);
       }
     }
 
     // Make the new face
-    Face newFace = new Face();
-    newFace.edge(0,e); newFace.edge(1,newEdge[0]); newFace.edge(2,newEdge[1]);
-    d_face.add(newFace);
+    std::shared_ptr<Face> newFace = std::make_shared<Face>();
+    newFace->edge(0, e); newFace->edge(1, &newEdge[0]); newFace->edge(2, &newEdge[1]);
 
     // Make sure that everything is counter clockwise
-    makeCCW(newFace, e, p);
+    makeCCW(newFace.get(), e, p);
 
     // Set the adjacent face pointers
     for (int ii = 0; ii < 2; ++ii) {
       for (int jj = 0; jj < 2; ++jj) {
-	if (newEdge[ii].adjFace(jj) == null) {
-	  newEdge[ii].adjFace(jj,newFace);
-	  break;
-	}
+	      if (newEdge[ii].adjFace(jj) == nullptr) {
+	        newEdge[ii].adjFace(jj, newFace.get());
+	        break;
+	      }
       }
     }
+
     return newFace;
   }
 
   /** 
    * Make all the vertices and edges of face counter-clockwise
    */
-  void makeCCW(Face f, Edge e, Vertex p) {
+  void makeCCW(Face* f, Edge* e, Vertex* p) {
 
-    Face fi; // THe invisible face adjacent to edge e
+    Face* fi; // THe invisible face adjacent to edge e
 
     // If this is the initial tetrahedrom the e has only one 
     // adjacent face - this is the fi otherwise use 
     // the actual invisible face
-    if (e.adjFace(1) == null) fi = e.adjFace(0);
+    if (e->adjFace(1) == nullptr) fi = e->adjFace(0);
     else {
-      if (!e.adjFace(0).visible()) fi = e.adjFace(0);
-      else fi = e.adjFace(1);
+      if (!e->adjFace(0)->visible()) fi = e->adjFace(0);
+      else fi = e->adjFace(1);
     }
 
     // Set v1 and v2 of f to have opposite orientation
     // same for invisibleFace
     // Find the index of vertex e.v2() in invisibleFace
     int ii;
-    for (ii = 0; fi.vertex(ii) != e.endPt(1); ++ii);
+    for (ii = 0; fi->vertex(ii) != e->endPt(1); ++ii);
 
     // Orient f opposite to that of invisibleFace
-    if (fi.vertex((ii+1)%3) != e.endPt(0)) {
-      f.vertex(0, e.endPt(1));
-      f.vertex(1, e.endPt(0));
+    if (fi->vertex((ii+1)%3) != e->endPt(0)) {
+      f->vertex(0, e->endPt(1));
+      f->vertex(1, e->endPt(0));
     } else {
-      f.vertex(0, e.endPt(0));
-      f.vertex(1, e.endPt(1));
-      Edge eTemp = f.edge(1); f.edge(1,f.edge(2)); f.edge(2,eTemp);
+      f->vertex(0, e->endPt(0));
+      f->vertex(1, e->endPt(1));
+      Edge* eTemp = f->edge(1); f->edge(1,f->edge(2)); f->edge(2,eTemp);
     }
-    f.vertex(2,p);
+    f->vertex(2,p);
   }
 
   // Cleanup the Lists to reflect the current status of the hull
@@ -289,35 +299,32 @@ public:
     // is attached to the border edges of the visible region.  For
     // each of these border edges the newFace is copied to face1 or 
     // face2.
-    int size = d_edge.size();
-    int index = 0;
-    Edge e ;
-    while (index < size) {
-      e = (Edge) d_edge.get(index);
-      //System.out.println("Index = " + index + " Size = " + size + 
-      //		 " Edge = " + e + " New Face = " + e.newFace());
-      //System.out.println("Before: Edge = " + e + " Adj Face 0 = " + e.adjFace(0) +
-      //		   " Adj Face 1 = " + e.adjFace(1));
-      if (e.newFace() != null) {
-	if (e.adjFace(0).visible()) e.adjFace(0,e.newFace());
-	else e.adjFace(1,e.newFace());
-        //System.out.println("Edge = " + e + " Adj Face 0 = " + e.adjFace(0) +
-	//		   " Adj Face 1 = " + e.adjFace(1));
-	e.newFace(null);
+    auto edgeIter = d_edge.begin();
+    while (edgeIter != d_edge.end()) {
+      Edge e = *edgeIter;
+      // std::cout << "Index = " <<  index <<  " Size = " <<  size <<  
+      //		 " Edge = " <<  e <<  " New Face = " <<  e.newFace());
+      // std::cout << "Before: Edge = " <<  e <<  " Adj Face 0 = " <<  e.adjFace(0) << 
+      //		   " Adj Face 1 = " <<  e.adjFace(1));
+      if (e.newFace() != nullptr) {
+ 	      if (e.adjFace(0)->visible()) e.adjFace(0,e.newFace());
+	      else e.adjFace(1,e.newFace());
+        // std::cout << "Edge = " << e << " Adj Face 0 = " << e.adjFace(0) <<
+   	    //              " Adj Face 1 = " << e.adjFace(1));
+	      e.newFace(nullptr);
       }
-      ++index;
+      ++edgeIter;
     }
     //printEdges();
 
     // Delete any edges marked deleted
-    index = 0;
-    while (index < size) {
-      e = (Edge) d_edge.get(index);
-      if (e.delete()) {
-	d_edge.remove(e);
-	size = d_edge.size();
+    edgeIter = d_edge.begin();
+    while (edgeIter != d_edge.end()) {
+      Edge e = *edgeIter;
+      if (e.remove()) {
+	      d_edge.remove(e);
       }
-      else ++index;
+      else ++edgeIter;
     }
     //printEdges();
   }
@@ -326,17 +333,14 @@ public:
    * Clean up the face list
    */
   void cleanFaces() {
-    int size = d_face.size();
-    int index = 0;
-    Face f;
-    do {
-      f = (Face) d_face.get(index);
-      if (f.visible()) {
-	d_face.remove(f);
-	size = d_face.size();
+    auto faceIter = d_face.begin();
+    while (faceIter != d_face.end()) {
+      auto f = *faceIter;
+      if (f->visible()) {
+	      d_face.remove(f);
       }
-      else index++;
-    } while(index < size);
+      else faceIter++;
+    } 
   }
 
   /** 
@@ -345,40 +349,36 @@ public:
   void cleanVertices() {
     
     // Make all vertices incident to some undeleted edge ONHULL
-    int size = d_edge.size();
-    int index = 0;
-    Edge e ;
-    while (index < size) {
-      e = (Edge) d_edge.get(index);
-      e.endPt(0).onHull(ONHULL);
-      e.endPt(1).onHull(ONHULL);
-      ++index;
+    auto edgeIter = d_edge.begin();
+    while (edgeIter != d_edge.end()) {
+      auto e = *edgeIter;
+      e.endPt(0)->onHull(VoronoiFlags::ONHULL);
+      e.endPt(1)->onHull(VoronoiFlags::ONHULL);
+      ++edgeIter;
     }
 
-    //System.out.println("Vertex list before clean up");
+    //std::cout << ("Vertex list before clean up" << "\n";
     //printVertices();
+
     // Delete all vertices that have been processed but are not on hull
-    index = 0;
-    Vertex v ;
-    size = d_vertex.size();
-    while (index < size) {
-      v = (Vertex) d_vertex.get(index);
+    auto vertexIter = d_vertex.begin();
+    while (vertexIter != d_vertex.end()) {
+      auto v = *vertexIter;
       if (v.isMarked() && !v.onHull()) {
-	d_vertex.remove(v);
-	size = d_vertex.size();
+	      d_vertex.remove(v);
       }
-      else ++index;
+      else ++vertexIter;
     } 
-    //System.out.println("Vertex list after clean up");
+    //std::cout << "Vertex list after clean up" << "\n";
     //printVertices();
     
     // Reset all flags
-    index = 0;
-    while (index < size) {
-      v = (Vertex) d_vertex.get(index);
-      v.duplicate(null);
-      v.onHull(!ONHULL);
-      ++index;
+    vertexIter = d_vertex.begin();
+    while (vertexIter != d_vertex.end()) {
+      auto v = *vertexIter;
+      v.duplicate(nullptr);
+      v.onHull(!VoronoiFlags::ONHULL);
+      ++vertexIter;
     }
   }
 
@@ -400,51 +400,50 @@ public:
   //    Edges with only one visible face are on the border of visible region
   //    These the ones that form the base of a new triangle face with apex
   //    at p.
-  boolean addOne(Vertex p) {
+  bool addOne(Vertex& p) {
 
     // Mark faces visible from p
-    int nofFaces = d_face.size();
-    int currFace = 0;
-    boolean vis = false; // True is some face is visible
-    while (currFace < nofFaces) { 
-      Face f = (Face) d_face.get(currFace);
-      long vol = volume6(f, p);
-      //System.out.println("In AddOne : ");
-      //System.out.println(" ");
-      //System.out.println(" Face =  ");
-      //System.out.println(" ");
+    bool vis = false; // True is some face is visible
+    auto faceIter = d_face.begin();
+    while (faceIter != d_face.end()) {
+      auto f = *faceIter;
+      long vol = volume6(f.get(), p);
+      //std::cout << "In AddOne : " << "\n";
+      //std::cout << " " << "\n";
+      //std::cout << " Face =  " << "\n";
+      //std::cout << " " << "\n";
       //f.printFace();
-      //System.out.println(" Volume =  "+vol);
-      //System.out.println(" ");
+      //std::cout << " Volume =  " << vol << "\n";
+      //std::cout << " " << "\n";
       if (vol < 0) {
-	f.visible(VISIBLE);
-	vis = true;
+	      f->visible(VoronoiFlags::VISIBLE);
+	      vis = true;
       }
-      ++currFace;
+      ++faceIter;
     } 
 
     // If no faces are visible from p, then p is inside the hull
     if (!vis) {
-      p.onHull(!ONHULL);
+      p.onHull(!VoronoiFlags::ONHULL);
       return false;
     }
 
     // Mark edges in interior of visible region for deletion
     // Erect a new face based on each border edge
-    int nofEdges = d_edge.size();
-    int currEdge = 0;
-    while (currEdge < nofEdges) {
-      Edge e = (Edge) d_edge.get(currEdge);
-      //System.out.println("Current Edge in addOne");
+    auto edgeIter = d_edge.begin();
+    while (edgeIter != d_edge.end()) {
+      auto e = *edgeIter;
+      //std::cout << "Current Edge in addOne" << "\n";
       //e.printEdge();
-      if (e.adjFace(0).visible() && e.adjFace(1).visible()) {
-	// Interior edge .. mark for deletion
-	e.delete(REMOVED);
-      } else if (e.adjFace(0).visible() || e.adjFace(1).visible()) {
-	// Border edge .. make a new face
-	e.newFace(makeFace(e, p));
+      if (e.adjFace(0)->visible() && e.adjFace(1)->visible()) {
+	      // Interior edge .. mark for deletion
+	      e.remove(VoronoiFlags::REMOVED);
+      } else if (e.adjFace(0)->visible() || e.adjFace(1)->visible()) {
+	      // Border edge .. make a new face
+        auto f1 = makeFace(&e, &p);
+	      e.newFace(f1.get());
       }
-      ++currEdge;
+      ++edgeIter;
     }
     return true;
   }
@@ -453,47 +452,92 @@ public:
    * Output the 2D Delaunay triangulation
    */
   void outputDelaunayTriangles() {
-    int size = d_face.size();
-    for (int index = 0; index < size; index++) {
-      Face f = (Face) d_face.get(index);
-      if (!f.topFace()) {
-	System.out.println(f.vertex(0).x()+" "+f.vertex(0).y()+" "+
-			   f.vertex(1).x()+" "+f.vertex(1).y()+" "+
-			   f.vertex(2).x()+" "+f.vertex(2).y());
-	PolygonDouble p = new PolygonDouble();
-	p.add(f.vertex(0).x(), f.vertex(0).y());
-	p.add(f.vertex(1).x(), f.vertex(1).y());
-	p.add(f.vertex(2).x(), f.vertex(2).y());
-	d_pl.addTriangle(p);
+    for (auto f : d_face) {
+      if (!topFace(*f)) {
+	      std::cout << f->vertex(0)->x() << " " << f->vertex(0)->y() << " "
+		              << f->vertex(1)->x() << " " << f->vertex(1)->y() << " "
+			            << f->vertex(2)->x() << " " << f->vertex(2)->y() << "\n";
+	      std::unique_ptr<Polygon<double>> p = std::make_unique<Polygon<double>>();
+	      p->add(f->vertex(0)->x(), f->vertex(0)->y());
+      	p->add(f->vertex(1)->x(), f->vertex(1)->y());
+      	p->add(f->vertex(2)->x(), f->vertex(2)->y());
+      	d_pl.addTriangle(std::move(p));
       }
     }
+  }
+
+  /**
+   *  Find if the face is a "top" face, i.e., if the outward pointing normal
+   *  to the face points upward (has a +ve dot product with the z-axis vector)
+   */
+  bool topFace(const Face& face) {
+    long ax = face.vertex(0)->v(0); long ay = face.vertex(0)->v(1);
+    //long az = face.vertex(0]->v(2);
+    long bx = face.vertex(1)->v(0); long by = face.vertex(1)->v(1);
+    //long bz = fac.vertex(1)->v(2);
+    long cx = face.vertex(2)->v(0); long cy = face.vertex(2)->v(1);
+    //long cz = face.vertex(2)->v(2);
+    long A0 = bx - ax;
+    long A1 = by - ay;
+    //long A2 = bz - az;
+    long B0 = cx - ax;
+    long B1 = cy - ay;
+    //long B2 = cz - az;
+    //long AxB_i = A1*B2-A2*B1;
+    //long AxB_j = A2*B0-A0*B2;
+    long AxB_k = A0*B1-A1*B0;
+    long AxBdotZ = AxB_k;
+    if (AxBdotZ > 0) return true;
+    return false;
   }
   
   /** 
    * Output the 2D Voronoi vertices
    */
   void outputVoronoiVertices() {
-    int size = d_face.size();
-    for (int index = 0; index < size; index++) {
-      Face f = (Face) d_face.get(index);
+    auto faceIter = d_face.begin();
+    while (faceIter != d_face.end()) {
+      auto f = *faceIter;
       if (!f.topFace()) {
-	Vertex voronoiVertex = f.getVoronoiVertex();
-	Point p = new Point(voronoiVertex.x(), voronoiVertex.y(), 0.0);
-	System.out.println(voronoiVertex.x()+" "+voronoiVertex.y());
-	d_pl.addVoronoiVertex(p);
+	      Vertex voronoiVertex = f.getVoronoiVertex();
+      	Point p = new Point(voronoiVertex.x(), voronoiVertex.y(), 0.0);
+      	std::cout << voronoiVertex.x()+" "+voronoiVertex.y() << "\n";
+      	d_pl.addVoronoiVertex(p);
       }
     }
   }
   
+  /**
+   * Calculate the location of the Voronoi vertex for this face
+   * (the center of the circumcircle)
+   */
+  void getVoronoiVertex(const Face& face, Vertex& v) const {
+    long a0 = face.vertex(0)->v(0); long a1 = d_vertex[0]->v(1);
+    long b0 = face.vertex(1)->v(0); long b1 = d_vertex[1]->v(1);
+    long c0 = face.vertex(2)->v(0); long c1 = d_vertex[2]->v(1);
+    long D = 2*(a1*c0+b1*a0-b1*c0-a1*b0-c1*a0+c1*b0);
+    if (D != 0) {
+      long p0 = (b1*a0*a0 - c1*a0*a0 - b1*b1*a1 + c1*c1*a1 +
+                 b0*b0*c1 + a1*a1*b1 + c0*c0*a1 - c1*c1*b1 -
+                 c0*c0*b1 - b0*b0*a1 + b1*b1*c1 - a1*a1*c1)/D;
+      long p1 = (a0*a0*c0 + a1*a1*c0 + b0*b0*a0 - b0*b0*c0 +
+                 b1*b1*a0 - b1*b1*c0 - a0*a0*b0 - a1*a1*b0 -
+                 c0*c0*a0 + c0*c0*b0 - c1*c1*a0 + c1*c1*b0)/D;
+      v = Vertex(p0, p1, 0);
+    } else {
+      v = Vertex(0, 0, 0);
+    }
+  }
+
   /** 
    * Print the vertex list
    */
   void printVertices() {
-    System.out.println("Vertices : ");
-    int size = d_vertex.size();
-    for (int ii = 0; ii < size; ii++) {
-      System.out.println("Vertex # " + ii + "  ");
-      ((Vertex) d_vertex.get(ii)).printVertex();
+    std::cout << "Vertices : " << "\n";
+    int ii = 0;
+    for (auto v : d_vertex) {
+      std::cout << "Vertex # " + ii + "  " << v << "\n";
+      ii++;
     }
   }
 
@@ -501,11 +545,12 @@ public:
    * Print the edge list
    */
   void printEdges() {
-    System.out.println("Edges : ");
-    int size = d_edge.size();
-    for (int ii = 0; ii < size; ii++) {
-      System.out.println("Edge # " + ii + "  ");
-      ((Edge) d_edge.get(ii)).printEdge();
+    std::cout << "Edges : " << "\n";
+    int ii = 0;
+    for (auto e : d_edges) {
+      std::cout << "Edge # " + ii + "  " << "\n";
+      std::cout << e << "\n";
+      ii++;
     }
   }
 
@@ -513,11 +558,12 @@ public:
    * Print the face list
    */
   void printFaces() {
-    System.out.println("Faces : ");
-    int size = d_face.size();
-    for (int ii = 0; ii < size; ii++) {
-      System.out.println("Face # " + ii + "  ");
-      ((Face) d_face.get(ii)).printFace();
+    std::cout << "Faces : " << "\n";
+    int ii = 0;
+    for (auto f : d_face) {
+      std::cout << "Face # " + ii + "  " << "\n";;
+      std::cout << *f << "\n";
+      ii++;
     }
   }
 
@@ -525,13 +571,12 @@ public:
    * Print the orientation of the faces in the edgelist
    */
   void printFaceOrientation() {
-    System.out.println("Edge Face Orientation : ");
-    int size = d_edge.size();
-    for (int ii = 0; ii < size; ii++) {
-      Edge e = (Edge) d_edge.get(ii);
-      System.out.println("Edge # "+ii+"("+e.endPt(0).x()+","+e.endPt(0).y()+
-			 ");("+e.endPt(1).x()+","+e.endPt(1).y()+")");
+    std::cout << "Edge Face Orientation : " << "\n";
+    int ii = 0;
+    for (auto e : d_edges) {
+      std::cout << "Edge # " << ii << " " << e << "\n";
       e.printFaceOrientation();
+      ii++;
     }
   }
 
@@ -539,13 +584,13 @@ public:
    * Check the orientation of the faces in the edgelist
    */
   void checkFaceOrientation() {
-    System.out.println("Edge Face Orientation Check: ");
-    int size = d_edge.size();
-    for (int ii = 0; ii < size; ii++) {
-      Edge e = (Edge) d_edge.get(ii);
+    std::cout << "Edge Face Orientation Check: ");
+    int ii = 0;
+    for (auto e : d_edges) {
       if (!e.checkFaceOrientation()) {
-	System.out.println("** ERROR ** Face orientation wrong for Edge "+ii);
+	      std::cout << "** ERROR ** Face orientation wrong for Edge " << ii << "\n";
       }
+      ii++;
     }
   }
 
@@ -557,29 +602,28 @@ public:
     int nofFaces = d_face.size();
     int nofEdges = d_edge.size();
     int nofVertices = d_vertex.size();
-    System.out.println("Convexity Check : (F,E,V) = "+nofFaces+","+
-		       nofEdges+","+nofVertices);
+    std::cout << "Convexity Check : (F,E,V) = " << nofFaces << "," << 
+		       nofEdges << "," << nofVertices << "\n";
     if (nofFaces != 2*nofVertices-4) {
-      System.out.println("** ERROR ** F = 2V-4 not satisfied");
+      std::cout << "** ERROR ** F = 2V-4 not satisfied" << "\n";
     }
     if (2*nofEdges != 3*nofVertices) {
-      System.out.println("** ERROR ** 2E = 3V not satisfied");
+      std::cout << "** ERROR ** 2E = 3V not satisfied" << "\n";
     }
-    for (int ii = 0; ii < nofFaces; ii++) {
-      Face f = (Face) d_face.get(ii);
-      for (int jj = 0; jj < nofVertices; jj++) {
-	Vertex v = (Vertex) d_vertex.get(jj);
-	if (v.isMarked()) {
-	  long vol = volume6(f,v);
-	  if (vol < 0) {
-	    System.out.println("** ERROR ** Volume between face "+ii+
-			       " and vertex "+jj+ " is " + vol);
-	  }
-	}
+    int ii = 0;
+    for (auto f : d_face) {
+      int jj = 0;
+      for (auto v : d_vertex) {
+	      if (v.isMarked()) {
+	        long vol = volume6(f,v);
+	        if (vol < 0) {
+	          std::cout << "** ERROR ** Volume between face " << ii
+			                << " and vertex " << jj <<  " is " <<  vol << "\n";
+	        }
+	      }
       }
     }
   }
-
 
 }; 
 

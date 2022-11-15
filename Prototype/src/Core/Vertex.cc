@@ -55,7 +55,7 @@ Vertex::isMarked() const {return d_mark;}
 void 
 Vertex::mark(bool flag) {d_mark = flag;}
 
-const Edge* 
+Edge* 
 Vertex::duplicate() const { return d_duplicate; }
 
 void 

@@ -47,7 +47,7 @@ public:
   bool isMarked() const;
   void mark(bool flag);
 
-  const Edge* duplicate() const;
+  Edge* duplicate() const;
   void duplicate(Edge* e);
 
   long mapToInt(double val) const;
