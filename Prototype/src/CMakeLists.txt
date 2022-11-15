@@ -160,14 +160,23 @@ add_subdirectory(Utils)
 
 # Base UI
 set(VAANGO_UI_LIB vaango_ui_lib)
+set(VAANGO_CORE_DIR
+    Core)
+set(VAANGO_CORE_SRC
+  ${VAANGO_CORE_DIR}/Vertex.cc
+  ${VAANGO_CORE_DIR}/Edge.cc
+  ${VAANGO_CORE_DIR}/Face.cc
+)
 add_library(${VAANGO_UI_LIB} 
             Vaango_UIApplication.cc
             Vaango_UIBase.cc
             Vaango_UIComponentBase.cc
             Vaango_UIData.cc
             Vaango_UIEnvironment.cc
-            Vaango_UILayout.cc)
+            Vaango_UILayout.cc
+            ${VAANGO_CORE_SRC})
 target_include_directories(${VAANGO_UI_LIB} PRIVATE 
+                           ${VAANGO_CORE_DIR}
                            ${IMGUI_FILE_DIALOG_DIR}
                            ${JSON_DIR}
                            ${RAYLIB_INCLUDE_DIR}

@@ -2,17 +2,11 @@
 #define __Vaango_UI_GENERATE_PARTICLES_PANEL_H__
 
 #include <Vaango_UIPanelBase.h>
+#include <Vaango_UIData.h>
 
 #include <imgui.h>
 
 namespace VaangoUI {
-
-enum class ParticleShape {
-  CIRCLE,
-  HOLLOW_CIRCLE,
-  SPHERE,
-  HOLLOW_SPHERE
-};
 
 class Vaango_UIGenerateParticlesPanel : public Vaango_UIPanelBase
 {
