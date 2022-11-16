@@ -3,7 +3,7 @@
 
 #include <Vaango_UIData.h>
 
-#include <Core/nanoflann.hpp>
+#include <Utils/SearchUtils.h>
 
 #include <cmath>
 #include <string>
@@ -641,6 +641,15 @@ public:
     s_partList.clear();
 
     // Create a kd tree for storing and searching the center locations
+    // Construct kd-tree index
+    PolylinePointCloud cloud(polyline);
+  //PolylinePointCloud cloud(&polyline);
+  using KDTree_t =  nanoflann::KDTreeSingleIndexAdaptor<
+                               nanoflann::L2_Simple_Adaptor<double, PolylinePointCloud>,
+                               PolylinePointCloud, 2 /* dim */>;
+  KDTree_t index(2 /*dim*/, cloud,
+                 nanoflann::KDTreeSingleIndexAdaptorParams(10 /* max leaf */) );
+
     KdTree<Integer> kdtree = new KdTree<Integer>(2);
 
     // Max number of nearest neighbors to be returned from kd tree

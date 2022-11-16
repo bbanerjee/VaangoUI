@@ -182,7 +182,7 @@ target_include_directories(${VAANGO_UI_LIB} PRIVATE
                            ${RAYLIB_INCLUDE_DIR}
                            ${RLIMGUI_DIR}
                            ${CMAKE_CURRENT_SOURCE_DIR}
-                           ${CMAKE_CURRENT_SOURCE_DIR}/Utils
+#                           ${CMAKE_CURRENT_SOURCE_DIR}/Utils
                            ${IMGUI_DIR}
                            ${IMGUI_BACKEND_DIR}
                            ${GLAD_DIR})

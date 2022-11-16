@@ -4,6 +4,7 @@ set(VaangoUI_Utils_SRCS
 set(VaangoUI_Utils_HEADERS
     ini.h
     Vaango_SettingsParser.h
+    SearchUtils.h
 )
 
 include_directories (

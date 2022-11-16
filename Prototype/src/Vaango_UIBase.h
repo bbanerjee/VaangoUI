@@ -1,7 +1,7 @@
 #ifndef __Vaango_UI_BASE_H__
 #define __Vaango_UI_BASE_H__
 
-#include <Vaango_SettingsParser.h>
+#include <Utils/Vaango_SettingsParser.h>
 
 #include <imgui.h>
 #include <string>
