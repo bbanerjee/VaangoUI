@@ -5,8 +5,6 @@
 #include <Core/ParticleSizeDist.h>
 #include <Core/ParticleInRVE.h>
 #include <Core/Point.h>
-#include <Core/Polygon.h>
-#include <Core/Voronoi.h>
 
 #include <string>
 #include <iostream>
@@ -25,8 +23,6 @@ private:
 
   double d_rveSize = 0.0;
   std::vector<ParticleInRVE>   d_particleList;
-  std::vector<std::unique_ptr<Polygon<double>>> d_triangleList;
-  std::vector<Point>           d_voronoiList;
 
 public:
 
@@ -355,6 +351,10 @@ public:
   double getRVESize() const {return d_rveSize;}
   int size() const {return static_cast<int>(d_particleList.size());}
 
+  void clear() {
+    d_particleList.clear();
+  }
+
   const ParticleInRVE& getParticle(int index) const {
     if (index > d_particleList.size()) {
       return d_particleList.back(); 
@@ -374,49 +374,6 @@ public:
     return false;
   }
 
-  void clear() {
-    if (!isEmpty()) {
-      d_particleList.clear();
-      d_triangleList.clear();
-      d_voronoiList.clear();
-    }
-  }
-
-  /**
-   * Triangulate the particle list
-   */
-  void triangulate() {
-    Voronoi vor(*this);
-    vor.process();
-  }
-
-  /**
-   *  Add a triangle to the triangle list
-   */
-  void addTriangle(std::unique_ptr<Polygon<double>> p) {
-    d_triangleList.push_back(std::move(p));
-  }
-
-  /**
-   *  Get the triangle list
-   */
-  std::vector<std::unique_ptr<Polygon<double>>>& getTriangles() {
-    return d_triangleList;
-  }
-
-  /**
-   *  Add a point to the voronoi vertex list
-   */
-  void addVoronoiVertex(const Point& p) {
-    d_voronoiList.push_back(p);
-  }
-
-  /**
-   *  Get the voronoi vertex list
-   */
-  std::vector<Point> getVoronoiVertices() {
-    return d_voronoiList;
-  }
 };
 
 } // end namespace VaangoUI

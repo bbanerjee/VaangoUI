@@ -1,11 +1,14 @@
 #ifndef __Vaango_UI_VORONOI_H__
 #define __Vaango_UI_VORONOI_H__
 
+#include <Vaango_UIData.h>
+
 #include <Core/Vertex.h>
 #include <Core/Edge.h>
 #include <Core/Face.h>
 #include <Core/Enums.h>
-#include <Vaango_UIData.h>
+#include <Core/Polygon.h>
+#include <Core/ParticlesInRVE.h>
 
 #include <vector>
 #include <list>
@@ -29,6 +32,8 @@ private:
   std::list<Edge> d_edge;
   std::list<std::shared_ptr<Face>> d_face;
   ParticlesInRVE d_pl;
+  std::vector<std::unique_ptr<Polygon<double>>> d_triangleList;
+  std::vector<Point>           d_voronoiList;
 
 public:
 
@@ -37,6 +42,14 @@ public:
   Voronoi(const ParticlesInRVE& pl) {
     d_nofVert = pl.size(); 
     d_pl = pl;
+  }
+
+  void clear() {
+    if (d_pl.size() > 0) {
+      d_pl.clear();
+      d_triangleList.clear();
+      d_voronoiList.clear();
+    }
   }
 
   /** 
@@ -320,7 +333,7 @@ public:
     // Delete any edges marked deleted
     edgeIter = d_edge.begin();
     while (edgeIter != d_edge.end()) {
-      Edge e = *edgeIter;
+      const Edge e = *edgeIter;
       if (e.remove()) {
 	      d_edge.remove(e);
       }
@@ -461,7 +474,7 @@ public:
 	      p->add(f->vertex(0)->x(), f->vertex(0)->y());
       	p->add(f->vertex(1)->x(), f->vertex(1)->y());
       	p->add(f->vertex(2)->x(), f->vertex(2)->y());
-      	d_pl.addTriangle(std::move(p));
+      	addTriangle(std::move(p));
       }
     }
   }
@@ -498,11 +511,11 @@ public:
     auto faceIter = d_face.begin();
     while (faceIter != d_face.end()) {
       auto f = *faceIter;
-      if (!f.topFace()) {
-	      Vertex voronoiVertex = f.getVoronoiVertex();
-      	Point p = new Point(voronoiVertex.x(), voronoiVertex.y(), 0.0);
-      	std::cout << voronoiVertex.x()+" "+voronoiVertex.y() << "\n";
-      	d_pl.addVoronoiVertex(p);
+      if (!topFace(*f)) {
+	      Vertex voronoiVertex = getVoronoiVertex(*f);
+      	Point p(voronoiVertex.x(), voronoiVertex.y(), 0.0);
+      	std::cout << voronoiVertex.x() << " " << voronoiVertex.y() << "\n";
+      	addVoronoiVertex(p);
       }
     }
   }
@@ -511,10 +524,10 @@ public:
    * Calculate the location of the Voronoi vertex for this face
    * (the center of the circumcircle)
    */
-  void getVoronoiVertex(const Face& face, Vertex& v) const {
-    long a0 = face.vertex(0)->v(0); long a1 = d_vertex[0]->v(1);
-    long b0 = face.vertex(1)->v(0); long b1 = d_vertex[1]->v(1);
-    long c0 = face.vertex(2)->v(0); long c1 = d_vertex[2]->v(1);
+  Vertex getVoronoiVertex(const Face& face) const {
+    long a0 = face.vertex(0)->v(0); long a1 = face.vertex(0)->v(1);
+    long b0 = face.vertex(1)->v(0); long b1 = face.vertex(1)->v(1);
+    long c0 = face.vertex(2)->v(0); long c1 = face.vertex(2)->v(1);
     long D = 2*(a1*c0+b1*a0-b1*c0-a1*b0-c1*a0+c1*b0);
     if (D != 0) {
       long p0 = (b1*a0*a0 - c1*a0*a0 - b1*b1*a1 + c1*c1*a1 +
@@ -523,10 +536,9 @@ public:
       long p1 = (a0*a0*c0 + a1*a1*c0 + b0*b0*a0 - b0*b0*c0 +
                  b1*b1*a0 - b1*b1*c0 - a0*a0*b0 - a1*a1*b0 -
                  c0*c0*a0 + c0*c0*b0 - c1*c1*a0 + c1*c1*b0)/D;
-      v = Vertex(p0, p1, 0);
-    } else {
-      v = Vertex(0, 0, 0);
-    }
+      return Vertex(p0, p1, 0);
+    } 
+    return Vertex(0, 0, 0);
   }
 
   /** 
@@ -536,7 +548,7 @@ public:
     std::cout << "Vertices : " << "\n";
     int ii = 0;
     for (auto v : d_vertex) {
-      std::cout << "Vertex # " + ii + "  " << v << "\n";
+      std::cout << "Vertex # " << ii << "  " << v << "\n";
       ii++;
     }
   }
@@ -547,8 +559,8 @@ public:
   void printEdges() {
     std::cout << "Edges : " << "\n";
     int ii = 0;
-    for (auto e : d_edges) {
-      std::cout << "Edge # " + ii + "  " << "\n";
+    for (auto e : d_edge) {
+      std::cout << "Edge # " + ii << "  " << "\n";
       std::cout << e << "\n";
       ii++;
     }
@@ -561,8 +573,8 @@ public:
     std::cout << "Faces : " << "\n";
     int ii = 0;
     for (auto f : d_face) {
-      std::cout << "Face # " + ii + "  " << "\n";;
-      std::cout << *f << "\n";
+      std::cout << "Face # " << ii << "  " << "\n";;
+      std::cout << f << "\n";
       ii++;
     }
   }
@@ -573,7 +585,7 @@ public:
   void printFaceOrientation() {
     std::cout << "Edge Face Orientation : " << "\n";
     int ii = 0;
-    for (auto e : d_edges) {
+    for (auto e : d_edge) {
       std::cout << "Edge # " << ii << " " << e << "\n";
       e.printFaceOrientation();
       ii++;
@@ -584,9 +596,9 @@ public:
    * Check the orientation of the faces in the edgelist
    */
   void checkFaceOrientation() {
-    std::cout << "Edge Face Orientation Check: ");
+    std::cout << "Edge Face Orientation Check: " << "\n";
     int ii = 0;
-    for (auto e : d_edges) {
+    for (auto e : d_edge) {
       if (!e.checkFaceOrientation()) {
 	      std::cout << "** ERROR ** Face orientation wrong for Edge " << ii << "\n";
       }
@@ -615,7 +627,7 @@ public:
       int jj = 0;
       for (auto v : d_vertex) {
 	      if (v.isMarked()) {
-	        long vol = volume6(f,v);
+	        long vol = volume6(f.get(),v);
 	        if (vol < 0) {
 	          std::cout << "** ERROR ** Volume between face " << ii
 			                << " and vertex " << jj <<  " is " <<  vol << "\n";
@@ -625,6 +637,40 @@ public:
     }
   }
 
+  /**
+   * Triangulate the particle list
+   */
+  void triangulate() {
+    process();
+  }
+
+  /**
+   *  Add a triangle to the triangle list
+   */
+  void addTriangle(std::unique_ptr<Polygon<double>> p) {
+    d_triangleList.push_back(std::move(p));
+  }
+
+  /**
+   *  Get the triangle list
+   */
+  std::vector<std::unique_ptr<Polygon<double>>>& getTriangles() {
+    return d_triangleList;
+  }
+
+  /**
+   *  Add a point to the voronoi vertex list
+   */
+  void addVoronoiVertex(const Point& p) {
+    d_voronoiList.push_back(p);
+  }
+
+  /**
+   *  Get the voronoi vertex list
+   */
+  std::vector<Point> getVoronoiVertices() {
+    return d_voronoiList;
+  }
 }; 
 
 } // end namespace VaangoUI

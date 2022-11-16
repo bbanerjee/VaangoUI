@@ -4,6 +4,7 @@
 #include <Core/Point.h>
 #include <Core/Enums.h>
 
+#include <algorithm>
 #include <vector>
 
 namespace VaangoUI {
@@ -53,6 +54,13 @@ public:
   long mapToInt(double val) const;
 
   double mapToDouble(long val) const;
+
+  friend bool operator==(const Vertex& l, const Vertex& r)
+  {
+    bool val = std::lexicographical_compare(l.d_v.begin(), l.d_v.end(),
+                                            r.d_v.begin(), r.d_v.end());
+    return !val;
+  }
 
   friend std::ostream& operator<< (std::ostream &out, const Vertex& data); 
 

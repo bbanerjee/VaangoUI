@@ -5,27 +5,24 @@
 namespace VaangoUI {
 
 Edge::Edge() 
-  : d_endPts{}, d_adjFace{}
 {
+  d_endPts.reserve(2); 
+  d_adjFace.reserve(2);
   d_delete = false; 
 }
 
 Edge::Edge(Vertex* start, Vertex* end, 
            Face* left, Face* right) 
 {
-  d_endPts[0] = start;
-  d_endPts[1] = end; 
-  d_adjFace[0] = left; 
-  d_adjFace[1] = right;
+  d_endPts = {start, end};
+  d_adjFace = {left, right};
   d_delete = false; 
 }
 
 Edge::Edge(const Edge& e) 
 {
-  d_endPts[0] = e.start();
-  d_endPts[1] = e.end(); 
-  d_adjFace[0] = e.left(); 
-  d_adjFace[1] = e.right();
+  d_endPts = {e.start(), e.end()};
+  d_adjFace = {e.left(), e.right()};
   d_newFace = e.d_newFace;
   d_delete = e.d_delete; 
 }

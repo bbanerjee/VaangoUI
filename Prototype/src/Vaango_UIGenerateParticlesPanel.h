@@ -5,6 +5,7 @@
 #include <Vaango_UIData.h>
 
 #include <Core/Enums.h>
+#include <Core/Voronoi.h>
 
 #include <imgui.h>
 

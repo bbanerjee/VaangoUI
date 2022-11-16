@@ -15,8 +15,8 @@ class Edge
 {
 private:
 
-  Vertex* d_endPts[2];
-  Face* d_adjFace[2];
+  std::vector<Vertex*> d_endPts;
+  std::vector<Face*> d_adjFace;
   Face* d_newFace;    // Pointer to incident cone face
   bool d_delete;      // True if edge should be deleted
 
@@ -49,12 +49,18 @@ public:
   bool remove() const;
   void remove(bool flag);
 
-  friend std::ostream& operator<< (std::ostream &out, const Edge& data);
-
   void printFaceOrientation() const;
 
   bool checkFaceOrientation() const;
 
+  friend bool operator==(const Edge& l, const Edge& r)
+  {
+    bool val = std::lexicographical_compare(l.d_endPts.begin(), l.d_endPts.end(),
+                                            r.d_endPts.begin(), r.d_endPts.end());
+    return !val;
+  }
+
+  friend std::ostream& operator<< (std::ostream &out, const Edge& data);
 };
 
 } // end namespace VaangoUI

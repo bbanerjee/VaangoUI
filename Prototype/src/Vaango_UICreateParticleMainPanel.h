@@ -16,7 +16,7 @@ class Vaango_UICreateParticleMainPanel : public Vaango_UIPanelBase
 private:
 
   Vaango_UIInputPartDistPanel d_inputPartDist;
-  Vaango_UIGenerateParticlesPanel d_displayPartDist;
+  Vaango_UIGenerateParticlesPanel d_generatePartDist;
 
 public:
 
@@ -57,7 +57,7 @@ public:
             ImGui::EndTabItem();
           }
           if (ImGui::BeginTabItem("Generate particles")) {
-            d_displayPartDist.draw("generate_part", width, height);
+            d_generatePartDist.draw("generate_part", width, height);
             ImGui::EndTabItem();
           }
           ImGui::EndTabBar();

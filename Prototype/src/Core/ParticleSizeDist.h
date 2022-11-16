@@ -12,10 +12,14 @@ struct ParticleSizeDist
   double particleVolFrac;
   double maxParticleSize;
   double numSizes;
-  double numSizesCalc;
   std::vector<double> size;
-  std::vector<double> sizeCalc;
   std::vector<double> volFrac;
+  std::vector<double> sizeCalc;
+  double numSizesCalc;
+  std::vector<int> freq2DCalc;
+  std::vector<int> freq3DCalc;
+  std::vector<double> volFrac2DCalc;
+  std::vector<double> volFrac3DCalc;
 
   ParticleSizeDist() {
     materialName = "default";
