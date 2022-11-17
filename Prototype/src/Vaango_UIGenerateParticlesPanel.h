@@ -3,6 +3,7 @@
 
 #include <Vaango_UIPanelBase.h>
 #include <Vaango_UIData.h>
+#include <Vaango_UIGenerateRVEParticles.h>
 
 #include <Core/Enums.h>
 #include <Core/Voronoi.h>
@@ -20,6 +21,7 @@ private:
   double d_rveSize = 100.0;
   bool d_periodicDistribution = false;
   bool d_enableCreateDistribution = false;
+  Vaango_UIGenerateRVEParticles generator;
 
 public:
 
@@ -107,6 +109,7 @@ public:
   
   void actuallyGenerate()
   {
+    generator.distributeParticles();
   }
 
   void drawParticles(int width, int height) {
