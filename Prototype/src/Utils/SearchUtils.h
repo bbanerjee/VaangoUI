@@ -104,6 +104,10 @@ struct ParticlePointCloud
     d_radii.push_back(radius);
     return d_pts.size()-1;
   }
+
+  size_t size() const {
+    return d_pts.size();
+  }
 };
 
 using ParticleKDTree2D  = nanoflann::KDTreeSingleIndexDynamicAdaptor<

@@ -31,13 +31,13 @@ struct Point {
   }
   
   // Find if any of the components of a point are less than another point
-  bool isLessThan(const Point& pt)
+  bool isLessThan(const Point& pt) const
   {
     return (x < pt.x) || (y < pt.y) || (z < pt.z);
   }
 
   // Find if any of the components of a point are greater than another point
-  bool isGreaterThan(const Point& pt)
+  bool isGreaterThan(const Point& pt) const
   {
     return (x > pt.x) || (y > pt.y) || (z > pt.z);
   }

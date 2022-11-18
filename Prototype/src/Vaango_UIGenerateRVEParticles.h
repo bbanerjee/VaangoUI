@@ -679,6 +679,7 @@ public:
         bool fit = false;
 
         int nofIter = 0;
+        double radius;
         while (!fit && nofIter < MAX_ITER) {
 
           // Increment the iterations and quit if the MAX_ITER is exceeded
@@ -694,12 +695,12 @@ public:
           double zCent = (1-tz)*boxMin + tz*boxMax;
           Point partCent(xCent, yCent, zCent);
 
-          double radius = 0.5*partDia;
+          radius = 0.5*partDia;
           size_t start = 0, end = 0;
 
           // If the size of the tree is zero, just put the particles in without
           // checking intersections
-          if (kdtree.getAllIndices().size() == 0) {
+          if (cloud.size() == 0) {
 
             {
               // Add the particle to the particle list
@@ -738,17 +739,21 @@ public:
             vol += partDia*partDia*partDia*M_PI/6.0;
             fit = true;
 
+            //std::cout << "Added sphere : rad = " << radius << " vol = " << vol << "\n";
+
           } else { // If the kd tree contains points
 
             bool noIntersections = true;
 
             // Find whether the current sphere intersects any other spheres in the list
             // Uses the kd tree.
+            //std::cout << "cloud size = " << cloud.size() << "\n";
             if (intersectsAnotherSphere(partCent, partDia, 
                                         kdtree, maxSearchPoints)) {
               noIntersections = false;
             }
 
+            //std::cout << "1-no intersects ? " << std::boolalpha << noIntersections << "\n";
             std::vector<Point> periodicLoc;
             if (noIntersections) {
 
@@ -769,6 +774,7 @@ public:
             }
 
             // If there are no intersections then add these points
+            //std::cout << "2-no intersects ? " << std::boolalpha << noIntersections << "\n";
             if (noIntersections) {
 
               {
@@ -776,19 +782,20 @@ public:
                 ParticleInRVE newParticle(s_partShapeFlag, radius,
                                           rotation, partCent, matCode, thickness);
                 s_partList.addParticle(newParticle);
-                //newParticle.print();
+                //std::cout << "2-main: " << newParticle << "\n";
 
                 // Add to point cloud
                 start = cloud.addPoint(partCent, radius);
               }
 
-              for (auto pt: periodicLoc) {
+              end = start;
+              for (auto& pt: periodicLoc) {
 
                 // Add the particle to the particle list
                 ParticleInRVE newParticle(s_partShapeFlag, radius,
                                           rotation, pt, matCode, thickness);
                 s_partList.addParticle(newParticle);
-                //newParticle.print();
+                std::cout << "2-periodic: " << newParticle << "\n";
 
                 // Add to point cloud
                 end = cloud.addPoint(partCent, radius);
@@ -796,16 +803,21 @@ public:
               } // End of loop through images
 
               // Add the particles to the kd tree
+              //std::cout << "Adding pts to kd-tree" << start << ":" << end << std::endl;
               kdtree.addPoints(start, end);
 
               // Update volume and set the fit flag to true
               // Each set of images of a particle only contributes one volume
               vol += partDia*partDia*partDia*M_PI/6.0;
+              //std::cout << "vol-2 = " << vol << "\n";
               fit = true;
 
             } // end of intersection check
           } // end of kd-tree if 
+          std::cout << nofIter << " ";
         } // end while not fit
+        std::cout << "\n";
+        std::cout << "ii = " << ii << " jj = " << jj << " rad = " << radius << "\n";
       } // end no of parts loop
     } // end no of part sizes loop
 
@@ -891,6 +903,7 @@ public:
             start = cloud.addPoint(partCent, radius);
           }
 
+          end = start;
           for (auto pt: periodicLoc) {
 
             // Add the particle to the particle list
@@ -929,6 +942,7 @@ public:
     std::cout << "Volume of parts = " << vol << " Box vol = " << volBox << "\n";
 
     // Test whether there are spheres that intersect
+    /*
     int nofPartsInVector = s_partList.size();
     bool spheresIntersect = false;
     for (int jj = 0; jj < nofPartsInVector-1; jj++) {
@@ -947,6 +961,7 @@ public:
         }
       } 
     }
+    */
   }
 
   //--------------------------------------------------------------------------
@@ -1336,9 +1351,9 @@ public:
 
   // Return the number of new locations to be tested for periodic distributions of 
   // spheres in a cubic box
-  void findPeriodicSpherePartLoc(Point center, double diameter, 
-                                 Point rveMin, Point rveMax,
-                                 std::vector<Point>& periodicLoc) {
+  void findPeriodicSpherePartLoc(const Point& center, double diameter, 
+                                 const Point& rveMin, const Point& rveMax,
+                                 std::vector<Point>& periodicLoc) const {
 
     // Get the RVE sizes in the three directions
     double xRVE = rveMax.x - rveMin.x;
@@ -1347,39 +1362,40 @@ public:
 
     // Create a vector of the 26 potential periodic positions.  
     // Most of these will be outside the RVE.
+    Point cen(center);
     std::vector<Point> periodicPositions;
-    periodicPositions.emplace_back(center.translate(0.0, yRVE, 0.0));
-    periodicPositions.emplace_back(center.translate(0.0, -yRVE, 0.0));
-    periodicPositions.emplace_back(center.translate(xRVE, 0.0, 0.0));
-    periodicPositions.emplace_back(center.translate(xRVE, yRVE, 0.0));
-    periodicPositions.emplace_back(center.translate(xRVE, -yRVE, 0.0));
-    periodicPositions.emplace_back(center.translate(-xRVE, 0.0, 0.0));
-    periodicPositions.emplace_back(center.translate(-xRVE, yRVE, 0.0));
-    periodicPositions.emplace_back(center.translate(-xRVE, -yRVE, 0.0));
+    periodicPositions.emplace_back(cen.translate(0.0, yRVE, 0.0));
+    periodicPositions.emplace_back(cen.translate(0.0, -yRVE, 0.0));
+    periodicPositions.emplace_back(cen.translate(xRVE, 0.0, 0.0));
+    periodicPositions.emplace_back(cen.translate(xRVE, yRVE, 0.0));
+    periodicPositions.emplace_back(cen.translate(xRVE, -yRVE, 0.0));
+    periodicPositions.emplace_back(cen.translate(-xRVE, 0.0, 0.0));
+    periodicPositions.emplace_back(cen.translate(-xRVE, yRVE, 0.0));
+    periodicPositions.emplace_back(cen.translate(-xRVE, -yRVE, 0.0));
 
-    periodicPositions.emplace_back(center.translate(0.0, 0.0, zRVE));
-    periodicPositions.emplace_back(center.translate(0.0, yRVE, zRVE));
-    periodicPositions.emplace_back(center.translate(0.0, -yRVE, zRVE));
-    periodicPositions.emplace_back(center.translate(xRVE, 0.0, zRVE));
-    periodicPositions.emplace_back(center.translate(xRVE, yRVE, zRVE));
-    periodicPositions.emplace_back(center.translate(xRVE, -yRVE, zRVE));
-    periodicPositions.emplace_back(center.translate(-xRVE, 0.0, zRVE));
-    periodicPositions.emplace_back(center.translate(-xRVE, yRVE, zRVE));
-    periodicPositions.emplace_back(center.translate(-xRVE, -yRVE, zRVE));
+    periodicPositions.emplace_back(cen.translate(0.0, 0.0, zRVE));
+    periodicPositions.emplace_back(cen.translate(0.0, yRVE, zRVE));
+    periodicPositions.emplace_back(cen.translate(0.0, -yRVE, zRVE));
+    periodicPositions.emplace_back(cen.translate(xRVE, 0.0, zRVE));
+    periodicPositions.emplace_back(cen.translate(xRVE, yRVE, zRVE));
+    periodicPositions.emplace_back(cen.translate(xRVE, -yRVE, zRVE));
+    periodicPositions.emplace_back(cen.translate(-xRVE, 0.0, zRVE));
+    periodicPositions.emplace_back(cen.translate(-xRVE, yRVE, zRVE));
+    periodicPositions.emplace_back(cen.translate(-xRVE, -yRVE, zRVE));
 
-    periodicPositions.emplace_back(center.translate(0.0, 0.0, -zRVE));
-    periodicPositions.emplace_back(center.translate(0.0, yRVE, -zRVE));
-    periodicPositions.emplace_back(center.translate(0.0, -yRVE, -zRVE));
-    periodicPositions.emplace_back(center.translate(xRVE, 0.0, -zRVE));
-    periodicPositions.emplace_back(center.translate(xRVE, yRVE, -zRVE));
-    periodicPositions.emplace_back(center.translate(xRVE, -yRVE, -zRVE));
-    periodicPositions.emplace_back(center.translate(-xRVE, 0.0, -zRVE));
-    periodicPositions.emplace_back(center.translate(-xRVE, yRVE, -zRVE));
-    periodicPositions.emplace_back(center.translate(-xRVE, -yRVE, -zRVE));
+    periodicPositions.emplace_back(cen.translate(0.0, 0.0, -zRVE));
+    periodicPositions.emplace_back(cen.translate(0.0, yRVE, -zRVE));
+    periodicPositions.emplace_back(cen.translate(0.0, -yRVE, -zRVE));
+    periodicPositions.emplace_back(cen.translate(xRVE, 0.0, -zRVE));
+    periodicPositions.emplace_back(cen.translate(xRVE, yRVE, -zRVE));
+    periodicPositions.emplace_back(cen.translate(xRVE, -yRVE, -zRVE));
+    periodicPositions.emplace_back(cen.translate(-xRVE, 0.0, -zRVE));
+    periodicPositions.emplace_back(cen.translate(-xRVE, yRVE, -zRVE));
+    periodicPositions.emplace_back(cen.translate(-xRVE, -yRVE, -zRVE));
 
     // Iterate through the vector to find which of the points are relevant
     double rad = 0.5*diameter;
-    for (auto pt : periodicPositions) {
+    for (auto& pt : periodicPositions) {
 
       // Create a box around the point
       Point pointBoxMin = pt.translate(-rad, -rad, -rad);
@@ -1390,9 +1406,12 @@ public:
         periodicLoc.emplace_back(pt);
       }
     }
+
+    std::cout << "Periodic locs : " << periodicLoc.size() << std::endl;
   }
 
-  bool boxBoxIntersect(Point ptMin, Point ptMax, Point rveMin, Point rveMax) 
+  bool boxBoxIntersect(const Point& ptMin, const Point& ptMax, 
+                       const Point& rveMin, const Point& rveMax) const 
   {
     if (ptMax.isLessThan(rveMin)) return false;
     if (ptMin.isGreaterThan(rveMax)) return false;
