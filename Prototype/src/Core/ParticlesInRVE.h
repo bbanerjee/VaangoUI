@@ -75,7 +75,9 @@ public:
       System.out.println("Could not write to "+particleFile.getName());
     }
   }
+  */
 
+  /*
   // Read the particle data from file (for the new format - circles, squares,
   // spheres, cubes
   public void readFromFile(File particleFile) {

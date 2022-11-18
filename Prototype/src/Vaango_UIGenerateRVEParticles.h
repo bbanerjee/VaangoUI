@@ -32,597 +32,54 @@ public:
   //--------------------------------------------------------------------------
   // Method for distributing particles
   //--------------------------------------------------------------------------
-  void distributeParticles() {
+  void distributeParticles(double rveSize, 
+                           bool periodic,
+                           const ParticleShape& shape,
+                           double thickness) 
+  {
 
     // Clean the particle diameter vectors etc. and start afresh
     s_partList.clear();
 
     // Estimate the number of particles of each size in the RVE
-    estimateRVEPartSizeDist();
+    estimateRVEPartSizeDist(rveSize);
 
     // Distribute the particles in the boxes based on the type of 
     // particles
-    switch (s_partShapeFlag) {
-    case ParticleShape::CIRCLE:
-      distributeCircles();
-      break;
-    case ParticleShape::SPHERE:
-      distributeSpheres();
-      break;
-    }
-  }
-
-  //--------------------------------------------------------------------------
-  // Distribute circles (distribute the circular particles in a square 
-  // box with the given dimensions)
-  //--------------------------------------------------------------------------
-  void distributeCircles() {
-
-    try {
-      constexpr int MAX_ITER = 1000;
-
-      // Rotation and material code are zero
-      int matCode = 0;
-      double rveSize = s_partList.getRVESize();
-      double thickness = 0.0;
-
-      // Pick up each particle and place in the square ..  the largest 
-      // particles first
-      int nofSizesCalc = s_sizeDist.numSizesCalc;
-      for (int ii = nofSizesCalc-1; ii > -1; ii--) {
-        int nofParts = s_sizeDist.freq2DCalc[ii];
-
-        double partDia = s_sizeDist.sizeCalc[ii];
-        double partDiaNext = 0.0;
-        if (ii == 0)
-          partDiaNext = 0.5*s_sizeDist.sizeCalc[0];
-        else
-          partDiaNext = s_sizeDist.sizeCalc[ii-1];
-
-        double thickness = 0.0;
-        for (int jj = 0; jj < nofParts; jj++) {
-
-          // Iterate till the particle fits in the box
-          bool fit = false;
-
-          int nofIter = 0;
-          while (!fit) {
-
-            // Increment the iterations and quit if the MAX_ITER is exceeded
-            if (nofIter > MAX_ITER) {
-              if (partDia < partDiaNext) break;
-              else {
-                nofIter = 0;
-                partDia *= 0.9;
-              }
-            }
-            nofIter++;
-
-            // Get two random numbers for the x and y and scale to get center
-            double xCent = d_dist(d_gen)*rveSize;
-            double yCent = d_dist(d_gen)*rveSize;
-            Point partCent(xCent, yCent, 0.0);
-
-            // Find if the particle fits in the box
-            bool boxFit = isCircleInsideRVE(partDia, xCent, yCent);
-
-            // Find if the particle intersects other particles already
-            // placed in the box
-            if (boxFit) {
-              int nofPartsInVector = s_partList.size();
-              bool circlesIntersect = false;
-              for (int kk = 0; kk < nofPartsInVector; kk++) {
-                auto part = s_partList.getParticle(kk);
-                double dia1 = 2.0*part.getRadius();
-                Point cent1 = part.getCenter();
-                circlesIntersect = doCirclesIntersect(dia1, cent1, partDia, 
-                    partCent);
-                if (circlesIntersect) break;
-              } 
-              if (circlesIntersect) fit = false;
-              else {
-
-                // Add a particle to the particle list
-                ParticleInRVE newParticle(0.5*partDia, rveSize,
-                                          thickness, partCent, 
-                                          matCode);
-                s_partList.addParticle(newParticle);
-
-                // Set flag to true
-                fit = true;
-              }
-            }
-          }
-        }
-      }
-
-      // Compute the volume fraction occupied by particles
-      int vecSize = s_partList.size();
-      double vol = 0.0;
-      for (int ii = 0; ii < vecSize; ii++) {
-        double rad = (s_partList.getParticle(ii)).getRadius();
-        vol += M_PI*rad*rad;
-      }
-      double volBox = rveSize*rveSize;
-      double vfrac = vol/volBox;
-      std::cout << "No of parts = " << vecSize << " Vol frac = " << vfrac << "\n";
-      std::cout << "Volume of parts = " << vol << " Box vol = " << volBox << "\n";
-
-      // Fill up the rest with fines
-      double partDia = s_sizeDist.sizeCalc[0];
-      double fracComp = s_sizeDist.particleVolFrac/100.0;
-      while (vfrac < fracComp) {
-
-        bool fit = false;
-        int nofIter = 0;
-        std::cout << "Part Dia = " << partDia << " Vol frac = " << vfrac << 
-            "Vol Frac Comp = " << s_sizeDist.particleVolFrac << "\n";
-        while (!fit) {
-
-          // Increment the iterations and quit if the MAX_ITER is exceeded
-          if (nofIter > MAX_ITER) break;
-          nofIter++;
-
-          // Get two random numbers for the x and y and scale the co-ordinates
-          double xCent = d_dist(d_gen)*rveSize;
-          double yCent = d_dist(d_gen)*rveSize;
-          Point partCent(xCent, yCent, 0.0);
-
-          // Find if the particle fits in the box
-          bool boxFit = isCircleInsideRVE(partDia, xCent, yCent);
-
-          // Find if the particle intersects other particles already
-          // placed in the box
-          if (boxFit) {
-            int nofPartsInVector = s_partList.size();
-            bool circlesIntersect = false;
-            for (int kk = 0; kk < nofPartsInVector; kk++) {
-              ParticleInRVE part = s_partList.getParticle(kk);
-              double dia1 = 2.0*part.getRadius();
-              Point cent1 = part.getCenter();
-              circlesIntersect = doCirclesIntersect(dia1, cent1, partDia, 
-                  partCent);
-              if (circlesIntersect) break;
-            } 
-            if (circlesIntersect) fit = false;
-            else {
-
-              // Add a particle to the particle list
-              ParticleInRVE newParticle(0.5*partDia, rveSize,
-                                        thickness, partCent, matCode);
-              s_partList.addParticle(newParticle);
-
-              fit = true;
-            }
-          }
-        }
-
-        // Calculate the new volume
-        if (fit) {
-          vfrac += (0.25*M_PI*partDia*partDia)/volBox;
-        } else {
-          partDia = 0.9*partDia;
-        }
-      }
-
-      vecSize = s_partList.size();
-      vol = 0.0;
-      for (int ii = 0; ii < vecSize; ii++) {
-        double rad = (s_partList.getParticle(ii)).getRadius();
-        vol += M_PI*rad*rad;
-      }
-      vfrac = vol/volBox;
-      std::cout << "No of parts = " << vecSize << " Vol frac = " << (vol/volBox) << "\n";
-      std::cout << "Volume of parts = " << vol << " Box vol = " << volBox << "\n";
-
-    } catch (const std::exception& e) {
-      std::cout << "Some exception occured in method distributeCircles" << "\n";
-    }
-
-  }
-
-  //--------------------------------------------------------------------------
-  // Find if circles intersect
-  //--------------------------------------------------------------------------
-  bool doCirclesIntersect(double dia1, const Point& cent1, 
-                          double dia2, const Point& cent2){
-    double x1 = cent1.x;
-    double y1 = cent1.y;
-    double x2 = cent2.x;
-    double y2 = cent2.y;
-    double distCent = std::sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
-    double sumRadii = dia1/2 + dia2/2;
-    double gap = distCent - sumRadii;
-    if (gap < 0.01*sumRadii) return true;
-    //if (sumRadii > distCent) return true;
-    return false;
-  }
-
-  //--------------------------------------------------------------------------
-  // Find if circle is inside the RVE
-  //--------------------------------------------------------------------------
-  bool isCircleInsideRVE(double dia, double xCent, double yCent)
-  {
-    // Find if the particle fits in the box
-    double rveSize = s_partList.getRVESize();
-    double rad = 0.5*dia;
-    double xMinPartBox = xCent-rad;
-    double xMaxPartBox = xCent+rad;
-    double yMinPartBox = yCent-rad;
-    double yMaxPartBox = yCent+rad;
-    if (xMinPartBox >= 0.0 && xMaxPartBox <= rveSize &&
-        yMinPartBox >= 0.0 && yMaxPartBox <= rveSize) {
-      return true;
-    }
-    return false;
-  }
-
-  //--------------------------------------------------------------------------
-  // Distribute spheres (distribute the spherical particles in a cube 
-  // box with the given dimensions)
-  //--------------------------------------------------------------------------
-  void distributeSpheres() {
-
-    try {
-
-      constexpr int MAX_ITER = 3000;
-      double rveSize = s_partList.getRVESize();
-
-      // No rotation needed; material code is 0
-      double rotation = 0.0;
-      int matCode = 0;
-      double thickness = 0.0;
-      ParticleShape partShape = ParticleShape::SPHERE;
-
-      // Pick up each particle and place in the cube ..  the largest 
-      // particles first
-      int nofSizesCalc = s_sizeDist.numSizesCalc;
-      for (int ii = nofSizesCalc; ii > 0; ii--) {
-        int nofParts = s_sizeDist.freq3DCalc[ii-1];
-        double partDia = 0.0;
-        double partDiaCurr = 0.0;
-        bool fit = false;
-        std::cout << "Particle size fraction # = " << ii << "\n";
-
-        for (int jj = 0; jj < nofParts; jj++) {
-
-          // Set up the particle diameter
-          std::cout << "Particle # = " << jj << "\n";
-          partDia = s_sizeDist.sizeCalc[ii-1];
-          partDiaCurr = partDia;
-
-          // Iterate till the particle fits in the box
-          fit = false;
-
-          int nofIter = 0;
-          while (!fit) {
-
-            // Increment the iterations and quit if the MAX_ITER is exceeded
-            nofIter++;
-            if (nofIter > MAX_ITER) break;
-
-            // Get three random numbers for the x,y and z and scale
-            double xCent = d_dist(d_gen)*rveSize;
-            double yCent = d_dist(d_gen)*rveSize;
-            double zCent = d_dist(d_gen)*rveSize;
-            Point partCent(xCent, yCent, zCent);
-
-            // Find if the particle fits in the box
-            bool boxFit = isSphereInsideRVE(partDia, xCent, yCent, zCent);
-
-            // Find if the particle intersects other particles already
-            // placed in the box
-            if (boxFit) {
-              bool spheresIntersect = false;
-              int nofPartsInVector = s_partList.size();
-              for (int kk = 0; kk < nofPartsInVector; kk++) {
-
-                // Get the particle
-                ParticleInRVE part = s_partList.getParticle(kk);
-                double dia1 = 2.0*part.getRadius();
-                Point cent1 = part.getCenter();
-                spheresIntersect = doSpheresIntersect(dia1, cent1, partDia, 
-                    partCent);
-                if (spheresIntersect) break;
-              } 
-              if (spheresIntersect) fit = false;
-              else {
-
-                // Add a particle to the particle list
-                ParticleInRVE newParticle(partShape, 0.5*partDia,
-                                          rotation, partCent, matCode,
-                                          thickness);
-                s_partList.addParticle(newParticle);
-                std::cout << newParticle << "\n";
-
-                // if the fit is not perfect fit the remaining volume
-                // again
-                if (partDiaCurr != partDia) {
-                  partDia = 
-                      std::pow(std::pow(partDiaCurr,3)-std::pow(partDia,3),
-                          (1.0/3.0));
-                  partDiaCurr = partDia;
-                  nofIter = 0;
-                  fit = false;
-                } else {
-                  fit = true;
-                }
-              }
-            }
-          }
-        }
-      }
-
-      // calculate the volume of the particles
-      int vecSize = s_partList.size();
-      double vol = 0.0;
-      for (int ii = 0; ii < vecSize; ii++) {
-        double dia = 2.0*s_partList.getParticle(ii).getRadius();
-        vol += dia*dia*dia*M_PI/6.0;
-      }
-      double volBox = std::pow(rveSize,3);
-      double vfrac = vol/volBox;
-      std::cout << "No of parts = " << vecSize << " Vol frac = " << (vol/volBox) << "\n";
-      std::cout << "Volume of parts = " << vol << " Box vol = " << volBox << "\n";
-
-      // Fill up the rest with fines 
-      double partDia = s_sizeDist.sizeCalc[0];
-      double fracComp = s_sizeDist.particleVolFrac/100.0;
-      while (vfrac < fracComp) {
-
-        bool fit = false;
-        int nofIter = 0;
-        std::cout << "Part Dia = " << partDia << " Vol frac = " << vfrac << 
-            "Vol Frac = " << s_sizeDist.particleVolFrac << "\n";
-        while (!fit) {
-
-          // Increment the iterations and quit if the MAX_ITER is exceeded
-          if (nofIter > MAX_ITER) break;
-          nofIter++;
-
-          // Get two random numbers for the x and y and scale the co-ordinates
-          double xCent = d_dist(d_gen)*rveSize;
-          double yCent = d_dist(d_gen)*rveSize;
-          double zCent = d_dist(d_gen)*rveSize;
-          Point partCent(xCent, yCent, zCent);
-
-          // Find if the particle fits in the box
-          bool boxFit = isSphereInsideRVE(partDia, xCent, yCent, zCent);
-
-          // Find if the particle intersects other particles already
-          // placed in the box
-          if (boxFit) {
-            int nofPartsInVector = s_partList.size();
-            bool spheresIntersect = false;
-            for (int kk = 0; kk < nofPartsInVector; kk++) {
-
-              // Get the particle
-              ParticleInRVE part = s_partList.getParticle(kk);
-              double dia1 = 2.0*part.getRadius();
-              Point cent1 = part.getCenter();
-              spheresIntersect = doSpheresIntersect(dia1, cent1, partDia, 
-                  partCent);
-              if (spheresIntersect) break;
-            } 
-            if (spheresIntersect) fit = false;
-            else {
-
-              // Add a particle to the particle list
-              ParticleInRVE newParticle(partShape, 0.5*partDia,
-                                        rotation, partCent, matCode,
-                                        thickness);
-              s_partList.addParticle(newParticle);
-              // std::cout << newParticle << "\n";
-
-              fit = true;
-            }
-          }
-        }
-
-        // Calculate the new volume
-        if (fit) {
-          vfrac += std::pow(partDia,3)*M_PI/(6.0*volBox);
-        } else {
-          partDia *= 0.9;
-        }
-      }
-      vecSize = s_partList.size();
-      vol = 0.0;
-      for (int ii = 0; ii < vecSize; ii++) {
-        double dia = 2.0*s_partList.getParticle(ii).getRadius();
-        vol += dia*dia*dia*M_PI/6.0;
-      }
-      vfrac = vol/volBox;
-      std::cout << "Final values" << "\n";
-      std::cout << "No of parts = " << vecSize << " Vol frac = " << (vol/volBox) << "\n";
-      std::cout << "Volume of parts = " << vol << " Box vol = " << volBox << "\n";
-
-    } catch (const std::exception& e) {
-      std::cout << "Some exception occured in method distributeSpheres" << "\n";
-    }
-  }
-
-  //--------------------------------------------------------------------------
-  // Find if sphere is inside the RVE
-  //--------------------------------------------------------------------------
-  bool isSphereInsideRVE(double dia, double xCent, double yCent,
-                         double zCent) 
-  {
-
-    // Find if the particle fits in the box
-    double rveSize = s_partList.getRVESize();
-    double rad = 0.5*dia;
-    double xMinPartBox = xCent-rad;
-    double xMaxPartBox = xCent+rad;
-    double yMinPartBox = yCent-rad;
-    double yMaxPartBox = yCent+rad;
-    double zMinPartBox = zCent-rad;
-    double zMaxPartBox = zCent+rad;
-    if (xMinPartBox >= 0.0 && xMaxPartBox <= rveSize &&
-        yMinPartBox >= 0.0 && yMaxPartBox <= rveSize &&
-        zMinPartBox >= 0.0 && zMaxPartBox <= rveSize) {
-      return true;
-    }
-    return false;
-  }
-
-  //--------------------------------------------------------------------------
-  // Find if spheres intersect
-  //--------------------------------------------------------------------------
-  bool doSpheresIntersect(double dia1, Point cent1, 
-      double dia2, Point cent2) {
-    double x1 = cent1.x;
-    double y1 = cent1.y;
-    double z1 = cent1.z;
-    double x2 = cent2.x;
-    double y2 = cent2.y;
-    double z2 = cent2.z;
-
-    double distCent = 
-        std::sqrt(std::pow((x2-x1),2)+std::pow((y2-y1),2)+std::pow((z2-z1),2));
-    double sumRadii = dia1/2 + dia2/2;
-    if (sumRadii > distCent) return true;
-    return false;
-  }
-
-
-  //--------------------------------------------------------------------------
-  // Method for distributing particles
-  //--------------------------------------------------------------------------
-  void periodicParticleDist() {
-
-    // Clean the particle diameter vectors etc. and start afresh
-    s_partList.clear();
-
-    // Estimate the number of particles of each size in the RVE
-    estimateRVEPartSizeDist();
-
-    // Distribute the particles in the boxes based on the type of 
-    // particles
-    switch (s_partShapeFlag) {
-    case ParticleShape::CIRCLE:
-      distributeCirclesPeriodic();
-      break;
-    case ParticleShape::SPHERE:
-      distributeSpheresPeriodic();
-      break;
-    }
-  }
-
-  //--------------------------------------------------------------------------
-  // Estimate the number of particles of each size in the RVE
-  //--------------------------------------------------------------------------
-  void estimateRVEPartSizeDist() {
-
-    double rveSize = s_partList.getRVESize();
-    double vf = s_sizeDist.particleVolFrac*0.01;
-
-    std::vector<double> dia;
-    std::vector<double> vol;
-    std::vector<int> num;
-    std::vector<int> scaledNum;
-
-    double totvol = 0.0;
-    double volInputRVE = 0.0;
-    double volActualRVE = 0.0;
-    double scalefac = 1.0;
-
-    switch (s_partShapeFlag) {
-    case ParticleShape::CIRCLE:
-
-      // Compute area occupied by particles
-      volActualRVE = rveSize*rveSize;
-      for (int ii = 0; ii < s_sizeDist.numSizesCalc; ++ii) {
-        num[ii] = s_sizeDist.freq2DCalc[ii];
-        dia[ii] = s_sizeDist.sizeCalc[ii];
-        vol[ii] = 0.25*M_PI*dia[ii]*dia[ii];
-        totvol += (num[ii]*vol[ii]);
-      }
-      break;
-
-    case ParticleShape::SPHERE:
-
-      // Compute area occupied by particles
-      volActualRVE = rveSize*rveSize*rveSize;
-      for (int ii = 0; ii < s_sizeDist.numSizesCalc; ++ii) {
-        num[ii] = s_sizeDist.freq3DCalc[ii];
-        dia[ii] = s_sizeDist.sizeCalc[ii];
-        vol[ii] = M_PI*dia[ii]*dia[ii]*dia[ii]/6.0;
-        totvol += (num[ii]*vol[ii]);
-      }
-      break;
-    }
-
-    // Compute volume  of input RVE and Compute scaling factor
-    volInputRVE =  totvol/vf;
-    scalefac = volActualRVE/volInputRVE;
-
-    //std::cout << "Tot Vol = " << totvol << " Vf = "  << vf  << 
-    //                   " Vol Inp RVE = " << volInputRVE  << 
-    //                   " Vol Act RVE = " << volActualRVE  << 
-    //                   " Scale Fac = " << scalefac);
-
-    // Compute scaled number for each size
-    totvol = 0.0;
-    for (int ii = 0; ii < s_sizeDist.numSizesCalc; ++ii) {
-      scaledNum[ii] = (int) std::round(num[ii]*scalefac);
-      s_sizeDist.freq2DCalc[ii] = scaledNum[ii];
-      s_sizeDist.freq3DCalc[ii] = scaledNum[ii];
-      totvol += (scaledNum[ii]*vol[ii]);
-    }
-
-    // Compute new volume frac for each size
-    for (int ii = 0; ii < s_sizeDist.numSizesCalc; ii++) {
-      double volFrac = 100.0*vol[ii]*scaledNum[ii]/totvol;
-      s_sizeDist.volFrac2DCalc[ii] = volFrac;
-      s_sizeDist.volFrac3DCalc[ii] = volFrac;
-    }
-
-    // Print the update particle size distribution
-    //s_sizeDist.print();
-
-    // Compute volume fraction occupied by the particles in the
-    // compute distribution
-    double newVolFrac = 0.0;
-    double fracComp = s_sizeDist.particleVolFrac/100.0;
-    switch (s_partShapeFlag) {
+    if (periodic) {
+      switch (shape) {
       case ParticleShape::CIRCLE:
-        newVolFrac = totvol/(rveSize*rveSize);
+        distributeCirclesPeriodic(rveSize, -1.0);
+        break;
+      case ParticleShape::HOLLOW_CIRCLE:
+        distributeCirclesPeriodic(rveSize, thickness);
         break;
       case ParticleShape::SPHERE:
-        newVolFrac = totvol/(rveSize*rveSize*rveSize);
+        distributeSpheresPeriodic(rveSize, -1.0);
         break;
-    }
-    std::cout << "Updated volume fraction = " << newVolFrac
-              << " Target vol. frac. = " << fracComp << "\n";
-
-    // If the volume fraction is less than that needed, add some of the larger particles
-    while (newVolFrac < 0.95*fracComp ) {
-      for (int ii = 0; ii < s_sizeDist.numSizesCalc; ii++) {
-        if (s_sizeDist.freq2DCalc[ii] == 0) {
-          s_sizeDist.freq2DCalc[ii] = 1; 
-          s_sizeDist.freq3DCalc[ii] = 1; 
-          totvol += vol[ii];
-          break;
-        }
+      case ParticleShape::HOLLOW_SPHERE:
+        distributeSpheresPeriodic(rveSize, thickness);
+        break;
+      default:
+        break;
       }
-
-      for (int ii = 0; ii < s_sizeDist.numSizesCalc; ii++) {
-        double volFrac = 100.0*vol[ii]/totvol;
-        s_sizeDist.volFrac2DCalc[ii] = volFrac;
-        s_sizeDist.volFrac3DCalc[ii] = volFrac;
-      }
-
-      switch (s_partShapeFlag) {
+    } else {
+      switch (shape) {
       case ParticleShape::CIRCLE:
-        newVolFrac = totvol/(rveSize*rveSize);
+        distributeCircles(rveSize, -1.0);
+        break;
+      case ParticleShape::HOLLOW_CIRCLE:
+        distributeCircles(rveSize, thickness);
         break;
       case ParticleShape::SPHERE:
-        newVolFrac = totvol/(rveSize*rveSize*rveSize);
+        distributeSpheres(rveSize, -1.0);
+        break;
+      case ParticleShape::HOLLOW_SPHERE:
+        distributeSpheres(rveSize, thickness);
+        break;
+      default:
         break;
       }
-      std::cout << "Updated volume fraction = " << newVolFrac
-                << " Target vol. frac. = " << fracComp << "\n";
     }
   }
 
@@ -630,11 +87,9 @@ public:
   // Create a periodic distribution of particles in the box.  Similar
   // approach to random sequential packing of distributeCircles
   //--------------------------------------------------------------------------
-  void distributeCirclesPeriodic() {
+  void distributeCirclesPeriodic(double rveSize, double thickness) {
 
     constexpr int MAX_ITER = 2000;
-    double rveSize = s_partList.getRVESize();
-    double thickness = 0;
 
     // Set material code to zero
     int matCode = 0;
@@ -835,15 +290,337 @@ public:
   }
 
   //--------------------------------------------------------------------------
+  // Distribute circles (distribute the circular particles in a square 
+  // box with the given dimensions)
+  //--------------------------------------------------------------------------
+  void distributeCircles(double rveSize, double thickness) {
+
+    try {
+      constexpr int MAX_ITER = 1000;
+
+      // Rotation and material code are zero
+      int matCode = 0;
+
+      // Pick up each particle and place in the square ..  the largest 
+      // particles first
+      int nofSizesCalc = s_sizeDist.numSizesCalc;
+      for (int ii = nofSizesCalc-1; ii > -1; ii--) {
+        int nofParts = s_sizeDist.freq2DCalc[ii];
+
+        double partDia = s_sizeDist.sizeCalc[ii];
+        double partDiaNext = 0.0;
+        if (ii == 0)
+          partDiaNext = 0.5*s_sizeDist.sizeCalc[0];
+        else
+          partDiaNext = s_sizeDist.sizeCalc[ii-1];
+
+        double thickness = 0.0;
+        for (int jj = 0; jj < nofParts; jj++) {
+
+          // Iterate till the particle fits in the box
+          bool fit = false;
+
+          int nofIter = 0;
+          while (!fit) {
+
+            // Increment the iterations and quit if the MAX_ITER is exceeded
+            if (nofIter > MAX_ITER) {
+              if (partDia < partDiaNext) break;
+              else {
+                nofIter = 0;
+                partDia *= 0.9;
+              }
+            }
+            nofIter++;
+
+            // Get two random numbers for the x and y and scale to get center
+            double xCent = d_dist(d_gen)*rveSize;
+            double yCent = d_dist(d_gen)*rveSize;
+            Point partCent(xCent, yCent, 0.0);
+
+            // Find if the particle fits in the box
+            bool boxFit = isCircleInsideRVE(rveSize, partDia, xCent, yCent);
+
+            // Find if the particle intersects other particles already
+            // placed in the box
+            if (boxFit) {
+              int nofPartsInVector = s_partList.size();
+              bool circlesIntersect = false;
+              for (int kk = 0; kk < nofPartsInVector; kk++) {
+                auto part = s_partList.getParticle(kk);
+                double dia1 = 2.0*part.getRadius();
+                Point cent1 = part.getCenter();
+                circlesIntersect = doCirclesIntersect(dia1, cent1, partDia, 
+                    partCent);
+                if (circlesIntersect) break;
+              } 
+              if (circlesIntersect) fit = false;
+              else {
+
+                // Add a particle to the particle list
+                ParticleInRVE newParticle(0.5*partDia, rveSize,
+                                          thickness, partCent, 
+                                          matCode);
+                s_partList.addParticle(newParticle);
+
+                // Set flag to true
+                fit = true;
+              }
+            }
+          }
+        }
+      }
+
+      // Compute the volume fraction occupied by particles
+      int vecSize = s_partList.size();
+      double vol = 0.0;
+      for (int ii = 0; ii < vecSize; ii++) {
+        double rad = (s_partList.getParticle(ii)).getRadius();
+        vol += M_PI*rad*rad;
+      }
+      double volBox = rveSize*rveSize;
+      double vfrac = vol/volBox;
+      std::cout << "No of parts = " << vecSize << " Vol frac = " << vfrac << "\n";
+      std::cout << "Volume of parts = " << vol << " Box vol = " << volBox << "\n";
+
+      // Fill up the rest with fines
+      double partDia = s_sizeDist.sizeCalc[0];
+      double fracComp = s_sizeDist.particleVolFrac/100.0;
+      while (vfrac < fracComp) {
+
+        bool fit = false;
+        int nofIter = 0;
+        std::cout << "Part Dia = " << partDia << " Vol frac = " << vfrac << 
+            "Vol Frac Comp = " << s_sizeDist.particleVolFrac << "\n";
+        while (!fit) {
+
+          // Increment the iterations and quit if the MAX_ITER is exceeded
+          if (nofIter > MAX_ITER) break;
+          nofIter++;
+
+          // Get two random numbers for the x and y and scale the co-ordinates
+          double xCent = d_dist(d_gen)*rveSize;
+          double yCent = d_dist(d_gen)*rveSize;
+          Point partCent(xCent, yCent, 0.0);
+
+          // Find if the particle fits in the box
+          bool boxFit = isCircleInsideRVE(rveSize, partDia, xCent, yCent);
+
+          // Find if the particle intersects other particles already
+          // placed in the box
+          if (boxFit) {
+            int nofPartsInVector = s_partList.size();
+            bool circlesIntersect = false;
+            for (int kk = 0; kk < nofPartsInVector; kk++) {
+              ParticleInRVE part = s_partList.getParticle(kk);
+              double dia1 = 2.0*part.getRadius();
+              Point cent1 = part.getCenter();
+              circlesIntersect = doCirclesIntersect(dia1, cent1, partDia, 
+                  partCent);
+              if (circlesIntersect) break;
+            } 
+            if (circlesIntersect) fit = false;
+            else {
+
+              // Add a particle to the particle list
+              ParticleInRVE newParticle(0.5*partDia, rveSize,
+                                        thickness, partCent, matCode);
+              s_partList.addParticle(newParticle);
+
+              fit = true;
+            }
+          }
+        }
+
+        // Calculate the new volume
+        if (fit) {
+          vfrac += (0.25*M_PI*partDia*partDia)/volBox;
+        } else {
+          partDia = 0.9*partDia;
+        }
+      }
+
+      vecSize = s_partList.size();
+      vol = 0.0;
+      for (int ii = 0; ii < vecSize; ii++) {
+        double rad = (s_partList.getParticle(ii)).getRadius();
+        vol += M_PI*rad*rad;
+      }
+      vfrac = vol/volBox;
+      std::cout << "No of parts = " << vecSize << " Vol frac = " << (vol/volBox) << "\n";
+      std::cout << "Volume of parts = " << vol << " Box vol = " << volBox << "\n";
+
+    } catch (const std::exception& e) {
+      std::cout << "Some exception occured in method distributeCircles" << "\n";
+    }
+
+  }
+
+  // Find whether the current circle intersects another circle from the existing 
+  // particle list
+  bool intersectsAnotherCircle(Point center, double diameter, 
+                               ParticleKDTree2D& kdtree, int maxSearchPoints = 100) {
+
+    // Create an array in the form needed by the kd-tree
+    double queryPoint[4] = {center.x, center.y, center.z, 0.5*diameter};
+
+    // Find the neighbors within the search radius of the
+    // point.  The search radius = 2*diameter of the particle.
+    const double searchRadiusSq = 4*diameter*diameter;
+    std::vector<std::pair<size_t, double>> indices_dists;
+    nanoflann::RadiusResultSet<double, size_t> resultSet(searchRadiusSq, indices_dists);
+    kdtree.findNeighbors(resultSet, queryPoint);
+
+    // Loop through the nearest neighbors
+    for (auto data : resultSet.m_indices_dists) {
+
+      // Get the stored index from the kd tree
+      size_t index = data.first;
+
+      // Get the particle using the kd tree index
+      ParticleInRVE part = s_partList.getParticle(index);
+      double neighborDiameter = 2.0*part.getRadius();
+      Point neighborCenter = part.getCenter();
+      bool circlesIntersect = 
+          doCirclesIntersect(neighborDiameter, neighborCenter, diameter, center);
+      if (circlesIntersect) return true;
+    } // end of while iterator 
+
+    return false;
+  }
+
+  //--------------------------------------------------------------------------
+  // Find if circles intersect
+  //--------------------------------------------------------------------------
+  bool doCirclesIntersect(double dia1, const Point& cent1, 
+                          double dia2, const Point& cent2){
+    double x1 = cent1.x;
+    double y1 = cent1.y;
+    double x2 = cent2.x;
+    double y2 = cent2.y;
+    double distCent = std::sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
+    double sumRadii = dia1/2 + dia2/2;
+    double gap = distCent - sumRadii;
+    if (gap < 0.01*sumRadii) return true;
+    //if (sumRadii > distCent) return true;
+    return false;
+  }
+
+  //--------------------------------------------------------------------------
+  // Find if circle is inside the RVE
+  //--------------------------------------------------------------------------
+  bool isCircleInsideRVE(double rveSize, 
+                         double dia, double xCent, double yCent)
+  {
+    // Find if the particle fits in the box
+    double rad = 0.5*dia;
+    double xMinPartBox = xCent-rad;
+    double xMaxPartBox = xCent+rad;
+    double yMinPartBox = yCent-rad;
+    double yMaxPartBox = yCent+rad;
+    if (xMinPartBox >= 0.0 && xMaxPartBox <= rveSize &&
+        yMinPartBox >= 0.0 && yMaxPartBox <= rveSize) {
+      return true;
+    }
+    return false;
+  }
+
+  // Return the number of new circle locations for period distributions
+  int findPartLoc(double rveSize,
+                  double rad, const Point& pt, double min, double max, 
+                  std::vector<Point>& loc) {
+
+    // Create a box around the particle
+    double xmin = pt.x - rad;
+    double xmax = pt.x + rad;
+    double ymin = pt.y - rad;
+    double ymax = pt.y + rad;
+
+    // Check the 8 regions to see if the particles intersect any of these
+    // regions .. first the corners and then the sides
+    if (xmin < min && ymin < min) {
+      // Create three more particles at the other three corners
+      // This is the lower left hand corner
+      // New Particle 1 : lower right hand
+      loc.push_back(Point(pt.x + rveSize, pt.y, 0.0));
+      // New Particle 2 : upper right hand
+      loc.push_back(Point(pt.x + rveSize, pt.y + rveSize, 0.0));
+      // New Particle 3 : upper left hand
+      loc.push_back(Point(pt.x, pt.y + rveSize, 0.0));
+      return 3;
+    }
+    if (xmax > max && ymin < min) {
+      // Create three more particles at the other three corners
+      // This is the lower right hand corner
+      // New Particle 1 : lower left hand
+      loc.push_back(Point(pt.x - rveSize, pt.y, 0.0));
+      // New Particle 2 : upper right hand
+      loc.push_back(Point(pt.x, pt.y + rveSize, 0.0));
+      // New Particle 3 : upper left hand
+      loc.push_back(Point(pt.x - rveSize, pt.y + rveSize, 0.0));
+      return 3;
+    }
+    if (xmax > max && ymax > max) {
+      // Create three more particles at the other three corners
+      // This is the upper right hand corner
+      // New Particle 1 : lower left hand
+      loc.push_back(Point(pt.x - rveSize, pt.y - rveSize, 0.0));
+      // New Particle 2 : lower right hand
+      loc.push_back(Point(pt.x, pt.y - rveSize, 0.0));
+      // New Particle 3 : upper left hand
+      loc.push_back(Point(pt.x - rveSize, pt.y, 0.0));
+      return 3;
+    }
+    if (xmin < min && ymax > max) {
+      // Create three more particles at the other three corners
+      // This is the upper left hand corner
+      // New Particle 1 : lower left hand
+      loc.push_back(Point(pt.x, pt.y - rveSize, 0.0));
+      // New Particle 2 : lower right hand
+      loc.push_back(Point(pt.x + rveSize, pt.y - rveSize, 0.0));
+      // New Particle 3 : upper right hand
+      loc.push_back(Point(pt.x + rveSize, pt.y, 0.0));
+      return 3;
+    }
+    if (xmin < min) {
+      // Create one more particles at right side
+      // This is the left side
+      // New Particle 1 : right side
+      loc.push_back(Point(pt.x + rveSize, pt.y, 0.0));
+      return 1;
+    }
+    if (xmax > max) {
+      // Create one more particles at left side
+      // This is the right side
+      // New Particle 1 : left side
+      loc.push_back(Point(pt.x - rveSize, pt.y, 0.0));
+      return 1;
+    }
+    if (ymin < min) {
+      // Create one more particles at upper side
+      // This is the lower side
+      // New Particle 1 : upper side
+      loc.push_back(Point(pt.x, pt.y + rveSize, 0.0));
+      return 1;
+    }
+    if (ymax > max) {
+      // Create one more particles at bottom side
+      // This is the top side
+      // New Particle 1 : bottom side
+      loc.push_back(Point(pt.x, pt.y - rveSize, 0.0));
+      return 1;
+    }
+    return 0;
+  }
+
+  //--------------------------------------------------------------------------
   // Distribute spheres in a periodic unit cell (distribute the spherical particles in a cube 
   // box with the given dimensions)
   //--------------------------------------------------------------------------
-  void distributeSpheresPeriodic() {
+  void distributeSpheresPeriodic(double rveSize, double thickness) {
 
     // Set up some values that don't change
     constexpr int MAX_ITER = 3000;
-    double rveSize = s_partList.getRVESize();
-    double thickness = 0;
 
     // Max number of nearest neighbors to be returned from kd tree
     constexpr int maxSearchPoints = 40;
@@ -1164,36 +941,210 @@ public:
     }
   }
 
-  // Find whether the current circle intersects another circle from the existing 
-  // particle list
-  bool intersectsAnotherCircle(Point center, double diameter, 
-                               ParticleKDTree2D& kdtree, int maxSearchPoints = 100) {
+  //--------------------------------------------------------------------------
+  // Distribute spheres (distribute the spherical particles in a cube 
+  // box with the given dimensions)
+  //--------------------------------------------------------------------------
+  void distributeSpheres(double rveSize, double thickness) {
 
-    // Create an array in the form needed by the kd-tree
-    double queryPoint[4] = {center.x, center.y, center.z, 0.5*diameter};
+    try {
 
-    // Find the neighbors within the search radius of the
-    // point.  The search radius = 2*diameter of the particle.
-    const double searchRadiusSq = 4*diameter*diameter;
-    std::vector<std::pair<size_t, double>> indices_dists;
-    nanoflann::RadiusResultSet<double, size_t> resultSet(searchRadiusSq, indices_dists);
-    kdtree.findNeighbors(resultSet, queryPoint);
+      constexpr int MAX_ITER = 3000;
 
-    // Loop through the nearest neighbors
-    for (auto data : resultSet.m_indices_dists) {
+      // No rotation needed; material code is 0
+      double rotation = 0.0;
+      int matCode = 0;
+      ParticleShape partShape = ParticleShape::SPHERE;
 
-      // Get the stored index from the kd tree
-      size_t index = data.first;
+      // Pick up each particle and place in the cube ..  the largest 
+      // particles first
+      int nofSizesCalc = s_sizeDist.numSizesCalc;
+      for (int ii = nofSizesCalc; ii > 0; ii--) {
+        int nofParts = s_sizeDist.freq3DCalc[ii-1];
+        double partDia = 0.0;
+        double partDiaCurr = 0.0;
+        bool fit = false;
+        std::cout << "Particle size fraction # = " << ii << "\n";
 
-      // Get the particle using the kd tree index
-      ParticleInRVE part = s_partList.getParticle(index);
-      double neighborDiameter = 2.0*part.getRadius();
-      Point neighborCenter = part.getCenter();
-      bool circlesIntersect = 
-          doCirclesIntersect(neighborDiameter, neighborCenter, diameter, center);
-      if (circlesIntersect) return true;
-    } // end of while iterator 
+        for (int jj = 0; jj < nofParts; jj++) {
 
+          // Set up the particle diameter
+          std::cout << "Particle # = " << jj << "\n";
+          partDia = s_sizeDist.sizeCalc[ii-1];
+          partDiaCurr = partDia;
+
+          // Iterate till the particle fits in the box
+          fit = false;
+
+          int nofIter = 0;
+          while (!fit) {
+
+            // Increment the iterations and quit if the MAX_ITER is exceeded
+            nofIter++;
+            if (nofIter > MAX_ITER) break;
+
+            // Get three random numbers for the x,y and z and scale
+            double xCent = d_dist(d_gen)*rveSize;
+            double yCent = d_dist(d_gen)*rveSize;
+            double zCent = d_dist(d_gen)*rveSize;
+            Point partCent(xCent, yCent, zCent);
+
+            // Find if the particle fits in the box
+            bool boxFit = isSphereInsideRVE(rveSize, partDia, xCent, yCent, zCent);
+
+            // Find if the particle intersects other particles already
+            // placed in the box
+            if (boxFit) {
+              bool spheresIntersect = false;
+              int nofPartsInVector = s_partList.size();
+              for (int kk = 0; kk < nofPartsInVector; kk++) {
+
+                // Get the particle
+                ParticleInRVE part = s_partList.getParticle(kk);
+                double dia1 = 2.0*part.getRadius();
+                Point cent1 = part.getCenter();
+                spheresIntersect = doSpheresIntersect(dia1, cent1, partDia, 
+                    partCent);
+                if (spheresIntersect) break;
+              } 
+              if (spheresIntersect) fit = false;
+              else {
+
+                // Add a particle to the particle list
+                ParticleInRVE newParticle(partShape, 0.5*partDia,
+                                          rotation, partCent, matCode,
+                                          thickness);
+                s_partList.addParticle(newParticle);
+                std::cout << newParticle << "\n";
+
+                // if the fit is not perfect fit the remaining volume
+                // again
+                if (partDiaCurr != partDia) {
+                  partDia = 
+                      std::pow(std::pow(partDiaCurr,3)-std::pow(partDia,3),
+                          (1.0/3.0));
+                  partDiaCurr = partDia;
+                  nofIter = 0;
+                  fit = false;
+                } else {
+                  fit = true;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      // calculate the volume of the particles
+      int vecSize = s_partList.size();
+      double vol = 0.0;
+      for (int ii = 0; ii < vecSize; ii++) {
+        double dia = 2.0*s_partList.getParticle(ii).getRadius();
+        vol += dia*dia*dia*M_PI/6.0;
+      }
+      double volBox = std::pow(rveSize,3);
+      double vfrac = vol/volBox;
+      std::cout << "No of parts = " << vecSize << " Vol frac = " << (vol/volBox) << "\n";
+      std::cout << "Volume of parts = " << vol << " Box vol = " << volBox << "\n";
+
+      // Fill up the rest with fines 
+      double partDia = s_sizeDist.sizeCalc[0];
+      double fracComp = s_sizeDist.particleVolFrac/100.0;
+      while (vfrac < fracComp) {
+
+        bool fit = false;
+        int nofIter = 0;
+        std::cout << "Part Dia = " << partDia << " Vol frac = " << vfrac << 
+            "Vol Frac = " << s_sizeDist.particleVolFrac << "\n";
+        while (!fit) {
+
+          // Increment the iterations and quit if the MAX_ITER is exceeded
+          if (nofIter > MAX_ITER) break;
+          nofIter++;
+
+          // Get two random numbers for the x and y and scale the co-ordinates
+          double xCent = d_dist(d_gen)*rveSize;
+          double yCent = d_dist(d_gen)*rveSize;
+          double zCent = d_dist(d_gen)*rveSize;
+          Point partCent(xCent, yCent, zCent);
+
+          // Find if the particle fits in the box
+          bool boxFit = isSphereInsideRVE(rveSize, partDia, xCent, yCent, zCent);
+
+          // Find if the particle intersects other particles already
+          // placed in the box
+          if (boxFit) {
+            int nofPartsInVector = s_partList.size();
+            bool spheresIntersect = false;
+            for (int kk = 0; kk < nofPartsInVector; kk++) {
+
+              // Get the particle
+              ParticleInRVE part = s_partList.getParticle(kk);
+              double dia1 = 2.0*part.getRadius();
+              Point cent1 = part.getCenter();
+              spheresIntersect = doSpheresIntersect(dia1, cent1, partDia, 
+                  partCent);
+              if (spheresIntersect) break;
+            } 
+            if (spheresIntersect) fit = false;
+            else {
+
+              // Add a particle to the particle list
+              ParticleInRVE newParticle(partShape, 0.5*partDia,
+                                        rotation, partCent, matCode,
+                                        thickness);
+              s_partList.addParticle(newParticle);
+              // std::cout << newParticle << "\n";
+
+              fit = true;
+            }
+          }
+        }
+
+        // Calculate the new volume
+        if (fit) {
+          vfrac += std::pow(partDia,3)*M_PI/(6.0*volBox);
+        } else {
+          partDia *= 0.9;
+        }
+      }
+      vecSize = s_partList.size();
+      vol = 0.0;
+      for (int ii = 0; ii < vecSize; ii++) {
+        double dia = 2.0*s_partList.getParticle(ii).getRadius();
+        vol += dia*dia*dia*M_PI/6.0;
+      }
+      vfrac = vol/volBox;
+      std::cout << "Final values" << "\n";
+      std::cout << "No of parts = " << vecSize << " Vol frac = " << (vol/volBox) << "\n";
+      std::cout << "Volume of parts = " << vol << " Box vol = " << volBox << "\n";
+
+    } catch (const std::exception& e) {
+      std::cout << "Some exception occured in method distributeSpheres" << "\n";
+    }
+  }
+
+  //--------------------------------------------------------------------------
+  // Find if sphere is inside the RVE
+  //--------------------------------------------------------------------------
+  bool isSphereInsideRVE(double rveSize,
+                         double dia, double xCent, double yCent,
+                         double zCent) 
+  {
+
+    // Find if the particle fits in the box
+    double rad = 0.5*dia;
+    double xMinPartBox = xCent-rad;
+    double xMaxPartBox = xCent+rad;
+    double yMinPartBox = yCent-rad;
+    double yMaxPartBox = yCent+rad;
+    double zMinPartBox = zCent-rad;
+    double zMaxPartBox = zCent+rad;
+    if (xMinPartBox >= 0.0 && xMaxPartBox <= rveSize &&
+        yMinPartBox >= 0.0 && yMaxPartBox <= rveSize &&
+        zMinPartBox >= 0.0 && zMaxPartBox <= rveSize) {
+      return true;
+    }
     return false;
   }
 
@@ -1241,92 +1192,138 @@ public:
     return false;
   }
 
-  // Return the number of new circle locations for period distributions
-  int findPartLoc(double rveSize,
-                  double rad, const Point& pt, double min, double max, 
-                  std::vector<Point>& loc) {
+  //--------------------------------------------------------------------------
+  // Find if spheres intersect
+  //--------------------------------------------------------------------------
+  bool doSpheresIntersect(double dia1, Point cent1, 
+                          double dia2, Point cent2) {
+    double xdiff = cent2.x - cent1.x;
+    double ydiff = cent2.y - cent1.y;
+    double zdiff = cent2.z - cent1.z;
+    double distCent = 
+        std::sqrt(xdiff*xdiff+ydiff*ydiff+zdiff*zdiff);
+    double sumRadii = dia1/2 + dia2/2;
+    if (sumRadii > distCent) return true;
+    return false;
+  }
 
-    // Create a box around the particle
-    double xmin = pt.x - rad;
-    double xmax = pt.x + rad;
-    double ymin = pt.y - rad;
-    double ymax = pt.y + rad;
 
-    // Check the 8 regions to see if the particles intersect any of these
-    // regions .. first the corners and then the sides
-    if (xmin < min && ymin < min) {
-      // Create three more particles at the other three corners
-      // This is the lower left hand corner
-      // New Particle 1 : lower right hand
-      loc.push_back(Point(pt.x + rveSize, pt.y, 0.0));
-      // New Particle 2 : upper right hand
-      loc.push_back(Point(pt.x + rveSize, pt.y + rveSize, 0.0));
-      // New Particle 3 : upper left hand
-      loc.push_back(Point(pt.x, pt.y + rveSize, 0.0));
-      return 3;
+  //--------------------------------------------------------------------------
+  // Estimate the number of particles of each size in the RVE
+  //--------------------------------------------------------------------------
+  void estimateRVEPartSizeDist(double rveSize) {
+
+    double vf = s_sizeDist.particleVolFrac*0.01;
+
+    std::vector<double> dia;
+    std::vector<double> vol;
+    std::vector<int> num;
+    std::vector<int> scaledNum;
+
+    double totvol = 0.0;
+    double volInputRVE = 0.0;
+    double volActualRVE = 0.0;
+    double scalefac = 1.0;
+
+    switch (s_partShapeFlag) {
+    case ParticleShape::CIRCLE:
+    case ParticleShape::HOLLOW_CIRCLE:
+
+      // Compute area occupied by particles
+      volActualRVE = rveSize*rveSize;
+      for (int ii = 0; ii < s_sizeDist.numSizesCalc; ++ii) {
+        num.push_back(s_sizeDist.freq2DCalc[ii]);
+        dia.push_back(s_sizeDist.sizeCalc[ii]);
+        vol.push_back(0.25*M_PI*dia.back()*dia.back());
+        totvol += (num.back()*vol.back());
+      }
+      break;
+
+    case ParticleShape::SPHERE:
+    case ParticleShape::HOLLOW_SPHERE:
+
+      // Compute area occupied by particles
+      volActualRVE = rveSize*rveSize*rveSize;
+      for (int ii = 0; ii < s_sizeDist.numSizesCalc; ++ii) {
+        num.push_back(s_sizeDist.freq3DCalc[ii]);
+        dia.push_back(s_sizeDist.sizeCalc[ii]);
+        vol.push_back(M_PI*dia.back()*dia.back()*dia.back()/6.0);
+        totvol += (num.back()*vol.back());
+      }
+      break;
     }
-    if (xmax > max && ymin < min) {
-      // Create three more particles at the other three corners
-      // This is the lower right hand corner
-      // New Particle 1 : lower left hand
-      loc.push_back(Point(pt.x - rveSize, pt.y, 0.0));
-      // New Particle 2 : upper right hand
-      loc.push_back(Point(pt.x, pt.y + rveSize, 0.0));
-      // New Particle 3 : upper left hand
-      loc.push_back(Point(pt.x - rveSize, pt.y + rveSize, 0.0));
-      return 3;
+
+    // Compute volume  of input RVE and Compute scaling factor
+    volInputRVE =  totvol/vf;
+    scalefac = volActualRVE/volInputRVE;
+
+    //std::cout << "Tot Vol = " << totvol << " Vf = "  << vf  << 
+    //                   " Vol Inp RVE = " << volInputRVE  << 
+    //                   " Vol Act RVE = " << volActualRVE  << 
+    //                   " Scale Fac = " << scalefac);
+
+    // Compute scaled number for each size
+    totvol = 0.0;
+    for (int ii = 0; ii < s_sizeDist.numSizesCalc; ++ii) {
+      scaledNum.push_back((int) std::round(num[ii]*scalefac));
+      s_sizeDist.freq2DCalc[ii] = scaledNum.back();
+      s_sizeDist.freq3DCalc[ii] = scaledNum.back();
+      totvol += (scaledNum.back()*vol[ii]);
     }
-    if (xmax > max && ymax > max) {
-      // Create three more particles at the other three corners
-      // This is the upper right hand corner
-      // New Particle 1 : lower left hand
-      loc.push_back(Point(pt.x - rveSize, pt.y - rveSize, 0.0));
-      // New Particle 2 : lower right hand
-      loc.push_back(Point(pt.x, pt.y - rveSize, 0.0));
-      // New Particle 3 : upper left hand
-      loc.push_back(Point(pt.x - rveSize, pt.y, 0.0));
-      return 3;
+
+    // Compute new volume frac for each size
+    for (int ii = 0; ii < s_sizeDist.numSizesCalc; ii++) {
+      double volFrac = 100.0*vol[ii]*scaledNum[ii]/totvol;
+      s_sizeDist.volFrac2DCalc[ii] = volFrac;
+      s_sizeDist.volFrac3DCalc[ii] = volFrac;
     }
-    if (xmin < min && ymax > max) {
-      // Create three more particles at the other three corners
-      // This is the upper left hand corner
-      // New Particle 1 : lower left hand
-      loc.push_back(Point(pt.x, pt.y - rveSize, 0.0));
-      // New Particle 2 : lower right hand
-      loc.push_back(Point(pt.x + rveSize, pt.y - rveSize, 0.0));
-      // New Particle 3 : upper right hand
-      loc.push_back(Point(pt.x + rveSize, pt.y, 0.0));
-      return 3;
+
+    // Print the update particle size distribution
+    //s_sizeDist.print();
+
+    // Compute volume fraction occupied by the particles in the
+    // compute distribution
+    double newVolFrac = 0.0;
+    double fracComp = s_sizeDist.particleVolFrac/100.0;
+    switch (s_partShapeFlag) {
+      case ParticleShape::CIRCLE:
+        newVolFrac = totvol/(rveSize*rveSize);
+        break;
+      case ParticleShape::SPHERE:
+        newVolFrac = totvol/(rveSize*rveSize*rveSize);
+        break;
     }
-    if (xmin < min) {
-      // Create one more particles at right side
-      // This is the left side
-      // New Particle 1 : right side
-      loc.push_back(Point(pt.x + rveSize, pt.y, 0.0));
-      return 1;
+    //std::cout << "Updated volume fraction = " << newVolFrac
+    //          << " Target vol. frac. = " << fracComp << "\n";
+
+    // If the volume fraction is less than that needed, add some of the larger particles
+    while (newVolFrac < 0.95*fracComp ) {
+      for (int ii = 0; ii < s_sizeDist.numSizesCalc; ii++) {
+        if (s_sizeDist.freq2DCalc[ii] == 0) {
+          s_sizeDist.freq2DCalc[ii] = 1; 
+          s_sizeDist.freq3DCalc[ii] = 1; 
+          totvol += vol[ii];
+          break;
+        }
+      }
+
+      for (int ii = 0; ii < s_sizeDist.numSizesCalc; ii++) {
+        double volFrac = 100.0*vol[ii]/totvol;
+        s_sizeDist.volFrac2DCalc[ii] = volFrac;
+        s_sizeDist.volFrac3DCalc[ii] = volFrac;
+      }
+
+      switch (s_partShapeFlag) {
+      case ParticleShape::CIRCLE:
+        newVolFrac = totvol/(rveSize*rveSize);
+        break;
+      case ParticleShape::SPHERE:
+        newVolFrac = totvol/(rveSize*rveSize*rveSize);
+        break;
+      }
+      //std::cout << "Updated volume fraction = " << newVolFrac
+      //          << " Target vol. frac. = " << fracComp << "\n";
     }
-    if (xmax > max) {
-      // Create one more particles at left side
-      // This is the right side
-      // New Particle 1 : left side
-      loc.push_back(Point(pt.x - rveSize, pt.y, 0.0));
-      return 1;
-    }
-    if (ymin < min) {
-      // Create one more particles at upper side
-      // This is the lower side
-      // New Particle 1 : upper side
-      loc.push_back(Point(pt.x, pt.y + rveSize, 0.0));
-      return 1;
-    }
-    if (ymax > max) {
-      // Create one more particles at bottom side
-      // This is the top side
-      // New Particle 1 : bottom side
-      loc.push_back(Point(pt.x, pt.y - rveSize, 0.0));
-      return 1;
-    }
-    return 0;
   }
 
   // Return the number of new locations to be tested for periodic distributions of 

@@ -20,6 +20,7 @@ private:
   double d_thickness = 0.0;
   double d_rveSize = 100.0;
   bool d_periodicDistribution = false;
+
   bool d_enableCreateDistribution = false;
   Vaango_UIGenerateRVEParticles generator;
 
@@ -64,6 +65,8 @@ public:
 
   void generateParticles(int width, int height) {
 
+    // Estimate RVE size (2 * largest particle size)
+    d_rveSize = s_sizeDist.maxParticleSize * 2.0;
     ImGui::Text("RVE Size");
     ImGui::SameLine();
     ImGui::PushItemWidth(100);
@@ -80,6 +83,13 @@ public:
     const char* items[] = {"Solid circle", "Hollow circle", "Solid sphere", "Hollow sphere"};
     static int item = 0;
     ImGui::Combo("##1a", &item, items, IM_ARRAYSIZE(items));
+    switch(item) {
+    case 0: d_partShape = ParticleShape::CIRCLE; break;
+    case 1: d_partShape = ParticleShape::HOLLOW_CIRCLE; break;
+    case 2: d_partShape = ParticleShape::SPHERE; break;
+    case 3: d_partShape = ParticleShape::HOLLOW_SPHERE; break;
+    default: d_partShape = ParticleShape::CIRCLE; break;
+    };
     ImGui::PopItemWidth();
 
     ImGui::SameLine();
@@ -93,6 +103,7 @@ public:
     ImGui::PopItemWidth();
 
     ImVec2 buttonSize(200, 20);
+    d_enableCreateDistribution = false;
     if (ImGui::Button("Create distribution", buttonSize)) {
       d_enableCreateDistribution = true;
     }
@@ -101,7 +112,11 @@ public:
 
     ImGui::Checkbox("Periodic", &d_periodicDistribution);
 
+
+    // Generate particle locations
     if (d_enableCreateDistribution) {
+      // Estimate the number of particles
+      s_sizeDist.calcParticleDist();
       actuallyGenerate();
       d_enableCreateDistribution = false;
     }
@@ -109,7 +124,8 @@ public:
   
   void actuallyGenerate()
   {
-    generator.distributeParticles();
+    generator.distributeParticles(d_rveSize, d_periodicDistribution,
+                                  d_partShape, d_thickness);
   }
 
   void drawParticles(int width, int height) {
