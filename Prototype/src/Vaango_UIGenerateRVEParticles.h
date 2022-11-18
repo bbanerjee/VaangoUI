@@ -130,6 +130,7 @@ public:
 
       // Get the particle size
       double partRad = 0.5*s_sizeDist.sizeCalc[ii-1];
+      double partRadNext = (ii == 0) ? 0.5*s_sizeDist.sizeCalc.back() : 0.5*s_sizeDist.sizeCalc[ii-1]; 
       double partVol = M_PI*partRad*partRad;
       targetPartVolFrac += (double) targetNofParts[ii-1]*partVol/rveVolume;
 
@@ -150,7 +151,7 @@ public:
 
         bool fit = false;
         int nofIter = 0;
-        while (!fit && nofIter < MAX_ITER) {
+        while (!fit && nofIter < MAX_ITER && numFitted < nofParts) {
 
           // Generate a random location for the particle
           // (from boxmin-0.5*partDia to boxmax+0.5*partdia)
@@ -224,6 +225,7 @@ public:
 
                   // Add the particle to the point cloud
                   start = cloud.addPoint(partCent, partRad);
+                  ++numFitted;
                 }
 
                 // Add the periodic particles
@@ -234,7 +236,9 @@ public:
                   s_partList.addParticle(newParticle);
 
                   //newParticle.print();
-                  totalVolume += newParticle.getVolume();
+
+                  // The periodic parts do not add eto th eparticle volume fraction
+                  //totalVolume += newParticle.getVolume();
 
                   // Add the particle to the point cloud
                   end = cloud.addPoint(partCent, partRad);
@@ -246,10 +250,13 @@ public:
             }
             ++nofIter;
           }
-          if (nofIter%MAX_ITER == 0) {
-            partRad *= 0.995;
-            // std::cout << "No. of Iterations = " <<  nofIter  
-            //           << " Particle Radius = " <<  partRad << "\n";
+          if (nofIter%MAX_ITER == 0 && partRad > partRadNext) {
+            double partRadPrev = partRad;
+            partRad = 0.5*(partRadPrev + partRadNext);
+            std::cout << "No. of Iterations = " <<  nofIter  
+                      << " Particle Radius (old) = " <<  partRadPrev 
+                      << " Particle Radius (new) = " <<  partRad 
+                      << " Particle Radius (next) = " <<  partRadNext << "\n";
             nofIter = 0;
           }
         }
@@ -454,6 +461,7 @@ public:
       std::cout << "Some exception occured in method distributeCircles" << "\n";
     }
 
+    std::cout << s_partList << "\n";
   }
 
   // Find whether the current circle intersects another circle from the existing 

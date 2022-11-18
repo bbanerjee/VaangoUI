@@ -2,5 +2,6 @@
     "files.associations": {
         "*.xpm": "cpp"
     },
-    "cmake.configureOnOpen": false
+    "cmake.configureOnOpen": false,
+    "cmake.sourceDirectory": "${workspaceFolder}/src"
 }

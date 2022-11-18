@@ -22,7 +22,7 @@ class ParticlesInRVE {
 private:
 
   double d_rveSize = 0.0;
-  std::vector<ParticleInRVE>   d_particleList;
+  std::vector<ParticleInRVE> d_particleList;
 
 public:
 
@@ -375,6 +375,22 @@ public:
     if (!(d_particleList.size() > 0)) return true;
     return false;
   }
+
+  friend std::ostream& operator<< (std::ostream &out, const ParticlesInRVE& data)
+  {
+    int ii = 0;
+    for (auto& part : data.d_particleList) {
+      out << "# Particle " << ii;
+      out << "(" << part.getShape() << " "
+                 << part.getRadius() << " "
+                 << part.getThickness() << " "
+                 << part.getRotation() << " "
+                 << part.getCenter() << " "
+                 << part.getMatCode() << ")\n";
+      ii++;
+    }
+    return out;
+  } 
 
 };
 

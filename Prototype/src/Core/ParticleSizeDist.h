@@ -38,7 +38,7 @@ struct ParticleSizeDist
     numSizes = 10; 
     maxParticleSize = 1000;
     for (int ii = 0; ii < numSizes; ii++) {
-      size.push_back(ii/(float)numSizes*maxParticleSize);
+      size.push_back((ii+1)/(float)numSizes*maxParticleSize);
       volFrac.push_back(10.0);
     }
     numSizesCalc = 0; 
