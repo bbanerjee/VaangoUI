@@ -3,6 +3,19 @@
 
 #include <Vaango_UIComponentBase.h>
 
+#include <vtkCallbackCommand.h>
+#include <vtkContourFilter.h>
+#include <vtkGenericRenderWindowInteractor.h>
+#include <vtkGenericOpenGLRenderWindow.h>
+#include <vtkInteractorStyleTrackballCamera.h>
+#include <vtkMath.h>
+#include <vtkPointData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkRenderer.h>
+#include <vtkShortArray.h>
+#include <vtkSmartPointer.h>
+#include <vtkStructuredPoints.h>
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -35,6 +48,9 @@ public:
   void startImGui();
   void stopImGui();
 
+  void setupVTK();
+  void setupVTKBuffers();
+
   void runMainLoop(std::vector<Vaango_UIComponentBase*> components);
 
   void addUIComponent(Vaango_UIComponentBase& component);
@@ -47,6 +63,15 @@ private:
 
   bool d_imguiRunning = false;
   std::vector<Vaango_UIComponentBase*> d_components;
+
+public:
+
+  static int vtk_viewportSize[2];
+  static vtkSmartPointer<vtkRenderer> vtk_Renderer;
+  static vtkSmartPointer<vtkInteractorStyleTrackballCamera> vtk_InteractorStyle;
+  static vtkSmartPointer<vtkGenericRenderWindowInteractor> vtk_Interactor;
+  static vtkSmartPointer<vtkCallbackCommand> vtk_CurrentCallback;
+  static vtkSmartPointer<vtkGenericOpenGLRenderWindow> vtk_RenderWindow;
 
 };
 

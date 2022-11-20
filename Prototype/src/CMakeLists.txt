@@ -21,13 +21,14 @@ include_directories(${GLFW_INCLUDE_DIRS})
 # For opengl3
 find_package(OpenGL REQUIRED)
 
-# For VTK (needed by Opencascade)
-#set(VTK_DIR /home/banerjee/Packages/VTK-9.1.0/build CACHE PATH "vtk build directory")
-find_package(VTK 9.0 REQUIRED COMPONENTS
+# For VTK (also needed by Opencascade)
+set(VTK_DIR /home/banerjee/Packages/VTK-9.1.0/build CACHE PATH "vtk build directory")
+find_package(VTK 9.1 REQUIRED COMPONENTS
     CommonCore
     CommonColor
     CommonDataModel
     FiltersCore
+    FiltersSources
     InteractionStyle
     RenderingCore
     RenderingFreeType
@@ -166,6 +167,7 @@ set(VAANGO_CORE_SRC
   ${VAANGO_CORE_DIR}/Vertex.cc
   ${VAANGO_CORE_DIR}/Edge.cc
   ${VAANGO_CORE_DIR}/Face.cc
+  ${VAANGO_CORE_DIR}/Voronoi.cc
 )
 add_library(${VAANGO_UI_LIB} 
             Vaango_UIApplication.cc
@@ -173,6 +175,7 @@ add_library(${VAANGO_UI_LIB}
             Vaango_UIComponentBase.cc
             Vaango_UIData.cc
             Vaango_UIEnvironment.cc
+            Vaango_UIGenerateParticlesPanel.cc
             Vaango_UILayout.cc
             ${VAANGO_CORE_SRC})
 target_include_directories(${VAANGO_UI_LIB} PRIVATE 
@@ -188,6 +191,8 @@ target_include_directories(${VAANGO_UI_LIB} PRIVATE
                            ${GLAD_DIR})
 target_include_directories(${VAANGO_UI_LIB} PRIVATE 
                            ${STB_DIR})
+target_link_libraries (${VAANGO_UI_LIB}
+                       ${VTK_LIBRARIES})
 
 # Unit tests
 add_subdirectory(UnitTests)
@@ -209,6 +214,7 @@ target_link_libraries (vaango_ui
                        ${RAYLIB_LIB}
                        ${RLIMGUI_LIB}
                        OpenGL::GL
+                       ${VTK_LIBRARIES}
                        ${CMAKE_DL_LIBS})
 
 ## Standalone tests
@@ -232,8 +238,10 @@ target_link_libraries (vaango_ui
 #                       ${GLFW_LIBRARIES}
 #                       OpenGL::GL
 #                       ${CMAKE_DL_LIBS})
-##vtk_module_autoinit(
-##  TARGETS test_vtk
-##  MODULES ${VTK_LIBRARIES}
-##)
+
+# For populating VTK includes and libraries
+vtk_module_autoinit(
+  TARGETS ${VAANGO_UI_LIB} vaango_ui
+  MODULES ${VTK_LIBRARIES}
+)
 

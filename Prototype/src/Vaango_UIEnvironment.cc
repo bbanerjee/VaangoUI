@@ -9,8 +9,25 @@
 
 using namespace VaangoUI;
 
-// Initialize static window variable
+// Initialize static window variables
 GLFWwindow* Vaango_UIEnvironment::main_window = nullptr;
+
+vtkSmartPointer<vtkRenderer> 
+Vaango_UIEnvironment::vtk_Renderer = vtkSmartPointer<vtkRenderer>::New();
+
+vtkSmartPointer<vtkInteractorStyleTrackballCamera> 
+Vaango_UIEnvironment::vtk_InteractorStyle = vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
+
+vtkSmartPointer<vtkGenericRenderWindowInteractor> 
+Vaango_UIEnvironment::vtk_Interactor = vtkSmartPointer<vtkGenericRenderWindowInteractor>::New();
+
+vtkSmartPointer<vtkCallbackCommand> 
+Vaango_UIEnvironment::vtk_CurrentCallback = vtkSmartPointer<vtkCallbackCommand>::New();
+
+vtkSmartPointer<vtkGenericOpenGLRenderWindow>  
+Vaango_UIEnvironment::vtk_RenderWindow = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
+
+int Vaango_UIEnvironment::vtk_viewportSize[] = {400, 400};
 
 Vaango_UIEnvironment::Vaango_UIEnvironment(const std::string& title,
                                            const int width,
@@ -72,6 +89,8 @@ Vaango_UIEnvironment::startImGui()
   ImGui::CreateContext();
 
   // Setup style
+  ImGuiIO& io = ImGui::GetIO();
+  io.ConfigWindowsMoveFromTitleBarOnly = true; // don't drag window when clicking on image.
   setupImGuiStyle();
 
   // Setup glfw and opengl backend for imgui
@@ -96,6 +115,88 @@ Vaango_UIEnvironment::stopImGui()
 
   // Set flag
   d_imguiRunning = false;
+}
+
+void
+Vaango_UIEnvironment::setupVTK()
+{
+  // vtk_Renderer = vtkSmartPointer<vtkRenderer>::New();
+  vtk_Renderer->ResetCamera();
+  vtk_Renderer->SetBackground(0.39, 0.39, 0.39);
+
+  vtk_InteractorStyle->SetDefaultRenderer(vtk_Renderer);
+
+  vtk_Interactor->SetInteractorStyle(vtk_InteractorStyle);
+  vtk_Interactor->EnableRenderOff();
+
+  auto vtk_CurrentCallbackFn =
+    [](vtkObject* caller, long unsigned int eventId, void* clientData, void* callData) -> void {
+      bool* isCurrent = static_cast<bool*>(callData);
+      *isCurrent = true;
+    };
+  vtk_CurrentCallback->SetCallback(vtk_CurrentCallbackFn);
+
+  int vtk_width  = 640;
+  int vtk_height = 480;
+  vtk_viewportSize[0]= vtk_width;
+  vtk_viewportSize[1]= vtk_height;
+
+  vtk_RenderWindow->SetSize(vtk_viewportSize);
+  vtk_RenderWindow->AddObserver(vtkCommand::WindowIsCurrentEvent, vtk_CurrentCallback);
+  vtk_RenderWindow->SwapBuffersOn();
+  vtk_RenderWindow->SetUseOffScreenBuffers(false);
+  vtk_RenderWindow->AddRenderer(vtk_Renderer);
+  vtk_RenderWindow->SetInteractor(vtk_Interactor);
+}
+
+int setupVTKBuffers(int vtk_width, int vtk_height)
+{
+  // Texture for rendering
+  GLuint vtk_renderTexture = 0;
+  glGenTextures(1, &vtk_renderTexture);
+  glBindTexture(GL_TEXTURE_2D, vtk_renderTexture);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, vtk_width, vtk_height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  glBindTexture(GL_TEXTURE_2D, 0);
+
+  // Render buffer for rendering
+  GLuint vtk_renderBuffer = 0;
+  glGenRenderbuffers(1, &vtk_renderBuffer);
+  glBindRenderbuffer(GL_RENDERBUFFER, vtk_renderBuffer);
+  glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, vtk_width, vtk_height);
+  glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+  // Framebuffer for rendering
+  GLuint vtk_frameBuffer = 0;
+  glGenFramebuffers(1, &vtk_frameBuffer);
+  glBindFramebuffer(GL_FRAMEBUFFER, vtk_frameBuffer);
+  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, vtk_renderTexture, 0);
+  glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, vtk_renderBuffer);
+
+  Vaango_UIEnvironment::vtk_RenderWindow->InitializeFromCurrentContext();
+  Vaango_UIEnvironment::vtk_RenderWindow->SetSize(Vaango_UIEnvironment::vtk_viewportSize);
+  Vaango_UIEnvironment::vtk_Interactor->SetSize(Vaango_UIEnvironment::vtk_viewportSize);
+
+  // Set the list of draw buffers.
+  GLenum vtk_drawBuffers[1] = {GL_COLOR_ATTACHMENT0};
+  glDrawBuffers(1, vtk_drawBuffers); // "1" is the size of DrawBuffers
+
+  glViewport(0, 0, vtk_width, vtk_height); // Render on the whole framebuffer, 
+                                           // complete from the lower left corner to the upper right
+
+  // Always check that our framebuffer is ok
+  if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+    std::cerr << "**ERROR** Incomplete framebuffer!\n";
+    return -1;
+  }
+
+  // Unbind framebuffer
+  glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+  return 0;
 }
 
 void

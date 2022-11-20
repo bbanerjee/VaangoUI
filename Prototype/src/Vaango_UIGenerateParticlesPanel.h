@@ -6,7 +6,9 @@
 #include <Vaango_UIGenerateRVEParticles.h>
 
 #include <Core/Enums.h>
-#include <Core/Voronoi.h>
+
+#include <vtkActor.h>
+#include <vtkSmartPointer.h>
 
 #include <imgui.h>
 
@@ -23,114 +25,25 @@ private:
 
   bool d_enableCreateDistribution = false;
   Vaango_UIGenerateRVEParticles generator;
+  std::vector<vtkSmartPointer<vtkActor>> vtk_actors;
 
 public:
 
-  Vaango_UIGenerateParticlesPanel()
-  {
-    d_isVisible = false;
-  }
+  Vaango_UIGenerateParticlesPanel();
 
-  virtual ~Vaango_UIGenerateParticlesPanel()
-  {
-  } 
+  virtual ~Vaango_UIGenerateParticlesPanel();
 
-public:
+  void draw(const std::string& title, int width, int height);
 
-  void draw(const std::string& title, int width, int height)
-  {
-    // Yellow is content region min/max
-		{
-			ImVec2 vMin = ImGui::GetWindowContentRegionMin();
-			ImVec2 vMax = ImGui::GetWindowContentRegionMax();
+private:
 
-			vMin.x += ImGui::GetWindowPos().x;
-			vMin.y += ImGui::GetWindowPos().y;
-			vMax.x += ImGui::GetWindowPos().x;
-			vMax.y += ImGui::GetWindowPos().y;
-
-			ImGui::GetForegroundDrawList()->AddRect( vMin, vMax, IM_COL32( 255, 255, 0, 255 ) );
-		}
-    {
-      ImGui::BeginChild("generate particles", ImVec2(0, 0));
-      generateParticles(width, height); 
-      ImGui::EndChild();
-    }
-    {
-      ImGui::BeginChild("display particles", ImVec2(0, 0));
-      drawParticles(width, height); 
-      ImGui::EndChild();
-    }
-  }
-
-  void generateParticles(int width, int height) {
-
-    // Estimate RVE size (2 * largest particle size)
-    d_rveSize = s_sizeDist.maxParticleSize * 2.0;
-    ImGui::Text("RVE Size");
-    ImGui::SameLine();
-    ImGui::PushItemWidth(100);
-    float val = d_rveSize;
-    ImGui::DragFloat("(L)##1a", &val);
-    d_rveSize = static_cast<double>(val);
-    ImGui::PopItemWidth();
-
-    ImGui::SameLine();
-
-    ImGui::Text("Particle shape");
-    ImGui::SameLine();
-    ImGui::PushItemWidth(100);
-    const char* items[] = {"Solid circle", "Hollow circle", "Solid sphere", "Hollow sphere"};
-    static int item = 0;
-    ImGui::Combo("##1a", &item, items, IM_ARRAYSIZE(items));
-    switch(item) {
-    case 0: d_partShape = ParticleShape::CIRCLE; break;
-    case 1: d_partShape = ParticleShape::HOLLOW_CIRCLE; break;
-    case 2: d_partShape = ParticleShape::SPHERE; break;
-    case 3: d_partShape = ParticleShape::HOLLOW_SPHERE; break;
-    default: d_partShape = ParticleShape::CIRCLE; break;
-    };
-    ImGui::PopItemWidth();
-
-    ImGui::SameLine();
-
-    ImGui::Text("Thickness");
-    ImGui::SameLine();
-    ImGui::PushItemWidth(100);
-    val = d_thickness;
-    ImGui::DragFloat("(L)##1b", &val);
-    d_thickness = static_cast<double>(val);
-    ImGui::PopItemWidth();
-
-    ImVec2 buttonSize(200, 20);
-    d_enableCreateDistribution = false;
-    if (ImGui::Button("Create distribution", buttonSize)) {
-      d_enableCreateDistribution = true;
-    }
-
-    ImGui::SameLine();
-
-    ImGui::Checkbox("Periodic", &d_periodicDistribution);
-
-
-    // Generate particle locations
-    if (d_enableCreateDistribution) {
-      // Estimate the number of particles
-      s_sizeDist.calcParticleDist();
-      actuallyGenerate();
-      d_enableCreateDistribution = false;
-    }
-  }
+  void generateParticles(int width, int height);
   
-  void actuallyGenerate()
-  {
-    generator.distributeParticles(d_rveSize, d_periodicDistribution,
-                                  d_partShape, d_thickness);
-  }
+  void actuallyGenerate();
 
-  void drawParticles(int width, int height) {
+  void createVTKActors();
 
-  }
+  void drawParticles(int width, int height); 
 
 };
 

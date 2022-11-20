@@ -357,6 +357,10 @@ public:
     d_particleList.clear();
   }
 
+  const std::vector<ParticleInRVE>& getParticles() const {
+    return d_particleList;
+  }
+
   const ParticleInRVE& getParticle(int index) const {
     if (index > d_particleList.size()) {
       return d_particleList.back(); 

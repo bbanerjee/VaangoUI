@@ -5,23 +5,23 @@ namespace VaangoUI {
 
 Vertex::Vertex() 
   : d_v({0, 0, 0}), 
-    d_onHull(!VoronoiFlags::ONHULL),
-    d_mark(VoronoiFlags::PROCESSED) {}
+    d_onHull(false),
+    d_mark(false) {}
 
 Vertex::Vertex(long x, long y, long z) 
   : d_v({x, y, z}),
-    d_onHull(!VoronoiFlags::ONHULL),
-    d_mark(!VoronoiFlags::PROCESSED) {}
+    d_onHull(false),
+    d_mark(false) {}
 
 Vertex::Vertex(const Vertex& v) 
   : d_v({mapToInt(v.x()), mapToInt(v.y()), mapToInt(v.z())}), 
-    d_onHull(!VoronoiFlags::ONHULL),
-    d_mark(!VoronoiFlags::PROCESSED) {}
+    d_onHull(false),
+    d_mark(false) {}
 
 Vertex::Vertex(const Point& pt) 
   : d_v({mapToInt(pt.x), mapToInt(pt.y), mapToInt(pt.z)}), 
-    d_onHull(!VoronoiFlags::ONHULL),
-    d_mark(!VoronoiFlags::PROCESSED) {}
+    d_onHull(false),
+    d_mark(false) {}
 
 long 
 Vertex::v(int index) const { return d_v[index]; }
