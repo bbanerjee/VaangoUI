@@ -49,7 +49,8 @@ public:
   void stopImGui();
 
   void setupVTK();
-  void setupVTKBuffers();
+  int setupVTKBuffers(int width, int height);
+  void deleteVTKBuffers();
 
   void runMainLoop(std::vector<Vaango_UIComponentBase*> components);
 
@@ -73,6 +74,7 @@ public:
   static vtkSmartPointer<vtkCallbackCommand> vtk_CurrentCallback;
   static vtkSmartPointer<vtkGenericOpenGLRenderWindow> vtk_RenderWindow;
   static GLuint vtk_frameBuffer;
+  static GLuint vtk_renderBuffer;
   static GLuint vtk_renderTexture;
 
 };

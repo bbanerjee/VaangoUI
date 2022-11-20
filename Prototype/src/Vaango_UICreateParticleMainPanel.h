@@ -33,10 +33,10 @@ public:
 
   void draw(const std::string& title, int width, int height)
   {
-    ImGui::SetNextWindowSize(ImVec2(width, height+40), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(width, height), ImGuiCond_FirstUseEver);
     //io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     //std::cout << "visible = " << d_isVisible << "\n";
-    if (ImGui::Begin(title.c_str(), &d_isVisible, 0)) {
+    if (ImGui::Begin(title.c_str(), &d_isVisible, ImGuiWindowFlags_NoScrollbar)) {
       ImVec2 vMin = ImGui::GetWindowContentRegionMin();
       ImVec2 vMax = ImGui::GetWindowContentRegionMax();
       int actual_width = vMax.x - vMin.x;
@@ -50,8 +50,8 @@ public:
 
       {
         ImGui::BeginGroup();
-        ImGui::BeginChild("create particles", ImVec2(0, 0));
-        if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None)) {
+        ImGui::BeginChild("create particles", ImVec2(width, height));
+        if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_FittingPolicyResizeDown)) {
           if (ImGui::BeginTabItem("Particle size distribution")) {
             d_inputPartDist.draw("input_part_dist", width, height);
             ImGui::EndTabItem();

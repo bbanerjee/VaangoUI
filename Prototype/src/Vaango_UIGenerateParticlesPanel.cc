@@ -160,8 +160,12 @@ void Vaango_UIGenerateParticlesPanel::createVTKActors() {
 
     vtk_actors.push_back(actor);
     Vaango_UIEnvironment::vtk_Renderer->AddActor(actor);
-    Vaango_UIEnvironment::vtk_Renderer->SetBackground(colors->GetColor3d("DarkSlateGray").GetData());
   }
+  Vaango_UIEnvironment::vtk_Renderer->SetBackground(colors->GetColor3d("DarkSlateGray").GetData());
+  Vaango_UIEnvironment::vtk_Renderer->ResetCamera();
+  Vaango_UIEnvironment::vtk_RenderWindow->InitializeFromCurrentContext();
+  Vaango_UIEnvironment::vtk_RenderWindow->SetSize(Vaango_UIEnvironment::vtk_viewportSize);
+  Vaango_UIEnvironment::vtk_Interactor->SetSize(Vaango_UIEnvironment::vtk_viewportSize);
 }
 
 void Vaango_UIGenerateParticlesPanel::drawParticles(int width, int height) {
@@ -170,6 +174,36 @@ void Vaango_UIGenerateParticlesPanel::drawParticles(int width, int height) {
   glBindFramebuffer(GL_FRAMEBUFFER, Vaango_UIEnvironment::vtk_frameBuffer);
   Vaango_UIEnvironment::vtk_RenderWindow->Render();
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+  GLenum framebufferStatus = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
+
+  switch (framebufferStatus) {
+    case GL_FRAMEBUFFER_COMPLETE_EXT: break;
+    case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT:
+      std::cout << "Framebuffer Object" << "Error: Attachment Point Unconnected" << std::endl;
+      break;
+    case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT:
+      std::cout << "Framebuffer Object" << "Error: Missing Attachment" << std::endl;
+      break;
+    case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT:
+      std::cout << "Framebuffer Object" << "Error: Dimensions do not match" << std::endl;
+      break;
+    case GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT:
+      std::cout << "Framebuffer Object" << "Error: Formats" << std::endl;
+      break;
+    case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT:
+      std::cout << "Framebuffer Object" << "Error: Draw Buffer" << std::endl;
+      break;
+    case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT:
+      std::cout << "Framebuffer Object" << "Error: Read Buffer" << std::endl;
+      break;
+    case GL_FRAMEBUFFER_UNSUPPORTED_EXT:
+      std::cout << "Framebuffer Object" << "Error: Unsupported Framebuffer Configuration" << std::endl;
+      break;
+    default:
+      std::cout << "Framebuffer Object" << "Error: Unkown Framebuffer Object Failure" << std::endl;
+      break;
+  }
 
    // Process events
   if (ImGui::IsWindowFocused()) {
@@ -202,7 +236,38 @@ void Vaango_UIGenerateParticlesPanel::drawParticles(int width, int height) {
 
   // Get the size of the child (i.e. the whole draw size of the windows).
   ImVec2 wsize = ImGui::GetContentRegionAvail();
-  ImGui::Image(reinterpret_cast<void*>(Vaango_UIEnvironment::vtk_renderTexture), wsize, ImVec2(0, 1), ImVec2(1, 0));
+  std::cout << "wsize = " << wsize.x << ", " << wsize.y << "\n";
+  //ImGui::Image(reinterpret_cast<void*>(Vaango_UIEnvironment::vtk_renderTexture), wsize, ImVec2(0, 1), ImVec2(1, 0));
+
+  int format, ww, hh;
+  glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_INTERNAL_FORMAT, &format);
+  glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &ww);
+  glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &hh);
+  std::cout << "format = " << format << " ww = " << ww << " hh = " << hh << "\n";
+  ImGui::Image(reinterpret_cast<void*>(Vaango_UIEnvironment::vtk_renderTexture), 
+               ImVec2(ww,hh), ImVec2(0, 1), ImVec2(1, 0));
+
+  /*
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, 
+               GL_RGBA, GL_UNSIGNED_BYTE, Vaango_UIEnvironment::vtk_renderTexture);
+               */
+
+
+  GLubyte* image = new GLubyte[ww * hh * 4];   
+  glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+
+  GLuint r, g, b, a; // or GLubyte r, g, b, a;
+  size_t x = 100, y = 100; // line and column of the pixel
+  size_t elmes_per_line = ww * 4; // elements per line = 256 * "RGBA"
+
+  size_t row = y * elmes_per_line;
+  size_t col = x * 4;
+
+  r = image[row + col]; 
+  g = image[row + col + 1]; 
+  b = image[row + col + 2]; 
+  a = image[row + col + 3];
+  std::cout << "color = " << r << "," << g << "," << b << std::endl;
   
 }
 

@@ -30,6 +30,7 @@ Vaango_UIEnvironment::vtk_RenderWindow = vtkSmartPointer<vtkGenericOpenGLRenderW
 int Vaango_UIEnvironment::vtk_viewportSize[] = {400, 400};
 
 GLuint Vaango_UIEnvironment::vtk_frameBuffer = 0;
+GLuint Vaango_UIEnvironment::vtk_renderBuffer = 0;
 GLuint Vaango_UIEnvironment::vtk_renderTexture = 0;
 
 Vaango_UIEnvironment::Vaango_UIEnvironment(const std::string& title,
@@ -152,7 +153,7 @@ Vaango_UIEnvironment::setupVTK()
   vtk_RenderWindow->SetInteractor(vtk_Interactor);
 }
 
-int setupVTKBuffers(int vtk_width, int vtk_height)
+int Vaango_UIEnvironment::setupVTKBuffers(int vtk_width, int vtk_height)
 {
   // Texture for rendering
   glGenTextures(1, &Vaango_UIEnvironment::vtk_renderTexture);
@@ -165,7 +166,6 @@ int setupVTKBuffers(int vtk_width, int vtk_height)
   glBindTexture(GL_TEXTURE_2D, 0);
 
   // Render buffer for rendering
-  GLuint vtk_renderBuffer = 0;
   glGenRenderbuffers(1, &vtk_renderBuffer);
   glBindRenderbuffer(GL_RENDERBUFFER, vtk_renderBuffer);
   glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, vtk_width, vtk_height);
@@ -177,9 +177,9 @@ int setupVTKBuffers(int vtk_width, int vtk_height)
   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, Vaango_UIEnvironment::vtk_renderTexture, 0);
   glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, vtk_renderBuffer);
 
-  Vaango_UIEnvironment::vtk_RenderWindow->InitializeFromCurrentContext();
-  Vaango_UIEnvironment::vtk_RenderWindow->SetSize(Vaango_UIEnvironment::vtk_viewportSize);
-  Vaango_UIEnvironment::vtk_Interactor->SetSize(Vaango_UIEnvironment::vtk_viewportSize);
+  //Vaango_UIEnvironment::vtk_RenderWindow->InitializeFromCurrentContext();
+  //Vaango_UIEnvironment::vtk_RenderWindow->SetSize(Vaango_UIEnvironment::vtk_viewportSize);
+  //Vaango_UIEnvironment::vtk_Interactor->SetSize(Vaango_UIEnvironment::vtk_viewportSize);
 
   // Set the list of draw buffers.
   GLenum vtk_drawBuffers[1] = {GL_COLOR_ATTACHMENT0};
@@ -198,6 +198,14 @@ int setupVTKBuffers(int vtk_width, int vtk_height)
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
   return 0;
+}
+
+void
+Vaango_UIEnvironment::deleteVTKBuffers()
+{
+  glDeleteFramebuffers( 1, &Vaango_UIEnvironment::vtk_frameBuffer );
+  glDeleteRenderbuffers( 1, &Vaango_UIEnvironment::vtk_renderBuffer );
+  glDeleteTextures(1, &Vaango_UIEnvironment::vtk_renderTexture);
 }
 
 void
