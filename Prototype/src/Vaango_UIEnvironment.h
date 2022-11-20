@@ -72,6 +72,8 @@ public:
   static vtkSmartPointer<vtkGenericRenderWindowInteractor> vtk_Interactor;
   static vtkSmartPointer<vtkCallbackCommand> vtk_CurrentCallback;
   static vtkSmartPointer<vtkGenericOpenGLRenderWindow> vtk_RenderWindow;
+  static GLuint vtk_frameBuffer;
+  static GLuint vtk_renderTexture;
 
 };
 

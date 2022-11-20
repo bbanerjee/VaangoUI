@@ -29,6 +29,9 @@ Vaango_UIEnvironment::vtk_RenderWindow = vtkSmartPointer<vtkGenericOpenGLRenderW
 
 int Vaango_UIEnvironment::vtk_viewportSize[] = {400, 400};
 
+GLuint Vaango_UIEnvironment::vtk_frameBuffer = 0;
+GLuint Vaango_UIEnvironment::vtk_renderTexture = 0;
+
 Vaango_UIEnvironment::Vaango_UIEnvironment(const std::string& title,
                                            const int width,
                                            const int height)
@@ -152,9 +155,8 @@ Vaango_UIEnvironment::setupVTK()
 int setupVTKBuffers(int vtk_width, int vtk_height)
 {
   // Texture for rendering
-  GLuint vtk_renderTexture = 0;
-  glGenTextures(1, &vtk_renderTexture);
-  glBindTexture(GL_TEXTURE_2D, vtk_renderTexture);
+  glGenTextures(1, &Vaango_UIEnvironment::vtk_renderTexture);
+  glBindTexture(GL_TEXTURE_2D, Vaango_UIEnvironment::vtk_renderTexture);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, vtk_width, vtk_height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -170,10 +172,9 @@ int setupVTKBuffers(int vtk_width, int vtk_height)
   glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
   // Framebuffer for rendering
-  GLuint vtk_frameBuffer = 0;
-  glGenFramebuffers(1, &vtk_frameBuffer);
-  glBindFramebuffer(GL_FRAMEBUFFER, vtk_frameBuffer);
-  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, vtk_renderTexture, 0);
+  glGenFramebuffers(1, &Vaango_UIEnvironment::vtk_frameBuffer);
+  glBindFramebuffer(GL_FRAMEBUFFER, Vaango_UIEnvironment::vtk_frameBuffer);
+  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, Vaango_UIEnvironment::vtk_renderTexture, 0);
   glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, vtk_renderBuffer);
 
   Vaango_UIEnvironment::vtk_RenderWindow->InitializeFromCurrentContext();

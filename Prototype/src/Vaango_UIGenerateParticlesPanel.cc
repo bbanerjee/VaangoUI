@@ -1,5 +1,6 @@
 #include <Vaango_UIGenerateParticlesPanel.h>
 #include <Vaango_UIGenerateRVEParticles.h>
+#include <Vaango_UIEnvironment.h>
 
 #include <Core/Enums.h>
 
@@ -118,6 +119,8 @@ void Vaango_UIGenerateParticlesPanel::actuallyGenerate()
 
 void Vaango_UIGenerateParticlesPanel::createVTKActors() {
 
+  vtk_actors.clear();
+
   vtkNew<vtkNamedColors> colors;
 
   for (auto part : s_partList.getParticles()) {
@@ -156,11 +159,51 @@ void Vaango_UIGenerateParticlesPanel::createVTKActors() {
     actor->GetProperty()->SetColor(colors->GetColor3d("MistyRose").GetData());
 
     vtk_actors.push_back(actor);
+    Vaango_UIEnvironment::vtk_Renderer->AddActor(actor);
+    Vaango_UIEnvironment::vtk_Renderer->SetBackground(colors->GetColor3d("DarkSlateGray").GetData());
   }
 }
 
 void Vaango_UIGenerateParticlesPanel::drawParticles(int width, int height) {
 
+  // Render to our framebuffer
+  glBindFramebuffer(GL_FRAMEBUFFER, Vaango_UIEnvironment::vtk_frameBuffer);
+  Vaango_UIEnvironment::vtk_RenderWindow->Render();
+  glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+   // Process events
+  if (ImGui::IsWindowFocused()) {
+
+    ImGuiIO& io = ImGui::GetIO();
+    io.ConfigWindowsMoveFromTitleBarOnly = true;
+    ImVec2 wPos = ImGui::GetWindowPos();
+
+    double xpos = static_cast<double>(io.MousePos[0]) - static_cast<double>(ImGui::GetWindowPos().x);
+    double ypos = static_cast<double>(io.MousePos[1]) - static_cast<double>(ImGui::GetWindowPos().y);
+    int ctrl = static_cast<int>(io.KeyCtrl);
+    int shift = static_cast<int>(io.KeyShift);
+    bool dclick = io.MouseDoubleClicked[0] || io.MouseDoubleClicked[1] || io.MouseDoubleClicked[2];
+
+    Vaango_UIEnvironment::vtk_Interactor->SetEventInformationFlipY(xpos, ypos, ctrl, shift, dclick);
+
+    if (io.MouseClicked[ImGuiMouseButton_Left])
+      Vaango_UIEnvironment::vtk_Interactor->InvokeEvent(vtkCommand::LeftButtonPressEvent, nullptr);
+    else if (io.MouseReleased[ImGuiMouseButton_Left])
+      Vaango_UIEnvironment::vtk_Interactor->InvokeEvent(vtkCommand::LeftButtonReleaseEvent, nullptr);
+    else if (io.MouseClicked[ImGuiMouseButton_Right])
+      Vaango_UIEnvironment::vtk_Interactor->InvokeEvent(vtkCommand::RightButtonPressEvent, nullptr);
+    else if (io.MouseReleased[ImGuiMouseButton_Right])
+      Vaango_UIEnvironment::vtk_Interactor->InvokeEvent(vtkCommand::RightButtonReleaseEvent, nullptr);
+    else if (io.MouseWheel > 0)
+      Vaango_UIEnvironment::vtk_Interactor->InvokeEvent(vtkCommand::MouseWheelBackwardEvent, nullptr);
+
+    Vaango_UIEnvironment::vtk_Interactor->InvokeEvent(vtkCommand::MouseMoveEvent, nullptr);
+  }
+
+  // Get the size of the child (i.e. the whole draw size of the windows).
+  ImVec2 wsize = ImGui::GetContentRegionAvail();
+  ImGui::Image(reinterpret_cast<void*>(Vaango_UIEnvironment::vtk_renderTexture), wsize, ImVec2(0, 1), ImVec2(1, 0));
+  
 }
 
 
