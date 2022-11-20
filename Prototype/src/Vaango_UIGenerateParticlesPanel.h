@@ -45,6 +45,8 @@ private:
 
   void drawParticles(int width, int height); 
 
+  void drawWindowBox() const;
+
 };
 
 } // namespace VaangoUI

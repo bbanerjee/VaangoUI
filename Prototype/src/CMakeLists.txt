@@ -30,6 +30,8 @@ find_package(VTK 9.1 REQUIRED COMPONENTS
     FiltersCore
     FiltersSources
     InteractionStyle
+    InteractionWidgets
+    RenderingAnnotation
     RenderingCore
     RenderingFreeType
     RenderingGL2PSOpenGL2

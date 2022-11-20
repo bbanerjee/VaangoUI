@@ -5,6 +5,7 @@
 #include <Core/Enums.h>
 
 #include <vtkActor.h>
+#include <vtkCamera.h>
 #include <vtkCylinderSource.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
@@ -12,7 +13,8 @@
 #include <vtkProperty.h>
 #include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
-
+#include <vtkAxesActor.h>
+#include <vtkOrientationMarkerWidget.h>
 
 namespace VaangoUI {
 
@@ -27,20 +29,9 @@ Vaango_UIGenerateParticlesPanel::~Vaango_UIGenerateParticlesPanel()
 
 void Vaango_UIGenerateParticlesPanel::draw(const std::string& title, int width, int height)
 {
-  // Yellow is content region min/max
+  drawWindowBox();
   {
-    ImVec2 vMin = ImGui::GetWindowContentRegionMin();
-    ImVec2 vMax = ImGui::GetWindowContentRegionMax();
-
-    vMin.x += ImGui::GetWindowPos().x;
-    vMin.y += ImGui::GetWindowPos().y;
-    vMax.x += ImGui::GetWindowPos().x;
-    vMax.y += ImGui::GetWindowPos().y;
-
-    ImGui::GetForegroundDrawList()->AddRect( vMin, vMax, IM_COL32( 255, 255, 0, 255 ) );
-  }
-  {
-    ImGui::BeginChild("generate particles", ImVec2(0, 0));
+    ImGui::BeginChild("generate particles", ImVec2(0, 50));
     generateParticles(width, height); 
     ImGui::EndChild();
   }
@@ -52,6 +43,8 @@ void Vaango_UIGenerateParticlesPanel::draw(const std::string& title, int width, 
 }
 
 void Vaango_UIGenerateParticlesPanel::generateParticles(int width, int height) {
+
+  drawWindowBox();
 
   // Estimate RVE size (2 * largest particle size)
   d_rveSize = s_sizeDist.maxParticleSize * 2.0;
@@ -161,14 +154,38 @@ void Vaango_UIGenerateParticlesPanel::createVTKActors() {
     vtk_actors.push_back(actor);
     Vaango_UIEnvironment::vtk_Renderer->AddActor(actor);
   }
+
+
+  // Add coordinate axis frame
+  vtkNew<vtkAxesActor> axes;
+  Vaango_UIEnvironment::vtk_Renderer->AddActor(axes);
+  /*
+  vtkNew<vtkOrientationMarkerWidget> widget;
+  double rgba[4]{0.0, 0.0, 0.0, 0.0};
+  colors->GetColor("Carrot", rgba);
+  widget->SetOutlineColor(rgba[0], rgba[1], rgba[2]);
+  widget->SetOrientationMarker(axes);
+  widget->SetInteractor(Vaango_UIEnvironment::vtk_Interactor);
+  widget->SetViewport(0.0, 0.0, 100, 100);
+  widget->SetEnabled(1);
+  widget->InteractiveOff();
+  */
+
+  Vaango_UIEnvironment::vtk_Renderer->GetActiveCamera()->Azimuth(50);
+  Vaango_UIEnvironment::vtk_Renderer->GetActiveCamera()->Elevation(-30);
+
   Vaango_UIEnvironment::vtk_Renderer->SetBackground(colors->GetColor3d("DarkSlateGray").GetData());
   Vaango_UIEnvironment::vtk_Renderer->ResetCamera();
-  Vaango_UIEnvironment::vtk_RenderWindow->InitializeFromCurrentContext();
-  Vaango_UIEnvironment::vtk_RenderWindow->SetSize(Vaango_UIEnvironment::vtk_viewportSize);
-  Vaango_UIEnvironment::vtk_Interactor->SetSize(Vaango_UIEnvironment::vtk_viewportSize);
+
+  //Vaango_UIEnvironment::vtk_RenderWindow->InitializeFromCurrentContext();
+  //Vaango_UIEnvironment::vtk_RenderWindow->SetSize(Vaango_UIEnvironment::vtk_viewportSize);
+  //Vaango_UIEnvironment::vtk_Interactor->SetSize(Vaango_UIEnvironment::vtk_viewportSize);
+
 }
 
 void Vaango_UIGenerateParticlesPanel::drawParticles(int width, int height) {
+
+  drawWindowBox();
 
   // Render to our framebuffer
   glBindFramebuffer(GL_FRAMEBUFFER, Vaango_UIEnvironment::vtk_frameBuffer);
@@ -205,11 +222,18 @@ void Vaango_UIGenerateParticlesPanel::drawParticles(int width, int height) {
       break;
   }
 
-   // Process events
+  // Process events
+  ImGuiIO& io = ImGui::GetIO();
+  io.ConfigWindowsMoveFromTitleBarOnly = true;
+
+  /*
+  if (ImGui::IsWindowFocused()) {
+    Vaango_UIEnvironment::vtk_Interactor->Start();
+  }
+  */
+
   if (ImGui::IsWindowFocused()) {
 
-    ImGuiIO& io = ImGui::GetIO();
-    io.ConfigWindowsMoveFromTitleBarOnly = true;
     ImVec2 wPos = ImGui::GetWindowPos();
 
     double xpos = static_cast<double>(io.MousePos[0]) - static_cast<double>(ImGui::GetWindowPos().x);
@@ -230,15 +254,18 @@ void Vaango_UIGenerateParticlesPanel::drawParticles(int width, int height) {
       Vaango_UIEnvironment::vtk_Interactor->InvokeEvent(vtkCommand::RightButtonReleaseEvent, nullptr);
     else if (io.MouseWheel > 0)
       Vaango_UIEnvironment::vtk_Interactor->InvokeEvent(vtkCommand::MouseWheelBackwardEvent, nullptr);
+    else if (io.MouseWheel < 0)
+      Vaango_UIEnvironment::vtk_Interactor->InvokeEvent(vtkCommand::MouseWheelForwardEvent, nullptr);
 
     Vaango_UIEnvironment::vtk_Interactor->InvokeEvent(vtkCommand::MouseMoveEvent, nullptr);
   }
 
   // Get the size of the child (i.e. the whole draw size of the windows).
   ImVec2 wsize = ImGui::GetContentRegionAvail();
-  std::cout << "wsize = " << wsize.x << ", " << wsize.y << "\n";
-  //ImGui::Image(reinterpret_cast<void*>(Vaango_UIEnvironment::vtk_renderTexture), wsize, ImVec2(0, 1), ImVec2(1, 0));
+  //std::cout << "wsize = " << wsize.x << ", " << wsize.y << "\n";
+  ImGui::Image(reinterpret_cast<void*>(Vaango_UIEnvironment::vtk_renderTexture), wsize, ImVec2(0, 1), ImVec2(1, 0));
 
+  /*
   int format, ww, hh;
   glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_INTERNAL_FORMAT, &format);
   glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &ww);
@@ -246,12 +273,6 @@ void Vaango_UIGenerateParticlesPanel::drawParticles(int width, int height) {
   std::cout << "format = " << format << " ww = " << ww << " hh = " << hh << "\n";
   ImGui::Image(reinterpret_cast<void*>(Vaango_UIEnvironment::vtk_renderTexture), 
                ImVec2(ww,hh), ImVec2(0, 1), ImVec2(1, 0));
-
-  /*
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, 
-               GL_RGBA, GL_UNSIGNED_BYTE, Vaango_UIEnvironment::vtk_renderTexture);
-               */
-
 
   GLubyte* image = new GLubyte[ww * hh * 4];   
   glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
@@ -268,8 +289,21 @@ void Vaango_UIGenerateParticlesPanel::drawParticles(int width, int height) {
   b = image[row + col + 2]; 
   a = image[row + col + 3];
   std::cout << "color = " << r << "," << g << "," << b << std::endl;
+  */
   
 }
 
+// Yellow is content region min/max
+void Vaango_UIGenerateParticlesPanel::drawWindowBox() const {
+  ImVec2 vMin = ImGui::GetWindowContentRegionMin();
+  ImVec2 vMax = ImGui::GetWindowContentRegionMax();
+
+  vMin.x += ImGui::GetWindowPos().x;
+  vMin.y += ImGui::GetWindowPos().y;
+  vMax.x += ImGui::GetWindowPos().x;
+  vMax.y += ImGui::GetWindowPos().y;
+
+  ImGui::GetForegroundDrawList()->AddRect( vMin, vMax, IM_COL32( 255, 255, 0, 255 ) );
+}
 
 } // namespace VaangoUI

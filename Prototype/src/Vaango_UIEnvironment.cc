@@ -27,7 +27,9 @@ Vaango_UIEnvironment::vtk_CurrentCallback = vtkSmartPointer<vtkCallbackCommand>:
 vtkSmartPointer<vtkGenericOpenGLRenderWindow>  
 Vaango_UIEnvironment::vtk_RenderWindow = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
 
-int Vaango_UIEnvironment::vtk_viewportSize[] = {400, 400};
+static int vtk_width  = 400;
+static int vtk_height = 400;
+int Vaango_UIEnvironment::vtk_viewportSize[] = {vtk_width, vtk_height};
 
 GLuint Vaango_UIEnvironment::vtk_frameBuffer = 0;
 GLuint Vaango_UIEnvironment::vtk_renderBuffer = 0;
@@ -124,7 +126,6 @@ Vaango_UIEnvironment::stopImGui()
 void
 Vaango_UIEnvironment::setupVTK()
 {
-  // vtk_Renderer = vtkSmartPointer<vtkRenderer>::New();
   vtk_Renderer->ResetCamera();
   vtk_Renderer->SetBackground(0.39, 0.39, 0.39);
 
@@ -132,6 +133,7 @@ Vaango_UIEnvironment::setupVTK()
 
   vtk_Interactor->SetInteractorStyle(vtk_InteractorStyle);
   vtk_Interactor->EnableRenderOff();
+  vtk_Interactor->SetRenderWindow(vtk_RenderWindow);
 
   auto vtk_CurrentCallbackFn =
     [](vtkObject* caller, long unsigned int eventId, void* clientData, void* callData) -> void {
@@ -140,10 +142,8 @@ Vaango_UIEnvironment::setupVTK()
     };
   vtk_CurrentCallback->SetCallback(vtk_CurrentCallbackFn);
 
-  int vtk_width  = 640;
-  int vtk_height = 480;
-  vtk_viewportSize[0]= vtk_width;
-  vtk_viewportSize[1]= vtk_height;
+  vtk_viewportSize[0] = vtk_width;
+  vtk_viewportSize[1] = vtk_height;
 
   vtk_RenderWindow->SetSize(vtk_viewportSize);
   vtk_RenderWindow->AddObserver(vtkCommand::WindowIsCurrentEvent, vtk_CurrentCallback);
@@ -153,12 +153,12 @@ Vaango_UIEnvironment::setupVTK()
   vtk_RenderWindow->SetInteractor(vtk_Interactor);
 }
 
-int Vaango_UIEnvironment::setupVTKBuffers(int vtk_width, int vtk_height)
+int Vaango_UIEnvironment::setupVTKBuffers(int width, int height)
 {
   // Texture for rendering
   glGenTextures(1, &Vaango_UIEnvironment::vtk_renderTexture);
   glBindTexture(GL_TEXTURE_2D, Vaango_UIEnvironment::vtk_renderTexture);
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, vtk_width, vtk_height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -168,7 +168,7 @@ int Vaango_UIEnvironment::setupVTKBuffers(int vtk_width, int vtk_height)
   // Render buffer for rendering
   glGenRenderbuffers(1, &vtk_renderBuffer);
   glBindRenderbuffer(GL_RENDERBUFFER, vtk_renderBuffer);
-  glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, vtk_width, vtk_height);
+  glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
   glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
   // Framebuffer for rendering
@@ -177,9 +177,9 @@ int Vaango_UIEnvironment::setupVTKBuffers(int vtk_width, int vtk_height)
   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, Vaango_UIEnvironment::vtk_renderTexture, 0);
   glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, vtk_renderBuffer);
 
-  //Vaango_UIEnvironment::vtk_RenderWindow->InitializeFromCurrentContext();
-  //Vaango_UIEnvironment::vtk_RenderWindow->SetSize(Vaango_UIEnvironment::vtk_viewportSize);
-  //Vaango_UIEnvironment::vtk_Interactor->SetSize(Vaango_UIEnvironment::vtk_viewportSize);
+  Vaango_UIEnvironment::vtk_RenderWindow->InitializeFromCurrentContext();
+  Vaango_UIEnvironment::vtk_RenderWindow->SetSize(Vaango_UIEnvironment::vtk_viewportSize);
+  Vaango_UIEnvironment::vtk_Interactor->SetSize(Vaango_UIEnvironment::vtk_viewportSize);
 
   // Set the list of draw buffers.
   GLenum vtk_drawBuffers[1] = {GL_COLOR_ATTACHMENT0};
