@@ -5,16 +5,20 @@
 #include <Core/Enums.h>
 
 #include <vtkActor.h>
+#include <vtkAxesActor.h>
 #include <vtkCamera.h>
+#include <vtkCaptionActor2D.h>
 #include <vtkCylinderSource.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
+#include <vtkOrientationMarkerWidget.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
 #include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
-#include <vtkAxesActor.h>
-#include <vtkOrientationMarkerWidget.h>
+#include <vtkTextActor.h>
+#include <vtkTextProperty.h>
+#include <vtkTransform.h>
 
 namespace VaangoUI {
 
@@ -118,6 +122,7 @@ void Vaango_UIGenerateParticlesPanel::createVTKActors() {
 
   for (auto part : s_partList.getParticles()) {
 
+    vtkNew<vtkActor> actor;
     vtkNew<vtkPolyDataMapper> mapper;
     switch (part.getShape())
     {
@@ -125,11 +130,23 @@ void Vaango_UIGenerateParticlesPanel::createVTKActors() {
       case ParticleShape::HOLLOW_CIRCLE: 
       {
         vtkNew<vtkCylinderSource> source;
-        source->SetCenter(part.getCenter().x, part.getCenter().y, part.getCenter().z);
+        source->SetCenter(0.0, 0.0, 0.0);
         source->SetRadius(part.getRadius());
-        source->SetHeight(1.0);
+        source->SetHeight(d_rveSize);
+        source->SetResolution(16);
 
         mapper->SetInputConnection(source->GetOutputPort());
+
+        actor->SetMapper(mapper);
+        actor->GetProperty()->SetColor(colors->GetColor3d("Tomato").GetData());
+
+        vtkNew<vtkTransform> transform;
+        transform->Translate(0.0, 0.0, d_rveSize/2.0);
+        transform->RotateX(90.0);
+        transform->Translate(part.getCenter().x, 0.0, -part.getCenter().y);
+        actor->SetUserTransform(transform);
+
+        actor->Render(Vaango_UIEnvironment::vtk_Renderer, mapper);
       }
         break;
       case ParticleShape::SPHERE: 
@@ -138,18 +155,18 @@ void Vaango_UIGenerateParticlesPanel::createVTKActors() {
         vtkNew<vtkSphereSource> source;
         source->SetCenter(part.getCenter().x, part.getCenter().y, part.getCenter().z);
         source->SetRadius(part.getRadius());
+        source->SetThetaResolution(16);
+        source->SetPhiResolution(16);
 
         mapper->SetInputConnection(source->GetOutputPort());
+
+        actor->SetMapper(mapper);
+        actor->GetProperty()->SetColor(colors->GetColor3d("Tomato").GetData());
       }
         break;
       default:
         break;
-
     }
-
-    vtkNew<vtkActor> actor;
-    actor->SetMapper(mapper);
-    actor->GetProperty()->SetColor(colors->GetColor3d("MistyRose").GetData());
 
     vtk_actors.push_back(actor);
     Vaango_UIEnvironment::vtk_Renderer->AddActor(actor);
@@ -157,8 +174,27 @@ void Vaango_UIGenerateParticlesPanel::createVTKActors() {
 
 
   // Add coordinate axis frame
+  // The axes are positioned with a user transform
   vtkNew<vtkAxesActor> axes;
+  vtkNew<vtkTransform> transform;
+  transform->Scale(d_rveSize/5, d_rveSize/5, d_rveSize/5);
+  //transform->Translate(-d_rveSize/20, -d_rveSize/20, 0);
+  axes->SetUserTransform(transform);
+
+  //double* bounds = axes->GetBounds();
+  //std::cout << "xmin = " << bounds[0] << " xmax = " << bounds[1]
+  //          << "ymin = " << bounds[2] << " ymax = " << bounds[3]
+  //          << "zmin = " << bounds[4] << " zmax = " << bounds[5] << "\n";
+  auto xcaption = axes->GetXAxisCaptionActor2D();
+  auto ycaption = axes->GetYAxisCaptionActor2D();
+  auto zcaption = axes->GetZAxisCaptionActor2D();
+  vtkNew<vtkTextProperty> font;
+  font->SetFontSize(12);
+  xcaption->SetCaptionTextProperty(font);
+  ycaption->SetCaptionTextProperty(font);
+  zcaption->SetCaptionTextProperty(font);
   Vaango_UIEnvironment::vtk_Renderer->AddActor(axes);
+
   /*
   vtkNew<vtkOrientationMarkerWidget> widget;
   double rgba[4]{0.0, 0.0, 0.0, 0.0};
