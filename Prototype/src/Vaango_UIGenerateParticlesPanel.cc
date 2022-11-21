@@ -5,10 +5,15 @@
 #include <Core/Enums.h>
 
 #include <vtkActor.h>
+#include <vtkAppendPolyData.h>
 #include <vtkAxesActor.h>
+#include <vtkBox.h>
 #include <vtkCamera.h>
 #include <vtkCaptionActor2D.h>
+#include <vtkClipPolyData.h>
+#include <vtkCubeSource.h>
 #include <vtkCylinderSource.h>
+#include <vtkImplicitBoolean.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
 #include <vtkOrientationMarkerWidget.h>
@@ -19,6 +24,7 @@
 #include <vtkTextActor.h>
 #include <vtkTextProperty.h>
 #include <vtkTransform.h>
+#include <vtkTransformPolyDataFilter.h>
 
 namespace VaangoUI {
 
@@ -120,6 +126,26 @@ void Vaango_UIGenerateParticlesPanel::createVTKActors() {
 
   vtkNew<vtkNamedColors> colors;
 
+  vtkNew<vtkCubeSource> rve;
+  rve->SetBounds(0, d_rveSize, 0, d_rveSize, 0, d_rveSize);
+  rve->Update();
+
+  vtkNew<vtkPolyDataMapper> cubeMapper;
+  cubeMapper->SetInputConnection(rve->GetOutputPort());
+
+  vtkNew<vtkActor> cubeActor;
+  cubeActor->SetMapper(cubeMapper);
+  cubeActor->GetProperty()->SetRepresentationToWireframe();
+  cubeActor->GetProperty()->SetOpacity(0.5);
+  cubeActor->GetProperty()->SetColor(colors->GetColor3d("Blue").GetData());
+
+  Vaango_UIEnvironment::vtk_Renderer->AddActor(cubeActor);
+
+  // For clipping
+  #ifdef CLIPPING
+  vtkNew<vtkAppendPolyData> clipData;
+  #endif
+
   for (auto part : s_partList.getParticles()) {
 
     vtkNew<vtkActor> actor;
@@ -135,18 +161,29 @@ void Vaango_UIGenerateParticlesPanel::createVTKActors() {
         source->SetHeight(d_rveSize);
         source->SetResolution(16);
 
+        vtkNew<vtkTransform> transform;
+        transform->Translate(0.0, 0.0, d_rveSize/2.0);
+        transform->RotateX(90.0);
+        transform->Translate(part.getCenter().x, 0.0, -part.getCenter().y);
+
+        #ifdef CLIPPING
+        vtkNew<vtkTransformPolyDataFilter> transformPD;
+        transformPD->SetTransform(transform);
+        transformPD->SetInputConnection(source->GetOutputPort());
+
+        clipData->AddInputConnection(transformPD->GetOutputPort());
+        clipData->Update();
+        #else
         mapper->SetInputConnection(source->GetOutputPort());
 
         actor->SetMapper(mapper);
         actor->GetProperty()->SetColor(colors->GetColor3d("Tomato").GetData());
 
-        vtkNew<vtkTransform> transform;
-        transform->Translate(0.0, 0.0, d_rveSize/2.0);
-        transform->RotateX(90.0);
-        transform->Translate(part.getCenter().x, 0.0, -part.getCenter().y);
         actor->SetUserTransform(transform);
 
         actor->Render(Vaango_UIEnvironment::vtk_Renderer, mapper);
+        #endif
+
       }
         break;
       case ParticleShape::SPHERE: 
@@ -158,10 +195,14 @@ void Vaango_UIGenerateParticlesPanel::createVTKActors() {
         source->SetThetaResolution(16);
         source->SetPhiResolution(16);
 
+        #ifdef CLIPPING
+        clipData->AddInputConnection(source->GetOutputPort());
+        #else
         mapper->SetInputConnection(source->GetOutputPort());
 
         actor->SetMapper(mapper);
         actor->GetProperty()->SetColor(colors->GetColor3d("Tomato").GetData());
+        #endif
       }
         break;
       default:
@@ -172,6 +213,31 @@ void Vaango_UIGenerateParticlesPanel::createVTKActors() {
     Vaango_UIEnvironment::vtk_Renderer->AddActor(actor);
   }
 
+  #ifdef CLIPPING
+  // Clipping 
+  vtkNew<vtkPolyDataMapper> clipDataMapper;
+  clipDataMapper->SetInputConnection(clipData->GetOutputPort());
+
+  vtkNew<vtkBox> implicitCube;
+  implicitCube->SetBounds(rve->GetOutput()->GetBounds());
+
+  vtkNew<vtkClipPolyData> clipper;
+  clipper->SetClipFunction(implicitCube);
+  clipper->SetInputConnection(clipData->GetOutputPort());
+  clipper->InsideOutOn();
+  clipper->Update();
+
+  vtkNew<vtkPolyDataMapper> clipMapper;
+  clipMapper->SetInputConnection(clipper->GetOutputPort());
+  clipMapper->ScalarVisibilityOff();
+
+  vtkNew<vtkActor> clipActor;
+  clipActor->SetMapper(clipMapper);
+  clipActor->GetProperty()->SetDiffuseColor(
+      colors->GetColor3d("Tomato").GetData());
+
+  Vaango_UIEnvironment::vtk_Renderer->AddActor(clipActor);
+  #endif
 
   // Add coordinate axis frame
   // The axes are positioned with a user transform
