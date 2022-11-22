@@ -27,8 +27,8 @@ Vaango_UIEnvironment::vtk_CurrentCallback = vtkSmartPointer<vtkCallbackCommand>:
 vtkSmartPointer<vtkGenericOpenGLRenderWindow>  
 Vaango_UIEnvironment::vtk_RenderWindow = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
 
-static int vtk_width  = 400;
-static int vtk_height = 400;
+static int vtk_width  = 1000;
+static int vtk_height = 1000;
 int Vaango_UIEnvironment::vtk_viewportSize[] = {vtk_width, vtk_height};
 
 GLuint Vaango_UIEnvironment::vtk_frameBuffer = 0;

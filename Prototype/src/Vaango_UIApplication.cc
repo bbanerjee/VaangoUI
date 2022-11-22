@@ -25,7 +25,7 @@ namespace VaangoUI {
 
     uiEnv.startImGui();
     uiEnv.setupVTK();
-    uiEnv.setupVTKBuffers(400, 400);
+    uiEnv.setupVTKBuffers(1000, 1000);
     uiEnv.runMainLoop(components);
     uiEnv.deleteVTKBuffers();
     uiEnv.stopImGui();

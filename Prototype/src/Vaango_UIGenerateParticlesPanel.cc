@@ -17,6 +17,7 @@
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
 #include <vtkOrientationMarkerWidget.h>
+#include <vtkPlane.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
 #include <vtkSmartPointer.h>
@@ -25,6 +26,8 @@
 #include <vtkTextProperty.h>
 #include <vtkTransform.h>
 #include <vtkTransformPolyDataFilter.h>
+
+#define CLIPPING
 
 namespace VaangoUI {
 
@@ -124,8 +127,14 @@ void Vaango_UIGenerateParticlesPanel::createVTKActors() {
 
   vtk_actors.clear();
 
+  ImVec4 bg_color = {0.45f, 0.55f, 0.60f, 1.00f};
+  glClearColor(bg_color.x * bg_color.w, 
+               bg_color.y * bg_color.w, 
+               bg_color.z * bg_color.w, bg_color.w);
+
   vtkNew<vtkNamedColors> colors;
 
+  // Bounding cube
   vtkNew<vtkCubeSource> rve;
   rve->SetBounds(0, d_rveSize, 0, d_rveSize, 0, d_rveSize);
   rve->Update();
@@ -136,7 +145,7 @@ void Vaango_UIGenerateParticlesPanel::createVTKActors() {
   vtkNew<vtkActor> cubeActor;
   cubeActor->SetMapper(cubeMapper);
   cubeActor->GetProperty()->SetRepresentationToWireframe();
-  cubeActor->GetProperty()->SetOpacity(0.5);
+  //cubeActor->GetProperty()->SetOpacity(0.5);
   cubeActor->GetProperty()->SetColor(colors->GetColor3d("Blue").GetData());
 
   Vaango_UIEnvironment::vtk_Renderer->AddActor(cubeActor);
@@ -218,14 +227,35 @@ void Vaango_UIGenerateParticlesPanel::createVTKActors() {
   vtkNew<vtkPolyDataMapper> clipDataMapper;
   clipDataMapper->SetInputConnection(clipData->GetOutputPort());
 
-  vtkNew<vtkBox> implicitCube;
-  implicitCube->SetBounds(rve->GetOutput()->GetBounds());
+  // Clip with cube
+  //vtkNew<vtkBox> implicitCube;
+  //implicitCube->SetBounds(rve->GetOutput()->GetBounds());
+  // Clip with planes
+  vtkNew<vtkPlane> xMinus, xPlus, yMinus, yPlus;
+  xMinus->SetOrigin(0, 0, 0);
+  xMinus->SetNormal(1, 0, 0);
+  xPlus->SetOrigin(d_rveSize, 0, 0);
+  xPlus->SetNormal(-1, 0, 0);
+  yMinus->SetOrigin(0, 0, 0);
+  yMinus->SetNormal(0, 1, 0);
+  yPlus->SetOrigin(0, d_rveSize, 0);
+  yPlus->SetNormal(0, -1, 0);
+
+  vtkNew<vtkImplicitBoolean> boolean;
+  boolean->AddFunction(xMinus);
+  boolean->AddFunction(xPlus);
+  boolean->AddFunction(yMinus);
+  boolean->AddFunction(yPlus);
+  boolean->SetOperationTypeToUnion();
 
   vtkNew<vtkClipPolyData> clipper;
-  clipper->SetClipFunction(implicitCube);
+  //clipper->SetClipFunction(implicitCube);
+  clipper->SetClipFunction(boolean);
+  //clipper->SetClipFunction(xPlus);
   clipper->SetInputConnection(clipData->GetOutputPort());
-  clipper->InsideOutOn();
-  clipper->Update();
+  //clipper->GenerateClippedOutputOn();
+  //clipper->InsideOutOn();
+  //clipper->Update();
 
   vtkNew<vtkPolyDataMapper> clipMapper;
   clipMapper->SetInputConnection(clipper->GetOutputPort());
@@ -235,6 +265,7 @@ void Vaango_UIGenerateParticlesPanel::createVTKActors() {
   clipActor->SetMapper(clipMapper);
   clipActor->GetProperty()->SetDiffuseColor(
       colors->GetColor3d("Tomato").GetData());
+  clipActor->GetProperty()->SetRepresentationToWireframe();
 
   Vaango_UIEnvironment::vtk_Renderer->AddActor(clipActor);
   #endif
@@ -242,23 +273,20 @@ void Vaango_UIGenerateParticlesPanel::createVTKActors() {
   // Add coordinate axis frame
   // The axes are positioned with a user transform
   vtkNew<vtkAxesActor> axes;
-  vtkNew<vtkTransform> transform;
-  transform->Scale(d_rveSize/5, d_rveSize/5, d_rveSize/5);
-  //transform->Translate(-d_rveSize/20, -d_rveSize/20, 0);
-  axes->SetUserTransform(transform);
+  axes->SetTotalLength(d_rveSize/5, d_rveSize/5, d_rveSize/5);
+  auto w = axes->GetXAxisCaptionActor2D()->GetWidth();
+  auto h = axes->GetXAxisCaptionActor2D()->GetHeight();
+  axes->GetXAxisCaptionActor2D()->SetWidth(w*0.25);
+  axes->GetXAxisCaptionActor2D()->SetHeight(h*0.25);
+  w = axes->GetYAxisCaptionActor2D()->GetWidth();
+  h = axes->GetYAxisCaptionActor2D()->GetHeight();
+  axes->GetYAxisCaptionActor2D()->SetWidth(w*0.25);
+  axes->GetYAxisCaptionActor2D()->SetHeight(h*0.25);
+  w = axes->GetZAxisCaptionActor2D()->GetWidth();
+  h = axes->GetZAxisCaptionActor2D()->GetHeight();
+  axes->GetZAxisCaptionActor2D()->SetWidth(w*0.25);
+  axes->GetZAxisCaptionActor2D()->SetHeight(h*0.25);
 
-  //double* bounds = axes->GetBounds();
-  //std::cout << "xmin = " << bounds[0] << " xmax = " << bounds[1]
-  //          << "ymin = " << bounds[2] << " ymax = " << bounds[3]
-  //          << "zmin = " << bounds[4] << " zmax = " << bounds[5] << "\n";
-  auto xcaption = axes->GetXAxisCaptionActor2D();
-  auto ycaption = axes->GetYAxisCaptionActor2D();
-  auto zcaption = axes->GetZAxisCaptionActor2D();
-  vtkNew<vtkTextProperty> font;
-  font->SetFontSize(12);
-  xcaption->SetCaptionTextProperty(font);
-  ycaption->SetCaptionTextProperty(font);
-  zcaption->SetCaptionTextProperty(font);
   Vaango_UIEnvironment::vtk_Renderer->AddActor(axes);
 
   /*
@@ -273,8 +301,8 @@ void Vaango_UIGenerateParticlesPanel::createVTKActors() {
   widget->InteractiveOff();
   */
 
-  Vaango_UIEnvironment::vtk_Renderer->GetActiveCamera()->Azimuth(50);
-  Vaango_UIEnvironment::vtk_Renderer->GetActiveCamera()->Elevation(-30);
+  //Vaango_UIEnvironment::vtk_Renderer->GetActiveCamera()->Azimuth(50);
+  //Vaango_UIEnvironment::vtk_Renderer->GetActiveCamera()->Elevation(-30);
 
   Vaango_UIEnvironment::vtk_Renderer->SetBackground(colors->GetColor3d("DarkSlateGray").GetData());
   Vaango_UIEnvironment::vtk_Renderer->ResetCamera();
