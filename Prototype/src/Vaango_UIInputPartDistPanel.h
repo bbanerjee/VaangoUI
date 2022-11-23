@@ -2,7 +2,6 @@
 #define __Vaango_UI_INPUT_PART_DIST_PANEL_H__
 
 #include <Vaango_UIPanelBase.h>
-#include <Vaango_UIData.h>
 #include <Vaango_UIParticleSizeHistogramCanvas.h>
 
 #include <imgui.h>
@@ -38,9 +37,11 @@ public:
   void draw(const std::string& title, int width, int height)
   {
     {
+      s_sizeDist.print();
       ImGui::BeginChild("input part dist", ImVec2(2*width/3, 0));
       getInputSizeDist(2*width/3, height); 
       ImGui::EndChild();
+      s_sizeDist.print();
     }
     ImGui::SameLine();
     {
@@ -65,9 +66,8 @@ public:
                                    ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable;
 
     ImVec2 outer_size = ImVec2(0.0f,  ImGui::GetTextLineHeightWithSpacing()* 3);
-    char* name = &s_sizeDist.materialName[0];
-    float vol_frac = static_cast<float>(s_sizeDist.particleVolFrac);
-    float max_size = static_cast<float>(s_sizeDist.maxParticleSize);
+    float volFrac = static_cast<float>(s_sizeDist.particleVolFrac);
+    float maxSize = static_cast<float>(s_sizeDist.maxParticleSize);
     int num_sizes = s_sizeDist.numSizes;
     if (ImGui::BeginTable("particle_vol_frac", 3, flags, outer_size)) {
       ImGui::TableSetupScrollFreeze(0, 1); // Make top row always visible
@@ -77,12 +77,13 @@ public:
       ImGui::TableHeadersRow();
       ImGui::TableNextRow();
       ImGui::TableSetColumnIndex(0);
-      ImGui::InputText("", name, 64);
+      ImGui::InputText("", &s_sizeDist.materialName[0], 64);
       ImGui::TableSetColumnIndex(1);
-      ImGui::SliderFloat("%", &vol_frac, 0.0f, 100.0f); 
+      ImGui::SliderFloat("%", &volFrac, 0.0f, 100.0f); 
       ImGui::TableSetColumnIndex(2);
-      ImGui::SliderFloat("(L)", &max_size, 0.0f, 100.0f); 
-
+      ImGui::SliderFloat("(L)", &maxSize, 0.0f, 100.0f); 
+      s_sizeDist.particleVolFrac = volFrac;
+      s_sizeDist.maxParticleSize = maxSize;
       ImGui::EndTable();
     }
 
@@ -95,19 +96,30 @@ public:
       ImGui::TableSetupColumn("Volume fraction", ImGuiTableColumnFlags_None);
       ImGui::TableHeadersRow();
 
+      double maxSize = 0.0;
+      double totVolFrac = 0.0;
       for (int row = 0; row < num_sizes; row++) {
-        ImGui::PushID(row);
-        ImGui::TableNextColumn();
-        float size = static_cast<float>(s_sizeDist.size[row]);
-        ImGui::SliderFloat("(L <=)", &size, 0.0f, max_size); 
-        s_sizeDist.size[row] = size;
+        if (s_sizeDist.size[row] > 0.0 && s_sizeDist.volFrac[row] > 0.0) {
+          ImGui::PushID(row);
+          ImGui::TableNextColumn();
+          float size = static_cast<float>(s_sizeDist.size[row]);
+          ImGui::SliderFloat("(L <=)", &size, 0.0f, s_sizeDist.maxParticleSize); 
+          s_sizeDist.size[row] = size;
+          if (size > maxSize) {
+            maxSize = size;
+          }
 
-        ImGui::TableNextColumn();
-        float frac = static_cast<float>(s_sizeDist.volFrac[row]);
-        ImGui::SliderFloat("%", &frac, 0.0f, 100.0f); 
-        s_sizeDist.volFrac[row] = frac;
-        ImGui::PopID();
+          ImGui::TableNextColumn();
+          float frac = static_cast<float>(s_sizeDist.volFrac[row]);
+          ImGui::SliderFloat("%", &frac, 0.0f, 100.0f); 
+          s_sizeDist.volFrac[row] = frac;
+          totVolFrac += frac;
+          ImGui::PopID();
+        }
       }
+      s_sizeDist.maxParticleSize = maxSize;
+      s_sizeDist.particleVolFrac = totVolFrac;
+      
       ImGui::EndTable();
     }
   }

@@ -178,6 +178,7 @@ add_library(${VAANGO_UI_LIB}
             Vaango_UIData.cc
             Vaango_UIEnvironment.cc
             Vaango_UIGenerateParticlesPanel.cc
+            Vaango_UIGenerateRVEParticles.cc
             Vaango_UILayout.cc
             ${VAANGO_CORE_SRC})
 target_include_directories(${VAANGO_UI_LIB} PRIVATE 

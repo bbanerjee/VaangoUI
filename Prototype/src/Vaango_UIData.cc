@@ -2,5 +2,4 @@
 
 namespace VaangoUI {
 
-
 } // namespace VaangoUI

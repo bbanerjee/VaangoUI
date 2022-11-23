@@ -52,11 +52,7 @@ struct ParticleSizeDist
 
   }
 
-  // Calculate the particle distribution to be used in the generation
-  // of random particle locations for the Generalized Method of Cells
-  // and other applications
-  void calcParticleDist() {
-
+  void print() const {
     std::cout << "Input data: \n";
     std::cout << materialName << " "
               << particleVolFrac << " "
@@ -66,6 +62,11 @@ struct ParticleSizeDist
       std::cout << "( " << size[ii] << ", " << volFrac[ii] << "), ";
     }
     std::cout << "\n";
+  }
+
+  // Calculate the particle distribution to be used in the generation
+  // of random particle locations
+  void calcParticleDist() {
 
     // The max number of calculated particle sizes is 10
     constexpr int NUM_SIZES_MAX = 11;

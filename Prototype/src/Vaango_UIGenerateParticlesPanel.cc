@@ -3,6 +3,8 @@
 #include <Vaango_UIEnvironment.h>
 
 #include <Core/Enums.h>
+#include <Core/ParticleSizeDist.h>
+#include <Core/ParticlesInRVE.h>
 
 #include <vtkActor.h>
 #include <vtkAppendPolyData.h>
@@ -30,6 +32,10 @@
 #define CLIPPING
 
 namespace VaangoUI {
+
+ParticleShape s_partShapeFlag;
+ParticleSizeDist s_sizeDist;
+ParticlesInRVE s_partList;
 
 Vaango_UIGenerateParticlesPanel::  Vaango_UIGenerateParticlesPanel()
 {
@@ -110,6 +116,7 @@ void Vaango_UIGenerateParticlesPanel::generateParticles(int width, int height) {
   // Generate particle locations
   if (d_enableCreateDistribution) {
     // Estimate the number of particles
+    s_sizeDist.print();
     s_sizeDist.calcParticleDist();
     actuallyGenerate();
     d_enableCreateDistribution = false;

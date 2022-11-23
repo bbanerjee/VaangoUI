@@ -2,7 +2,6 @@
 #define __Vaango_UI_GENERATE_PARTICLES_PANEL_H__
 
 #include <Vaango_UIPanelBase.h>
-#include <Vaango_UIData.h>
 #include <Vaango_UIGenerateRVEParticles.h>
 
 #include <Core/Enums.h>

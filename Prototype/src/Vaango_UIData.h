@@ -7,9 +7,9 @@
 
 namespace VaangoUI {
 
-static ParticleShape s_partShapeFlag = ParticleShape::CIRCLE;
-static ParticleSizeDist s_sizeDist;
-static ParticlesInRVE s_partList;
+extern ParticleShape s_partShapeFlag;
+extern ParticleSizeDist s_sizeDist;
+extern ParticlesInRVE s_partList;
 
 } // namespace VaangoUI
 

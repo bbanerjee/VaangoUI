@@ -1,8 +1,6 @@
 #ifndef __Vaango_UI_VORONOI_H__
 #define __Vaango_UI_VORONOI_H__
 
-#include <Vaango_UIData.h>
-
 #include <Core/Vertex.h>
 #include <Core/Edge.h>
 #include <Core/Face.h>
