@@ -46,40 +46,21 @@ public:
 
     // Distribute the particles in the boxes based on the type of 
     // particles
-    if (periodic) {
-      switch (shape) {
-      case ParticleShape::CIRCLE:
-        distributeCirclesPeriodic(rveSize, -1.0);
-        break;
-      case ParticleShape::HOLLOW_CIRCLE:
-        distributeCirclesPeriodic(rveSize, thickness);
-        break;
-      case ParticleShape::SPHERE:
-        distributeSpheresPeriodic(rveSize, -1.0);
-        break;
-      case ParticleShape::HOLLOW_SPHERE:
-        distributeSpheresPeriodic(rveSize, thickness);
-        break;
-      default:
-        break;
-      }
-    } else {
-      switch (shape) {
-      case ParticleShape::CIRCLE:
-        distributeCircles(rveSize, -1.0);
-        break;
-      case ParticleShape::HOLLOW_CIRCLE:
-        distributeCircles(rveSize, thickness);
-        break;
-      case ParticleShape::SPHERE:
-        distributeSpheres(rveSize, -1.0);
-        break;
-      case ParticleShape::HOLLOW_SPHERE:
-        distributeSpheres(rveSize, thickness);
-        break;
-      default:
-        break;
-      }
+    switch (shape) {
+    case ParticleShape::CIRCLE:
+      distributeCirclesPeriodic(rveSize, -1.0, periodic);
+      break;
+    case ParticleShape::HOLLOW_CIRCLE:
+      distributeCirclesPeriodic(rveSize, thickness, periodic);
+      break;
+    case ParticleShape::SPHERE:
+      distributeSpheresPeriodic(rveSize, -1.0, periodic);
+      break;
+    case ParticleShape::HOLLOW_SPHERE:
+      distributeSpheresPeriodic(rveSize, thickness, periodic);
+      break;
+    default:
+      break;
     }
   }
 
@@ -87,7 +68,8 @@ public:
   // Create a periodic distribution of particles in the box.  Similar
   // approach to random sequential packing of distributeCircles
   //--------------------------------------------------------------------------
-  void distributeCirclesPeriodic(double rveSize, double thickness) {
+  void distributeCirclesPeriodic(double rveSize, double thickness, 
+                                 bool periodic = false) {
 
     constexpr int MAX_ITER = 2000;
 
@@ -101,7 +83,7 @@ public:
 
     // Create a kd tree for storing and searching the center locations
     // Construct kd-tree index
-    ParticlePointCloud cloud(centers, radii);
+    ParticlePointCloud cloud;
     ParticleKDTree2D kdtree(2, cloud, {10});
 
     // Max number of nearest neighbors to be returned from kd tree
@@ -118,6 +100,7 @@ public:
 
     // The sizes are distributed with the smallest first.  Pick up
     // the largest size and iterate down through smaller sizes
+    double searchRadius = 2.5*s_sizeDist.sizeCalc[nofSizesCalc-1];
     double totalVolume = 0.0;
     double volFrac = totalVolume/rveVolume;
     double targetPartVolFrac = 0.0;
@@ -138,6 +121,10 @@ public:
       // are allowed
       double boxMin = -0.9*partRad;
       double boxMax = rveSize+0.9*partRad;
+      if (!periodic) {
+        boxMin = 0;
+        boxMax = rveSize;
+      }
 
       // Calculate the limits of the box outside which periodic bcs
       // come into play
@@ -170,7 +157,7 @@ public:
             // particle previously placed in box.  If it does then 
             // try again otherwise add the particle to the list.
             if (!intersectsAnotherCircle(partCent, 2.0*partRad,
-                                         kdtree, maxSearchPoints)) {
+                                         kdtree, searchRadius)) {
 
               // Add a particle to the particle list
               ParticleInRVE newParticle(partRad, rveSize, 
@@ -181,8 +168,9 @@ public:
               totalVolume += newParticle.getVolume();
 
               // Add the particle to the kd tree
-              size_t index = cloud.addPoint(partCent, partRad);
-              kdtree.addPoints(index, index);
+              size_t start = cloud.size();
+              size_t end = cloud.addPoint(newParticle.getCenter());
+              kdtree.addPoints(start, end);
 
               fit = true;
               ++numFitted;
@@ -191,21 +179,25 @@ public:
 
           } else {
 
+            if (!periodic) {
+              break;
+            }
+
             // Check if this particle intersects another
             if (!intersectsAnotherCircle(partCent, 2.0*partRad,
-                                         kdtree, maxSearchPoints)) {
+                                         kdtree, searchRadius)) {
+
+              bool intersects = false;
 
               // Particle is partially outside the box  ... create periodic 
               // images and check each one (there are eight possible locations 
               // of the // center
               std::vector<Point> loc;
               int nofLoc = findPartLoc(rveSize, partRad, partCent, 0, rveSize,
-                                       loc);
-
-              bool intersects = false;
+                                      loc);
               for (auto pt : loc) {
                 if (intersectsAnotherCircle(pt, 2.0*partRad,
-                                            kdtree, maxSearchPoints)) {
+                                            kdtree, searchRadius)) {
                   intersects = true;
                   break;
                 }                           
@@ -224,7 +216,8 @@ public:
                   totalVolume += newParticle.getVolume();
 
                   // Add the particle to the point cloud
-                  start = cloud.addPoint(partCent, partRad);
+                  start = cloud.size();
+                  end = cloud.addPoint(newParticle.getCenter());
                   ++numFitted;
                 }
 
@@ -241,7 +234,7 @@ public:
                   //totalVolume += newParticle.getVolume();
 
                   // Add the particle to the point cloud
-                  end = cloud.addPoint(partCent, partRad);
+                  end = cloud.addPoint(newParticle.getCenter());
                 }
   
                 // Add the particle to the kd tree
@@ -467,14 +460,15 @@ public:
   // Find whether the current circle intersects another circle from the existing 
   // particle list
   bool intersectsAnotherCircle(Point center, double diameter, 
-                               ParticleKDTree2D& kdtree, int maxSearchPoints = 100) {
+                               ParticleKDTree2D& kdtree, double searchRadius) {
 
     // Create an array in the form needed by the kd-tree
-    double queryPoint[4] = {center.x, center.y, center.z, 0.5*diameter};
+    double queryPoint[3] = {center.x, center.y, center.z};
 
     // Find the neighbors within the search radius of the
     // point.  The search radius = 2*diameter of the particle.
-    const double searchRadiusSq = 4*diameter*diameter;
+    const double radius = diameter/2.0;
+    const double searchRadiusSq = searchRadius*searchRadius;
     std::vector<std::pair<size_t, double>> indices_dists;
     nanoflann::RadiusResultSet<double, size_t> resultSet(searchRadiusSq, indices_dists);
     kdtree.findNeighbors(resultSet, queryPoint);
@@ -485,13 +479,26 @@ public:
       // Get the stored index from the kd tree
       size_t index = data.first;
 
+      // Get the dist^2 
+      double distSq = data.second;
+
       // Get the particle using the kd tree index
       ParticleInRVE part = s_partList.getParticle(index);
-      double neighborDiameter = 2.0*part.getRadius();
+      double neighborRadius = part.getRadius();
+      double radSq = (radius + neighborRadius)*(radius + neighborRadius);
+
+      if (distSq < radSq) {
+        //std::cout << "index = " << index << " distSq = " << distSq << " radSq = " << radSq << "\n";
+        return true;
+      }
+      
+
+      /*
       Point neighborCenter = part.getCenter();
       bool circlesIntersect = 
           doCirclesIntersect(neighborDiameter, neighborCenter, diameter, center);
       if (circlesIntersect) return true;
+      */
     } // end of while iterator 
 
     return false;
@@ -625,13 +632,11 @@ public:
   // Distribute spheres in a periodic unit cell (distribute the spherical particles in a cube 
   // box with the given dimensions)
   //--------------------------------------------------------------------------
-  void distributeSpheresPeriodic(double rveSize, double thickness) {
+  void distributeSpheresPeriodic(double rveSize, double thickness,
+                                 bool periodic = true) {
 
     // Set up some values that don't change
     constexpr int MAX_ITER = 3000;
-
-    // Max number of nearest neighbors to be returned from kd tree
-    constexpr int maxSearchPoints = 40;
 
     // No rotation needed; material code is 0
     double rotation = 0.0;
@@ -648,12 +653,13 @@ public:
 
     // Create a kd tree for storing and searching the center locations
     // Construct kd-tree index
-    ParticlePointCloud cloud(centers, radii);
+    ParticlePointCloud cloud;
     ParticleKDTree3D kdtree(3, cloud, {10});
 
     // Set up maximum search distance (this is equal to the largest particle
     // diameter)
     int nofSizesCalc = s_sizeDist.numSizesCalc;
+    double searchRadius = 2.5*s_sizeDist.sizeCalc[nofSizesCalc-1];
 
     // Initialize the volume of the particles
     double vol = 0.0;
@@ -674,6 +680,10 @@ public:
         // are allowed
         double boxMin = -0.45*partDia;
         double boxMax = rveSize+0.45*partDia;
+        if (!periodic) {
+          boxMin = partDia;
+          boxMax = rveSize - partDia;
+        }
 
         // Iterate till the particle fits in the box
         bool fit = false;
@@ -710,25 +720,28 @@ public:
               //newParticle.print();
 
               // Add to point cloud
-              start = cloud.addPoint(partCent, radius);
+              start = cloud.size();
+              end = cloud.addPoint(newParticle.getCenter());
             }
 
             // The sphere does not necessarily fit completely in the box.  
             // Place it in a periodic manner.
             // Find the possible images of the sphere in a periodic unit cell
-            std::vector<Point> periodicLoc;
-            findPeriodicSpherePartLoc(partCent, partDia, rveMin, rveMax, periodicLoc);
+            if (periodic) {
+              std::vector<Point> periodicLoc;
+              findPeriodicSpherePartLoc(partCent, partDia, rveMin, rveMax, periodicLoc);
 
-            for (auto& pt: periodicLoc) {
+              for (auto& pt: periodicLoc) {
 
-              // Add the particle to the particle list
-              ParticleInRVE newParticle(s_partShapeFlag, radius,
-                                        rotation, pt, matCode, thickness);
-              s_partList.addParticle(newParticle);
-              //newParticle.print();
+                // Add the particle to the particle list
+                ParticleInRVE newParticle(s_partShapeFlag, radius,
+                                          rotation, pt, matCode, thickness);
+                s_partList.addParticle(newParticle);
+                //newParticle.print();
 
-              // Add to point cloud
-              end = cloud.addPoint(partCent, radius);
+                // Add to point cloud
+                end = cloud.addPoint(newParticle.getCenter());
+              }
             }
 
             // Add the particles to the kd tree
@@ -749,28 +762,30 @@ public:
             // Uses the kd tree.
             //std::cout << "cloud size = " << cloud.size() << "\n";
             if (intersectsAnotherSphere(partCent, partDia, 
-                                        kdtree, maxSearchPoints)) {
+                                        kdtree, searchRadius)) {
               noIntersections = false;
             }
 
             //std::cout << "1-no intersects ? " << std::boolalpha << noIntersections << "\n";
             std::vector<Point> periodicLoc;
-            if (noIntersections) {
+            if (periodic) {
+              if (noIntersections) {
 
-              // The sphere does not necessarily fit completely in the box.  
-              // Place it in a periodic manner.
-              // Find the possible images of the sphere in a periodic unit cell
-              findPeriodicSpherePartLoc(partCent, partDia, rveMin, rveMax, periodicLoc);
-              for (auto& pt: periodicLoc) {
+                // The sphere does not necessarily fit completely in the box.  
+                // Place it in a periodic manner.
+                // Find the possible images of the sphere in a periodic unit cell
+                findPeriodicSpherePartLoc(partCent, partDia, rveMin, rveMax, periodicLoc);
+                for (auto& pt: periodicLoc) {
 
-                // Find whether the current sphere intersects any other spheres in the list
-                // Uses the kd tree.
-                if (intersectsAnotherSphere(pt, partDia, 
-                                            kdtree, maxSearchPoints)) {
-                  noIntersections = false;
-                  break;
-                }
-              } // end loop through images
+                  // Find whether the current sphere intersects any other spheres in the list
+                  // Uses the kd tree.
+                  if (intersectsAnotherSphere(pt, partDia, 
+                                              kdtree, searchRadius)) {
+                    noIntersections = false;
+                    break;
+                  }
+                } // end loop through images
+              }
             }
 
             // If there are no intersections then add these points
@@ -785,22 +800,26 @@ public:
                 //std::cout << "2-main: " << newParticle << "\n";
 
                 // Add to point cloud
-                start = cloud.addPoint(partCent, radius);
+                start = cloud.size();
+                end = cloud.addPoint(newParticle.getCenter());
               }
 
               end = start;
-              for (auto& pt: periodicLoc) {
 
-                // Add the particle to the particle list
-                ParticleInRVE newParticle(s_partShapeFlag, radius,
-                                          rotation, pt, matCode, thickness);
-                s_partList.addParticle(newParticle);
-                std::cout << "2-periodic: " << newParticle << "\n";
+              if (periodic) {
+                for (auto& pt: periodicLoc) {
 
-                // Add to point cloud
-                end = cloud.addPoint(partCent, radius);
+                  // Add the particle to the particle list
+                  ParticleInRVE newParticle(s_partShapeFlag, radius,
+                                            rotation, pt, matCode, thickness);
+                  s_partList.addParticle(newParticle);
+                  std::cout << "2-periodic: " << newParticle << "\n";
 
-              } // End of loop through images
+                  // Add to point cloud
+                  end = cloud.addPoint(newParticle.getCenter());
+
+                } // End of loop through images
+              }
 
               // Add the particles to the kd tree
               //std::cout << "Adding pts to kd-tree" << start << ":" << end << std::endl;
@@ -865,27 +884,29 @@ public:
         // Uses the kd tree.
         bool noIntersections = true;
         if (intersectsAnotherSphere(partCent, partDia, 
-                                    kdtree, maxSearchPoints)) {
+                                    kdtree, searchRadius)) {
           noIntersections = false;
         }
 
         std::vector<Point> periodicLoc;
-        if (noIntersections) {
+        if (periodic) {
+          if (noIntersections) {
 
-          // The sphere does not necessarily fit completely in the box.  
-          // Place it in a periodic manner.
-          // Find the possible images of the sphere in a periodic unit cell
-          findPeriodicSpherePartLoc(partCent, partDia, rveMin, rveMax, periodicLoc);
-          for (auto& pt: periodicLoc) {
+            // The sphere does not necessarily fit completely in the box.  
+            // Place it in a periodic manner.
+            // Find the possible images of the sphere in a periodic unit cell
+            findPeriodicSpherePartLoc(partCent, partDia, rveMin, rveMax, periodicLoc);
+            for (auto& pt: periodicLoc) {
 
-            // Find whether the current sphere intersects any other spheres in the list
-            // Uses the kd tree.
-            if (intersectsAnotherSphere(pt, partDia, 
-                                        kdtree, maxSearchPoints)) {
-              noIntersections = false;
-              break;
-            }
-          } // end loop through images
+              // Find whether the current sphere intersects any other spheres in the list
+              // Uses the kd tree.
+              if (intersectsAnotherSphere(pt, partDia, 
+                                          kdtree, searchRadius)) {
+                noIntersections = false;
+                break;
+              }
+            } // end loop through images
+          }
         }
 
         // If there are no intersections then add these points
@@ -900,22 +921,25 @@ public:
             //newParticle.print();
 
             // Add to point cloud
-            start = cloud.addPoint(partCent, radius);
+            start = cloud.size();
+            end = cloud.addPoint(newParticle.getCenter());
           }
 
-          end = start;
-          for (auto pt: periodicLoc) {
+          if (periodic) {
+            end = start;
+            for (auto pt: periodicLoc) {
 
-            // Add the particle to the particle list
-            ParticleInRVE newParticle(s_partShapeFlag, radius,
-                                      rotation, pt, matCode, thickness);
-            s_partList.addParticle(newParticle);
-            //newParticle.print();
+              // Add the particle to the particle list
+              ParticleInRVE newParticle(s_partShapeFlag, radius,
+                                        rotation, pt, matCode, thickness);
+              s_partList.addParticle(newParticle);
+              //newParticle.print();
 
-            // Add to point cloud
-            end = cloud.addPoint(partCent, radius);
+              // Add to point cloud
+              end = cloud.addPoint(newParticle.getCenter());
 
-          } // End of loop through images
+            } // End of loop through images
+          }
 
           // Add the particles to the kd tree
           kdtree.addPoints(start, end);
@@ -1175,15 +1199,16 @@ public:
   // particle list
   bool intersectsAnotherSphere(Point center, double diameter, 
                                const ParticleKDTree3D& kdtree, 
-                               int maxSearchPoints = 50) {
+                               double searchRadius) {
 
     // Create an array in the form needed by the kd-tree
-    double queryPoint[4] = {center.x, center.y, center.z, 0.5*diameter};
+    double queryPoint[3] = {center.x, center.y, center.z};
 
     // Find the neighbors within the search radius of the
     // point.  The search radius is the maximum search distance +
     // the diameter of the particle.
-    const double searchRadiusSq = 4*diameter*diameter;
+    const double radius = diameter/2.0;
+    const double searchRadiusSq = searchRadius*searchRadius;;
     std::vector<std::pair<size_t, double>> indices_dists;
     nanoflann::RadiusResultSet<double, size_t> resultSet(searchRadiusSq, indices_dists);
     kdtree.findNeighbors(resultSet, queryPoint);
@@ -1194,23 +1219,19 @@ public:
       // Get the stored index from the kd tree
       size_t index = data.first;
 
+      // Get the dist^2 
+      double distSq = data.second;
+
       // Get the particle using the kd tree index
       ParticleInRVE part = s_partList.getParticle(index);
-      double neighborDiameter = 2.0*part.getRadius();
-      Point neighborCenter = part.getCenter();
-      bool spheresIntersect = 
-          doSpheresIntersect(neighborDiameter, neighborCenter, diameter, center);
-      if (spheresIntersect) return true;
+      double neighborRadius = part.getRadius();
+      double radSq = (radius + neighborRadius)*(radius + neighborRadius);
 
+      if (distSq < radSq) {
+        //std::cout << "index = " << index << " distSq = " << distSq << " radSq = " << radSq << "\n";
+        return true;
+      }
     } // end of while iterator 
-
-    /*
-    if (diameter == 200.0) {
-      std::cout << "No intersections: Point = " << center
-                << "] Dia = " << diameter 
-                << " Number searched = " << count << "\n";
-    }
-    */
 
     return false;
   }

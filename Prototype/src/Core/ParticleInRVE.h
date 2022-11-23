@@ -4,6 +4,7 @@
 #include <Core/Point.h>
 #include <Core/Enums.h>
 
+#include <cassert>
 #include <cmath>
 #include <iostream>
 
