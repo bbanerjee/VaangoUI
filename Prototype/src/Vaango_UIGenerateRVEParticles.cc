@@ -680,8 +680,12 @@ Vaango_UIGenerateRVEParticles::distributeSpheresPeriodic(double rveSize,
 
     // Increase the size of the box so that periodic distributions
     // are allowed
-    double boxMin = -0.45*partDia;
-    double boxMax = rveSize+0.45*partDia;
+    double boxMin = partRad;
+    double boxMax = rveSize - partRad;
+    if (periodic) {
+      boxMin = -0.45*partDia;
+      boxMax = rveSize+0.45*partDia;
+    }
 
     while (!fit) {
 

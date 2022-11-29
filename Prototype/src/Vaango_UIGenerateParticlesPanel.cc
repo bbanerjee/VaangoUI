@@ -265,23 +265,14 @@ void Vaango_UIGenerateParticlesPanel::createVTKActors() {
       {
         // Set up points, scale factors, and colors
         vtkNew<vtkPoints> centers;
-        vtkNew<vtkFloatArray> scaleFactors;
-        scaleFactors->SetName("Scale Factors");
-        scaleFactors->SetNumberOfComponents(3);
         vtkNew<vtkUnsignedCharArray> colors;
         colors->SetName("Colors");
         colors->SetNumberOfComponents(3);
-
-        // Set up scaling factors
-        double xScale = 2.0*radius;
-        double yScale = 2.0*radius;
-        double zScale = 2.0*radius;
 
         // Set up the data
         for (auto part : particles) {
           centers->InsertNextPoint(part.getCenter().x, part.getCenter().y,
                                    part.getCenter().z);
-          scaleFactors->InsertNextTuple3(xScale, yScale, zScale);
           colors->InsertNextTypedTuple(namedColors->GetColor3ub(colorName).GetData());
         }
 
@@ -289,10 +280,10 @@ void Vaango_UIGenerateParticlesPanel::createVTKActors() {
         vtkNew<vtkPolyData> polydata;
         polydata->SetPoints(centers);
         polydata->GetPointData()->AddArray(colors);
-        polydata->GetPointData()->AddArray(scaleFactors);
         
         // Set up sphere source
         vtkNew<vtkSphereSource> source;
+        source->SetRadius(radius);
         source->SetThetaResolution(16);
         source->SetPhiResolution(16);
 
@@ -307,8 +298,6 @@ void Vaango_UIGenerateParticlesPanel::createVTKActors() {
         // Set up glyph mapper
         mapper->SetInputData(polydata);
         mapper->SetScalarModeToUsePointFieldData();
-        mapper->SetScaleArray("Scale Factors");
-        mapper->SetScaleModeToScaleByVectorComponents();
         mapper->SelectColorArray("Colors");
 
         actor->SetMapper(mapper);
