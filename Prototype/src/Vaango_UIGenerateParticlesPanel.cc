@@ -145,7 +145,7 @@ void Vaango_UIGenerateParticlesPanel::createVTKActors() {
 
   // Bounding cube
   vtkNew<vtkCubeSource> rve;
-  rve->SetBounds(0, d_rveSize, 0, d_rveSize, 0, d_rveSize);
+  rve->SetBounds(0, d_rveSize, 0, d_rveSize, -d_rveSize/2.0, d_rveSize/2.0);
   rve->Update();
 
   vtkNew<vtkPolyDataMapper> cubeMapper;
@@ -204,8 +204,8 @@ void Vaango_UIGenerateParticlesPanel::createVTKActors() {
         colors->SetNumberOfComponents(3);
 
         // Set up scaling factors
-        double xScale = radius;
-        double yScale = radius;
+        double xScale = 2.0*radius;
+        double yScale = 2.0*radius;
         double zScale = d_rveSize;
 
         // Set up the data

@@ -42,7 +42,8 @@ public:
   // Find whether the current circle intersects another circle from the existing 
   // particle list
   bool intersectsAnotherCircle(Point center, double diameter, 
-                               ParticleKDTree2D& kdtree, double searchRadius);
+                               ParticleKDTree3D& kdtree, double searchRadius,
+                               const std::vector<double>& neighborRadii) const;
 
   //--------------------------------------------------------------------------
   // Find if circles intersect
