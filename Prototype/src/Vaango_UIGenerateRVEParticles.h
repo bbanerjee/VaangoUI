@@ -16,7 +16,8 @@ private:
 
   std::mt19937_64 d_gen;
   std::uniform_real_distribution<double> d_dist;
-  std::map<size_t, size_t> d_indexMap;
+
+  std::vector<double> d_radii;
 
 public:
   Vaango_UIGenerateRVEParticles();
@@ -42,8 +43,8 @@ public:
   // Find whether the current circle intersects another circle from the existing 
   // particle list
   bool intersectsAnotherCircle(Point center, double diameter, 
-                               ParticleKDTree3D& kdtree, double searchRadius,
-                               const std::vector<double>& neighborRadii) const;
+                               ParticleKDTree3D& kdtree, 
+                               double searchRadius) const;
 
   //--------------------------------------------------------------------------
   // Find if circles intersect

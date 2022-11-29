@@ -15,7 +15,8 @@ namespace VaangoUI {
 
 Vaango_UIGenerateRVEParticles::Vaango_UIGenerateRVEParticles()
 {
-  d_gen.seed(1234567890);
+  std::random_device rd;
+  d_gen.seed(rd());
   d_dist.param(std::uniform_real_distribution<double>::param_type(0, 1));
 }
 
@@ -30,6 +31,8 @@ Vaango_UIGenerateRVEParticles::distributeParticles(double rveSize,
 {
   // Clean the particle diameter vectors etc. and start afresh
   s_partList.clear();
+
+  d_radii.clear();
 
   // Estimate the number of particles of each size in the RVE
   estimateRVEPartSizeDist(rveSize);
@@ -59,18 +62,14 @@ Vaango_UIGenerateRVEParticles::distributeParticles(double rveSize,
 // approach to random sequential packing of distributeCircles
 //--------------------------------------------------------------------------
 void 
-Vaango_UIGenerateRVEParticles::distributeCirclesPeriodic(double rveSize, double thickness, 
-                                bool periodic) {
+Vaango_UIGenerateRVEParticles::distributeCirclesPeriodic(double rveSize, 
+                                                         double thickness, 
+                                                         bool periodic) {
 
   constexpr int MAX_ITER = 100;
 
   // Set material code to zero
   int matCode = 0;
-
-  // Clean the particle diameter vectors etc. and start afresh
-  s_partList.clear();
-  std::vector<Point> centers;
-  std::vector<double> radii;
 
   // Create a kd tree for storing and searching the center locations
   // Construct kd-tree index
@@ -114,18 +113,18 @@ Vaango_UIGenerateRVEParticles::distributeCirclesPeriodic(double rveSize, double 
     double boxMin = boxInMin;
     double boxMax = boxInMax;
     if (periodic) {
-      boxMin = 0;
-      boxMax = rveSize;
+      boxMin = -0.5*partRad;
+      boxMax = rveSize+0.5*partRad;
     }
+
+    //std::cout << "periodic: " << std::boolalpha << periodic
+    //          << " box_xy: " << boxMin << ", " << boxMax
+    //          << " box_in: " << boxInMin << ", " << boxInMax << "\n";
 
     // Pick up each particle and insert it into the box
     //std::cout << "No. of particles to be inserted = "+nofParts);
     int numFitted = 0;
-    int numPartsPerRadius = 0;
     for (int jj = 0; jj < nofParts; jj++) {
-
-      // Get all the particle radii in the particle list
-      const auto& neighborRadii = s_partList.getRadii();
 
       bool fit = false;
       int nofIter = 0;
@@ -145,7 +144,11 @@ Vaango_UIGenerateRVEParticles::distributeCirclesPeriodic(double rveSize, double 
         if (inLimits(xCent, boxInMin, boxInMax) &&
             inLimits(yCent, boxInMin, boxInMax) ) {
 
-          if (neighborRadii.size() == 0) {
+          // Particle is inside the box .. find if it intersects another
+          // particle previously placed in box.  If it does then 
+          // try again otherwise add the particle to the list.
+          if (!intersectsAnotherCircle(partCent, partRad,
+                                       kdtree, searchRadius)) {
 
             // Add a particle to the particle list
             ParticleInRVE newParticle(partRad, rveSize, 
@@ -160,48 +163,17 @@ Vaango_UIGenerateRVEParticles::distributeCirclesPeriodic(double rveSize, double 
             size_t end = cloud.addPoint(newParticle.getCenter());
             kdtree.addPoints(start, end);
 
-            // Add the fitted particle index to the map
-            d_indexMap[end] = numPartsPerRadius++;
+            // Add to vectors
+            d_radii.emplace_back(partRad);
 
             fit = true;
             numFitted++;
 
-            std::cout << "Added particle: " << numFitted 
-                      << " of radius: " << partRad << "\n";
+            //std::cout << "Added particle: " << numFitted 
+            //          << " of radius: " << partRad << "\n";
 
-          } else {
-
-            // Particle is inside the box .. find if it intersects another
-            // particle previously placed in box.  If it does then 
-            // try again otherwise add the particle to the list.
-            if (!intersectsAnotherCircle(partCent, partRad,
-                                        kdtree, searchRadius, neighborRadii)) {
-
-              // Add a particle to the particle list
-              ParticleInRVE newParticle(partRad, rveSize, 
-                                        thickness, partCent, matCode);
-              s_partList.addParticle(newParticle);
-
-              //newParticle.print();
-              totalVolume += newParticle.getVolume();
-
-              // Add the particle to the kd tree
-              size_t start = cloud.size();
-              size_t end = cloud.addPoint(newParticle.getCenter());
-              kdtree.addPoints(start, end);
-
-              // Add the fitted particle index to the map
-              d_indexMap[end] = numPartsPerRadius++;
-
-              fit = true;
-              numFitted++;
-
-              std::cout << "Added particle: " << numFitted 
-                        << " of radius: " << partRad << "\n";
-
-            }
-            nofIter++;
           }
+          nofIter++;
 
         } else {
 
@@ -211,19 +183,19 @@ Vaango_UIGenerateRVEParticles::distributeCirclesPeriodic(double rveSize, double 
 
           // Check if this particle intersects another
           if (!intersectsAnotherCircle(partCent, partRad,
-                                        kdtree, searchRadius, neighborRadii)) {
+                                       kdtree, searchRadius)) {
 
             bool intersects = false;
 
             // Particle is partially outside the box  ... create periodic 
             // images and check each one (there are eight possible locations 
-            // of the // center
+            // of the center)
             std::vector<Point> loc;
             int nofLoc = findPartLoc(rveSize, partRad, partCent, 0, rveSize,
                                     loc);
             for (auto pt : loc) {
               if (intersectsAnotherCircle(pt, partRad,
-                                          kdtree, searchRadius, neighborRadii)) {
+                                          kdtree, searchRadius)) {
                 intersects = true;
                 break;
               }                           
@@ -245,12 +217,11 @@ Vaango_UIGenerateRVEParticles::distributeCirclesPeriodic(double rveSize, double 
                 // Add the particle to the point cloud
                 end = cloud.addPoint(newParticle.getCenter());
 
-                // Add the fitted particle index to the map
-                for (size_t i = start; i < end+1; i++) {
-                  d_indexMap[i] = numPartsPerRadius++;
-                }
+                // Add to vectors
+                d_radii.emplace_back(partRad);
 
                 ++numFitted;
+                std::cout << "Periodic particle added\n";
               }
 
               // Add the periodic particles
@@ -267,15 +238,13 @@ Vaango_UIGenerateRVEParticles::distributeCirclesPeriodic(double rveSize, double 
 
                 // Add the particle to the point cloud
                 end = cloud.addPoint(newParticle.getCenter());
+
+                // Add to vectors
+                d_radii.emplace_back(partRad);
               }
 
-              // Add the particle to the kd tree
+              // Add the particle and its images to the kd tree
               kdtree.addPoints(start, end);
-
-              // Add the fitted particle index to the map
-              for (size_t i = start; i < end+1; i++) {
-                d_indexMap[i] = numPartsPerRadius++;
-              }
             }
           }
           ++nofIter;
@@ -295,13 +264,13 @@ Vaango_UIGenerateRVEParticles::distributeCirclesPeriodic(double rveSize, double 
       }
     } // end for jj < nofParts
 
-      volFrac = totalVolume/rveVolume;
-      targetPartVolFrac = std::min(targetPartVolFrac, 
-                                    s_sizeDist.particleVolFrac/100.0);
-      std::cout << " Size = " << ii << " Particles fitted = " << numFitted 
-                << " Vol. Frac. = " << volFrac
-                << " Target vf = " << targetPartVolFrac 
-                << " partRad = " << partRad << "\n";
+    volFrac = totalVolume/rveVolume;
+    targetPartVolFrac = std::min(targetPartVolFrac, 
+                                 s_sizeDist.particleVolFrac/100.0);
+    std::cout << " Size = " << ii << " Particles fitted = " << numFitted 
+              << " Vol. Frac. = " << volFrac
+              << " Target vf = " << targetPartVolFrac 
+              << " partRad = " << partRad << "\n";
     if (numFitted > 0) {
       double volFracDiff = volFrac - targetPartVolFrac; 
       if (volFracDiff < -0.05*targetPartVolFrac) {
@@ -337,8 +306,12 @@ Vaango_UIGenerateRVEParticles::inLimits(double x, double min, double max) {
 // particle list
 bool 
 Vaango_UIGenerateRVEParticles::intersectsAnotherCircle(Point center, double radius, 
-                              ParticleKDTree3D& kdtree, double searchRadius,
-                              const std::vector<double>& neighborRadii) const {
+                              ParticleKDTree3D& kdtree, double searchRadius) const {
+
+  // If there are no other circles return false
+  if (d_radii.size() == 0) {
+    return false;
+  }
 
   // Create an array in the form needed by the kd-tree
   double queryPoint[3] = {center.x, center.y, center.z};
@@ -359,35 +332,15 @@ Vaango_UIGenerateRVEParticles::intersectsAnotherCircle(Point center, double radi
     // Get the dist 
     double dist = std::sqrt(data.second);
 
-    // Get the particle using the kd tree index
-    for (const auto& neighborRadius : neighborRadii) {
-      try {
-        ParticleInRVE part = s_partList.getParticle(neighborRadius, d_indexMap.at(index));
-        double radSum = (radius + neighborRadius);
-        if (!(dist > radSum)) {
-          //std::cout << "index = " << index << " dist = " << dist 
-          //          << " radSum = " << radSum << "\n";
-          return true;
-        }
-      } catch (std::out_of_range& err) {
-        std::cout << "**ERROR** indices wrong: kdtree index : " << index << 
-                    " map index: " << d_indexMap.at(index) << std::endl;
-        std::cout << "  Particlelist does not contain particles of radius " << radius
-                  << std::endl;
-        std::cout << s_partList << std::endl;
-        exit(EXIT_FAILURE);
-      }
+    // Get the neighbor particle radius using the kd tree index
+    double neighborRadius = d_radii[index];
+    double radSum = (radius + neighborRadius);
+    if (!(dist > radSum)) {
+      //std::cout << "index = " << index << " dist = " << dist 
+      //          << " radSum = " << radSum << "\n";
+      return true;
     }
-
-    /*
-    Point neighborCenter = part.getCenter();
-    bool circlesIntersect = 
-        doCirclesIntersect(neighborDiameter, neighborCenter, diameter, center);
-    if (circlesIntersect) return true;
-    */
-  } // end of while iterator 
-
-  return false;
+  }
 }
 
 //--------------------------------------------------------------------------
@@ -532,11 +485,6 @@ Vaango_UIGenerateRVEParticles::distributeSpheresPeriodic(double rveSize, double 
   double rotation = 0.0;
   int matCode = 0;
 
-  // Clean the particle diameter vectors etc. and start afresh
-  s_partList.clear();
-  std::vector<Point> centers;
-  std::vector<double> radii;
-  
   // Set up the limits of the RVE box
   Point rveMin(0.0, 0.0, 0.0);
   Point rveMax(rveSize, rveSize, rveSize);
@@ -561,7 +509,6 @@ Vaango_UIGenerateRVEParticles::distributeSpheresPeriodic(double rveSize, double 
     double partDia = s_sizeDist.sizeCalc[ii-1];
     double partRad = 0.5*partDia;
 
-    double numPartsPerRadius = 0;
     for (int jj = 0; jj < nofParts; jj++) {
 
       // Set up the particle diameter
@@ -613,7 +560,8 @@ Vaango_UIGenerateRVEParticles::distributeSpheresPeriodic(double rveSize, double 
             start = cloud.size();
             end = cloud.addPoint(newParticle.getCenter());
 
-            numPartsPerRadius++;
+            // Add to radius vector
+            d_radii.emplace_back(partRad);
           }
 
           // The sphere does not necessarily fit completely in the box.  
@@ -634,17 +582,13 @@ Vaango_UIGenerateRVEParticles::distributeSpheresPeriodic(double rveSize, double 
               // Add to point cloud
               end = cloud.addPoint(newParticle.getCenter());
 
-              numPartsPerRadius++;
+              // Add to radius vector
+              d_radii.emplace_back(partRad);
             }
           }
 
           // Add the particles to the kd tree
           kdtree.addPoints(start, end);
-
-          // Add the fitted particle index to the map
-          for (size_t i = start; i < end; i++) {
-            d_indexMap[i] = numPartsPerRadius;
-          }
 
           // Update volume and set the fit flag to true
           // Each set of images of a particle only contributes one volume
@@ -702,7 +646,8 @@ Vaango_UIGenerateRVEParticles::distributeSpheresPeriodic(double rveSize, double 
               start = cloud.size();
               end = cloud.addPoint(newParticle.getCenter());
 
-              numPartsPerRadius++;
+              // Add to radius vector
+              d_radii.emplace_back(partRad);
             }
 
             end = start;
@@ -719,19 +664,14 @@ Vaango_UIGenerateRVEParticles::distributeSpheresPeriodic(double rveSize, double 
                 // Add to point cloud
                 end = cloud.addPoint(newParticle.getCenter());
 
-                numPartsPerRadius++;
-
+                // Add to radius vector
+                d_radii.emplace_back(partRad);
               } // End of loop through images
             }
 
             // Add the particles to the kd tree
             //std::cout << "Adding pts to kd-tree" << start << ":" << end << std::endl;
             kdtree.addPoints(start, end);
-
-            // Add the fitted particle index to the map
-            for (size_t i = start; i < end; i++) {
-              d_indexMap[i] = numPartsPerRadius;
-            }
 
             // Update volume and set the fit flag to true
             // Each set of images of a particle only contributes one volume
@@ -772,8 +712,6 @@ Vaango_UIGenerateRVEParticles::distributeSpheresPeriodic(double rveSize, double 
     // are allowed
     double boxMin = -0.45*partDia;
     double boxMax = rveSize+0.45*partDia;
-
-    double numPartsPerRadius = 0;
 
     while (!fit) {
 
@@ -834,7 +772,8 @@ Vaango_UIGenerateRVEParticles::distributeSpheresPeriodic(double rveSize, double 
           start = cloud.size();
           end = cloud.addPoint(newParticle.getCenter());
 
-          numPartsPerRadius++;
+          // Add to radius vector
+          d_radii.emplace_back(partRad);
         }
 
         if (periodic) {
@@ -850,17 +789,13 @@ Vaango_UIGenerateRVEParticles::distributeSpheresPeriodic(double rveSize, double 
             // Add to point cloud
             end = cloud.addPoint(newParticle.getCenter());
 
-            numPartsPerRadius++;
+            // Add to radius vector
+            d_radii.emplace_back(partRad);
           } // End of loop through images
         }
 
         // Add the particles to the kd tree
         kdtree.addPoints(start, end);
-
-        // Add the fitted particle index to the map
-        for (size_t i = start; i < end; i++) {
-          d_indexMap[i] = numPartsPerRadius;
-        }
 
         // Update volume
         // Each set of images of a particle only contributes one volume
@@ -957,26 +892,16 @@ Vaango_UIGenerateRVEParticles::intersectsAnotherSphere(Point center, double radi
     // Get the stored index from the kd tree
     size_t index = data.first;
 
-    // Get the dist^2 
-    double distSq = data.second;
+    // Get the dist 
+    double dist = std::sqrt(data.second);
 
-    try {
-      // Get the particle using the kd tree index
-      ParticleInRVE part = s_partList.getParticle(radius, d_indexMap.at(index));
-      double neighborRadius = part.getRadius();
-      double radSq = (radius + neighborRadius)*(radius + neighborRadius);
+    // Get neighbor radius
+    double neighborRadius = d_radii[index];
+    double radSum = radius + neighborRadius;
 
-      if (distSq < radSq) {
-        //std::cout << "index = " << index << " distSq = " << distSq << " radSq = " << radSq << "\n";
-        return true;
-      }
-    } catch (std::out_of_range& err) {
-      std::cout << "**ERROR** indices wrong: kdtree index : " << index << 
-                   " map index: " << d_indexMap.at(index) << std::endl;
-      std::cout << "  Particlelist does not contain particles of radius " << radius
-                << std::endl;
-      std::cout << s_partList << std::endl;
-      return true; 
+    if (dist < radSum) {
+      //std::cout << "index = " << index << " distSq = " << distSq << " radSq = " << radSq << "\n";
+      return true;
     }
   } // end of while iterator 
 
