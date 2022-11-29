@@ -95,10 +95,10 @@ Vaango_UIGenerateRVEParticles::distributeCirclesPeriodic(double rveSize,
 
     // Get the number of particles for the current size
     int nofParts = s_sizeDist.freq2DCalc[ii-1];
-    std::cout << "Particle Size = " <<  s_sizeDist.sizeCalc[ii-1]
-              << " Required particles = " << nofParts 
-              << " (" << s_sizeDist.freq2DCalc[ii-1] << ") "
-              << " Target = " << targetNofParts[ii-1] << "\n";
+    //std::cout << "Particle Size = " <<  s_sizeDist.sizeCalc[ii-1]
+    //          << " Required particles = " << nofParts 
+    //          << " (" << s_sizeDist.freq2DCalc[ii-1] << ") "
+    //          << " Target = " << targetNofParts[ii-1] << "\n";
 
     // Get the particle size
     double partRad = 0.5*s_sizeDist.sizeCalc[ii-1];
@@ -221,7 +221,7 @@ Vaango_UIGenerateRVEParticles::distributeCirclesPeriodic(double rveSize,
                 d_radii.emplace_back(partRad);
 
                 ++numFitted;
-                std::cout << "Periodic particle added\n";
+                //std::cout << "Periodic particle added\n";
               }
 
               // Add the periodic particles
@@ -308,11 +308,6 @@ bool
 Vaango_UIGenerateRVEParticles::intersectsAnotherCircle(Point center, double radius, 
                               ParticleKDTree3D& kdtree, double searchRadius) const {
 
-  // If there are no other circles return false
-  if (d_radii.size() == 0) {
-    return false;
-  }
-
   // Create an array in the form needed by the kd-tree
   double queryPoint[3] = {center.x, center.y, center.z};
 
@@ -341,6 +336,8 @@ Vaango_UIGenerateRVEParticles::intersectsAnotherCircle(Point center, double radi
       return true;
     }
   }
+
+  return false;
 }
 
 //--------------------------------------------------------------------------
