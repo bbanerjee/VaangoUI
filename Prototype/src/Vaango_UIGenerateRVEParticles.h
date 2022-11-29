@@ -38,25 +38,8 @@ public:
   void distributeCirclesPeriodic(double rveSize, double thickness, 
                                  bool periodic = false);
 
+  // Find if the center is inside the RVE
   bool inLimits(double x, double min, double max);
-
-  // Find whether the current circle intersects another circle from the existing 
-  // particle list
-  bool intersectsAnotherCircle(Point center, double diameter, 
-                               ParticleKDTree3D& kdtree, 
-                               double searchRadius) const;
-
-  //--------------------------------------------------------------------------
-  // Find if circles intersect
-  //--------------------------------------------------------------------------
-  bool doCirclesIntersect(double dia1, const Point& cent1, 
-                          double dia2, const Point& cent2);
-
-  //--------------------------------------------------------------------------
-  // Find if circle is inside the RVE
-  //--------------------------------------------------------------------------
-  bool isCircleInsideRVE(double rveSize, 
-                         double dia, double xCent, double yCent);
 
   // Return the number of new circle locations for period distributions
   int findPartLoc(double rveSize,
@@ -70,30 +53,16 @@ public:
   void distributeSpheresPeriodic(double rveSize, double thickness,
                                  bool periodic = true);
 
-  //--------------------------------------------------------------------------
-  // Find if sphere is inside the RVE
-  //--------------------------------------------------------------------------
-  bool isSphereInsideRVE(double rveSize,
-                         double dia, double xCent, double yCent,
-                         double zCent);
-
-  // Find whether the current sphere intersects another sphere from the existing 
-  // particle list
-  bool intersectsAnotherSphere(Point center, double diameter, 
-                               const ParticleKDTree3D& kdtree, 
-                               double searchRadius);
-
-  //--------------------------------------------------------------------------
-  // Find if spheres intersect
-  //--------------------------------------------------------------------------
-  bool doSpheresIntersect(double dia1, Point cent1, 
-                          double dia2, Point cent2);
-
+  // Find whether the current circle or sphere intersects another circle or sphere
+  // from the existing particle list
+  bool intersectsAnother(Point center, double diameter, 
+                         ParticleKDTree3D& kdtree, 
+                         double searchRadius) const;
 
   //--------------------------------------------------------------------------
   // Estimate the number of particles of each size in the RVE
   //--------------------------------------------------------------------------
-  void estimateRVEPartSizeDist(double rveSize);
+  void estimateRVEPartSizeDist(double rveSize, const ParticleShape& shape);
 
   // Return the number of new locations to be tested for periodic distributions of 
   // spheres in a cubic box

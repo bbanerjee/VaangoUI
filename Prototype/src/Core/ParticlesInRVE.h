@@ -370,7 +370,7 @@ public:
     return d_particleList;
   }
 
-  const ParticleInRVE& getParticle(double radius, int index) const {
+  const ParticleInRVE& getParticle(double radius, unsigned int index) const {
     try {
       auto& particles = d_particleList.at(radius);
       if (index > particles.size()) {
@@ -405,7 +405,7 @@ public:
       for (const auto& part : particles) {
         out << "# Particle " << ii;
         out << "(" << part.getShape() << " "
-                   << part.getRadius() << " "
+                   << part.getRadius() << " (" << radius << ") "
                    << part.getThickness() << " "
                    << part.getRotation() << " "
                    << part.getCenter() << " "

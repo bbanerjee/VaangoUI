@@ -146,7 +146,6 @@ bool Voronoi::makeTetrahedron() {
  * Construct the incremental convex hull 
  */
 void Voronoi::constructHull() {
-  int size = d_vertex.size();
   auto vertexIter = d_vertex.begin();
   Vertex v;
   while (vertexIter != d_vertex.end()) {
@@ -155,7 +154,6 @@ void Voronoi::constructHull() {
       v.mark(VoronoiFlags::PROCESSED);
       bool changed = addOne(v);
       if (changed) cleanup();
-      size = d_vertex.size();
       vertexIter = d_vertex.begin();
     } else {
       vertexIter++;

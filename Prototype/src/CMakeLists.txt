@@ -181,6 +181,8 @@ add_library(${VAANGO_UI_LIB}
             Vaango_UIGenerateRVEParticles.cc
             Vaango_UILayout.cc
             ${VAANGO_CORE_SRC})
+set_source_files_properties(${VAANGO_CORE_SRC} PROPERTIES 
+                            COMPILE_OPTIONS "-Wall")
 target_include_directories(${VAANGO_UI_LIB} PRIVATE 
                            ${VAANGO_CORE_DIR}
                            ${IMGUI_FILE_DIALOG_DIR}

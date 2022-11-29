@@ -145,7 +145,11 @@ void Vaango_UIGenerateParticlesPanel::createVTKActors() {
 
   // Bounding cube
   vtkNew<vtkCubeSource> rve;
-  rve->SetBounds(0, d_rveSize, 0, d_rveSize, -d_rveSize/2.0, d_rveSize/2.0);
+  if (d_partShape == ParticleShape::CIRCLE) {
+    rve->SetBounds(0, d_rveSize, 0, d_rveSize, -d_rveSize/2.0, d_rveSize/2.0);
+  } else {
+    rve->SetBounds(0, d_rveSize, 0, d_rveSize, 0, d_rveSize);
+  }
   rve->Update();
 
   vtkNew<vtkPolyDataMapper> cubeMapper;
@@ -189,6 +193,7 @@ void Vaango_UIGenerateParticlesPanel::createVTKActors() {
     vtkNew<vtkActor> actor;
     vtkNew<vtkGlyph3DMapper> mapper;
 
+    //std::cout << "Display: particle shape = " << particles[0].getShape() << "\n";
     switch (particles[0].getShape())
     {
       case ParticleShape::CIRCLE: 
@@ -268,13 +273,12 @@ void Vaango_UIGenerateParticlesPanel::createVTKActors() {
         colors->SetNumberOfComponents(3);
 
         // Set up scaling factors
-        double xScale = radius;
-        double yScale = radius;
-        double zScale = radius;
+        double xScale = 2.0*radius;
+        double yScale = 2.0*radius;
+        double zScale = 2.0*radius;
 
         // Set up the data
         for (auto part : particles) {
-
           centers->InsertNextPoint(part.getCenter().x, part.getCenter().y,
                                    part.getCenter().z);
           scaleFactors->InsertNextTuple3(xScale, yScale, zScale);
