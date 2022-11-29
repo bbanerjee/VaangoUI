@@ -24,7 +24,6 @@ private:
 
   bool d_enableCreateDistribution = false;
   Vaango_UIGenerateRVEParticles generator;
-  std::vector<vtkSmartPointer<vtkActor>> vtk_actors;
 
 public:
 

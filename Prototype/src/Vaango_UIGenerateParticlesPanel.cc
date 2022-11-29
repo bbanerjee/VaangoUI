@@ -134,8 +134,16 @@ void Vaango_UIGenerateParticlesPanel::actuallyGenerate()
 
 void Vaango_UIGenerateParticlesPanel::createVTKActors() {
 
-  vtk_actors.clear();
+  // Try to remove existing actors
+  auto vtk_actors = Vaango_UIEnvironment::vtk_Renderer->GetActors();
+  vtkCollectionSimpleIterator vtk_actors_iter;
+  vtk_actors->InitTraversal(vtk_actors_iter);
+  vtkActor* actor = nullptr;
+  while (actor = vtk_actors->GetNextActor(vtk_actors_iter)) {
+    Vaango_UIEnvironment::vtk_Renderer->RemoveActor(actor);
+  }
 
+  // Set up colors
   ImVec4 bg_color = {0.45f, 0.55f, 0.60f, 1.00f};
   glClearColor(bg_color.x * bg_color.w, 
                bg_color.y * bg_color.w, 
