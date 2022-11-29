@@ -163,11 +163,6 @@ void Vaango_UIGenerateParticlesPanel::createVTKActors() {
 
   Vaango_UIEnvironment::vtk_Renderer->AddActor(cubeActor);
 
-  // For clipping
-  #ifdef CLIPPING
-  vtkNew<vtkAppendPolyData> clipData;
-  #endif
-
   vtkNew<vtkNamedColors> namedColors;
   std::vector<std::string> colorNames = {"Red", "Maroon", "Yellow", "Olive",
                                          "Lime", "Green", "Aqua", "Teal", "Blue",
@@ -241,14 +236,21 @@ void Vaango_UIGenerateParticlesPanel::createVTKActors() {
         transformPD->SetInputConnection(source->GetOutputPort());
 
         #ifdef CLIPPING
-          clipData->AddInputConnection(transformPD->GetOutputPort());
-          clipData->Update();
-          mapper->SetSourceConnection(clipData->GetOutputPort());
+          // Clip with cube
+          vtkNew<vtkBox> implicitCube;
+          implicitCube->SetBounds(rve->GetOutput()->GetBounds());
+
+          vtkNew<vtkClipPolyData> clipper;
+          clipper->SetClipFunction(implicitCube);
+          clipper->SetInputConnection(transformPD->GetOutputPort());
+          clipper->Update();
+
+          mapper->SetSourceConnection(clipper->GetOutputPort());
         #else
           transformPD->Update();
           mapper->SetSourceConnection(transformPD->GetOutputPort());
         #endif
-
+        
         // Set up glyph mapper
         mapper->SetInputData(polydata);
         mapper->SetScalarModeToUsePointFieldData();
@@ -288,9 +290,18 @@ void Vaango_UIGenerateParticlesPanel::createVTKActors() {
         source->SetPhiResolution(16);
 
         #ifdef CLIPPING
-          clipData->AddInputConnection(source->GetOutputPort());
-          clipData->Update();
-          mapper->SetSourceConnection(clipData->GetOutputPort());
+          // Clip with cube
+          vtkNew<vtkBox> implicitCube;
+          implicitCube->SetBounds(rve->GetOutput()->GetBounds());
+
+          vtkNew<vtkClipPolyData> clipper;
+          clipper->SetClipFunction(implicitCube);
+          clipper->SetInputConnection(source->GetOutputPort());
+          clipper->GenerateClippedOutputOn();
+          clipper->InsideOutOn();
+          //clipper->Update();
+
+          mapper->SetSourceConnection(clipper->GetOutputPort());
         #else
           mapper->SetSourceConnection(source->GetOutputPort());
         #endif
@@ -312,36 +323,13 @@ void Vaango_UIGenerateParticlesPanel::createVTKActors() {
     Vaango_UIEnvironment::vtk_Renderer->AddActor(actor);
   }
 
-  #ifdef CLIPPING
-  // Clipping 
-  vtkNew<vtkPolyDataMapper> clipDataMapper;
-  clipDataMapper->SetInputConnection(clipData->GetOutputPort());
-
+  #ifdef CLIPPING_EXTRA
   // Clip with cube
-  //vtkNew<vtkBox> implicitCube;
-  //implicitCube->SetBounds(rve->GetOutput()->GetBounds());
-  // Clip with planes
-  vtkNew<vtkPlane> xMinus, xPlus, yMinus, yPlus;
-  xMinus->SetOrigin(0, 0, 0);
-  xMinus->SetNormal(1, 0, 0);
-  xPlus->SetOrigin(d_rveSize, 0, 0);
-  xPlus->SetNormal(-1, 0, 0);
-  yMinus->SetOrigin(0, 0, 0);
-  yMinus->SetNormal(0, 1, 0);
-  yPlus->SetOrigin(0, d_rveSize, 0);
-  yPlus->SetNormal(0, -1, 0);
-
-  vtkNew<vtkImplicitBoolean> boolean;
-  boolean->AddFunction(xMinus);
-  boolean->AddFunction(xPlus);
-  boolean->AddFunction(yMinus);
-  boolean->AddFunction(yPlus);
-  boolean->SetOperationTypeToUnion();
+  vtkNew<vtkBox> implicitCube;
+  implicitCube->SetBounds(rve->GetOutput()->GetBounds());
 
   vtkNew<vtkClipPolyData> clipper;
-  //clipper->SetClipFunction(implicitCube);
-  clipper->SetClipFunction(boolean);
-  //clipper->SetClipFunction(xPlus);
+  clipper->SetClipFunction(implicitCube);
   clipper->SetInputConnection(clipData->GetOutputPort());
   //clipper->GenerateClippedOutputOn();
   //clipper->InsideOutOn();
