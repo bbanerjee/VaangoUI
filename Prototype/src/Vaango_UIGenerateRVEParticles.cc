@@ -87,7 +87,7 @@ Vaango_UIGenerateRVEParticles::distributeCirclesPeriodic(double rveSize, double 
   double rveVolume = rveSize*rveSize;
   
   // Make a copy of the target number of particles of each size
-  std::vector<int> targetNofParts(s_sizeDist.freq2DCalc);
+  std::vector<int> targetNofParts = s_sizeDist.freq2DCalc;
 
   // The sizes are distributed with the smallest first.  Pick up
   // the largest size and iterate down through smaller sizes
@@ -99,8 +99,10 @@ Vaango_UIGenerateRVEParticles::distributeCirclesPeriodic(double rveSize, double 
 
     // Get the number of particles for the current size
     int nofParts = s_sizeDist.freq2DCalc[ii-1];
-    std::cout << "Particle Size = " <<  s_sizeDist.sizeCalc[ii-1]<<  
-                        " Particles = " << nofParts << "\n";
+    std::cout << "Particle Size = " <<  s_sizeDist.sizeCalc[ii-1]
+              << " Required particles = " << nofParts 
+              << " (" << s_sizeDist.freq2DCalc[ii-1] << ") "
+              << " Target = " << targetNofParts[ii-1] << "\n";
 
     // Get the particle size
     double partRad = 0.5*s_sizeDist.sizeCalc[ii-1];
@@ -108,19 +110,14 @@ Vaango_UIGenerateRVEParticles::distributeCirclesPeriodic(double rveSize, double 
     double partVol = M_PI*partRad*partRad;
     targetPartVolFrac += (double) targetNofParts[ii-1]*partVol/rveVolume;
 
-    // Increase the size of the box so that periodic distributions
-    // are allowed
-    double boxMin = -0.9*partRad;
-    double boxMax = rveSize+0.9*partRad;
-    if (!periodic) {
-      boxMin = 0;
-      boxMax = rveSize;
-    }
-
     // Calculate the limits of the box outside which periodic bcs
     // come into play
     double boxInMin = partRad;
     double boxInMax = rveSize-partRad;
+    if (!periodic) {
+      boxInMin = 0;
+      boxInMax = rveSize;
+    }
 
     // Pick up each particle and insert it into the box
     //std::cout << "No. of particles to be inserted = "+nofParts);
@@ -136,8 +133,8 @@ Vaango_UIGenerateRVEParticles::distributeCirclesPeriodic(double rveSize, double 
         // (from boxmin-0.5*partDia to boxmax+0.5*partdia)
         double tx = d_dist(d_gen);
         double ty = d_dist(d_gen);
-        double xCent = (1-tx)*boxMin + tx*boxMax;
-        double yCent = (1-ty)*boxMin + ty*boxMax;
+        double xCent = (1-tx)*boxInMin + tx*boxInMax;
+        double yCent = (1-ty)*boxInMin + ty*boxInMax;
         Point partCent(xCent, yCent, 0.0);
 
         // If the particle is partially outside the original box
@@ -145,11 +142,7 @@ Vaango_UIGenerateRVEParticles::distributeCirclesPeriodic(double rveSize, double 
         if (inLimits(xCent, boxInMin, boxInMax) &&
             inLimits(yCent, boxInMin, boxInMax) ) {
 
-          // Particle is inside the box .. find if it intersects another
-          // particle previously placed in box.  If it does then 
-          // try again otherwise add the particle to the list.
-          if (!intersectsAnotherCircle(partCent, 2.0*partRad,
-                                        kdtree, searchRadius)) {
+          if (s_partList.getRadii().size() == 0) {
 
             // Add a particle to the particle list
             ParticleInRVE newParticle(partRad, rveSize, 
@@ -165,16 +158,47 @@ Vaango_UIGenerateRVEParticles::distributeCirclesPeriodic(double rveSize, double 
             kdtree.addPoints(start, end);
 
             // Add the fitted particle index to the map
-            for (size_t i = start; i < end; i++) {
-              d_indexMap[i] = numPartsPerRadius;
-            }
+            d_indexMap[end] = numPartsPerRadius++;
 
             fit = true;
-            ++numFitted;
-            ++numPartsPerRadius;
-          }
-          ++nofIter;
+            numFitted++;
 
+            std::cout << "Added particle: " << numFitted 
+                      << " of radius: " << partRad << "\n";
+
+          } else {
+
+            // Particle is inside the box .. find if it intersects another
+            // particle previously placed in box.  If it does then 
+            // try again otherwise add the particle to the list.
+            if (!intersectsAnotherCircle(partCent, 2.0*partRad,
+                                        kdtree, searchRadius)) {
+
+              // Add a particle to the particle list
+              ParticleInRVE newParticle(partRad, rveSize, 
+                                        thickness, partCent, matCode);
+              s_partList.addParticle(newParticle);
+
+              //newParticle.print();
+              totalVolume += newParticle.getVolume();
+
+              // Add the particle to the kd tree
+              size_t start = cloud.size();
+              size_t end = cloud.addPoint(newParticle.getCenter());
+              kdtree.addPoints(start, end);
+
+              // Add the fitted particle index to the map
+              d_indexMap[end] = numPartsPerRadius++;
+
+              fit = true;
+              numFitted++;
+
+              std::cout << "Added particle: " << numFitted 
+                        << " of radius: " << partRad << "\n";
+
+            }
+            nofIter++;
+          }
         } else {
 
           if (!periodic) {
@@ -204,7 +228,8 @@ Vaango_UIGenerateRVEParticles::distributeCirclesPeriodic(double rveSize, double 
             if (!intersects) {
 
               // Add the original particle to the particle list
-              size_t start, end;
+              size_t start = cloud.size();
+              size_t end;
               {
                 ParticleInRVE newParticle(partRad, rveSize, 
                                           thickness, partCent, matCode);
@@ -214,11 +239,14 @@ Vaango_UIGenerateRVEParticles::distributeCirclesPeriodic(double rveSize, double 
                 totalVolume += newParticle.getVolume();
 
                 // Add the particle to the point cloud
-                start = cloud.size();
                 end = cloud.addPoint(newParticle.getCenter());
 
+                // Add the fitted particle index to the map
+                for (size_t i = start; i < end+1; i++) {
+                  d_indexMap[i] = numPartsPerRadius++;
+                }
+
                 ++numFitted;
-                ++numPartsPerRadius;
               }
 
               // Add the periodic particles
@@ -235,15 +263,14 @@ Vaango_UIGenerateRVEParticles::distributeCirclesPeriodic(double rveSize, double 
 
                 // Add the particle to the point cloud
                 end = cloud.addPoint(newParticle.getCenter());
-                ++numPartsPerRadius;
               }
 
               // Add the particle to the kd tree
               kdtree.addPoints(start, end);
 
               // Add the fitted particle index to the map
-              for (size_t i = start; i < end; i++) {
-                d_indexMap[i] = numPartsPerRadius;
+              for (size_t i = start; i < end+1; i++) {
+                d_indexMap[i] = numPartsPerRadius++;
               }
             }
           }
@@ -313,6 +340,9 @@ Vaango_UIGenerateRVEParticles::intersectsAnotherCircle(Point center, double diam
   nanoflann::RadiusResultSet<double, size_t> resultSet(searchRadiusSq, indices_dists);
   kdtree.findNeighbors(resultSet, queryPoint);
 
+  // Get all the particle radii in the particle list
+  const auto& neighborRadii = s_partList.getRadii();
+
   // Loop through the nearest neighbors
   for (auto data : resultSet.m_indices_dists) {
 
@@ -323,15 +353,23 @@ Vaango_UIGenerateRVEParticles::intersectsAnotherCircle(Point center, double diam
     double distSq = data.second;
 
     // Get the particle using the kd tree index
-    ParticleInRVE part = s_partList.getParticle(radius, d_indexMap.at(index));
-    double neighborRadius = part.getRadius();
-    double radSq = (radius + neighborRadius)*(radius + neighborRadius);
-
-    if (distSq < radSq) {
-      //std::cout << "index = " << index << " distSq = " << distSq << " radSq = " << radSq << "\n";
-      return true;
+    for (const auto& neighborRadius : neighborRadii) {
+      try {
+        ParticleInRVE part = s_partList.getParticle(neighborRadius, d_indexMap.at(index));
+        double radSq = (radius + neighborRadius)*(radius + neighborRadius);
+        if (distSq < radSq) {
+          //std::cout << "index = " << index << " distSq = " << distSq << " radSq = " << radSq << "\n";
+          return true;
+        }
+      } catch (std::out_of_range& err) {
+        std::cout << "**ERROR** indices wrong: kdtree index : " << index << 
+                    " map index: " << d_indexMap.at(index) << std::endl;
+        std::cout << "  Particlelist does not contain particles of radius " << radius
+                  << std::endl;
+        std::cout << s_partList << std::endl;
+        exit(EXIT_FAILURE);
+      }
     }
-    
 
     /*
     Point neighborCenter = part.getCenter();
@@ -916,14 +954,23 @@ Vaango_UIGenerateRVEParticles::intersectsAnotherSphere(Point center, double diam
     // Get the dist^2 
     double distSq = data.second;
 
-    // Get the particle using the kd tree index
-    ParticleInRVE part = s_partList.getParticle(radius, d_indexMap.at(index));
-    double neighborRadius = part.getRadius();
-    double radSq = (radius + neighborRadius)*(radius + neighborRadius);
+    try {
+      // Get the particle using the kd tree index
+      ParticleInRVE part = s_partList.getParticle(radius, d_indexMap.at(index));
+      double neighborRadius = part.getRadius();
+      double radSq = (radius + neighborRadius)*(radius + neighborRadius);
 
-    if (distSq < radSq) {
-      //std::cout << "index = " << index << " distSq = " << distSq << " radSq = " << radSq << "\n";
-      return true;
+      if (distSq < radSq) {
+        //std::cout << "index = " << index << " distSq = " << distSq << " radSq = " << radSq << "\n";
+        return true;
+      }
+    } catch (std::out_of_range& err) {
+      std::cout << "**ERROR** indices wrong: kdtree index : " << index << 
+                   " map index: " << d_indexMap.at(index) << std::endl;
+      std::cout << "  Particlelist does not contain particles of radius " << radius
+                << std::endl;
+      std::cout << s_partList << std::endl;
+      return true; 
     }
   } // end of while iterator 
 
@@ -997,29 +1044,36 @@ Vaango_UIGenerateRVEParticles::estimateRVEPartSizeDist(double rveSize) {
   volInputRVE =  totvol/vf;
   scalefac = volActualRVE/volInputRVE;
 
-  std::cout << "Tot Vol = " << totvol << " Vf = "  << vf  << 
-                      " Vol Inp RVE = " << volInputRVE  << 
-                      " Vol Act RVE = " << volActualRVE  << 
-                      " Scale Fac = " << scalefac << "\n";
+  //std::cout << "Tot Vol = " << totvol << " Vf = "  << vf  << 
+  //                    " Vol Inp RVE = " << volInputRVE  << 
+  //                    " Vol Act RVE = " << volActualRVE  << 
+  //                    " Scale Fac = " << scalefac << "\n";
 
   // Compute scaled number for each size
   totvol = 0.0;
   for (int ii = 0; ii < s_sizeDist.numSizesCalc; ++ii) {
-    scaledNum.push_back((int) std::round(num[ii]*scalefac));
-    s_sizeDist.freq2DCalc[ii] = scaledNum.back();
-    s_sizeDist.freq3DCalc[ii] = scaledNum.back();
-    totvol += (scaledNum.back()*vol[ii]);
+    double N = (int) std::round(num[ii]*scalefac);
+    scaledNum.push_back(N);
+    s_sizeDist.freq2DCalc[ii] = N;
+    s_sizeDist.freq3DCalc[ii] = N;
+    vol[ii] *= N;
+    totvol += vol[ii];
   }
 
   // Compute new volume frac for each size
   for (int ii = 0; ii < s_sizeDist.numSizesCalc; ii++) {
-    double volFrac = 100.0*vol[ii]*scaledNum[ii]/totvol;
+    double volFrac = 100.0*vol[ii]/totvol;
     s_sizeDist.volFrac2DCalc[ii] = volFrac;
     s_sizeDist.volFrac3DCalc[ii] = volFrac;
   }
 
   // Print the update particle size distribution
   //s_sizeDist.print();
+  //for (int ii = 0; ii < s_sizeDist.numSizesCalc; ii++) {
+  //  std::cout << "size: " << s_sizeDist.sizeCalc[ii] 
+  //            << " N (2D): " << s_sizeDist.freq2DCalc[ii] 
+  //            << " N (3D): " << s_sizeDist.freq3DCalc[ii] << "\n";
+  //}
 
   // Compute volume fraction occupied by the particles in the
   // compute distribution
@@ -1033,36 +1087,64 @@ Vaango_UIGenerateRVEParticles::estimateRVEPartSizeDist(double rveSize) {
       newVolFrac = totvol/(rveSize*rveSize*rveSize);
       break;
   }
-  std::cout << "Updated volume fraction = " << newVolFrac
-            << " Target vol. frac. = " << fracComp << "\n";
+  //std::cout << "Updated volume fraction = " << newVolFrac
+  //          << " Target vol. frac. = " << fracComp << "\n";
 
-  // If the volume fraction is less than that needed, add some of the larger particles
-  while (newVolFrac < 0.95*fracComp ) {
+  // If volume fraction is greater, remove particles
+  if (newVolFrac > fracComp ) {
+    for (int ii = s_sizeDist.numSizesCalc-1; ii > -1; ii--) {
+      s_sizeDist.freq2DCalc[ii] -= 1; 
+      s_sizeDist.freq3DCalc[ii] -= 1; 
+      double volFrac = 100.0*vol[ii]/totvol;
+      s_sizeDist.volFrac2DCalc[ii] -= volFrac;
+      s_sizeDist.volFrac3DCalc[ii] -= volFrac;
+      totvol -= vol[ii];
+      switch (s_partShapeFlag) {
+        case ParticleShape::CIRCLE:
+          newVolFrac = totvol/(rveSize*rveSize);
+          break;
+        case ParticleShape::SPHERE:
+          newVolFrac = totvol/(rveSize*rveSize*rveSize);
+        break;
+      }
+      //std::cout << "Intermediate: Updated volume fraction = " << newVolFrac
+      //          << " Target vol. frac. = " << fracComp << "\n";
+      if (newVolFrac < fracComp ) {
+        break;
+      }
+    }
+  }
+
+  // If the volume fraction is less than that needed, add some of the smaller particles
+  if (newVolFrac < 0.95*fracComp ) {
     for (int ii = 0; ii < s_sizeDist.numSizesCalc; ii++) {
-      if (s_sizeDist.freq2DCalc[ii] == 0) {
-        s_sizeDist.freq2DCalc[ii] = 1; 
-        s_sizeDist.freq3DCalc[ii] = 1; 
-        totvol += vol[ii];
+      s_sizeDist.freq2DCalc[ii] += 1; 
+      s_sizeDist.freq3DCalc[ii] += 1; 
+      double volFrac = 100.0*vol[ii]/totvol;
+      s_sizeDist.volFrac2DCalc[ii] += volFrac;
+      s_sizeDist.volFrac3DCalc[ii] += volFrac;
+      totvol += vol[ii];
+      switch (s_partShapeFlag) {
+        case ParticleShape::CIRCLE:
+          newVolFrac = totvol/(rveSize*rveSize);
+          break;
+        case ParticleShape::SPHERE:
+          newVolFrac = totvol/(rveSize*rveSize*rveSize);
+        break;
+      }
+      if (newVolFrac > 0.95*fracComp ) {
         break;
       }
     }
 
-    for (int ii = 0; ii < s_sizeDist.numSizesCalc; ii++) {
-      double volFrac = 100.0*vol[ii]/totvol;
-      s_sizeDist.volFrac2DCalc[ii] = volFrac;
-      s_sizeDist.volFrac3DCalc[ii] = volFrac;
-    }
+  }
 
-    switch (s_partShapeFlag) {
-    case ParticleShape::CIRCLE:
-      newVolFrac = totvol/(rveSize*rveSize);
-      break;
-    case ParticleShape::SPHERE:
-      newVolFrac = totvol/(rveSize*rveSize*rveSize);
-      break;
-    }
-    std::cout << "Updated volume fraction = " << newVolFrac
-              << " Target vol. frac. = " << fracComp << "\n";
+  std::cout << "Final: Updated volume fraction = " << newVolFrac
+            << " Target vol. frac. = " << fracComp << "\n";
+  for (int ii = 0; ii < s_sizeDist.numSizesCalc; ii++) {
+    std::cout << "Final: size: " << s_sizeDist.sizeCalc[ii] 
+              << " N (2D): " << s_sizeDist.freq2DCalc[ii] 
+              << " N (3D): " << s_sizeDist.freq3DCalc[ii] << "\n";
   }
 
   //std::this_thread::sleep_for(std::chrono::seconds(30));

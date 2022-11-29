@@ -358,12 +358,12 @@ public:
     d_particleList.clear();
   }
 
-  const std::vector<double>& getRadii() const {
+  const std::vector<double> getRadii() const {
     std::vector<double> radii;
     for (const auto& [radius, particles] : d_particleList) {
       radii.push_back(radius);
     }
-    return std::move(radii);
+    return radii;
   }
 
   const std::map<double, std::vector<ParticleInRVE>>& getParticles() const {
@@ -381,6 +381,10 @@ public:
       }
       return particles[index];
     } catch(std::out_of_range& err) {
+      std::cout << "Error in getParticle: r : " << radius << " index: " << index << std::endl;
+      for (const auto& [radius, particles] : d_particleList) {
+         std::cout << "r: " << radius << " N: " << particles.size() << std::endl;
+      }
       throw;
     }
   }

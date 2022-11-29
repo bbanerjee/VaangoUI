@@ -37,11 +37,11 @@ public:
   void draw(const std::string& title, int width, int height)
   {
     {
-      s_sizeDist.print();
+      //s_sizeDist.print();
       ImGui::BeginChild("input part dist", ImVec2(2*width/3, 0));
       getInputSizeDist(2*width/3, height); 
       ImGui::EndChild();
-      s_sizeDist.print();
+      //s_sizeDist.print();
     }
     ImGui::SameLine();
     {
