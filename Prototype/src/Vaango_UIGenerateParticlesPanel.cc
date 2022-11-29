@@ -15,6 +15,8 @@
 #include <vtkClipPolyData.h>
 #include <vtkCubeSource.h>
 #include <vtkCylinderSource.h>
+#include <vtkFloatArray.h>
+#include <vtkGlyph3DMapper.h>
 #include <vtkImplicitBoolean.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
@@ -29,7 +31,7 @@
 #include <vtkTransform.h>
 #include <vtkTransformPolyDataFilter.h>
 
-#define CLIPPING
+//#define CLIPPING
 
 namespace VaangoUI {
 
@@ -162,70 +164,158 @@ void Vaango_UIGenerateParticlesPanel::createVTKActors() {
   vtkNew<vtkAppendPolyData> clipData;
   #endif
 
-  for (auto part : s_partList.getParticles()) {
+  vtkNew<vtkNamedColors> namedColors;
+  std::vector<std::string> colorNames = {"Red", "Maroon", "Yellow", "Olive",
+                                         "Lime", "Green", "Aqua", "Teal", "Blue",
+                                         "Navy", "Fuchsia", "Purple"};
+  std::string colorName;
+  unsigned int index = -1;                                      
+  for (const auto& [radius, particles] : s_partList.getParticles()) {
+    
+    // Skip if there are no particles for this radius
+    if (particles.empty()) {
+      continue;
+    }
 
+    // Set up particle color
+    if (index < colorNames.size()) {
+      index++;
+    } else {
+      index = 0;
+    }
+    colorName = colorNames[index] ;
+
+    // Set up one actor for each radius
     vtkNew<vtkActor> actor;
-    vtkNew<vtkPolyDataMapper> mapper;
-    switch (part.getShape())
+    vtkNew<vtkGlyph3DMapper> mapper;
+
+    switch (particles[0].getShape())
     {
       case ParticleShape::CIRCLE: 
       case ParticleShape::HOLLOW_CIRCLE: 
       {
+        // Set up points, scale factors, and colors
+        vtkNew<vtkPoints> centers;
+        vtkNew<vtkFloatArray> scaleFactors;
+        scaleFactors->SetName("Scale Factors");
+        scaleFactors->SetNumberOfComponents(3);
+        vtkNew<vtkUnsignedCharArray> colors;
+        colors->SetName("Colors");
+        colors->SetNumberOfComponents(3);
+
+        // Set up scaling factors
+        double xScale = radius;
+        double yScale = radius;
+        double zScale = d_rveSize;
+
+        // Set up the data
+        for (auto part : particles) {
+
+          centers->InsertNextPoint(part.getCenter().x, part.getCenter().y,
+                                   part.getCenter().z);
+          scaleFactors->InsertNextTuple3(xScale, yScale, zScale);
+          colors->InsertNextTypedTuple(namedColors->GetColor3ub(colorName).GetData());
+        }
+
+        // Set up polydata
+        vtkNew<vtkPolyData> polydata;
+        polydata->SetPoints(centers);
+        polydata->GetPointData()->AddArray(colors);
+        polydata->GetPointData()->AddArray(scaleFactors);
+        
+        // Set up cylinder source
         vtkNew<vtkCylinderSource> source;
-        source->SetCenter(0.0, 0.0, 0.0);
-        source->SetRadius(part.getRadius());
-        source->SetHeight(d_rveSize);
         source->SetResolution(16);
 
+        // Set up rotation (of cylinders)
         vtkNew<vtkTransform> transform;
-        transform->Translate(0.0, 0.0, d_rveSize/2.0);
         transform->RotateX(90.0);
-        transform->Translate(part.getCenter().x, 0.0, -part.getCenter().y);
 
-        #ifdef CLIPPING
         vtkNew<vtkTransformPolyDataFilter> transformPD;
         transformPD->SetTransform(transform);
         transformPD->SetInputConnection(source->GetOutputPort());
 
-        clipData->AddInputConnection(transformPD->GetOutputPort());
-        clipData->Update();
+        #ifdef CLIPPING
+          clipData->AddInputConnection(transformPD->GetOutputPort());
+          clipData->Update();
+          mapper->SetSourceConnection(clipData->GetOutputPort());
         #else
-        mapper->SetInputConnection(source->GetOutputPort());
-
-        actor->SetMapper(mapper);
-        actor->GetProperty()->SetColor(colors->GetColor3d("Tomato").GetData());
-
-        actor->SetUserTransform(transform);
-
-        actor->Render(Vaango_UIEnvironment::vtk_Renderer, mapper);
+          transformPD->Update();
+          mapper->SetSourceConnection(transformPD->GetOutputPort());
         #endif
 
+        // Set up glyph mapper
+        mapper->SetInputData(polydata);
+        mapper->SetScalarModeToUsePointFieldData();
+        mapper->SetScaleArray("Scale Factors");
+        mapper->SetScaleModeToScaleByVectorComponents();
+        mapper->SelectColorArray("Colors");
+
+        actor->SetMapper(mapper);
       }
-        break;
+      break;
+
       case ParticleShape::SPHERE: 
       case ParticleShape::HOLLOW_SPHERE: 
       {
+        // Set up points, scale factors, and colors
+        vtkNew<vtkPoints> centers;
+        vtkNew<vtkFloatArray> scaleFactors;
+        scaleFactors->SetName("Scale Factors");
+        scaleFactors->SetNumberOfComponents(3);
+        vtkNew<vtkUnsignedCharArray> colors;
+        colors->SetName("Colors");
+        colors->SetNumberOfComponents(3);
+
+        // Set up scaling factors
+        double xScale = radius;
+        double yScale = radius;
+        double zScale = radius;
+
+        // Set up the data
+        for (auto part : particles) {
+
+          centers->InsertNextPoint(part.getCenter().x, part.getCenter().y,
+                                   part.getCenter().z);
+          scaleFactors->InsertNextTuple3(xScale, yScale, zScale);
+          colors->InsertNextTypedTuple(namedColors->GetColor3ub(colorName).GetData());
+        }
+
+        // Set up polydata
+        vtkNew<vtkPolyData> polydata;
+        polydata->SetPoints(centers);
+        polydata->GetPointData()->AddArray(colors);
+        polydata->GetPointData()->AddArray(scaleFactors);
+        
+        // Set up sphere source
         vtkNew<vtkSphereSource> source;
-        source->SetCenter(part.getCenter().x, part.getCenter().y, part.getCenter().z);
-        source->SetRadius(part.getRadius());
         source->SetThetaResolution(16);
         source->SetPhiResolution(16);
 
         #ifdef CLIPPING
-        clipData->AddInputConnection(source->GetOutputPort());
+          clipData->AddInputConnection(source->GetOutputPort());
+          clipData->Update();
+          mapper->SetSourceConnection(clipData->GetOutputPort());
         #else
-        mapper->SetInputConnection(source->GetOutputPort());
+          mapper->SetSourceConnection(source->GetOutputPort());
+        #endif
+
+        // Set up glyph mapper
+        mapper->SetInputData(polydata);
+        mapper->SetScalarModeToUsePointFieldData();
+        mapper->SetScaleArray("Scale Factors");
+        mapper->SetScaleModeToScaleByVectorComponents();
+        mapper->SelectColorArray("Colors");
 
         actor->SetMapper(mapper);
-        actor->GetProperty()->SetColor(colors->GetColor3d("Tomato").GetData());
-        #endif
       }
         break;
+
       default:
         break;
-    }
 
-    vtk_actors.push_back(actor);
+    };
+
     Vaango_UIEnvironment::vtk_Renderer->AddActor(actor);
   }
 

@@ -46,11 +46,10 @@ void Voronoi::process() {
  * Read the input set of points 
  */
 void Voronoi::readPoints() {
-  for (int ii = 0; ii < d_nofVert; ii++) {
-    ParticleInRVE p = d_pl.getParticle(ii);
-    Point cent = p.getCenter(); 
-    Vertex vert(cent);
-    d_vertex.push_back(vert);
+  for (const auto& [radius, particles] : d_pl.getParticles()) {
+    for (const auto& part: particles) {
+      d_vertex.emplace_back(part.getCenter());
+    }
   }
   printVertices();
 }

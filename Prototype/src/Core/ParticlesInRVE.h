@@ -6,10 +6,11 @@
 #include <Core/ParticleInRVE.h>
 #include <Core/Point.h>
 
-#include <string>
 #include <iostream>
-#include <vector>
+#include <map>
 #include <memory>
+#include <string>
+#include <vector>
 
 namespace VaangoUI {
 
@@ -22,7 +23,7 @@ class ParticlesInRVE {
 private:
 
   double d_rveSize = 0.0;
-  std::vector<ParticleInRVE> d_particleList;
+  std::map<double, std::vector<ParticleInRVE>> d_particleList;
 
 public:
 
@@ -357,22 +358,35 @@ public:
     d_particleList.clear();
   }
 
-  const std::vector<ParticleInRVE>& getParticles() const {
+  const std::vector<double>& getRadii() const {
+    std::vector<double> radii;
+    for (const auto& [radius, particles] : d_particleList) {
+      radii.push_back(radius);
+    }
+    return std::move(radii);
+  }
+
+  const std::map<double, std::vector<ParticleInRVE>>& getParticles() const {
     return d_particleList;
   }
 
-  const ParticleInRVE& getParticle(int index) const {
-    if (index > d_particleList.size()) {
-      return d_particleList.back(); 
+  const ParticleInRVE& getParticle(double radius, int index) const {
+    try {
+      auto& particles = d_particleList.at(radius);
+      if (index > particles.size()) {
+        return particles.back(); 
+      }
+      if (index < 0) {
+        return particles.front();
+      }
+      return particles[index];
+    } catch(std::out_of_range& err) {
+      throw;
     }
-    if (index < 0) {
-      return d_particleList.front();
-    }
-    return d_particleList[index];
   }
 
   void addParticle(const ParticleInRVE& particle) {
-    d_particleList.push_back(particle);
+    d_particleList[particle.getRadius()].emplace_back(particle);
   }
 
   bool isEmpty() {
@@ -383,14 +397,16 @@ public:
   friend std::ostream& operator<< (std::ostream &out, const ParticlesInRVE& data)
   {
     int ii = 0;
-    for (auto& part : data.d_particleList) {
-      out << "# Particle " << ii;
-      out << "(" << part.getShape() << " "
-                 << part.getRadius() << " "
-                 << part.getThickness() << " "
-                 << part.getRotation() << " "
-                 << part.getCenter() << " "
-                 << part.getMatCode() << ")\n";
+    for (const auto& [radius, particles] : data.d_particleList) {
+      for (const auto& part : particles) {
+        out << "# Particle " << ii;
+        out << "(" << part.getShape() << " "
+                   << part.getRadius() << " "
+                   << part.getThickness() << " "
+                   << part.getRotation() << " "
+                   << part.getCenter() << " "
+                   << part.getMatCode() << ")\n";
+      }
       ii++;
     }
     return out;

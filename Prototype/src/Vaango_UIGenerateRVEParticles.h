@@ -4,8 +4,9 @@
 #include <Utils/SearchUtils.h>
 
 #include <cmath>
-#include <string>
+#include <map>
 #include <random>
+#include <string>
 
 namespace VaangoUI {
 
@@ -15,6 +16,7 @@ private:
 
   std::mt19937_64 d_gen;
   std::uniform_real_distribution<double> d_dist;
+  std::map<size_t, size_t> d_indexMap;
 
 public:
   Vaango_UIGenerateRVEParticles();
@@ -36,12 +38,6 @@ public:
                                  bool periodic = false);
 
   bool inLimits(double x, double min, double max);
-
-  //--------------------------------------------------------------------------
-  // Distribute circles (distribute the circular particles in a square 
-  // box with the given dimensions)
-  //--------------------------------------------------------------------------
-  void distributeCircles(double rveSize, double thickness);
 
   // Find whether the current circle intersects another circle from the existing 
   // particle list
@@ -71,12 +67,6 @@ public:
   //--------------------------------------------------------------------------
   void distributeSpheresPeriodic(double rveSize, double thickness,
                                  bool periodic = true);
-
-  //--------------------------------------------------------------------------
-  // Distribute spheres (distribute the spherical particles in a cube 
-  // box with the given dimensions)
-  //--------------------------------------------------------------------------
-  void distributeSpheres(double rveSize, double thickness);
 
   //--------------------------------------------------------------------------
   // Find if sphere is inside the RVE
