@@ -294,6 +294,8 @@ Vaango_UIGenerateRVEParticles::distributeCirclesPeriodic(double rveSize,
   std::cout << "RVE volume = " << rveVolume
             << " Total particle volume = " << totalVolume
             << " Volume fraction = " << totalVolume/rveVolume << "\n";
+
+  calculateRVEPartSizeDist(rveSize, ParticleShape::CIRCLE);
 }
 
 bool 
@@ -793,10 +795,12 @@ Vaango_UIGenerateRVEParticles::distributeSpheresPeriodic(double rveSize,
   std::cout << "Final values" << "\n";
   std::cout << "No of parts = " << cloud.size() << " Vol frac = " << vfrac << "\n";
   std::cout << "Volume of parts = " << vol << " Box vol = " << volBox << "\n";
+
+  calculateRVEPartSizeDist(rveSize, ParticleShape::SPHERE);
 }
 
 //--------------------------------------------------------------------------
-// Estimate the number of particles of each size in the RVE
+// Initial estimate of the number of particles of each size in the RVE
 //--------------------------------------------------------------------------
 void 
 Vaango_UIGenerateRVEParticles::estimateRVEPartSizeDist(double rveSize,
@@ -950,6 +954,60 @@ Vaango_UIGenerateRVEParticles::estimateRVEPartSizeDist(double rveSize,
   }
 
   //std::this_thread::sleep_for(std::chrono::seconds(30));
+}
+
+//--------------------------------------------------------------------------
+// Final computed number of particles of each size in the RVE
+//--------------------------------------------------------------------------
+void 
+Vaango_UIGenerateRVEParticles::calculateRVEPartSizeDist(double rveSize,
+                                                        const ParticleShape& shape) 
+{
+  // Clear estimated values
+  s_sizeDist.sizeCalc.clear();
+  s_sizeDist.freq2DCalc.clear();
+  s_sizeDist.freq3DCalc.clear();
+  s_sizeDist.volFrac2DCalc.clear();
+  s_sizeDist.volFrac3DCalc.clear();
+
+  // Get particles
+  double newVolFrac = 0.0;
+  double rveVol = rveSize*rveSize*rveSize;
+  auto& partList = s_partList.getParticles();
+  for (const auto& [radius, particles] : partList) {
+    int numPart = particles.size();
+    double volPart = 0.0;
+    switch (shape) {
+      case ParticleShape::CIRCLE:
+        volPart =  M_PI*radius*radius*rveSize;
+        break;
+      case ParticleShape::SPHERE:
+        volPart =  M_PI*radius*radius*radius*(4.0/3.0);
+        break;
+      default:
+        break;
+    }
+    double vol = volPart*numPart;
+    double volFrac = vol/rveVol;
+    s_sizeDist.freq2DCalc.push_back(numPart);
+    s_sizeDist.freq3DCalc.push_back(numPart);
+    s_sizeDist.volFrac2DCalc.push_back(volFrac*100.0);
+    s_sizeDist.volFrac3DCalc.push_back(volFrac*100.0);
+    s_sizeDist.sizeCalc.push_back(2.0*radius);
+    newVolFrac += volFrac;
+  }
+  s_sizeDist.numSizesCalc = partList.size();
+  
+
+  std::cout << "Calculated volume fraction = " << newVolFrac 
+            << " Target vol. frac. = " << s_sizeDist.particleVolFrac*0.01 << "\n";
+  for (int ii = 0; ii < s_sizeDist.numSizesCalc; ii++) {
+    std::cout << "Final: size: " << s_sizeDist.sizeCalc[ii] 
+              << " N(2D): " << s_sizeDist.freq2DCalc[ii] 
+              << " vf(2D): " << s_sizeDist.volFrac2DCalc[ii] 
+              << " N(3D): " << s_sizeDist.freq3DCalc[ii] 
+              << " vf(3D): " << s_sizeDist.volFrac3DCalc[ii] << "\n";
+  }
 }
 
 // Return the number of new locations to be tested for periodic distributions of 

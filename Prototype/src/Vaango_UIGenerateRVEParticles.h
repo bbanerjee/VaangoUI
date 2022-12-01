@@ -60,9 +60,14 @@ public:
                          double searchRadius) const;
 
   //--------------------------------------------------------------------------
-  // Estimate the number of particles of each size in the RVE
+  // Initial estimate of the number of particles of each size in the RVE
   //--------------------------------------------------------------------------
   void estimateRVEPartSizeDist(double rveSize, const ParticleShape& shape);
+
+  //--------------------------------------------------------------------------
+  // Computed number of particles of each size in the RVE
+  //--------------------------------------------------------------------------
+  void calculateRVEPartSizeDist(double rveSize, const ParticleShape& shape);
 
   // Return the number of new locations to be tested for periodic distributions of 
   // spheres in a cubic box
