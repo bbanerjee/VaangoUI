@@ -393,6 +393,7 @@ void Vaango_UIGenerateParticlesPanel::createVTKActors() {
 
   Vaango_UIEnvironment::vtk_Renderer->SetBackground(colors->GetColor3d("DarkSlateGray").GetData());
   Vaango_UIEnvironment::vtk_Renderer->ResetCamera();
+  //Vaango_UIEnvironment::vtk_Renderer->GetActiveCamera()->SetPosition(-10, 5, 0);
 
   //Vaango_UIEnvironment::vtk_RenderWindow->InitializeFromCurrentContext();
   //Vaango_UIEnvironment::vtk_RenderWindow->SetSize(Vaango_UIEnvironment::vtk_viewportSize);
@@ -479,9 +480,9 @@ void Vaango_UIGenerateParticlesPanel::drawParticles(int width, int height) {
 
   // Get the size of the child (i.e. the whole draw size of the windows).
   ImVec2 wsize = ImGui::GetContentRegionAvail();
-  int wmin = std::min(wsize.x, wsize.y);
-  wsize.x = wmin;
-  wsize.y = wmin;
+  int w = std::max(wsize.x, wsize.y);
+  wsize.x = w;
+  wsize.y = w;
   //std::cout << "wsize = " << wsize.x << ", " << wsize.y << "\n";
   ImGui::Image(reinterpret_cast<void*>(Vaango_UIEnvironment::vtk_renderTexture), wsize, ImVec2(0, 1), ImVec2(1, 0));
 

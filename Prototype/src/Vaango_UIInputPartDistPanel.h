@@ -133,6 +133,31 @@ public:
     // Rows are deleted when the volume fraction is set to zero.
     // Adding rows need an extra widget
     if (ImGui::Button("Add row")) {
+      s_sizeDist.size.push_back(1.1*s_sizeDist.size.back());
+      s_sizeDist.volFrac.push_back(1.0);
+
+      // Remove values with zero vf
+      std::vector<std::pair<double, double>> values; 
+      for (size_t i = 0; i < s_sizeDist.volFrac.size(); i++) {
+        values.emplace_back(std::make_pair(s_sizeDist.size[i], s_sizeDist.volFrac[i]));
+      }
+      std::cout << std::endl;
+      values.erase(std::remove_if(values.begin(), values.end(),
+                    [](const auto& value){return !(value.second > 0.0);}),
+                  values.end());
+
+      // Sort values
+      std::sort(values.begin(), values.end(),
+                [](const auto& v1, const auto& v2){return v2.first > v1.first;});
+      
+      // Clear and reset size and vol frac
+      s_sizeDist.size.clear();
+      s_sizeDist.volFrac.clear();
+      for (const auto& value : values) {
+        s_sizeDist.size.emplace_back(value.first);
+        s_sizeDist.volFrac.emplace_back(value.second);
+      }
+      s_sizeDist.numSizes = values.size();
     }
   }
 
