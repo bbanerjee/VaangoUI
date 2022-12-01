@@ -2,6 +2,7 @@
 #define __Vaango_UI_PARTICLE_SIZE_HISTOGRAM_CANVAS_H__
 
 #include <Vaango_UIData.h>
+#include <Vaango_UIUtils.h>
 
 #include <imgui.h>
 #include <imgui_internal.h>
@@ -36,20 +37,31 @@ public:
   Vaango_UIParticleSizeHistogramCanvas(const std::string& title, 
                                        int width, int height,
                                        const ParticleSizeSource& flag)
-    : d_canvasName(title), d_canvasWidth(width), d_canvasHeight(height),
+    : d_canvasName(title), 
       d_flag(flag)
   {
+    // Set up canvas width and height
+    ImVec2 vMin = ImGui::GetWindowContentRegionMin();
+    ImVec2 vMax = ImGui::GetWindowContentRegionMax();
+    d_canvasWidth = vMax.x - vMin.x;
+    d_canvasHeight = vMax.y - vMin.y;
+
     // Calculate the buffer area of the canvas
-    d_xbuf = d_canvasWidth/10;
-    d_ybuf = d_canvasHeight/10;
-    d_xsmallbuf = d_xbuf/4;
-    d_ysmallbuf = d_ybuf/4;
+    double buf = std::max(d_canvasWidth/15, d_canvasHeight/15);
+    d_xbuf = static_cast<int>(buf);
+    d_ybuf = static_cast<int>(buf);
+    d_xsmallbuf = static_cast<int>(d_xbuf/4.0);
+    d_ysmallbuf = static_cast<int>(d_ybuf/4.0);
+
+    // Compute shifts
+    int x_shift = static_cast<int>(0.5*d_xbuf);
+    int y_shift = static_cast<int>(0.5*d_ybuf);
 
     // Calculate the drawing limits
-    d_xmin = d_xbuf;
-    d_ymin = d_ybuf;
-    d_xmax = d_canvasWidth-d_xbuf;
-    d_ymax = d_canvasHeight-d_ybuf;
+    d_xmin = d_xbuf + x_shift;
+    d_ymin = d_ybuf - y_shift;
+    d_xmax = d_canvasWidth - d_xbuf + x_shift;
+    d_ymax = d_canvasHeight - d_ybuf - y_shift;
 
     // Calculate the tick lengths
     d_xlongTick = d_xsmallbuf*3;
@@ -331,32 +343,39 @@ private:
     int maxSize = std::round((float)(partSizeMantissa*scale));
     int sizeIncr = maxSize/10;
 
+    // Get graph draw area limits
+    int xmin = pos.x + d_xmin;
+    int ymin = pos.y + d_ymin;
+    int xmax = pos.x + d_xmax;
+    int ymax = pos.y + d_ymax;
+    //std::cout << "xmin: " << xmin << " xmax: " << xmax
+    //          << " ymin: " << ymin << " ymax: " << ymax << "\n";
+
     // Draw the highlighted rects
-    int x = pos.x + d_xmin - d_xbuf;
-    int y = pos.y + d_ymin;
-    draw_list->AddRectFilled(ImVec2(x, y), ImVec2(x + d_xbuf, y + d_ymax - d_ymin), 
+    draw_list->AddRectFilled(ImVec2(xmin - d_xbuf, ymin), 
+                             ImVec2(xmin, ymax), 
                              IM_COL32(230, 163, 4, 255));
-    x = pos.x + d_xmin;
-    y = pos.y + d_ymax;
-    draw_list->AddRectFilled(ImVec2(x, y), ImVec2(x + d_xmax - d_xmin, y + d_ybuf),
+    draw_list->AddRectFilled(ImVec2(xmin, ymax), 
+                             ImVec2(xmax, ymax + d_ybuf),
+                             IM_COL32(230, 163, 4, 255));
+    draw_list->AddRectFilled(ImVec2(xmin - d_xbuf, ymax), 
+                             ImVec2(xmin, ymax + d_ybuf),
                              IM_COL32(230, 163, 4, 255));
 
     // Draw the box
-    x = pos.x + d_xmin;
-    y = pos.y + d_ymin;
-    draw_list->AddRect(ImVec2(x, y), ImVec2(x + d_xmax - d_xmin, y + d_ymax - d_ymin),
-                       IM_COL32(0, 0, 0, 255));
+    draw_list->AddRect(ImVec2(xmin, ymin), 
+                       ImVec2(xmax, ymax),
+                       IM_COL32(255, 255, 255, 255));
 
     // Plot the ticks in the x direction
-
-    int xloc = pos.x + d_xmin;
-    int yloc = pos.y + d_ymax;
+    int xloc = xmin;
+    int yloc = ymax;
     int incr = (d_xmax-d_xmin)/10;
     std::string text = "Particle Size (x 1.0e" +
                        std::to_string(std::round((float)(partSizeExponent-2.0))) +
                        ")";
     draw_list->AddText(context->Font, context->FontSize * 1.0f, 
-                       ImVec2(pos.x + (d_xmax + d_xmin)/3, pos.y + d_ymax + d_ybuf),
+                       ImVec2(pos.x + (d_xmax + d_xmin)/3, ymax + d_ybuf + 5),
                        IM_COL32(155, 155, 155, 255), text.c_str(), 0, 0.0f, 0);
 
     for (int i = 0; i <= 10; i++) {
@@ -365,13 +384,13 @@ private:
         draw_list->AddLine(ImVec2(xloc, yloc), ImVec2(xloc, yloc + d_ylongTick),
                            IM_COL32(0, 0, 0, 255), 1.0f);
         draw_list->AddText(context->Font, context->FontSize * 1.0f, 
-                           ImVec2(xloc - d_xshortTick, yloc + d_ybuf - 2),
+                           ImVec2(xloc - d_xshortTick, yloc + d_ymedTick - 2),
                            IM_COL32(0, 0, 0, 255), text.c_str(), 0, 0.0f, 0);
       } else if (i%2 == 0) {
         draw_list->AddLine(ImVec2(xloc, yloc), ImVec2(xloc, yloc + d_yshortTick),
                            IM_COL32(0, 0, 0, 255), 1.0f);
         draw_list->AddText(context->Font, context->FontSize * 1.0f, 
-                           ImVec2(xloc - d_xshortTick, yloc + d_ymedTick + 2),
+                           ImVec2(xloc - d_xshortTick, yloc + d_ymedTick - 2),
                            IM_COL32(0, 0, 0, 255), text.c_str(), 0, 0.0f, 0);
       }
       xloc += incr;
@@ -385,25 +404,28 @@ private:
                          ImVec2(xloc, yloc + (d_ymax + d_ymin)/2),
                          IM_COL32(155, 155, 155, 255), "N", 0, 0.0f, 0);
     } else {
-      draw_list->AddText(context->Font, context->FontSize * 1.0f, 
-                         ImVec2(xloc, pos.y + (d_ymax + d_ymin)/2 - d_xmedTick),
-                         IM_COL32(155, 155, 155, 255), "Vol (%)", 0, 0.0f, 0);
+      //draw_list->AddText(context->Font, context->FontSize * 1.0f, 
+      //                   ImVec2(xmin + d_xbuf/2, ymin + d_ybuf/2),
+      //                   IM_COL32(155, 155, 155, 255), "Vol (%)", 0, 0.0f, 0);
+      AddTextVertical(draw_list, context->Font, context->FontSize * 1.0f, 
+                      ImVec2(pos.x, pos.y + (d_ymin + d_ymax)/2 + d_ybuf),
+                      IM_COL32(155, 155, 155, 255), "Volume fraction (%)");
     }
     for (int i = 0; i <= 10; i++) {
       text = std::to_string(i*10);
       if (i%10 == 0) {
-        draw_list->AddLine(ImVec2(pos.x + d_xmin, yloc), 
-                           ImVec2(pos.x + d_xmin - d_xlongTick, yloc),
+        draw_list->AddLine(ImVec2(xmin, yloc), 
+                           ImVec2(xmin - d_xlongTick, yloc),
                            IM_COL32(0, 0, 0, 255), 1.0f);
         draw_list->AddText(context->Font, context->FontSize * 1.0f, 
-                           ImVec2(pos.x + 2, yloc),
+                           ImVec2(xmin - d_xlongTick, yloc),
                            IM_COL32(0, 0, 0, 255), text.c_str(), 0, 0.0f, 0);
       } else {
-        draw_list->AddLine(ImVec2(pos.x + d_xmin, yloc), 
-                           ImVec2(pos.x + d_xmin - d_xshortTick, yloc),
+        draw_list->AddLine(ImVec2(xmin, yloc), 
+                           ImVec2(xmin - d_xshortTick, yloc),
                            IM_COL32(0, 0, 0, 255), 1.0f);
         draw_list->AddText(context->Font, context->FontSize * 1.0f, 
-                           ImVec2(pos.x + d_xmin - d_xlongTick, yloc),
+                           ImVec2(xmin - d_xlongTick, yloc),
                            IM_COL32(0, 0, 0, 255), text.c_str(), 0, 0.0f, 0);
       } 
       yloc -= incr;

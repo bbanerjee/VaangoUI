@@ -3,6 +3,7 @@
 
 #include <Vaango_UIPanelBase.h>
 #include <Vaango_UIParticleSizeHistogramCanvas.h>
+#include <Vaango_UIUtils.h>
 
 #include <imgui.h>
 #include <ImGuiFileDialog.h>
@@ -38,21 +39,27 @@ public:
   {
     {
       //s_sizeDist.print();
-      ImGui::BeginChild("input part dist", ImVec2(2*width/3, 0));
-      getInputSizeDist(2*width/3, height); 
-      ImGui::EndChild();
+      if (ImGui::BeginChild("input part dist", 
+                            ImVec2(width/2, -ImGui::GetFrameHeightWithSpacing()))){
+        getInputSizeDist(width/2, height - ImGui::GetFrameHeightWithSpacing()); 
+        ImGui::EndChild();
+      }
       //s_sizeDist.print();
     }
     ImGui::SameLine();
     {
-      ImGui::BeginChild("display input part dist", ImVec2(0, -ImGui::GetFrameHeightWithSpacing()));
-      drawSizeDist(width/3, height); 
-      ImGui::EndChild();
+      if (ImGui::BeginChild("display input part dist", 
+                            ImVec2(0, -ImGui::GetFrameHeightWithSpacing()))) {
+        drawSizeDist(width/2, height - ImGui::GetFrameHeightWithSpacing()); 
+        ImGui::EndChild();
+      }
     }
 
   }
 
   void getInputSizeDist(int width, int height) {
+
+    drawWindowBox();
 
     if (ImGui::Button("Read distribution from file")) {
       ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".json", ".");
@@ -88,7 +95,7 @@ public:
     }
 
     flags = ImGuiTableFlags_ScrollY | flags;
-    outer_size = ImVec2(0.0f,  ImGui::GetTextLineHeightWithSpacing()* 10);
+    outer_size = ImVec2(0.0f,  ImGui::GetFrameHeightWithSpacing()* 11);
     ImGui::Text("Size distribution");
     if (ImGui::BeginTable("particle_size", 2, flags, outer_size)) {
       ImGui::TableSetupScrollFreeze(0, 1); // Make top row always visible
@@ -121,6 +128,11 @@ public:
       s_sizeDist.particleVolFrac = totVolFrac;
       
       ImGui::EndTable();
+    }
+
+    // Rows are deleted when the volume fraction is set to zero.
+    // Adding rows need an extra widget
+    if (ImGui::Button("Add row")) {
     }
   }
 
@@ -165,25 +177,14 @@ public:
 
   void drawSizeDist(int width, int height) {
   
+    drawWindowBox();
     Vaango_UIParticleSizeHistogramCanvas inputSizeCanvas("input size histogram",
                                                           width, height,
                                                           ParticleSizeSource::INPUT);
     inputSizeCanvas.draw();
 
-    /*
-    ImDrawList* draw_list = ImGui::GetWindowDrawList();
-
-    // Get the current ImGui cursor position
-    ImVec2 p = ImGui::GetCursorScreenPos();
-
-    // Draw a red circle
-    draw_list->AddCircleFilled(ImVec2(p.x + 50, p.y + 50), 30.0f, IM_COL32(255, 0, 0, 255), 16);
-
-    // Draw a 3 pixel thick yellow line
-    draw_list->AddLine(ImVec2(p.x, p.y), ImVec2(p.x + 100.0f, p.y + 100.0f), IM_COL32(255, 255, 0, 255), 3.0f);
-    */
-
-    // Advance the ImGui cursor to claim space in the window (otherwise the window will appear small and needs to be resized)
+    // Advance the ImGui cursor to claim space in the window 
+    // (otherwise the window will appear small and needs to be resized)
     ImGui::Dummy(ImVec2(200, 200));
   }
 

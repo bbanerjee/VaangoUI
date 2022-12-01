@@ -1,6 +1,7 @@
 #include <Vaango_UIGenerateParticlesPanel.h>
 #include <Vaango_UIGenerateRVEParticles.h>
 #include <Vaango_UIEnvironment.h>
+#include <Vaango_UIUtils.h>
 
 #include <Core/Enums.h>
 #include <Core/ParticleSizeDist.h>
@@ -509,17 +510,5 @@ void Vaango_UIGenerateParticlesPanel::drawParticles(int width, int height) {
   
 }
 
-// Yellow is content region min/max
-void Vaango_UIGenerateParticlesPanel::drawWindowBox() const {
-  ImVec2 vMin = ImGui::GetWindowContentRegionMin();
-  ImVec2 vMax = ImGui::GetWindowContentRegionMax();
-
-  vMin.x += ImGui::GetWindowPos().x;
-  vMin.y += ImGui::GetWindowPos().y;
-  vMax.x += ImGui::GetWindowPos().x;
-  vMax.y += ImGui::GetWindowPos().y;
-
-  ImGui::GetForegroundDrawList()->AddRect( vMin, vMax, IM_COL32( 255, 255, 0, 255 ) );
-}
 
 } // namespace VaangoUI
