@@ -2,6 +2,7 @@
 #define __Vaango_UI_UTILS_H__
 
 #include <imgui.h>
+#include <ImGuiFileDialog.h>
 
 namespace VaangoUI {
 
@@ -50,6 +51,23 @@ static inline void AddTextVertical(ImDrawList* DrawList,
       pos.y -= glyph->AdvanceX;
   }
 }
+
+static bool getFileName(std::string& filePathName) {
+
+  bool haveFileName = false;
+  if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey")) {
+    if (ImGuiFileDialog::Instance()->IsOk()) {
+      filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+      //std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
+      //std::cout << filePathName << " " << filePath << "\n";
+      haveFileName = true;
+    }
+  
+    ImGuiFileDialog::Instance()->Close();
+  }
+  return haveFileName;
+}
+
 } // namespace VaangoUI
 
 #endif //__Vaango_UI_UTILS_H__

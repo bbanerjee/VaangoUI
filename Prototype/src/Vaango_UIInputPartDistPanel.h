@@ -6,7 +6,6 @@
 #include <Vaango_UIUtils.h>
 
 #include <imgui.h>
-#include <ImGuiFileDialog.h>
 #include <json.hpp>
 #include <iostream>
 #include <fstream>
@@ -15,13 +14,10 @@ using json = nlohmann::json;
 
 namespace VaangoUI {
 
+static bool doReading = false;
+
 class Vaango_UIInputPartDistPanel : public Vaango_UIPanelBase
 {
-private:
-
-  bool d_haveFileName = false;
-  bool d_doneReading = false;
-
 public:
 
   Vaango_UIInputPartDistPanel()
@@ -63,10 +59,10 @@ public:
 
     if (ImGui::Button("Read distribution from file")) {
       ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".json", ".");
+      doReading = true;
     }
 
-    std::string file = getFileName();
-    readFromFile(file);
+    readFromFile(doReading);
 
     static ImGuiTableFlags flags = ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersOuter | 
                                    ImGuiTableFlags_BordersV | ImGuiTableFlags_Resizable | 
@@ -161,26 +157,12 @@ public:
     }
   }
 
-  std::string getFileName() {
+  void readFromFile(bool& read) {
 
-    std::string filePathName;
-    if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey")) {
-      if (ImGuiFileDialog::Instance()->IsOk()) {
-        filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
-        //std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
-        //std::cout << filePathName << " " << filePath << "\n";
-        d_haveFileName = true;
-        d_doneReading = false;
-      }
-    
-      ImGuiFileDialog::Instance()->Close();
-    }
-    return filePathName;
-  }
+    if (!read) return;
 
-  void readFromFile(const std::string& file) {
-
-    if (d_haveFileName && !d_doneReading) {
+    std::string file; 
+    if (VaangoUI::getFileName(file)) {
       s_sizeDist.size.clear();
       s_sizeDist.volFrac.clear();
       std::ifstream f(file);
@@ -196,7 +178,30 @@ public:
                                    s_sizeDist.size.end());
       s_sizeDist.maxParticleSize = *elem;
 
-      d_doneReading = true;
+      f.close();
+      read = false;
+    }
+  }
+
+  void saveToFile(bool& save) const {
+
+    if (!save) return;
+
+    std::string file; 
+    if (VaangoUI::getFileName(file)) {
+      std::ofstream f(file);
+      json data = {
+       {"name", s_sizeDist.materialName},
+       {"particle_vol_frac", s_sizeDist.particleVolFrac}
+      };
+      for (int i = 0; i < s_sizeDist.volFrac.size(); i++) {
+        data["data"] += {{"size", s_sizeDist.size[i]},
+                         {"frac", s_sizeDist.volFrac[i]}};
+      }
+      std::cout << data << "\n";
+      f << std::setw(4) << data << "\n";
+      f.close();
+      save = false;
     }
   }
 

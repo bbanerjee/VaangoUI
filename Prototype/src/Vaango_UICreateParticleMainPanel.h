@@ -11,6 +11,11 @@
 
 namespace VaangoUI {
 
+static bool inputPartDistActive = false;
+static bool generatePartDistActive = false;
+static bool saveInputPartDist = false;
+static bool saveGeneratedPartDist = false;
+
 class Vaango_UICreateParticleMainPanel : public Vaango_UIPanelBase
 {
 private:
@@ -58,10 +63,14 @@ public:
             if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_FittingPolicyResizeDown)) {
               if (ImGui::BeginTabItem("Particle size distribution")) {
                 d_inputPartDist.draw("input_part_dist", width, height);
+                inputPartDistActive = true;
+                generatePartDistActive = false;
                 ImGui::EndTabItem();
               }
               if (ImGui::BeginTabItem("Generate particles")) {
                 d_generatePartDist.draw("generate_part", width, height);
+                inputPartDistActive = false;
+                generatePartDistActive = true;
                 ImGui::EndTabItem();
               }
               ImGui::EndTabBar();
@@ -72,17 +81,33 @@ public:
         {
           if (ImGui::Button("Close")) {
             isVisible(false);
+            inputPartDistActive = false;
+            generatePartDistActive = false;
           }
           ImGui::SameLine();
           if (ImGui::Button("Save")) {
+            if (inputPartDistActive) {
+              std::cout << "saving input\n";
+              ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", 
+                                                      "Choose File", ".json", ".");
+              saveInputPartDist = true;
+              saveGeneratedPartDist = false;
 
+            } else if (generatePartDistActive) {
+              std::cout << "saving generated\n";
+              saveInputPartDist = false;
+              saveGeneratedPartDist = true;
+            }
           }
         }
         drawWindowBox(IM_COL32(0, 255, 0, 255));
         ImGui::EndGroup();
       }
+
     }
     ImGui::End();
+
+    d_inputPartDist.saveToFile(saveInputPartDist);
   }
 };
 
