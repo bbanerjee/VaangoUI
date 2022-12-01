@@ -87,8 +87,24 @@ private:
 
   void drawHistogram() 
   {
-    // Get context
-    ImGuiContext* context = ImGui::GetCurrentContext();
+    // Read the data to be used
+    int nofSizesInp = s_sizeDist.numSizes;
+    int nofSizesCalc = s_sizeDist.numSizesCalc;
+
+    drawVolFracHistogram(nofSizesInp, s_sizeDist.size, s_sizeDist.volFrac, 
+                         IM_COL32(184, 199, 27, 255), ParticleSizeSource::INPUT);
+    drawVolFracHistogram(nofSizesCalc, s_sizeDist.sizeCalc, s_sizeDist.volFrac3DCalc, 
+                         IM_COL32(184, 60, 27, 255), ParticleSizeSource::CALCULATED);
+  }
+
+  // Draw the input vol frac histogram
+  void drawVolFracHistogram(int nofSizes,
+                            const std::vector<double>& size,
+                            const std::vector<double>& volFrac,
+                            const ImU32& color,
+                            const ParticleSizeSource& source) 
+  {
+    if (nofSizes == 0) return;
 
     // Set up drawing
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
@@ -96,212 +112,73 @@ private:
     // Get the current ImGui cursor position
     ImVec2 pos = ImGui::GetCursorScreenPos();
 
-    // Read the data to be used
-    int nofSizesInp = s_sizeDist.numSizes;
-    if (nofSizesInp == 0) return;
-    int nofSizesCalc = s_sizeDist.numSizesCalc;
-
     // Get the maximum particle size and its exponent and mantissa
     double maxPartSize = s_sizeDist.maxParticleSize;
-    if (d_flag == ParticleSizeSource::INPUT) {
-      maxPartSize = s_sizeDist.size[nofSizesInp-1];
-    } else {
-      maxPartSize = s_sizeDist.sizeCalc[nofSizesCalc-1];
-    }
+    maxPartSize = size[nofSizes-1];
+
     std::vector<double> expomanti = computeExponentMantissa(maxPartSize);
     double partSizeMantissa = expomanti[1];
 
     double scale = 100.0;
     int maxSize = std::round(static_cast<float>(partSizeMantissa*scale));
 
-    if (d_flag == ParticleSizeSource::INPUT) {
-      // Draw the input vol frac histogram
-      double cum1 = 0.0;
-      for (int ii = 0; ii < nofSizesInp; ii++) {
+    // Plot the histogram
+    double cum1 = 0.0;
+    for (int ii = 0; ii < nofSizes; ii++) {
 
-        // Draw the histogram
-        double size_start = 0.0;
-        if (ii > 0) size_start = s_sizeDist.size[ii-1];
-        double size_end = s_sizeDist.size[ii];
+      // Draw the histogram
+      double size_start = 0.0;
+      if (ii > 0) size_start = size[ii-1];
+      double size_end = size[ii];
 
-        size_start *= (partSizeMantissa*scale/maxPartSize);
-        size_end *= (partSizeMantissa*scale/maxPartSize);
+      size_start *= (partSizeMantissa*scale/maxPartSize);
+      size_end *= (partSizeMantissa*scale/maxPartSize);
 
-        int minXBox = getXScreenCoord(pos.x, size_start, maxSize);
-        int minYBox = getYScreenCoord(pos.y, s_sizeDist.volFrac[ii]);
-        int maxXBox = getXScreenCoord(pos.x, size_end, maxSize);
-        int maxYBox = getYScreenCoord(pos.y, 0.0);
-        int boxWidth = maxXBox-minXBox;
-        int boxHeight = maxYBox-minYBox;
+      int minXBox = getXScreenCoord(pos.x, size_start, maxSize);
+      int minYBox = getYScreenCoord(pos.y, volFrac[ii]);
+      int maxXBox = getXScreenCoord(pos.x, size_end, maxSize);
+      int maxYBox = getYScreenCoord(pos.y, 0.0);
+      int boxWidth = maxXBox-minXBox;
+      int boxHeight = maxYBox-minYBox;
 
-        // Draw the box
-        draw_list->AddRectFilled(ImVec2(minXBox, minYBox), 
-                                 ImVec2(minXBox + boxWidth, minYBox + boxHeight), 
-                                 IM_COL32(184, 199, 27, 255));
-        draw_list->AddRect(ImVec2(minXBox, minYBox), 
-                           ImVec2(minXBox + boxWidth, minYBox + boxHeight), 
-                           IM_COL32(0, 0, 0, 255));
+      // Draw the box
+      draw_list->AddRectFilled(ImVec2(minXBox, minYBox), 
+                               ImVec2(minXBox + boxWidth, minYBox + boxHeight), 
+                               color);
+      draw_list->AddRect(ImVec2(minXBox, minYBox), 
+                         ImVec2(minXBox + boxWidth, minYBox + boxHeight), 
+                         IM_COL32(0, 0, 0, 255));
 
-        // Draw the cumulative distribution of the input
-        int x1 = getXScreenCoord(pos.x, size_start, maxSize);
-        int x2 = getXScreenCoord(pos.x, size_end, maxSize);
-        int y1 = getYScreenCoord(pos.y, cum1);
-        cum1 += s_sizeDist.volFrac[ii];
-        int y2 = getYScreenCoord(pos.y, cum1);
-        draw_list->AddLine(ImVec2(x1, y1), ImVec2(x2, y2),
-                           IM_COL32(184, 60, 27, 255), 1.0f);
-        draw_list->AddLine(ImVec2(x1+1, y1), ImVec2(x2+1, y2),
-                           IM_COL32(184, 60, 27, 255), 1.0f);
-        draw_list->AddLine(ImVec2(x1+2, y1), ImVec2(x2+2, y2),
-                           IM_COL32(184, 60, 27, 255), 1.0f);
-      }
-
-      /*
-      // Draw the calculated vol frac histogram
-      double cum1Calc = 0.0;
-      for (int ii = 0; ii < nofSizesCalc; ii++) {
-
-        // Draw the histogram
-        double size_start = 0.0;
-        if (ii > 0) size_start = s_sizeDist.sizeCalc[ii-1];
-        double size_end = s_sizeDist.sizeCalc[ii];
-
-        int minXBox = getXScreenCoord(pos.x, size_start, maxSize);
-        int minYBox = getYScreenCoord(pos.y, s_sizeDist.volFrac3DCalc[ii]);
-        int maxXBox = getXScreenCoord(pos.x, size_end, maxSize);
-        int maxYBox = getYScreenCoord(pos.y, 0.0);
-        int boxWidth = maxXBox-minXBox;
-        int boxHeight = maxYBox-minYBox;
-
-        // Draw the box
-        g.setColor(new Color(200,200,10));
-        g.fillRect(minXBox, minYBox, boxWidth, boxHeight);
-        g.setColor(new Color(0,0,0));
-        g.drawRect(minXBox, minYBox, boxWidth, boxHeight);
-        g.setColor(new Color(0,0,0));
-
-        // Draw the cumulative distribution of computed vol frac 
-        int x1 = getXScreenCoord(pos.x, size_start, maxSize);
-        int x2 = getXScreenCoord(pos.x, size_end, maxSize);
-        int y1 = getYScreenCoord(pos.y, cum1Calc);
-        cum1Calc += s_sizeDist.volFrac3DCalc[ii];
-        int y2 = getYScreenCoord(pos.y, cum1Calc);
-        g.setColor(new Color(200,200,10));
-        g.drawLine(x1,y1,x2,y2);
-        g.drawLine(x1+1,y1,x2+1,y2);
-        g.drawLine(x1+2,y1,x2+2,y2);
-        g.setColor(new Color(0,0,0));
-      }
-      // Put the labels on the plot
-      int x0 = xmin+xbuf;
-      int y0 = ymin+yshortTick;
-      g.setColor(new Color(184,119,27));
-      g.fillRect(x0,y0,xshortTick,yshortTick);
-      g.setColor(new Color(0,0,0));
-      g.drawRect(x0,y0,xshortTick,yshortTick);
-      g.setColor(new Color(184,60,27));
-      y0 += yshortTick/2;
-      g.drawLine(x0+xmedTick, y0, x0+xlongTick, y0);
-      y0 += yshortTick/2;
-      g.drawString("Input",x0+xbuf,y0);
-      y0 = ymin+ylongTick;
-      g.setColor(new Color(200,200,10));
-      g.fillRect(x0,y0,xshortTick,yshortTick);
-      g.drawRect(x0,y0,xshortTick,yshortTick);
-      y0 += yshortTick/2;
-      g.drawLine(x0+xmedTick, y0, x0+xlongTick, y0);
-      y0 += yshortTick/2;
-      g.drawString("Calculated",x0+xbuf,y0);
-      g.setColor(new Color(0,0,0));
-      */
-
-    } else {
-
-      /*
-      // Put the labels on the plot
-      int x0 = (xmax-xmin)/2;
-      int y0 = ymin+yshortTick;
-      y0 += yshortTick/2;
-      g.setColor(new Color(84,27,225));
-      g.drawLine(x0+xmedTick, y0, x0+xlongTick, y0);
-      y0 += yshortTick/2;
-      g.drawString("Distribution in 2D",x0+xbuf,y0);
-      y0 = ymin+ylongTick;
-      y0 += yshortTick/2;
-      g.setColor(new Color(184,119,27));
-      g.drawLine(x0+xmedTick, y0, x0+xlongTick, y0);
-      y0 += yshortTick/2;
-      g.drawString("Distribution in 3D",x0+xbuf,y0);
-      g.setColor(new Color(0,0,0));
-
-      // Find the total number of balls
-      double numBalls2D = 0.0;
-      double numBalls3D = 0.0;
-      for (int ii = 0; ii < nofSizesCalc; ii++) {
-        numBalls2D += s_sizeDist.freq2DCalc[ii];
-        numBalls3D += s_sizeDist.freq3DCalc[ii];
-      }
-      numBalls2D /= 100.0;
-      numBalls3D /= 100.0;
-
-      // Draw the lines showing the distribution of balls
-      double cum1 = 0.0;
-      double cum2 = 0.0;
-      for (int ii = 0; ii < nofSizesCalc; ii++) {
-
-        double size_start = 0.0;
-        if (ii > 0) size_start = s_sizeDist.sizeCalc[ii-1];
-        double size_end = s_sizeDist.sizeCalc[ii];
-        size_start *= (partSizeMantissa*scale/maxPartSize);
-        size_end *= (partSizeMantissa*scale/maxPartSize);
-
-        double freq2D_start = 0.0;
-        double freq3D_start = 0.0;
-        if (ii > 0) {
-          freq2D_start = s_sizeDist.freq2DCalc[ii-1]/numBalls2D;
-          freq3D_start = s_sizeDist.freq3DCalc[ii-1]/numBalls3D;
-        }
-        double freq2D_end = s_sizeDist.freq2DCalc[ii]/numBalls2D;
-        double freq3D_end = s_sizeDist.freq3DCalc[ii]/numBalls3D;
-
-        int x1 = getXScreenCoord(size_start, maxSize);
-        int x2 = getXScreenCoord(size_end, maxSize);
-        int y1 = getYScreenCoord(freq2D_start);
-        int y2 = getYScreenCoord(freq2D_end);
-        g.setColor(new Color(84,27,225));
-          g.drawLine(x1,y1,x2,y2);
-        g.drawLine(x1+1,y1,x2+1,y2);
-        g.drawLine(x1+2,y1,x2+2,y2);
-
-        y1 = getYScreenCoord(freq3D_start);
-        y2 = getYScreenCoord(freq3D_end);
-        g.setColor(new Color(184,119,27));
-        g.drawLine(x1,y1,x2,y2);
-        g.drawLine(x1+1,y1,x2+1,y2);
-        g.drawLine(x1+2,y1,x2+2,y2);
-
-        g.setColor(new Color(0,0,0));
-
-        // Draw the cumulative distribution of the frequencies
-        y1 = getYScreenCoord(cum1);
-        cum1 += freq2D_end;
-        y2 = getYScreenCoord(cum1);
-        g.setColor(new Color(84,27,225));
-        g.drawLine(x1,y1,x2,y2);
-        g.drawLine(x1+1,y1,x2+1,y2);
-        g.drawLine(x1+2,y1,x2+2,y2);
-
-        y1 = getYScreenCoord(cum2);
-        cum2 += freq3D_end;
-          y2 = getYScreenCoord(cum2);
-        g.setColor(new Color(184,119,27));
-        g.drawLine(x1,y1,x2,y2);
-        g.drawLine(x1+1,y1,x2+1,y2);
-        g.drawLine(x1+2,y1,x2+2,y2);
-        g.setColor(new Color(0,0,0));
-      }
-      */
+      // Draw the cumulative distribution of the input
+      int x1 = getXScreenCoord(pos.x, size_start, maxSize);
+      int x2 = getXScreenCoord(pos.x, size_end, maxSize);
+      int y1 = getYScreenCoord(pos.y, cum1);
+      cum1 += volFrac[ii];
+      int y2 = getYScreenCoord(pos.y, cum1);
+      draw_list->AddLine(ImVec2(x1, y1), ImVec2(x2, y2), color, 1.0f);
+      draw_list->AddLine(ImVec2(x1+1, y1), ImVec2(x2+1, y2), color, 1.0f);
+      draw_list->AddLine(ImVec2(x1+2, y1), ImVec2(x2+2, y2), color, 1.0f);
     }
+
+    // Get context
+    ImGuiContext* context = ImGui::GetCurrentContext();
+
+    double size_start = s_sizeDist.size[0];
+    size_start *= (partSizeMantissa*scale/maxPartSize);
+    int xloc = getXScreenCoord(pos.x, size_start, maxSize);
+    int yloc = 0;
+    if (source == ParticleSizeSource::INPUT) {
+      yloc = getYScreenCoord(pos.y, 90.0);
+      draw_list->AddText(context->Font, context->FontSize * 1.0f, 
+                        ImVec2(xloc + 15, yloc),
+                        color, "Input sizes", 0, 0.0f, 0);
+    } else {
+      yloc = getYScreenCoord(pos.y, 80.0);
+      draw_list->AddText(context->Font, context->FontSize * 1.0f, 
+                        ImVec2(xloc + 15, yloc),
+                        color, "Calculated sizes", 0, 0.0f, 0);
+    }
+    draw_list->AddLine(ImVec2(xloc, yloc+2), ImVec2(xloc+10, yloc+2), color, 1.0f);
   }
 
   // Get the screen coordinates of a world point
@@ -403,15 +280,10 @@ private:
     }
 
     // Plot the ticks in the y direction
-    if (d_flag != ParticleSizeSource::INPUT) {
-      AddTextVertical(draw_list, context->Font, context->FontSize * 1.0f, 
-                      ImVec2(pos.x, pos.y + (d_ymin + d_ymax)/2 + d_ybuf),
-                      IM_COL32(155, 155, 155, 255), "Number");
-    } else {
-      AddTextVertical(draw_list, context->Font, context->FontSize * 1.0f, 
-                      ImVec2(pos.x, pos.y + (d_ymin + d_ymax)/2 + d_ybuf),
-                      IM_COL32(155, 155, 155, 255), "Volume fraction (%)");
-    }
+    AddTextVertical(draw_list, context->Font, context->FontSize * 1.0f, 
+                    ImVec2(pos.x, pos.y + (d_ymin + d_ymax)/2 + d_ybuf),
+                    IM_COL32(155, 155, 155, 255), "Volume fraction (%)");
+
     for (int i = 0; i <= 10; i++) {
       text = std::to_string(i*10);
       if (i%10 == 0) {
