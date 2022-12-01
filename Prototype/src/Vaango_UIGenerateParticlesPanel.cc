@@ -479,6 +479,9 @@ void Vaango_UIGenerateParticlesPanel::drawParticles(int width, int height) {
 
   // Get the size of the child (i.e. the whole draw size of the windows).
   ImVec2 wsize = ImGui::GetContentRegionAvail();
+  int wmin = std::min(wsize.x, wsize.y);
+  wsize.x = wmin;
+  wsize.y = wmin;
   //std::cout << "wsize = " << wsize.x << ", " << wsize.y << "\n";
   ImGui::Image(reinterpret_cast<void*>(Vaango_UIEnvironment::vtk_renderTexture), wsize, ImVec2(0, 1), ImVec2(1, 0));
 
