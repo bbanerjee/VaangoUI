@@ -3,6 +3,7 @@
 
 #include <Vaango_UIData.h>
 #include <Vaango_UIUtils.h>
+#include <Utils/UtilsGoBag.h>
 
 #include <imgui.h>
 #include <imgui_internal.h>
@@ -305,10 +306,10 @@ private:
 
   // Get the screen coordinates of a world point
   int getXScreenCoord(int x0, double coord, int maxSize) {
-    return x0 + d_xmin + static_cast<int> (coord/maxSize*(d_xmax-d_xmin));
+    return x0 + d_xmin + static_cast<int> (std::round(coord/maxSize*(d_xmax-d_xmin)));
   }
   int getYScreenCoord(int y0, double coord) {
-    return y0 + d_ymax - static_cast<int> (coord/100.0*(d_ymax-d_ymin));
+    return y0 + d_ymax - static_cast<int> (std::round(coord/100.0*(d_ymax-d_ymin)));
   }
 
 
@@ -351,6 +352,10 @@ private:
     //std::cout << "xmin: " << xmin << " xmax: " << xmax
     //          << " ymin: " << ymin << " ymax: " << ymax << "\n";
 
+    std::vector<int> sizeTickLocs = VaangoUI::linspace<int>(xmin, xmax, 10);
+    std::vector<int> vfTickLocs = VaangoUI::linspace<int>(ymin, ymax, 10);
+    std::reverse(vfTickLocs.begin(), vfTickLocs.end());
+
     // Draw the highlighted rects
     draw_list->AddRectFilled(ImVec2(xmin - d_xbuf, ymin), 
                              ImVec2(xmin, ymax), 
@@ -368,11 +373,13 @@ private:
                        IM_COL32(255, 255, 255, 255));
 
     // Plot the ticks in the x direction
-    int xloc = xmin;
-    int yloc = ymax;
-    int incr = (d_xmax-d_xmin)/10;
+    auto val = std::round((float)(partSizeExponent-2.0));
+    const char *fmt = "%.2f";
+    int sz = std::snprintf(nullptr, 0, fmt, val);
+    std::vector<char> buf(sz + 1); // note +1 for null terminator
+    std::snprintf(&buf[0], buf.size(), fmt, val);
     std::string text = "Particle Size (x 1.0e" +
-                       std::to_string(std::round((float)(partSizeExponent-2.0))) +
+                       std::string(&buf[0], &buf[0] + sz - 1) +
                        ")";
     draw_list->AddText(context->Font, context->FontSize * 1.0f, 
                        ImVec2(pos.x + (d_xmax + d_xmin)/3, ymax + d_ybuf + 5),
@@ -381,32 +388,26 @@ private:
     for (int i = 0; i <= 10; i++) {
       text = std::to_string(i * sizeIncr);
       if (i%10 == 0) {
-        draw_list->AddLine(ImVec2(xloc, yloc), ImVec2(xloc, yloc + d_ylongTick),
+        draw_list->AddLine(ImVec2(sizeTickLocs[i], ymax), ImVec2(sizeTickLocs[i], ymax + d_ylongTick),
                            IM_COL32(0, 0, 0, 255), 1.0f);
         draw_list->AddText(context->Font, context->FontSize * 1.0f, 
-                           ImVec2(xloc - d_xshortTick, yloc + d_ymedTick - 2),
+                           ImVec2(sizeTickLocs[i] - d_xshortTick, ymax + d_ymedTick - 2),
                            IM_COL32(0, 0, 0, 255), text.c_str(), 0, 0.0f, 0);
       } else if (i%2 == 0) {
-        draw_list->AddLine(ImVec2(xloc, yloc), ImVec2(xloc, yloc + d_yshortTick),
+        draw_list->AddLine(ImVec2(sizeTickLocs[i], ymax), ImVec2(sizeTickLocs[i], ymax + d_yshortTick),
                            IM_COL32(0, 0, 0, 255), 1.0f);
         draw_list->AddText(context->Font, context->FontSize * 1.0f, 
-                           ImVec2(xloc - d_xshortTick, yloc + d_ymedTick - 2),
+                           ImVec2(sizeTickLocs[i] - d_xshortTick, ymax + d_ymedTick - 2),
                            IM_COL32(0, 0, 0, 255), text.c_str(), 0, 0.0f, 0);
       }
-      xloc += incr;
     }
 
     // Plot the ticks in the y direction
-    yloc = pos.y + d_ymax;
-    incr = (d_ymax-d_ymin)/10;
     if (d_flag != ParticleSizeSource::INPUT) {
-      draw_list->AddText(context->Font, context->FontSize * 1.0f, 
-                         ImVec2(xloc, yloc + (d_ymax + d_ymin)/2),
-                         IM_COL32(155, 155, 155, 255), "N", 0, 0.0f, 0);
+      AddTextVertical(draw_list, context->Font, context->FontSize * 1.0f, 
+                      ImVec2(pos.x, pos.y + (d_ymin + d_ymax)/2 + d_ybuf),
+                      IM_COL32(155, 155, 155, 255), "Number");
     } else {
-      //draw_list->AddText(context->Font, context->FontSize * 1.0f, 
-      //                   ImVec2(xmin + d_xbuf/2, ymin + d_ybuf/2),
-      //                   IM_COL32(155, 155, 155, 255), "Vol (%)", 0, 0.0f, 0);
       AddTextVertical(draw_list, context->Font, context->FontSize * 1.0f, 
                       ImVec2(pos.x, pos.y + (d_ymin + d_ymax)/2 + d_ybuf),
                       IM_COL32(155, 155, 155, 255), "Volume fraction (%)");
@@ -414,21 +415,20 @@ private:
     for (int i = 0; i <= 10; i++) {
       text = std::to_string(i*10);
       if (i%10 == 0) {
-        draw_list->AddLine(ImVec2(xmin, yloc), 
-                           ImVec2(xmin - d_xlongTick, yloc),
+        draw_list->AddLine(ImVec2(xmin, vfTickLocs[i]), 
+                           ImVec2(xmin - d_xlongTick, vfTickLocs[i]),
                            IM_COL32(0, 0, 0, 255), 1.0f);
         draw_list->AddText(context->Font, context->FontSize * 1.0f, 
-                           ImVec2(xmin - d_xlongTick, yloc),
+                           ImVec2(xmin - d_xlongTick, vfTickLocs[i]),
                            IM_COL32(0, 0, 0, 255), text.c_str(), 0, 0.0f, 0);
       } else {
-        draw_list->AddLine(ImVec2(xmin, yloc), 
-                           ImVec2(xmin - d_xshortTick, yloc),
+        draw_list->AddLine(ImVec2(xmin, vfTickLocs[i]), 
+                           ImVec2(xmin - d_xshortTick, vfTickLocs[i]),
                            IM_COL32(0, 0, 0, 255), 1.0f);
         draw_list->AddText(context->Font, context->FontSize * 1.0f, 
-                           ImVec2(xmin - d_xlongTick, yloc),
+                           ImVec2(xmin - d_xlongTick, vfTickLocs[i]),
                            IM_COL32(0, 0, 0, 255), text.c_str(), 0, 0.0f, 0);
       } 
-      yloc -= incr;
     }
 
   }
