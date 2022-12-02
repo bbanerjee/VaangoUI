@@ -77,8 +77,8 @@ IF(UNIX AND NOT APPLE)
 ENDIF()
 
 # for raylib
-set(RAYLIB_INCLUDE_DIR /home/banerjee/Packages/raylib-4.2.0_linux_amd64/include)
-set(RAYLIB_LIB /home/banerjee/Packages/raylib-4.2.0_linux_amd64/lib/libraylib.so)
+#set(RAYLIB_INCLUDE_DIR /home/banerjee/Packages/raylib-4.2.0_linux_amd64/include)
+#set(RAYLIB_LIB /home/banerjee/Packages/raylib-4.2.0_linux_amd64/lib/libraylib.so)
 
 # for stb image loader
 set(STB_DIR /home/banerjee/VaangoUI/Prototype/stb)
@@ -135,16 +135,16 @@ target_include_directories(imgui_backend_lib PRIVATE
                            ${IMGUI_BACKEND_DIR})
 
 # for raylib backend for imgui
-set(RLIMGUI_DIR /home/banerjee/Packages/rlImGui)
-set(RLIMGUI_SRC
-    ${RLIMGUI_DIR}/rlImGui.cpp)
-set(RLIMGUI_LIB rlimgui_lib)
+#set(RLIMGUI_DIR /home/banerjee/Packages/rlImGui)
+#set(RLIMGUI_SRC
+#    ${RLIMGUI_DIR}/rlImGui.cpp)
+#set(RLIMGUI_LIB rlimgui_lib)
 
-add_library(${RLIMGUI_LIB} ${RLIMGUI_SRC})
-target_include_directories(${RLIMGUI_LIB} PRIVATE 
-                           ${RAYLIB_INCLUDE_DIR}
-                           ${IMGUI_DIR}
-                           ${RLIMGUI_DIR})
+#add_library(${RLIMGUI_LIB} ${RLIMGUI_SRC})
+#target_include_directories(${RLIMGUI_LIB} PRIVATE 
+#                           ${RAYLIB_INCLUDE_DIR}
+#                           ${IMGUI_DIR}
+#                           ${RLIMGUI_DIR})
 
 # for nlohmann JSON parser
 set(JSON_DIR /home/banerjee/VaangoUI/Prototype/nlohmann)
@@ -183,12 +183,13 @@ add_library(${VAANGO_UI_LIB}
             ${VAANGO_CORE_SRC})
 set_source_files_properties(${VAANGO_CORE_SRC} PROPERTIES 
                             COMPILE_OPTIONS "-Wall")
+set_property(TARGET ${VAANGO_COR_SRC} PROPERTY CXX_STANDARD 17)
 target_include_directories(${VAANGO_UI_LIB} PRIVATE 
                            ${VAANGO_CORE_DIR}
                            ${IMGUI_FILE_DIALOG_DIR}
                            ${JSON_DIR}
-                           ${RAYLIB_INCLUDE_DIR}
-                           ${RLIMGUI_DIR}
+#                           ${RAYLIB_INCLUDE_DIR}
+#                           ${RLIMGUI_DIR}
                            ${CMAKE_CURRENT_SOURCE_DIR}
 #                           ${CMAKE_CURRENT_SOURCE_DIR}/Utils
                            ${IMGUI_DIR}
@@ -216,8 +217,8 @@ target_link_libraries (vaango_ui
                        ${IMGUI_BACKEND_LIB}
                        ${GLAD_LIB}
                        ${GLFW_LIBRARIES}
-                       ${RAYLIB_LIB}
-                       ${RLIMGUI_LIB}
+#                       ${RAYLIB_LIB}
+#                       ${RLIMGUI_LIB}
                        OpenGL::GL
                        ${VTK_LIBRARIES}
                        ${CMAKE_DL_LIBS})

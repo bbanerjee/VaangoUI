@@ -9,12 +9,15 @@
 #include <json.hpp>
 #include <iostream>
 #include <fstream>
+#include <filesystem>
 
 using json = nlohmann::json;
 
 namespace VaangoUI {
 
 static bool doReading = false;
+static bool fileExists = false;
+static bool choice = false;
 
 class Vaango_UIInputPartDistPanel : public Vaango_UIPanelBase
 {
@@ -165,7 +168,11 @@ public:
     if (VaangoUI::getFileName(file)) {
       s_sizeDist.size.clear();
       s_sizeDist.volFrac.clear();
-      std::ifstream f(file);
+      std::ifstream f(file, std::ios::in);
+      if (!f.good()) {
+        std::string message = "The input particle size file" + file + " does not exist\n";
+        ImGui::OpenPopup(message.c_str());
+      }
       json data = json::parse(f);
       s_sizeDist.materialName = data["name"];
       s_sizeDist.particleVolFrac = data["particle_vol_frac"];
@@ -185,23 +192,53 @@ public:
 
   void saveToFile(bool& save) const {
 
-    if (!save) return;
+    // Set up json
+    json data = {
+      {"name", s_sizeDist.materialName},
+      {"particle_vol_frac", s_sizeDist.particleVolFrac}
+    };
+    for (int i = 0; i < s_sizeDist.volFrac.size(); i++) {
+      data["data"] += {{"size", s_sizeDist.size[i]},
+                        {"frac", s_sizeDist.volFrac[i]}};
+    }
 
-    std::string file; 
+    // Write to file
+    static std::string file; 
     if (VaangoUI::getFileName(file)) {
-      std::ofstream f(file);
-      json data = {
-       {"name", s_sizeDist.materialName},
-       {"particle_vol_frac", s_sizeDist.particleVolFrac}
-      };
-      for (int i = 0; i < s_sizeDist.volFrac.size(); i++) {
-        data["data"] += {{"size", s_sizeDist.size[i]},
-                         {"frac", s_sizeDist.volFrac[i]}};
+      std::filesystem::path filePath(file);
+      std::error_code err;
+      if (std::filesystem::exists(filePath, err) && !err) {
+        fileExists = true;
       }
-      std::cout << data << "\n";
+      if (!fileExists) {
+        std::ofstream f(file, std::ios::out);
+        f << std::setw(4) << data << "\n";
+        f.close();
+        //std::cout << data << "\n";
+        save = false;
+        fileExists = false;
+        choice = false;
+        return;
+      }
+    }
+
+    // Set up popup
+    std::string popupTitle = "File exists. Overwrite?";
+    std::string message = "The file " + file + " will be overwritten.\n";
+    choice = VaangoUI::createOkCancelPopup(popupTitle, message.c_str(), fileExists);
+    if (choice) {
+      std::ofstream f(file, std::ios::out);
       f << std::setw(4) << data << "\n";
       f.close();
+      std::cout << data << "\n";
       save = false;
+      fileExists = false;
+      choice = false;
+      return;
+    } else {
+      save = true;
+      fileExists = false;
+      choice = false;
     }
   }
 

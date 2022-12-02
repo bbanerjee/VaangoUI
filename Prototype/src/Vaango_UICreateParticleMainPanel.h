@@ -87,7 +87,7 @@ public:
           ImGui::SameLine();
           if (ImGui::Button("Save")) {
             if (inputPartDistActive) {
-              std::cout << "saving input\n";
+              //std::cout << "saving input\n";
               ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", 
                                                       "Choose File", ".json", ".");
               saveInputPartDist = true;
@@ -105,9 +105,13 @@ public:
       }
 
     }
+
+    if (saveInputPartDist) {
+      d_inputPartDist.saveToFile(saveInputPartDist);
+    }
+
     ImGui::End();
 
-    d_inputPartDist.saveToFile(saveInputPartDist);
   }
 };
 

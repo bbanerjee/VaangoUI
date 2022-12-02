@@ -68,6 +68,42 @@ static bool getFileName(std::string& filePathName) {
   return haveFileName;
 }
 
+static bool createOkCancelPopup(const std::string& popupTitle,
+                                const std::string& popupText,
+                                bool& fileExists)
+{
+  if (fileExists) {
+    ImGui::OpenPopup(popupTitle.c_str());
+  }
+
+  ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+  ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+
+  bool choice = false;
+  if (ImGui::BeginPopupModal(popupTitle.c_str(), NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+    ImGui::Text(popupText.c_str());
+    ImGui::Separator();
+
+    static bool dont_ask_me_next_time = false;
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
+    ImGui::Checkbox("Don't ask me next time", &dont_ask_me_next_time);
+    ImGui::PopStyleVar();
+
+    if (ImGui::Button("OK##OKCancelPopup", ImVec2(120, 0))) { 
+      choice = true;
+      ImGui::CloseCurrentPopup(); 
+    }
+    ImGui::SetItemDefaultFocus();
+    ImGui::SameLine();
+    if (ImGui::Button("Cancel##OKCancelPopup", ImVec2(120, 0))) { 
+      choice = false;
+      ImGui::CloseCurrentPopup(); 
+    }
+    ImGui::EndPopup();
+  }
+  return choice;
+}
+
 } // namespace VaangoUI
 
 #endif //__Vaango_UI_UTILS_H__
