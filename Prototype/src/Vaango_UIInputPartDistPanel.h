@@ -105,7 +105,8 @@ public:
       double maxSize = 0.0;
       double totVolFrac = 0.0;
       for (int row = 0; row < num_sizes; row++) {
-        if (s_sizeDist.size[row] > 0.0 && s_sizeDist.volFrac[row] > 0.0) {
+        //if (s_sizeDist.size[row] > 0.0 && s_sizeDist.volFrac[row] > 0.0) {
+        if (s_sizeDist.volFrac[row] > 0.0) {
           ImGui::PushID(row);
           ImGui::TableNextColumn();
           float size = static_cast<float>(s_sizeDist.size[row]);
@@ -129,18 +130,22 @@ public:
       ImGui::EndTable();
     }
 
+    // Save the values 
+    std::vector<std::pair<double, double>> values; 
+    for (size_t i = 0; i < s_sizeDist.volFrac.size(); i++) {
+      values.emplace_back(std::make_pair(s_sizeDist.size[i], s_sizeDist.volFrac[i]));
+    }
+
+    // Sort values
+    std::sort(values.begin(), values.end(),
+              [](const auto& v1, const auto& v2){return v2.first > v1.first;});
+
     // Rows are deleted when the volume fraction is set to zero.
     // Adding rows need an extra widget
     if (ImGui::Button("Add row")) {
-      s_sizeDist.size.push_back(1.1*s_sizeDist.size.back());
-      s_sizeDist.volFrac.push_back(1.0);
+      values.emplace_back(std::make_pair(1.1*s_sizeDist.size.back(), 1.0));
 
       // Remove values with zero vf
-      std::vector<std::pair<double, double>> values; 
-      for (size_t i = 0; i < s_sizeDist.volFrac.size(); i++) {
-        values.emplace_back(std::make_pair(s_sizeDist.size[i], s_sizeDist.volFrac[i]));
-      }
-      std::cout << std::endl;
       values.erase(std::remove_if(values.begin(), values.end(),
                     [](const auto& value){return !(value.second > 0.0);}),
                   values.end());
@@ -149,15 +154,17 @@ public:
       std::sort(values.begin(), values.end(),
                 [](const auto& v1, const auto& v2){return v2.first > v1.first;});
       
-      // Clear and reset size and vol frac
-      s_sizeDist.size.clear();
-      s_sizeDist.volFrac.clear();
-      for (const auto& value : values) {
-        s_sizeDist.size.emplace_back(value.first);
-        s_sizeDist.volFrac.emplace_back(value.second);
-      }
-      s_sizeDist.numSizes = values.size();
     }
+
+    // Clear and reset size and vol frac
+    s_sizeDist.size.clear();
+    s_sizeDist.volFrac.clear();
+    for (const auto& value : values) {
+      s_sizeDist.size.emplace_back(value.first);
+      s_sizeDist.volFrac.emplace_back(value.second);
+    }
+    s_sizeDist.numSizes = values.size();
+    s_sizeDist.maxParticleSize = s_sizeDist.size.back();
   }
 
   void readFromFile(bool& read) {
