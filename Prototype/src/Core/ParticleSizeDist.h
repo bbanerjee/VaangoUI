@@ -79,11 +79,11 @@ struct ParticleSizeDist
       data["data"] += {{"size", size[i]},
                         {"frac", volFrac[i]}};
     }
+    //std::cout << data << "\n";
 
     std::ofstream f(filename, std::ios::out);
     f << std::setw(4) << data << "\n";
     f.close();
-    //std::cout << data << "\n";
   }
 
   void print() const {

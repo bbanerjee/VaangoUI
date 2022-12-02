@@ -517,7 +517,9 @@ void Vaango_UIGenerateParticlesPanel::drawParticles(int width, int height) {
 void
 Vaango_UIGenerateParticlesPanel::saveToFile(bool& save) const
 {
-
+  std::cout << "saving to test2.json\n";
+  s_partList.saveToFile("test2.json", FileFormat::JSON);
+  //s_partList.saveToFile("test2.json", FileFormat::XML);
 }
 
 } // namespace VaangoUI

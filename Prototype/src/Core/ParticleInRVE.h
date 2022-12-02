@@ -4,6 +4,9 @@
 #include <Core/Point.h>
 #include <Core/Enums.h>
 
+#include <json.hpp>
+#include <Utils/json2xml.hpp>
+
 #include <cassert>
 #include <cmath>
 #include <iostream>
@@ -147,7 +150,54 @@ public:
     return out;
   }
   
-  // Print the particle data to a file
+  // Write the particle data to JSON
+  using json = nlohmann::json;
+  json saveToJSON() const
+  {
+    json data; 
+    switch (d_shape) 
+    {
+      case ParticleShape::CIRCLE: 
+      case ParticleShape::HOLLOW_CIRCLE: 
+        data = {std::string("cylinder label=\"" + std::to_string(d_matCode) + "\"")};
+        data += { 
+                 {"bottom", {d_center.x, d_center.y, d_center.z}},
+                 {"top", {d_center.x, d_center.y, d_center.z + d_length}},
+                 {"radius", d_radius},
+                 {"thickness", d_thickness}
+                };
+        break;
+      case ParticleShape::SPHERE: 
+      case ParticleShape::HOLLOW_SPHERE: 
+        data = {std::string("sphere label=\"" + std::to_string(d_matCode) + "\"")};
+        data += { 
+                 {"center", {d_center.x, d_center.y, d_center.z}},
+                 {"radius", d_radius},
+                 {"thickness", d_thickness}
+                };
+        break;
+      default:
+        break;
+    };
+
+    return data;
+  }
+
+  // Write the particle data to XML
+  std::string saveToXML() const
+  {
+    json data = saveToJSON();
+    ert::JsonSaxConsumer consumer(2);
+    bool success = json::sax_parse(data.dump(), &consumer);
+
+    if (!success)
+        std::cerr << "Conversion error !" << std::endl;
+
+    // output xml
+    std::cout << consumer.getXmlString();
+    return consumer.getXmlString();
+  }
+
   /*
   public void print(PrintWriter pw, String tab)
   {
@@ -155,24 +205,24 @@ public:
     switch (d_shape) 
     {
     case CIRCLE:
-      pw.println(tab+"<cylinder label=\""+d_matCode+"\">");
-      pw.println(tab1+"<bottom> ["+d_center.getX()+", "+d_center.getY()+", "+
+      std::cout << tab+"<cylinder label=\""+d_matCode+"\">");
+      std::cout << tab1+"<bottom> ["+d_center.getX()+", "+d_center.getY()+", "+
                  d_center.getZ()+"] </bottom>");
       double zcoord = d_center.getZ() + d_length;
-      pw.println(tab1+"<top> ["+d_center.getX()+", "+d_center.getY()+", "+
+      std::cout << tab1+"<top> ["+d_center.getX()+", "+d_center.getY()+", "+
                  zcoord+"] </top>");
-      pw.println(tab1+"<radius> "+d_radius+" </radius>");
-      pw.println(tab1+"<thickness> "+d_thickness+" </thickness>");
-      pw.println(tab+"</cylinder>");
+      std::cout << tab1+"<radius> "+d_radius+" </radius>");
+      std::cout << tab1+"<thickness> "+d_thickness+" </thickness>");
+      std::cout << tab+"</cylinder>");
       break;
       
     case SPHERE:
-      pw.println(tab+"<sphere label=\""+d_matCode+"\">");
-      pw.println(tab1+"<center> ["+d_center.getX()+", "+d_center.getY()+", "+
+      std::cout << tab+"<sphere label=\""+d_matCode+"\">");
+      std::cout << tab1+"<center> ["+d_center.getX()+", "+d_center.getY()+", "+
                  d_center.getZ()+"] </center>");
-      pw.println(tab1+"<radius> "+d_radius+" </radius>");
-      pw.println(tab1+"<thickness> "+d_thickness+" </thickness>");
-      pw.println(tab+"</sphere>");
+      std::cout << tab1+"<radius> "+d_radius+" </radius>");
+      std::cout << tab1+"<thickness> "+d_thickness+" </thickness>");
+      std::cout << tab+"</sphere>");
       break;
       
     default:

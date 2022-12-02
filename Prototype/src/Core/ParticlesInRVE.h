@@ -6,11 +6,15 @@
 #include <Core/ParticleInRVE.h>
 #include <Core/Point.h>
 
+#include <json.hpp>
+
 #include <iostream>
 #include <map>
 #include <memory>
 #include <string>
 #include <vector>
+
+using json = nlohmann::json;
 
 namespace VaangoUI {
 
@@ -38,45 +42,98 @@ public:
     d_triangleList = new Vector<PolygonDouble>();
     d_voronoiList = new Vector<Point>();
   }
+  */
 
-  // Save the particle data to file (for the new format - cylinders and spheres only)
-  public void saveToFile(File particleFile, int partType) {
-    try {
-      
-      // Create a filewriter and the associated printwriter
-      FileWriter fw = new FileWriter(particleFile);
-      PrintWriter pw = new PrintWriter(fw);
+  // Save the particle data to file
+  void saveToFile(const std::string& filename,
+                  const FileFormat& format) 
+  {
+    switch(format) 
+    {
+      case FileFormat::JSON:
+      {
+        json data = saveToJSON();
+        std::ofstream f(filename, std::ios::out);
+        f << std::setw(4) << data << "\n";
+        f.close();
+        break;
+      }
+      case FileFormat::XML:
+      {
+        saveToXML(filename);
+        break;
+      }
+      default:
+        break;
+    };
+  }
+
+  // Save the particle data to JSON file
+  json saveToJSON()
+  {
+    json data = {
+      {"rve_size", d_rveSize},
+      {"num_objects", d_particleList.size()}
+    };
+    for (const auto& [radius, particles] : d_particleList) {
+      for (const auto& part : particles) {
+        json partData = part.saveToJSON();
+        data["union"] += partData;
+      }
+    }
+    //std::cout << data << "\n";
+    return data;
+  }
+
+  // Save the particle data to JSON file
+  void saveToXML(const std::string& filename)
+  {
+    json data = saveToJSON();
+    ert::JsonSaxConsumer consumer(2);
+    bool success = nlohmann::json::sax_parse(data.dump(), &consumer);
+
+    if (!success)
+        std::cerr << "Conversion error !" << std::endl;
+
+    // output xml
+    std::cout << consumer.getXmlString();
+
+    std::ofstream f(filename, std::ios::out);
+    f << std::setw(4) << consumer.getXmlString() << "\n";
+    f.close();
+  }
+
+  /*
       String tab = new String("  ");
 
       // Write the data
       int nofParts = size();
-      pw.println("<?xml version='1.0' encoding='ISO-8859-1' ?>");
-      pw.println("<Uintah_Include>");
-      pw.println("<!--");
-      pw.println("# RVE Size");
-      pw.println(d_rveSize);
-      pw.println("Number of objects");
-      pw.println(nofParts);
-      pw.println("Particle type");
-      pw.println(partType);
-      pw.println("-->");
-      pw.println("<RVE_size>");
-      pw.println(tab+d_rveSize);
-      pw.println("</RVE_size>");
-      pw.println("<union>");
+      std::cout << "<?xml version='1.0' encoding='ISO-8859-1' ?>");
+      std::cout << "<Uintah_Include>");
+      std::cout << "<!--");
+      std::cout << "# RVE Size");
+      std::cout << d_rveSize);
+      std::cout << "Number of objects");
+      std::cout << nofParts);
+      std::cout << "Particle type");
+      std::cout << partType);
+      std::cout << "-->");
+      std::cout << "<RVE_size>");
+      std::cout << tab+d_rveSize);
+      std::cout << "</RVE_size>");
+      std::cout << "<union>");
       for (int ii = 0; ii < nofParts; ii++) {
         Particle part = getParticle(ii);
         part.print(pw, tab);
       }
-      pw.println("</union>");
-      pw.println("</Uintah_Include>");
+      std::cout << "</union>");
+      std::cout << "</Uintah_Include>");
       pw.close();
       fw.close();
     } catch (Exception e) {
-      System.out.println("Could not write to "+particleFile.getName());
+      std::cout << "Could not write to "+particleFile.getName());
     }
-  }
-  */
+    */
 
   /*
   // Read the particle data from file (for the new format - circles, squares,
@@ -92,22 +149,22 @@ public:
       Document doc = dBuilder.parse(particleFile);
       doc.getDocumentElement().normalize();
       
-      System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+      std::cout << "Root element :" + doc.getDocumentElement().getNodeName());
 
-      System.out.println("Reading RVE size " + "----------------------------");
+      std::cout << "Reading RVE size " + "----------------------------");
       NodeList rveNode = doc.getElementsByTagName("RVE_size");
       if (rveNode.getLength() > 0) {
         String text = rveNode.item(0).getTextContent();
-        System.out.println("RVE size : " + text);
+        std::cout << "RVE size : " + text);
         d_rveSize = Double.parseDouble(text);
       }
 
-      System.out.println("Reading cylinders " + "----------------------------");
+      std::cout << "Reading cylinders " + "----------------------------");
       NodeList cylinderNodeList = doc.getElementsByTagName("cylinder");
       for (int temp = 0; temp < cylinderNodeList.getLength(); temp++) {
      
         Node nNode = cylinderNodeList.item(temp);
-        System.out.println("\nCurrent Element :" + nNode.getNodeName());
+        std::cout << "\nCurrent Element :" + nNode.getNodeName());
         if (nNode.getNodeType() == Node.ELEMENT_NODE) {
      
           Element eElement = (Element) nNode;
@@ -123,7 +180,7 @@ public:
           NodeList localNodeList = eElement.getElementsByTagName("bottom");
           if (localNodeList.getLength() > 0) {
             text = localNodeList.item(0).getTextContent();
-            System.out.println("Bottom : " + text);
+            std::cout << "Bottom : " + text);
           } 
           if (text != null) {
             text = text.replace("[", " ");
@@ -135,14 +192,14 @@ public:
             top.setX(xx);
             top.setY(yy);
             top.setZ(zz);
-            System.out.println("Bottom : " + xx +" "+yy+" "+zz);
+            std::cout << "Bottom : " + xx +" "+yy+" "+zz);
           }
 
           // Read the top
           localNodeList = eElement.getElementsByTagName("top");
           if (localNodeList.getLength() > 0) {
             text = localNodeList.item(0).getTextContent();
-            System.out.println("Top : " + text);
+            std::cout << "Top : " + text);
           } 
           if (text != null) {
             text = text.replace("[", " ");
@@ -154,14 +211,14 @@ public:
             bottom.setX(xx);
             bottom.setY(yy);
             bottom.setZ(zz);
-            System.out.println("Top : " + xx +" "+yy+" "+zz);
+            std::cout << "Top : " + xx +" "+yy+" "+zz);
           }
 
           // Read the radius
           localNodeList = eElement.getElementsByTagName("radius");
           if (localNodeList.getLength() > 0) {
              text = localNodeList.item(0).getTextContent();
-             System.out.println("Radius : " + text);
+             std::cout << "Radius : " + text);
              radius = Double.parseDouble(text);
           }
 
@@ -169,7 +226,7 @@ public:
           localNodeList = eElement.getElementsByTagName("thickness");
           if (localNodeList.getLength() > 0) {
              text = localNodeList.item(0).getTextContent();
-             System.out.println("Thickness : " + text);
+             std::cout << "Thickness : " + text);
              thickness = Double.parseDouble(text);
           }
           Particle particle = new Particle(Particle.CIRCLE, radius, 0.0, thickness, 
@@ -178,11 +235,11 @@ public:
         }
       }
    
-      System.out.println("Reading spheres " + "----------------------------");
+      std::cout << "Reading spheres " + "----------------------------");
       NodeList sphereNodeList = doc.getElementsByTagName("sphere");
       for (int temp = 0; temp < sphereNodeList.getLength(); temp++) {
         Node nNode = sphereNodeList.item(temp);
-        System.out.println("\nCurrent Element :" + nNode.getNodeName());
+        std::cout << "\nCurrent Element :" + nNode.getNodeName());
         if (nNode.getNodeType() == Node.ELEMENT_NODE) {
           Element eElement = (Element) nNode;
           
@@ -196,12 +253,12 @@ public:
           NodeList localNodeList = eElement.getElementsByTagName("center");
           if (localNodeList.getLength() > 0) {
             text = localNodeList.item(0).getTextContent();
-            System.out.println("Center : " + text);
+            std::cout << "Center : " + text);
           } else {
             localNodeList = eElement.getElementsByTagName("origin");
             if (localNodeList.getLength() > 0) {
               text = localNodeList.item(0).getTextContent();
-              System.out.println("Origin : " + text);
+              std::cout << "Origin : " + text);
             }
           }
           if (text != null) {
@@ -214,14 +271,14 @@ public:
             center.setX(xx);
             center.setY(yy);
             center.setZ(zz);
-            System.out.println("Center : " + xx +" "+yy+" "+zz);
+            std::cout << "Center : " + xx +" "+yy+" "+zz);
           }
 
           // Read the radius
           localNodeList = eElement.getElementsByTagName("radius");
           if (localNodeList.getLength() > 0) {
              text = localNodeList.item(0).getTextContent();
-             System.out.println("Radius : " + text);
+             std::cout << "Radius : " + text);
              radius = Double.parseDouble(text);
           }
 
@@ -229,7 +286,7 @@ public:
           localNodeList = eElement.getElementsByTagName("thickness");
           if (localNodeList.getLength() > 0) {
              text = localNodeList.item(0).getTextContent();
-             System.out.println("Thickness : " + text);
+             std::cout << "Thickness : " + text);
              thickness = Double.parseDouble(text);
           }
           Particle particle = new Particle(Particle.SPHERE, radius, 0.0, thickness, 
@@ -239,7 +296,7 @@ public:
       }
 
     } catch (Exception e) {
-      System.out.println("Could not read from "+particleFile.getName());
+      std::cout << "Could not read from "+particleFile.getName());
       e.printStackTrace();
     }
   }
@@ -255,12 +312,12 @@ public:
 
       // Write the data
       int nofParts = size();
-      pw.println("# RVE Size");
-      pw.println(d_rveSize);
-      pw.println("Number of objects");
-      pw.println(nofParts);
-      pw.println("# Particle List");
-      pw.println("# type  radius  thickness rotation  xCent  yCent  zCent  matCode");
+      std::cout << "# RVE Size");
+      std::cout << d_rveSize);
+      std::cout << "Number of objects");
+      std::cout << nofParts);
+      std::cout << "# Particle List");
+      std::cout << "# type  radius  thickness rotation  xCent  yCent  zCent  matCode");
       DecimalFormat df = new DecimalFormat("####0.0######");
       for (int ii = 0; ii < nofParts; ii++) {
         Particle part = getParticle(ii);
@@ -271,8 +328,8 @@ public:
         double yCent = part.getCenter().getY();
         double zCent = part.getCenter().getZ();
         int matCode = part.getMatCode();
-        pw.println("# Particle "+ii);
-        pw.println(partType+" "+
+        std::cout << "# Particle "+ii);
+        std::cout << partType+" "+
                    df.format(radius)+" "+
                    df.format(thickness)+" "+
                    df.format(rotation)+" "+
@@ -284,7 +341,7 @@ public:
       pw.close();
       fw.close();
     } catch (Exception e) {
-      System.out.println("Could not write to "+particleFile.getName());
+      std::cout << "Could not write to "+particleFile.getName());
     }
   }
 
@@ -334,7 +391,7 @@ public:
             }
           }
           if (ttval == StreamTokenizer.TT_EOL && count != 0) {
-            System.out.println(type+" "+radius+" "+thickness+" "+
+            std::cout << type+" "+radius+" "+thickness+" "+
                                  rotation+" "+xx+" "+yy+" "+zz+" "+matCode);
             Point center = new Point(xx, yy, zz);
             Particle particle = new Particle(type, radius, rotation, thickness, 
@@ -345,7 +402,7 @@ public:
         }
       }
     } catch (Exception e) {
-      System.out.println("Could not read from "+particleFile.getName());
+      std::cout << "Could not read from "+particleFile.getName());
     }
   }
   */
