@@ -33,6 +33,8 @@ public:
 
   void draw(const std::string& title, int width, int height);
 
+  void saveToFile(bool& save) const;
+
 private:
 
   void generateParticles(int width, int height);

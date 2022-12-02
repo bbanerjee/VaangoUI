@@ -1,10 +1,13 @@
 #ifndef __Vaango_UI_PARTICLE_SIZE_DIST_H__
 #define __Vaango_UI_PARTICLE_SIZE_DIST_H__
 
+#include <json.hpp>
+
 #include <string>
 #include <vector>
 #include <cmath>
 #include <iostream>
+#include <fstream>
 
 namespace VaangoUI {
 
@@ -46,10 +49,41 @@ struct ParticleSizeDist
 
   void readFromFile(const std::string& filename) {
 
+    size.clear();
+    volFrac.clear();
+
+    std::ifstream f(filename, std::ios::in);
+    using json = nlohmann::json;
+    json data = json::parse(f);
+    materialName = data["name"];
+    particleVolFrac = data["particle_vol_frac"];
+    for (auto val : data["data"]) {
+      size.push_back(val["size"]);
+      volFrac.push_back(val["frac"]);
+    }
+    numSizes = size.size();
+    auto elem = std::max_element(size.begin(),
+                                 size.end());
+    maxParticleSize = *elem;
+    f.close();
   }
 
   void saveToFile(const std::string& filename) {
 
+    using json = nlohmann::json;
+    json data = {
+      {"name", materialName},
+      {"particle_vol_frac", particleVolFrac}
+    };
+    for (size_t i = 0; i < volFrac.size(); i++) {
+      data["data"] += {{"size", size[i]},
+                        {"frac", volFrac[i]}};
+    }
+
+    std::ofstream f(filename, std::ios::out);
+    f << std::setw(4) << data << "\n";
+    f.close();
+    //std::cout << data << "\n";
   }
 
   void print() const {

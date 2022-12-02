@@ -95,6 +95,8 @@ public:
 
             } else if (generatePartDistActive) {
               std::cout << "saving generated\n";
+              ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", 
+                                                      "Choose File", ".json", ".");
               saveInputPartDist = false;
               saveGeneratedPartDist = true;
             }
@@ -108,6 +110,10 @@ public:
 
     if (saveInputPartDist) {
       d_inputPartDist.saveToFile(saveInputPartDist);
+    }
+
+    if (saveGeneratedPartDist) {
+      d_generatePartDist.saveToFile(saveGeneratedPartDist);
     }
 
     ImGui::End();

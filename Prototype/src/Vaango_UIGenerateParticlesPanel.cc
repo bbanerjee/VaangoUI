@@ -514,5 +514,10 @@ void Vaango_UIGenerateParticlesPanel::drawParticles(int width, int height) {
   
 }
 
+void
+Vaango_UIGenerateParticlesPanel::saveToFile(bool& save) const
+{
+
+}
 
 } // namespace VaangoUI

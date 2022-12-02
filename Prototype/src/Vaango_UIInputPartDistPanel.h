@@ -65,7 +65,9 @@ public:
       doReading = true;
     }
 
-    readFromFile(doReading);
+    if (doReading) {
+      readFromFile(doReading);
+    }
 
     static ImGuiTableFlags flags = ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersOuter | 
                                    ImGuiTableFlags_BordersV | ImGuiTableFlags_Resizable | 
@@ -169,45 +171,39 @@ public:
 
   void readFromFile(bool& read) {
 
-    if (!read) return;
-
+    static bool okay;
     std::string file; 
     if (VaangoUI::getFileName(file)) {
-      s_sizeDist.size.clear();
-      s_sizeDist.volFrac.clear();
       std::ifstream f(file, std::ios::in);
       if (!f.good()) {
-        std::string message = "The input particle size file" + file + " does not exist\n";
-        ImGui::OpenPopup(message.c_str());
+        std::cout << "open popup\n";
+        ImGui::OpenPopup("read_particle_sizes");
+        okay = false;
+        f.close();
+      } else {
+        okay = true;
       }
-      json data = json::parse(f);
-      s_sizeDist.materialName = data["name"];
-      s_sizeDist.particleVolFrac = data["particle_vol_frac"];
-      for (auto val : data["data"]) {
-        s_sizeDist.size.push_back(val["size"]);
-        s_sizeDist.volFrac.push_back(val["frac"]);
-      }
-      s_sizeDist.numSizes = s_sizeDist.size.size();
-      auto elem = std::max_element(s_sizeDist.size.begin(),
-                                   s_sizeDist.size.end());
-      s_sizeDist.maxParticleSize = *elem;
-
-      f.close();
-      read = false;
     }
+
+    if (ImGui::BeginPopup("read_particle_sizes")) {
+      std::string message = "The input particle size file" + file + " does not exist\n";
+      //std::cout << message;
+      ImGui::Button(message.c_str());
+      ImGui::EndPopup();
+    }
+
+    if (okay) {
+      std::ifstream f(file, std::ios::in);
+      if (f.good()) {
+        s_sizeDist.readFromFile(file);
+        read = false;
+        okay = false;
+      }
+    }
+
   }
 
   void saveToFile(bool& save) const {
-
-    // Set up json
-    json data = {
-      {"name", s_sizeDist.materialName},
-      {"particle_vol_frac", s_sizeDist.particleVolFrac}
-    };
-    for (int i = 0; i < s_sizeDist.volFrac.size(); i++) {
-      data["data"] += {{"size", s_sizeDist.size[i]},
-                        {"frac", s_sizeDist.volFrac[i]}};
-    }
 
     // Write to file
     static std::string file; 
@@ -218,10 +214,7 @@ public:
         fileExists = true;
       }
       if (!fileExists) {
-        std::ofstream f(file, std::ios::out);
-        f << std::setw(4) << data << "\n";
-        f.close();
-        //std::cout << data << "\n";
+        s_sizeDist.saveToFile(file);
         save = false;
         fileExists = false;
         choice = false;
@@ -234,10 +227,7 @@ public:
     std::string message = "The file " + file + " will be overwritten.\n";
     choice = VaangoUI::createOkCancelPopup(popupTitle, message.c_str(), fileExists);
     if (choice) {
-      std::ofstream f(file, std::ios::out);
-      f << std::setw(4) << data << "\n";
-      f.close();
-      std::cout << data << "\n";
+      s_sizeDist.saveToFile(file);
       save = false;
       fileExists = false;
       choice = false;
