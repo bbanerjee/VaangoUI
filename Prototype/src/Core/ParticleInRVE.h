@@ -5,7 +5,9 @@
 #include <Core/Enums.h>
 
 #include <json.hpp>
-#include <Utils/json2xml.hpp>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/xml_parser.hpp>
+#include <boost/property_tree/json_parser.hpp>
 
 #include <cassert>
 #include <cmath>
@@ -187,15 +189,18 @@ public:
   std::string saveToXML() const
   {
     json data = saveToJSON();
-    ert::JsonSaxConsumer consumer(2);
-    bool success = json::sax_parse(data.dump(), &consumer);
 
-    if (!success)
-        std::cerr << "Conversion error !" << std::endl;
-
-    // output xml
-    std::cout << consumer.getXmlString();
-    return consumer.getXmlString();
+    std::ostringstream out;
+    try {
+      boost::property_tree::ptree tree;
+      std::istringstream in(data.dump());
+      boost::property_tree::read_json(in, tree);
+      boost::property_tree::write_xml(out, tree);
+      //std::cout << out.str() << "\n";
+    } catch (std::exception& e) {
+      std::cerr << __FUNCTION__ << ":" << e.what() << std::endl;
+    }
+    return out.str();
   }
 
   /*

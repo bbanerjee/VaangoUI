@@ -149,6 +149,9 @@ target_include_directories(imgui_backend_lib PRIVATE
 # for nlohmann JSON parser
 set(JSON_DIR /home/banerjee/VaangoUI/Prototype/nlohmann)
 
+# For Boost 1.80
+set(BOOST_INCLUDE_DIR /home/banerjee/Packages/boost/1.80/include)
+
 # for googletests
 include(FetchContent)
 FetchContent_Declare(
@@ -190,6 +193,7 @@ target_include_directories(${VAANGO_UI_LIB} PRIVATE
                            ${JSON_DIR}
 #                           ${RAYLIB_INCLUDE_DIR}
 #                           ${RLIMGUI_DIR}
+                           ${BOOST_INCLUDE_DIR}
                            ${CMAKE_CURRENT_SOURCE_DIR}
 #                           ${CMAKE_CURRENT_SOURCE_DIR}/Utils
                            ${IMGUI_DIR}

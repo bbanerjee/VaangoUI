@@ -7,6 +7,9 @@
 #include <Core/Point.h>
 
 #include <json.hpp>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/xml_parser.hpp>
+#include <boost/property_tree/json_parser.hpp>
 
 #include <iostream>
 #include <map>
@@ -60,7 +63,10 @@ public:
       }
       case FileFormat::XML:
       {
-        saveToXML(filename);
+        std::string data = saveToXML();
+        std::ofstream f(filename, std::ios::out);
+        f << std::setw(4) << data << "\n";
+        f.close();
         break;
       }
       default:
@@ -86,21 +92,21 @@ public:
   }
 
   // Save the particle data to JSON file
-  void saveToXML(const std::string& filename)
+  std::string saveToXML()
   {
     json data = saveToJSON();
-    ert::JsonSaxConsumer consumer(2);
-    bool success = nlohmann::json::sax_parse(data.dump(), &consumer);
 
-    if (!success)
-        std::cerr << "Conversion error !" << std::endl;
-
-    // output xml
-    std::cout << consumer.getXmlString();
-
-    std::ofstream f(filename, std::ios::out);
-    f << std::setw(4) << consumer.getXmlString() << "\n";
-    f.close();
+    std::ostringstream out;
+    try {
+      boost::property_tree::ptree tree;
+      std::istringstream in(data.dump());
+      boost::property_tree::read_json(in, tree);
+      boost::property_tree::write_xml(out, tree);
+      //std::cout << out.str() << "\n";
+    } catch (std::exception& e) {
+      std::cerr << __FUNCTION__ << ":" << e.what() << std::endl;
+    }
+    return out.str();
   }
 
   /*

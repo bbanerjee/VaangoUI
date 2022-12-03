@@ -14,6 +14,21 @@ configure_file(../assets/Icons/FrontView.png assets/Icons/FrontView.png COPYONLY
 
 enable_testing()
 
+set(FILENAME1 test_ParticleInRVE)
+add_executable(${FILENAME1} ${FILENAME1}.cc)
+target_include_directories(${FILENAME1} PRIVATE 
+                           ..
+                           ../Utils
+                           ${JSON_DIR}
+                           ${BOOST_INCLUDE_DIR}
+                          )
+target_link_libraries(${FILENAME1} 
+                      ${VAANGO_UI_LIB}
+                      gtest_main)
+add_custom_command(TARGET ${FILENAME1}
+                   POST_BUILD
+                   COMMAND ${FILENAME1})
+
 add_executable(test_UIConsole test_UIConsole.cc)
 target_include_directories(test_UIConsole PRIVATE 
                            ..
@@ -70,5 +85,6 @@ target_link_libraries(test_UILayout
                       gtest_main)
 
 include(GoogleTest)
+gtest_discover_tests(${FILENAME1})
 gtest_discover_tests(test_UIConsole)
 gtest_discover_tests(test_UILayout)
