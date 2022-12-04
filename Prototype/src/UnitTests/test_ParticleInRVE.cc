@@ -1,5 +1,7 @@
 #include <Core/ParticleInRVE.h>
 
+#include <Utils/tinyxml2.h>
+
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/property_tree/json_parser.hpp>
@@ -56,9 +58,43 @@ int main(int argc, char** argv, char* env[]) {
   return RUN_ALL_TESTS();
 }
 
+TEST(Test_ParticleInRVE, createXML) {
+  using namespace tinyxml2;
+
+  XMLDocument doc;
+  XMLElement* all = doc.NewElement("union");
+  doc.InsertEndChild(all);
+  XMLElement* sphere = doc.NewElement("sphere");
+  sphere->SetAttribute("label", "First node");
+  all->InsertFirstChild(sphere);
+  XMLElement* origin = doc.NewElement("origin");
+  origin->InsertFirstChild(doc.NewText("[0.022, 0.028, 0.1]"));
+  XMLElement* radius = doc.NewElement("radius");
+  radius->InsertFirstChild(doc.NewText("0.01"));
+  sphere->InsertFirstChild(origin);
+  sphere->InsertEndChild(radius);
+  //doc.Print();
+  
+  XMLPrinter printer;
+  doc.Print(&printer);
+  std::cout << printer.CStr() << "\n";
+  std::cout << doc.ErrorID() << "\n";
+
+  /*
+  XMLDocument doc;
+	XMLElement* element1 = doc.NewElement("Element1");
+	XMLElement* element2 = doc.NewElement("Element2");
+	doc.InsertEndChild(element1);
+	doc.InsertEndChild(element2);
+	doc.InsertAfterChild(element2, element2);
+	doc.InsertAfterChild(element2, element2);
+  */
+}
+
 TEST(Test_ParticleInRVE, xmltojson) {
 
   static const std::string xml_str = 
+  "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
   "<union>"
   "  <sphere label = \"First node\">"
   "    <origin> [0.022, 0.028, 0.1]</origin>"
@@ -74,7 +110,7 @@ TEST(Test_ParticleInRVE, xmltojson) {
     boost::property_tree::ptree pt;
     std::istringstream ss(xml_str);
     boost::property_tree::read_xml(ss, pt);
-    printTree(pt, 4);
+    //printTree(pt, 4);
     std::ostringstream out;
     boost::property_tree::write_json(out, pt);
     std::cout << out.str() << std::endl;
@@ -87,29 +123,23 @@ TEST(Test_ParticleInRVE, xmltojson) {
 TEST(Test_ParticleInRVE, jsontoxml) {
 
   static const std::string json_str = 
-  "{\"union\" : "
-  "            ["
-  "              {\"sphere\" : "
-  "                {"
-  "                  \"origin\" : \"[0.022, 0.028, 0.1]\","
-  "                  \"radius\" : 0.01"
-  "                }"
-  "              },"
-  "              {\"sphere\" : "
-  "                {"
-  "                  \"origin\" : \"[0.03, 0.05, 0.1]\","
-  "                  \"radius\" : 0.02"
-  "                }"
-  "              }"
-  "            ]"
-  "}";
+  "{\"union\" : ["
+  "   {\"sphere\" : {"
+  "       \"origin\" : \"[0.022, 0.028, 0.1]\","
+  "       \"radius\" : 0.01"
+  "   }},"
+  "   {\"sphere\" : {"
+  "       \"origin\" : \"[0.03, 0.05, 0.1]\","
+  "       \"radius\" : 0.02"
+  "   }}"
+  "]}";
 
   try {
     using boost::property_tree::ptree;
     ptree pt;
     std::istringstream ss(json_str);
     read_json(ss, pt);
-    printTree(pt, 4);
+    //printTree(pt, 4);
     std::ostringstream out;
     write_xml(out, pt, 
               boost::property_tree::xml_writer_settings<ptree::key_type>('\t', 1));

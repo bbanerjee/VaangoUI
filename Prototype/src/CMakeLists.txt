@@ -152,6 +152,9 @@ set(JSON_DIR /home/banerjee/VaangoUI/Prototype/nlohmann)
 # For Boost 1.80
 set(BOOST_INCLUDE_DIR /home/banerjee/Packages/boost/1.80/include)
 
+# For XML
+set(TINYXML2_DIR /home/banerjee/VaangoUI/Prototype/src/Utils)
+
 # for googletests
 include(FetchContent)
 FetchContent_Declare(
@@ -183,6 +186,7 @@ add_library(${VAANGO_UI_LIB}
             Vaango_UIGenerateParticlesPanel.cc
             Vaango_UIGenerateRVEParticles.cc
             Vaango_UILayout.cc
+            ${TINYXML2_DIR}/tinyxml2.cpp
             ${VAANGO_CORE_SRC})
 set_source_files_properties(${VAANGO_CORE_SRC} PROPERTIES 
                             COMPILE_OPTIONS "-Wall")
