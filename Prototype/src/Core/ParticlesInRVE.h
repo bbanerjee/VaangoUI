@@ -7,9 +7,7 @@
 #include <Core/Point.h>
 
 #include <json.hpp>
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/xml_parser.hpp>
-#include <boost/property_tree/json_parser.hpp>
+#include <Utils/tinyxml2.h>
 
 #include <iostream>
 #include <map>
@@ -79,7 +77,7 @@ public:
   {
     json data = {
       {"rve_size", d_rveSize},
-      {"num_objects", d_particleList.size()}
+      {"num_objects", getNumParticles()}
     };
     for (const auto& [radius, particles] : d_particleList) {
       for (const auto& part : particles) {
@@ -94,19 +92,33 @@ public:
   // Save the particle data to JSON file
   std::string saveToXML()
   {
-    json data = saveToJSON();
-
-    std::ostringstream out;
-    try {
-      boost::property_tree::ptree tree;
-      std::istringstream in(data.dump());
-      boost::property_tree::read_json(in, tree);
-      boost::property_tree::write_xml(out, tree);
-      //std::cout << out.str() << "\n";
-    } catch (std::exception& e) {
-      std::cerr << __FUNCTION__ << ":" << e.what() << std::endl;
+    tinyxml2::XMLDocument doc;
+    auto rveSize = doc.NewElement("rve_size");
+    rveSize->InsertFirstChild(doc.NewText(std::to_string(d_rveSize).c_str()));
+    auto numObjects = doc.NewElement("num_objects");
+    numObjects->InsertFirstChild(doc.NewText(std::to_string(getNumParticles()).c_str()));
+    doc.InsertFirstChild(rveSize);
+    doc.InsertAfterChild(rveSize, numObjects);
+    auto all = doc.NewElement("union");
+    bool first = true;
+    tinyxml2::XMLElement* previous;
+    for (const auto& [radius, particles] : d_particleList) {
+      for (const auto& part : particles) {
+        auto partChild = part.saveToXML(doc);
+        if (first) {
+          all->InsertFirstChild(partChild);
+          first = false;
+        } else {
+          all->InsertAfterChild(previous, partChild);
+        }
+        previous = partChild;
+      }
     }
-    return out.str();
+    doc.InsertEndChild(all);
+
+    tinyxml2::XMLPrinter printer;
+    doc.Print(&printer);
+    return printer.CStr();
   }
 
   /*
@@ -416,6 +428,13 @@ public:
   void setRVESize(double rveSize) {d_rveSize = rveSize;}
   double getRVESize() const {return d_rveSize;}
   int size() const {return static_cast<int>(d_particleList.size());}
+  int getNumParticles() const {
+    int num = 0;
+    for (const auto& [radius, particles] : d_particleList) {
+      num += particles.size();
+    }
+    return num;
+  }
 
   void clear() {
     d_particleList.clear();

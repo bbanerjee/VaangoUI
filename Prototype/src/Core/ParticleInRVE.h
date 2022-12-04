@@ -5,9 +5,7 @@
 #include <Core/Enums.h>
 
 #include <json.hpp>
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/xml_parser.hpp>
-#include <boost/property_tree/json_parser.hpp>
+#include <Utils/tinyxml2.h>
 
 #include <cassert>
 #include <cmath>
@@ -186,21 +184,62 @@ public:
   }
 
   // Write the particle data to XML
-  std::string saveToXML() const
+  tinyxml2::XMLElement* saveToXML(tinyxml2::XMLDocument& doc) const
   {
-    json data = saveToJSON();
-
-    std::ostringstream out;
-    try {
-      boost::property_tree::ptree tree;
-      std::istringstream in(data.dump());
-      boost::property_tree::read_json(in, tree);
-      boost::property_tree::write_xml(out, tree);
-      //std::cout << out.str() << "\n";
-    } catch (std::exception& e) {
-      std::cerr << __FUNCTION__ << ":" << e.what() << std::endl;
-    }
-    return out.str();
+    switch (d_shape) 
+    {
+      case ParticleShape::CIRCLE: 
+      case ParticleShape::HOLLOW_CIRCLE: 
+      {
+        auto cylinder = doc.NewElement("cylinder");
+        cylinder->SetAttribute("label", std::to_string(d_matCode).c_str());
+        auto bottom = doc.NewElement("bottom");
+        {
+        std::ostringstream data;
+        data << d_center;
+        bottom->InsertFirstChild(doc.NewText(data.str().c_str()));
+        }
+        auto top = doc.NewElement("top");
+        {
+        std::ostringstream data;
+        Point topCenter(d_center.x, d_center.y, d_center.z + d_length);
+        data << topCenter;
+        top->InsertFirstChild(doc.NewText(data.str().c_str()));
+        }
+        auto radius = doc.NewElement("radius");
+        radius->InsertFirstChild(doc.NewText(std::to_string(d_radius).c_str()));
+        auto thickness = doc.NewElement("thickness");
+        thickness->InsertFirstChild(doc.NewText(std::to_string(d_thickness).c_str()));
+        cylinder->InsertFirstChild(bottom);
+        cylinder->InsertAfterChild(bottom, top);
+        cylinder->InsertAfterChild(top, radius);
+        cylinder->InsertEndChild(thickness);
+        return cylinder;
+      }
+        break;
+      case ParticleShape::SPHERE: 
+      case ParticleShape::HOLLOW_SPHERE: 
+      {
+        auto sphere = doc.NewElement("sphere");
+        sphere->SetAttribute("label", std::to_string(d_matCode).c_str());
+        auto center = doc.NewElement("center");
+        std::ostringstream data;
+        data << d_center;
+        center->InsertFirstChild(doc.NewText(data.str().c_str()));
+        auto radius = doc.NewElement("radius");
+        radius->InsertFirstChild(doc.NewText(std::to_string(d_radius).c_str()));
+        auto thickness = doc.NewElement("thickness");
+        thickness->InsertFirstChild(doc.NewText(std::to_string(d_thickness).c_str()));
+        sphere->InsertFirstChild(center);
+        sphere->InsertAfterChild(center, radius);
+        sphere->InsertEndChild(thickness);
+        return sphere;
+      }
+        break;
+      default:
+        break;
+    };
+    return nullptr;
   }
 
   /*

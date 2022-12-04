@@ -71,7 +71,10 @@ TEST(Test_ParticleInRVE, createXML) {
   origin->InsertFirstChild(doc.NewText("[0.022, 0.028, 0.1]"));
   XMLElement* radius = doc.NewElement("radius");
   radius->InsertFirstChild(doc.NewText("0.01"));
+  XMLElement* thickness = doc.NewElement("thickness");
+  thickness->InsertFirstChild(doc.NewText("0.01"));
   sphere->InsertFirstChild(origin);
+  sphere->InsertAfterChild(origin, thickness);
   sphere->InsertEndChild(radius);
   //doc.Print();
   
