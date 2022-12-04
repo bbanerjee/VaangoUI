@@ -159,8 +159,8 @@ public:
     {
       case ParticleShape::CIRCLE: 
       case ParticleShape::HOLLOW_CIRCLE: 
-        data = {std::string("cylinder label=\"" + std::to_string(d_matCode) + "\"")};
-        data += { 
+        data[std::string("cylinder label=\"" + std::to_string(d_matCode) + "\"")] =
+                { 
                  {"bottom", {d_center.x, d_center.y, d_center.z}},
                  {"top", {d_center.x, d_center.y, d_center.z + d_length}},
                  {"radius", d_radius},
@@ -169,8 +169,8 @@ public:
         break;
       case ParticleShape::SPHERE: 
       case ParticleShape::HOLLOW_SPHERE: 
-        data = {std::string("sphere label=\"" + std::to_string(d_matCode) + "\"")};
-        data += { 
+        data[std::string("sphere label=\"" + std::to_string(d_matCode) + "\"")] = 
+                { 
                  {"center", {d_center.x, d_center.y, d_center.z}},
                  {"radius", d_radius},
                  {"thickness", d_thickness}
