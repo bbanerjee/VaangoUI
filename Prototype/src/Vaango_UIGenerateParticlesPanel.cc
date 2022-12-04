@@ -40,6 +40,10 @@ ParticleShape s_partShapeFlag;
 ParticleSizeDist s_sizeDist;
 ParticlesInRVE s_partList;
 
+static bool doReading = false;
+static bool fileExists = false;
+static bool choice = false;
+
 Vaango_UIGenerateParticlesPanel::  Vaango_UIGenerateParticlesPanel()
 {
   d_isVisible = false;
@@ -517,10 +521,42 @@ void Vaango_UIGenerateParticlesPanel::drawParticles(int width, int height) {
 void
 Vaango_UIGenerateParticlesPanel::saveToFile(bool& save) const
 {
-  std::cout << "saving to test3.json\n";
-  s_partList.saveToFile("test3.json", FileFormat::JSON);
-  s_partList.saveToFile("test3.xml", FileFormat::XML);
   save = false;
+
+  // Write to file
+  static std::string file; 
+  if (VaangoUI::getFileName(file)) {
+    std::filesystem::path filePath(file);
+    std::error_code err;
+    if (std::filesystem::exists(filePath, err) && !err) {
+      fileExists = true;
+    }
+    if (!fileExists) {
+      s_partList.saveToFile(file, FileFormat::JSON);
+      s_partList.saveToFile(file + ".xml", FileFormat::XML);
+      save = false;
+      fileExists = false;
+      choice = false;
+      return;
+    }
+  }
+
+  // Set up popup
+  std::string popupTitle = "File exists. Overwrite?";
+  std::string message = "The file " + file + " will be overwritten.\n";
+  choice = VaangoUI::createOkCancelPopup(popupTitle, message.c_str(), fileExists);
+  if (choice) {
+    s_partList.saveToFile(file, FileFormat::JSON);
+    s_partList.saveToFile(file + ".xml", FileFormat::XML);
+    save = false;
+    fileExists = false;
+    choice = false;
+    return;
+  } else {
+    save = true;
+    fileExists = false;
+    choice = false;
+  }
 }
 
 } // namespace VaangoUI
