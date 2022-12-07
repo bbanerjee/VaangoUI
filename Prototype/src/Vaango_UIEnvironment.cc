@@ -4,6 +4,8 @@
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 
+#include <imnodes.h>
+
 #include <vector>
 #include <cmath>
 
@@ -206,6 +208,19 @@ Vaango_UIEnvironment::deleteVTKBuffers()
   glDeleteFramebuffers( 1, &Vaango_UIEnvironment::vtk_frameBuffer );
   glDeleteRenderbuffers( 1, &Vaango_UIEnvironment::vtk_renderBuffer );
   glDeleteTextures(1, &Vaango_UIEnvironment::vtk_renderTexture);
+}
+
+void
+Vaango_UIEnvironment::setupImNodes()
+{
+  ImNodes::CreateContext();
+  ImNodes::SetNodeGridSpacePos(1, ImVec2(200.0f, 200.0f));
+}
+
+void
+Vaango_UIEnvironment::stopImNodes()
+{
+  ImNodes::DestroyContext();
 }
 
 void

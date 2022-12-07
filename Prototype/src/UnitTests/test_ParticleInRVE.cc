@@ -80,8 +80,8 @@ TEST(Test_ParticleInRVE, createXML) {
   
   XMLPrinter printer;
   doc.Print(&printer);
-  std::cout << printer.CStr() << "\n";
-  std::cout << doc.ErrorID() << "\n";
+  //std::cout << printer.CStr() << "\n";
+  //std::cout << doc.ErrorID() << "\n";
 
   /*
   XMLDocument doc;
@@ -116,7 +116,7 @@ TEST(Test_ParticleInRVE, xmltojson) {
     //printTree(pt, 4);
     std::ostringstream out;
     boost::property_tree::write_json(out, pt);
-    std::cout << out.str() << std::endl;
+    //std::cout << out.str() << std::endl;
   }
   catch (std::exception &e) {
     std::cerr << e.what() << std::endl;
@@ -146,7 +146,7 @@ TEST(Test_ParticleInRVE, jsontoxml) {
     std::ostringstream out;
     write_xml(out, pt, 
               boost::property_tree::xml_writer_settings<ptree::key_type>('\t', 1));
-    std::cout << out.str() << std::endl;
+    //std::cout << out.str() << std::endl;
   }
   catch (std::exception &e) {
     std::cerr << e.what() << std::endl;

@@ -52,6 +52,9 @@ public:
   int setupVTKBuffers(int width, int height);
   void deleteVTKBuffers();
 
+  void setupImNodes();
+  void stopImNodes();
+
   void runMainLoop(std::vector<Vaango_UIComponentBase*> components);
 
   void addUIComponent(Vaango_UIComponentBase& component);

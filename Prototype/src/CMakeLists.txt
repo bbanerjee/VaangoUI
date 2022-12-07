@@ -9,9 +9,14 @@ set(CMAKE_TOOLCHAIN_FILE toolchain.cmake)
 # Copy assets
 configure_file(assets/Fonts/static/Ruda-Bold.ttf assets/Fonts/static/Ruda-Bold.ttf COPYONLY)
 
+message(STATUS "Current source dir = ${CMAKE_SOURCE_DIR}")
+
+# Package directory for OpenCascade/VTK etc. large packages
+set(PACKAGE_DIR /home/banerjee/Packages)
+
 # For glad
-set(GLAD_DIR /home/banerjee/VaangoUI/Prototype/glad)
-set(GLAD_LIB /home/banerjee/Packages/glad/libglad.a)
+set(GLAD_DIR ${CMAKE_SOURCE_DIR}/../glad)
+set(GLAD_LIB ${CMAKE_SOURCE_DIR}/../glad/libglad.a)
 
 # For glfw
 find_package(PkgConfig REQUIRED)
@@ -22,7 +27,7 @@ include_directories(${GLFW_INCLUDE_DIRS})
 find_package(OpenGL REQUIRED)
 
 # For VTK (also needed by Opencascade)
-set(VTK_DIR /home/banerjee/Packages/VTK-9.1.0/build CACHE PATH "vtk build directory")
+set(VTK_DIR ${PACKAGE_DIR}/VTK-9.1.0/build CACHE PATH "vtk build directory")
 find_package(VTK 9.1 REQUIRED COMPONENTS
     CommonCore
     CommonColor
@@ -44,7 +49,7 @@ message (STATUS "VTK_VERSION: ${VTK_VERSION}")
 # For OpenCascade
 #find_package(OpenCASCADE 7.6.2 
 #             PATHS 
-#             /home/banerjee/Packages/OCCT-7_6_2/install NO_DEFAULT_PATH
+#             ${PACKAGE_DIR}/OCCT-7_6_2/install NO_DEFAULT_PATH
 #             COMPONENTS 
 #             FoundationClasses 
 #             ModelingAlgorithms 
@@ -53,11 +58,11 @@ message (STATUS "VTK_VERSION: ${VTK_VERSION}")
 #             Visualization
 #             REQUIRED)
 
-set(OpenCASCADE_INCLUDE_DIR /home/banerjee/Packages/OCCT-7_6_2/build/include/opencascade)
+set(OpenCASCADE_INCLUDE_DIR ${PACKAGE_DIR}/OCCT-7_6_2/build/include/opencascade)
 include_directories(${OpenCASCADE_INCLUDE_DIR})
 message(STATUS "OCC-Include-Dir: ${OpenCASCADE_INCLUDE_DIR}")
 
-set(OpenCASCADE_LIBRARY_DIR /home/banerjee/Packages/OCCT-7_6_2/build/lin64/gcc/lib)
+set(OpenCASCADE_LIBRARY_DIR ${PACKAGE_DIR}/OCCT-7_6_2/build/lin64/gcc/lib)
 link_directories(${OpenCASCADE_LIBRARY_DIR})
 message(STATUS "OCC-Lib-Dir: ${OpenCASCADE_LIBRARY_DIR}")
 
@@ -77,11 +82,11 @@ IF(UNIX AND NOT APPLE)
 ENDIF()
 
 # for raylib
-#set(RAYLIB_INCLUDE_DIR /home/banerjee/Packages/raylib-4.2.0_linux_amd64/include)
-#set(RAYLIB_LIB /home/banerjee/Packages/raylib-4.2.0_linux_amd64/lib/libraylib.so)
+#set(RAYLIB_INCLUDE_DIR ${PACKAGE_DIR}/raylib-4.2.0_linux_amd64/include)
+#set(RAYLIB_LIB ${PACKAGE_DIR}/raylib-4.2.0_linux_amd64/lib/libraylib.so)
 
 # for stb image loader
-set(STB_DIR /home/banerjee/VaangoUI/Prototype/stb)
+set(STB_DIR ${CMAKE_SOURCE_DIR}/../stb)
 set(STB_SRC
    ${STB_DIR}/stb_c_lexer.h
    ${STB_DIR}/stb_connected_components.h
@@ -108,9 +113,9 @@ add_library(${STB_LIB} INTERFACE)
 target_include_directories(${STB_LIB} INTERFACE ${STB_DIR})
 
 # for imgui
-set(IMGUI_DIR /home/banerjee/VaangoUI/Prototype/imgui)
-set(IMGUI_BACKEND_DIR /home/banerjee/VaangoUI/Prototype/imgui/backends)
-set(IMGUI_FILE_DIALOG_DIR /home/banerjee/VaangoUI/Prototype/imguidialog)
+set(IMGUI_DIR ${CMAKE_SOURCE_DIR}/../imgui)
+set(IMGUI_BACKEND_DIR ${CMAKE_SOURCE_DIR}/../imgui/backends)
+set(IMGUI_FILE_DIALOG_DIR ${CMAKE_SOURCE_DIR}/../imguidialog)
 
 set(IMGUI_SRC
     ${IMGUI_DIR}/imgui.cpp
@@ -134,8 +139,11 @@ target_include_directories(imgui_backend_lib PRIVATE
                            ${IMGUI_DIR}
                            ${IMGUI_BACKEND_DIR})
 
+# for imnodes
+set(IMNODES_DIR ${CMAKE_SOURCE_DIR}/../imnodes)
+
 # for raylib backend for imgui
-#set(RLIMGUI_DIR /home/banerjee/Packages/rlImGui)
+#set(RLIMGUI_DIR ${PACKAGE_DIR}/rlImGui)
 #set(RLIMGUI_SRC
 #    ${RLIMGUI_DIR}/rlImGui.cpp)
 #set(RLIMGUI_LIB rlimgui_lib)
@@ -147,13 +155,13 @@ target_include_directories(imgui_backend_lib PRIVATE
 #                           ${RLIMGUI_DIR})
 
 # for nlohmann JSON parser
-set(JSON_DIR /home/banerjee/VaangoUI/Prototype/nlohmann)
+set(JSON_DIR ${CMAKE_SOURCE_DIR}/../nlohmann)
 
 # For Boost 1.80
-set(BOOST_INCLUDE_DIR /home/banerjee/Packages/boost/1.80/include)
+set(BOOST_INCLUDE_DIR ${PACKAGE_DIR}/boost/1.80/include)
 
 # For XML
-set(TINYXML2_DIR /home/banerjee/VaangoUI/Prototype/src/Utils)
+set(TINYXML2_DIR ${CMAKE_SOURCE_DIR}/../src/Utils)
 
 # for googletests
 include(FetchContent)
@@ -187,6 +195,7 @@ add_library(${VAANGO_UI_LIB}
             Vaango_UIGenerateRVEParticles.cc
             Vaango_UILayout.cc
             ${TINYXML2_DIR}/tinyxml2.cpp
+            ${IMNODES_DIR}/imnodes.cpp
             ${VAANGO_CORE_SRC})
 set_source_files_properties(${VAANGO_CORE_SRC} PROPERTIES 
                             COMPILE_OPTIONS "-Wall")
@@ -194,6 +203,7 @@ set_property(TARGET ${VAANGO_COR_SRC} PROPERTY CXX_STANDARD 17)
 target_include_directories(${VAANGO_UI_LIB} PRIVATE 
                            ${VAANGO_CORE_DIR}
                            ${IMGUI_FILE_DIALOG_DIR}
+                           ${IMNODES_DIR}
                            ${JSON_DIR}
 #                           ${RAYLIB_INCLUDE_DIR}
 #                           ${RLIMGUI_DIR}
@@ -242,7 +252,7 @@ target_link_libraries (vaango_ui
 #                           ${IMGUI_BACKEND_DIR}
 #                           ${GLAD_DIR})
 ##target_link_directories(test_occ_imgui PRIVATE ${OpenCASCADE_LIBRARY_DIR})
-#target_link_directories(test_occ_imgui PRIVATE /home/banerjee/Packages/OCCT-7_6_2/build/lin64/gcc/lib)
+#target_link_directories(test_occ_imgui PRIVATE ${PACKAGE_DIR}/OCCT-7_6_2/build/lin64/gcc/lib)
 #target_link_libraries (test_occ_imgui
 #                       ${IMGUI_LIB}
 #                       ${IMGUI_BACKEND_LIB}

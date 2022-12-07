@@ -241,39 +241,6 @@ public:
     };
     return nullptr;
   }
-
-  /*
-  public void print(PrintWriter pw, String tab)
-  {
-    String tab1 = new String(tab+"  ");
-    switch (d_shape) 
-    {
-    case CIRCLE:
-      std::cout << tab+"<cylinder label=\""+d_matCode+"\">");
-      std::cout << tab1+"<bottom> ["+d_center.getX()+", "+d_center.getY()+", "+
-                 d_center.getZ()+"] </bottom>");
-      double zcoord = d_center.getZ() + d_length;
-      std::cout << tab1+"<top> ["+d_center.getX()+", "+d_center.getY()+", "+
-                 zcoord+"] </top>");
-      std::cout << tab1+"<radius> "+d_radius+" </radius>");
-      std::cout << tab1+"<thickness> "+d_thickness+" </thickness>");
-      std::cout << tab+"</cylinder>");
-      break;
-      
-    case SPHERE:
-      std::cout << tab+"<sphere label=\""+d_matCode+"\">");
-      std::cout << tab1+"<center> ["+d_center.getX()+", "+d_center.getY()+", "+
-                 d_center.getZ()+"] </center>");
-      std::cout << tab1+"<radius> "+d_radius+" </radius>");
-      std::cout << tab1+"<thickness> "+d_thickness+" </thickness>");
-      std::cout << tab+"</sphere>");
-      break;
-      
-    default:
-      System.out.println("Not output method for particle shape "+d_shape+" implemented yet.");
-    }
-  }
-  */
 };
 
 } // end namespace VaangoUI
