@@ -30,15 +30,15 @@ public:
 
 public:
 
-  void draw()
+  void draw(int id)
   {
-    ImNodes::BeginNode(1);
+    ImNodes::BeginNode(id);
 
     ImNodes::BeginNodeTitleBar();
     ImGui::Text("Output information");
     ImNodes::EndNodeTitleBar();
 
-    ImNodes::BeginInputAttribute(2);
+    ImNodes::BeginInputAttribute(id+1);
     ImGui::Text("Integration");
     ImGui::Unindent();
     ImNodes::EndInputAttribute();

@@ -30,9 +30,9 @@ public:
 
 public:
 
-  void draw()
+  void draw(int id)
   {
-    ImNodes::BeginNode(1);
+    ImNodes::BeginNode(id);
 
     ImNodes::BeginNodeTitleBar();
     ImGui::Text("Physical constants");
@@ -43,7 +43,7 @@ public:
     ImGui::InputFloat3("Gravity (m/s2)", s_physicalConstants.gravity); 
     ImGui::PopItemWidth();
 
-    ImNodes::BeginOutputAttribute(2);
+    ImNodes::BeginOutputAttribute(id+1);
     ImGui::Indent(300);
     ImGui::Text("Output");
     ImGui::Unindent();

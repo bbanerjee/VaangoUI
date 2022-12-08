@@ -18,6 +18,12 @@ namespace VaangoUI {
     XML
   };
 
+  enum class IntegrationType {
+    EXPLICIT,
+    IMPLICIT,
+    SYMPLECTIC
+  };
+
   // Code from: https://stackoverflow.com/questions/11421432/how-can-i-output-the-value-of-an-enum-class-in-c11
   template<typename T>
   std::ostream& operator<<(typename std::enable_if<std::is_enum<T>::value, 

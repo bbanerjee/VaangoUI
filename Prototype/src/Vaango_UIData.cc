@@ -8,5 +8,6 @@ namespace VaangoUI {
 
   PhysicalConstants s_physicalConstants;
   OutputInformation s_output;
+  Integration s_integration;
 
 } // namespace VaangoUI

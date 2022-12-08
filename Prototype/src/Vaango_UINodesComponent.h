@@ -4,6 +4,7 @@
 #include <Vaango_UIComponentBase.h>
 #include <Vaango_UIPhysicalConstantsNode.h>
 #include <Vaango_UIOutputInformationNode.h>
+#include <Vaango_UITimeIntegrationNode.h>
 
 #include <imgui.h>
 #include <imnodes.h>
@@ -18,9 +19,11 @@ private:
    bool d_showGeometryNode = false;
    bool d_showPhysicalConstantsNode = false;
    bool d_showOutputNode = false;
+   bool d_showTimeIntegrationNode = false;
 
    Vaango_UIPhysicalConstantsNode d_physicalConstantsNode;
    Vaango_UIOutputInformationNode d_outputNode;
+   Vaango_UITimeIntegrationNode d_integrationNode;
 
 public:
 
@@ -79,7 +82,7 @@ public:
         }
 
         if (ImGui::MenuItem("Integration")) {
-
+          d_showTimeIntegrationNode = true;
         }
 
         if (ImGui::MenuItem("MPM")) {
@@ -105,26 +108,35 @@ public:
         ImGui::EndPopup();
       }
 
+      int node_id = 0;
       if (d_showPhysicalConstantsNode) {
-        d_physicalConstantsNode.draw();
+        node_id++;
+        d_physicalConstantsNode.draw(node_id);
       }
 
       if (d_showOutputNode) {
-        d_outputNode.draw();
+        node_id++;
+        d_outputNode.draw(node_id);
+      }
+
+      if (d_showTimeIntegrationNode) {
+        node_id++;
+        d_integrationNode.draw(node_id);
       }
 
       if (d_showGeometryNode) {
-          ImNodes::BeginNode(1);
+        node_id++;
+          ImNodes::BeginNode(node_id);
 
           ImNodes::BeginNodeTitleBar();
           ImGui::Text("Geometry");
           ImNodes::EndNodeTitleBar();
 
-          ImNodes::BeginInputAttribute(2);
+          ImNodes::BeginInputAttribute(node_id+1);
           ImGui::Text("Input");
           ImNodes::EndInputAttribute();
 
-          ImNodes::BeginOutputAttribute(3);
+          ImNodes::BeginOutputAttribute(node_id+2);
           ImGui::Text("Output");
           ImNodes::EndInputAttribute();
 
