@@ -85,12 +85,11 @@ public:
           d_showTimeIntegrationNode = true;
         }
 
-        if (ImGui::MenuItem("MPM")) {
-
-        }
-
-        if (ImGui::MenuItem("ICE")) {
-
+        if (ImGui::BeginMenu("Simulation component")) {
+          ImGui::MenuItem("MPM");
+          ImGui::MenuItem("ICE");
+          ImGui::MenuItem("MPMICE");
+          ImGui::EndMenu();
         }
 
         if (ImGui::MenuItem("Boundary conditions")) {

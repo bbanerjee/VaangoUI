@@ -24,6 +24,34 @@ namespace VaangoUI {
     SYMPLECTIC
   };
 
+  enum class MPMInterpolation {
+    LINEAR,
+    GIMP,
+    CPDI
+  };
+
+  enum class DeformationGradient {
+    FIRST_ORDER,
+    SUBCYCLING,
+    TAYLOR_SERIES
+  };
+
+  enum class ErosionAlgorithm {
+    NONE,
+    BRITTLE_DAMAGE,
+    ALLOW_NO_TENSION,
+    ALLOW_NO_SHEAR,
+    ZERO_STRESS
+  };
+
+  enum class MMSType {
+    NONE,
+    AXIS_ALIGNED, 
+    GENERALIZED_VORTEX, 
+    EXPANDING_RING, 
+    AXIS_ALIGNED_3L
+  };
+
   // Code from: https://stackoverflow.com/questions/11421432/how-can-i-output-the-value-of-an-enum-class-in-c11
   template<typename T>
   std::ostream& operator<<(typename std::enable_if<std::is_enum<T>::value, 
