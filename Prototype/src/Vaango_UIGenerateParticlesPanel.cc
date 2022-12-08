@@ -1,6 +1,7 @@
 #include <Vaango_UIGenerateParticlesPanel.h>
 #include <Vaango_UIGenerateRVEParticles.h>
 #include <Vaango_UIEnvironment.h>
+#include <Vaango_UIData.h>
 #include <Vaango_UIUtils.h>
 
 #include <Core/Enums.h>
@@ -35,10 +36,6 @@
 //#define CLIPPING
 
 namespace VaangoUI {
-
-ParticleShape s_partShapeFlag;
-ParticleSizeDist s_sizeDist;
-ParticlesInRVE s_partList;
 
 static bool doReading = false;
 static bool fileExists = false;

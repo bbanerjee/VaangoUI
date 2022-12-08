@@ -2,15 +2,28 @@
 #define __Vaango_UI_NODES_COMPONENT_H__
 
 #include <Vaango_UIComponentBase.h>
+#include <Vaango_UIPhysicalConstantsNode.h>
+#include <Vaango_UIOutputInformationNode.h>
 
 #include <imgui.h>
 #include <imnodes.h>
 
 namespace VaangoUI {
 
+
 class Vaango_UINodesComponent final : public Vaango_UIComponentBase
 {
+private:
+
+   bool d_showGeometryNode = false;
+   bool d_showPhysicalConstantsNode = false;
+   bool d_showOutputNode = false;
+
+   Vaango_UIPhysicalConstantsNode d_physicalConstantsNode;
+   Vaango_UIOutputInformationNode d_outputNode;
+
 public:
+
 
   Vaango_UINodesComponent(const std::string& title,
                           int width, int height)
@@ -53,8 +66,12 @@ public:
       }
       if (ImGui::BeginPopup("Add component")) {
 
-        if (ImGui::MenuItem("Domain")) {
+        if (ImGui::MenuItem("Physical constants")) {
+          d_showPhysicalConstantsNode = true;
+        }
 
+        if (ImGui::MenuItem("Geometry")) {
+          d_showGeometryNode = true;
         }
 
         if (ImGui::MenuItem("Grid")) {
@@ -81,8 +98,39 @@ public:
 
         }
 
+        if (ImGui::MenuItem("Output models")) {
+          d_showOutputNode = true;
+        }
+
         ImGui::EndPopup();
       }
+
+      if (d_showPhysicalConstantsNode) {
+        d_physicalConstantsNode.draw();
+      }
+
+      if (d_showOutputNode) {
+        d_outputNode.draw();
+      }
+
+      if (d_showGeometryNode) {
+          ImNodes::BeginNode(1);
+
+          ImNodes::BeginNodeTitleBar();
+          ImGui::Text("Geometry");
+          ImNodes::EndNodeTitleBar();
+
+          ImNodes::BeginInputAttribute(2);
+          ImGui::Text("Input");
+          ImNodes::EndInputAttribute();
+
+          ImNodes::BeginOutputAttribute(3);
+          ImGui::Text("Output");
+          ImNodes::EndInputAttribute();
+
+          ImNodes::EndNode();
+      }
+
       ImGui::PopStyleVar();
 
       ImNodes::EndNodeEditor();
