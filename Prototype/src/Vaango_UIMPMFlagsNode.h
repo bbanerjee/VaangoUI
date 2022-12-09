@@ -35,28 +35,39 @@ public:
     ImNodes::BeginNode(id);
 
     ImNodes::BeginNodeTitleBar();
-    ImGui::Text("Time integration");
+    ImGui::Text("MPM settings");
     ImNodes::EndNodeTitleBar();
 
     ImGui::PushItemWidth(100);
-    const char* integrationTypes[] = {"Explicit", "Implicit", "Symplectic"};
+
+    const char* dimen[] = {"Plane stress", "Plane stress", "Axisymmetric", "3D"};
+    static int dim = 3;
+    ImGui::Combo("Problem type", &dim, dimen, IM_ARRAYSIZE(dimen));
+    s_mpmFlags.simulationDim = static_cast<Dimensionality>(dim);
+
+    const char* interpolation[] = {"Linear", "GIMP", "CPDI", "CPTI"};
     static int type = 0;
-    ImGui::Combo("Integration type", &type, integrationTypes,
-                 IM_ARRAYSIZE(integrationTypes));
-    s_integration.integrationType = static_cast<IntegrationType>(type);
-    ImGui::InputFloat("Start time (s)", &s_integration.startTime, 0.0f, 0.0f, "%.2e"); 
-    ImGui::InputFloat("End time (s)", &s_integration.endTime, 0.0f, 0.0f, "%.2e"); 
-    ImGui::InputInt("Maximum timesteps", &s_integration.maxTimesteps); 
-    ImGui::InputFloat("Initial timestep size (s)", &s_integration.initialTimestep, 0.0f, 0.0f, "%.2e");
-    ImGui::InputFloat("Minimum timestep size (s)", &s_integration.minTimestep, 0.0f, 0.0f, "%.2e");
-    ImGui::InputFloat("Maximum timestep size (s)", &s_integration.maxTimestep, 0.0f, 0.0f, "%.2e");
-    ImGui::InputFloat("Maximum timestep increase factor", &s_integration.maxIncreaseFactor, 0.0f, 0.0f, "%.2e");
-    ImGui::InputFloat("Timestep multiplier", &s_integration.multiplier, 0.0f, 0.0f, "%.2e");
+    ImGui::Combo("Interpolation type", &type, interpolation,
+                 IM_ARRAYSIZE(interpolation));
+    s_mpmFlags.interpolatorType = static_cast<MPMInterpolation>(type);
+    if (s_mpmFlags.interpolatorType == MPMInterpolation::CPDI) {
+      ImGui::InputFloat("Critical length", &s_mpmFlags.cpdiLcrit, 0.0f, 0.0f, "%.3f"); 
+    }
+
+    const char* defgrad[] = {"First order", "Subcycling", "Taylor series"};
+    static int def = 2;
+    ImGui::Combo("Deformation gradient algorithm", &def, defgrad,
+                 IM_ARRAYSIZE(defgrad));
+    s_mpmFlags.defGradAlgorithm = static_cast<DeformationGradient>(def);
+    if (s_mpmFlags.defGradAlgorithm == DeformationGradient::TAYLOR_SERIES) {
+      ImGui::InputInt("Number of series terms", &s_mpmFlags.numTermsSeriesDefGrad); 
+    }
+
     ImGui::PopItemWidth();
 
     ImNodes::BeginOutputAttribute(id+1);
     ImGui::Indent(200);
-    ImGui::Text("Output");
+    ImGui::Text("Integration");
     ImGui::Unindent();
     ImNodes::EndOutputAttribute();
 

@@ -42,9 +42,10 @@ struct Integration
 
 struct MPMFlags
 {
+  Dimensionality simulationDim = Dimensionality::THREE_D; // Use axisymmetric?
+
   // General flags
   bool withICE = false;                    // For MPMICE coupling
-  bool axisymmetric = false;               // Use axisymmetric?
   bool useCoordRotation = false;           // Coordinate rotation on/off
   bool doPressureStabilization = false;    //
   bool fracture = false;                   // to turn on fracture

@@ -18,6 +18,13 @@ namespace VaangoUI {
     XML
   };
 
+  enum class Dimensionality {
+    PLANE_STRESS,
+    PLANE_STRAIN,
+    AXISYMMETRIC,
+    THREE_D
+  };
+
   enum class IntegrationType {
     EXPLICIT,
     IMPLICIT,
@@ -27,7 +34,8 @@ namespace VaangoUI {
   enum class MPMInterpolation {
     LINEAR,
     GIMP,
-    CPDI
+    CPDI,
+    CPTI
   };
 
   enum class DeformationGradient {

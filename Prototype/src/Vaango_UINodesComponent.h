@@ -5,6 +5,7 @@
 #include <Vaango_UIPhysicalConstantsNode.h>
 #include <Vaango_UIOutputInformationNode.h>
 #include <Vaango_UITimeIntegrationNode.h>
+#include <Vaango_UIMPMFlagsNode.h>
 
 #include <imgui.h>
 #include <imnodes.h>
@@ -20,10 +21,12 @@ private:
    bool d_showPhysicalConstantsNode = false;
    bool d_showOutputNode = false;
    bool d_showTimeIntegrationNode = false;
+   bool d_showMPMFlagsNode = false;
 
    Vaango_UIPhysicalConstantsNode d_physicalConstantsNode;
    Vaango_UIOutputInformationNode d_outputNode;
    Vaango_UITimeIntegrationNode d_integrationNode;
+   Vaango_UIMPMFlagsNode d_mpmNode;
 
 public:
 
@@ -86,7 +89,9 @@ public:
         }
 
         if (ImGui::BeginMenu("Simulation component")) {
-          ImGui::MenuItem("MPM");
+          if (ImGui::MenuItem("MPM")) {
+            d_showMPMFlagsNode = true;
+          }
           ImGui::MenuItem("ICE");
           ImGui::MenuItem("MPMICE");
           ImGui::EndMenu();
@@ -113,14 +118,19 @@ public:
         d_physicalConstantsNode.draw(node_id);
       }
 
-      if (d_showOutputNode) {
-        node_id++;
-        d_outputNode.draw(node_id);
-      }
-
       if (d_showTimeIntegrationNode) {
         node_id++;
         d_integrationNode.draw(node_id);
+      }
+
+      if (d_showMPMFlagsNode) {
+        node_id++;
+        d_mpmNode.draw(node_id);
+      }
+
+      if (d_showOutputNode) {
+        node_id++;
+        d_outputNode.draw(node_id);
       }
 
       if (d_showGeometryNode) {
