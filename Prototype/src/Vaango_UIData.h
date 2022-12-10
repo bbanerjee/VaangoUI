@@ -46,7 +46,6 @@ struct MPMFlags
 
   // General flags
   bool withICE = false;                    // For MPMICE coupling
-  bool useCoordRotation = false;           // Coordinate rotation on/off
   bool doPressureStabilization = false;    //
   bool fracture = false;                   // to turn on fracture
   bool useCohesiveZones = false;           // Flag for using cohesive zones
@@ -92,7 +91,7 @@ struct MPMFlags
   // Contact
   bool doContactFriction = false;          //
   bool computeCollinearNormals = false;    //
-  float addFrictionWork = 0.0f;            // 1 == add , 0 == do not add
+  bool addFrictionWork = false;            // 1 == add , 0 == do not add
 
   // Adding materials and particles
   bool canAddMPMMaterial = false;          //
@@ -116,6 +115,7 @@ struct MPMFlags
   // For rotating coordinate system
   bool initializeStressFromBodyForce = false; // Flag for using body force to
                                               // initialize stress
+  bool useCoordRotation = false;              // Coordinate rotation on/off
   float coordRotationSpeed = 0.0f;               // Speed of rotation
   float coordRotationCenter[3] = {0.0f, 0.0f, 0.0f};       // Center of rotation
   float coordRotationBodyRefPoint[3] = {0.0f, 0.0f, 0.0f}; // Reference point in rotating body
