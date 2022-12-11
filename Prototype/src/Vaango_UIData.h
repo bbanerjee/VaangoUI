@@ -16,6 +16,62 @@ struct PhysicalConstants
   float gravity[3] = {0.0f, 0.0f, 9.81f};
 };
 
+struct SummedReductionVars
+{
+  bool kineticEnergy = false;
+  bool totalStrainEnergy = false;
+  bool accStrainEnergy = false;
+  bool momentum = false;
+  bool totalMass = false;
+  bool centerOfMass = false;
+};
+
+struct MPMParticleVars
+{
+  bool particleID = false;
+  bool position = false;
+  bool mass = false;
+  bool volume = false;
+  bool temperature = false;
+  bool deformationGradient = false;
+  bool displacement = false;
+  bool velocity = false;
+  bool stress = false;
+  bool externalForce = false;
+  bool strainRate = false;
+  bool localized = false;
+  bool damage = false;
+  bool porosity = false;
+  bool plasticStrain = false;
+  bool plasticStrainRate = false;
+};
+
+struct MPMGridVars
+{
+  bool mass = false;
+  bool volume = false;
+  bool velocity = false;
+  bool stress = false;
+  bool acceleration = false;
+};
+
+struct ICECellCenteredVars
+{
+  bool density = false;
+  bool temperature = false;
+  bool velocity = false;
+  bool spVolume = false;
+  bool volFrac = false;
+  bool pressure = false;
+  bool equilPressure = false;
+  bool intEnergyL = false;
+  bool intEnergySource = false;
+  bool Tdot = false;
+  bool momentumL = false;
+  bool momentumSource = false;
+  bool delPDilatate = false;
+};
+
 struct OutputInformation
 {
   std::string outputUDAFile = "test.uda";
@@ -24,6 +80,10 @@ struct OutputInformation
   int checkpointCycle = 2;
   float checkpointTimeInterval = 5*timeInterval;
   int checkpointTimestepInterval = 5*timestepInterval;
+  SummedReductionVars summed;
+  MPMParticleVars p;
+  MPMGridVars g;
+  ICECellCenteredVars cc;
   std::vector<std::string> outputVariables;
 };
 
