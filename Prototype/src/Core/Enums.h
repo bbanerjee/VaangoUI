@@ -31,6 +31,18 @@ namespace VaangoUI {
     SYMPLECTIC
   };
 
+  enum class DynamicsType {
+    QUASISTATIC,
+    DYNAMIC,
+    TRANSIENT_DYNAMIC
+  };
+
+  enum class ImplicitSolverType {
+    SIMPLE_SOLVER,
+    PETSC,
+    HYPRE
+  };
+
   enum class MPMInterpolation {
     LINEAR,
     GIMP,

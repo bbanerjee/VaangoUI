@@ -30,6 +30,8 @@ struct OutputInformation
 struct Integration
 {
   IntegrationType integrationType;
+  DynamicsType dynamicsType;
+  ImplicitSolverType solverType;
   float startTime = 0.0;
   float endTime = 100.0;
   int maxTimesteps = 99999;
@@ -37,7 +39,18 @@ struct Integration
   float minTimestep = 1.0e-6;
   float maxTimestep = 1.0;
   float maxIncreaseFactor = 2.0;
+
+  // Explicit (CFL)
   float multiplier = 0.5;
+
+  // Implicit
+  float dispTolerance = 1.0e-10;
+  float energyTolerance = 4.0e-10;
+  int maxIterBeforeTimestepDecrease = 12;
+  float timestepDecreaseFactor = 0.5;
+  int minIterBeforeTimestepIncrease = 4;
+  float timestepIncreaseFactor = 2.0;
+  int maxIterBeforeTimestepRestart = 15;
 };
 
 struct MPMFlags
