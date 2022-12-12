@@ -10,5 +10,6 @@ namespace VaangoUI {
   OutputInformation s_output;
   Integration s_integration;
   MPMFlags s_mpmFlags;
+  ICEFlags s_iceFlags;
 
 } // namespace VaangoUI

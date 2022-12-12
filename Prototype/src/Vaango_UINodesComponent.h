@@ -6,6 +6,7 @@
 #include <Vaango_UIOutputInformationNode.h>
 #include <Vaango_UITimeIntegrationNode.h>
 #include <Vaango_UIMPMFlagsNode.h>
+#include <Vaango_UIICEFlagsNode.h>
 
 #include <imgui.h>
 #include <imnodes.h>
@@ -22,11 +23,13 @@ private:
    bool d_showOutputNode = false;
    bool d_showTimeIntegrationNode = false;
    bool d_showMPMFlagsNode = false;
+   bool d_showICEFlagsNode = false;
 
    Vaango_UIPhysicalConstantsNode d_physicalConstantsNode;
    Vaango_UIOutputInformationNode d_outputNode;
    Vaango_UITimeIntegrationNode d_integrationNode;
    Vaango_UIMPMFlagsNode d_mpmNode;
+   Vaango_UIICEFlagsNode d_iceNode;
 
 public:
 
@@ -92,8 +95,13 @@ public:
           if (ImGui::MenuItem("MPM")) {
             d_showMPMFlagsNode = true;
           }
-          ImGui::MenuItem("ICE");
-          ImGui::MenuItem("MPMICE");
+          if (ImGui::MenuItem("ICE")) {
+            d_showICEFlagsNode = true;
+          }
+          if (ImGui::MenuItem("MPMICE")) {
+            d_showMPMFlagsNode = true;
+            d_showICEFlagsNode = true;
+          }
           ImGui::EndMenu();
         }
 
@@ -126,6 +134,11 @@ public:
       if (d_showMPMFlagsNode) {
         node_id++;
         d_mpmNode.draw(node_id);
+      }
+
+      if (d_showICEFlagsNode) {
+        node_id++;
+        d_iceNode.draw(node_id);
       }
 
       if (d_showOutputNode) {

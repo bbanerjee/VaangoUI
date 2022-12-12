@@ -208,6 +208,24 @@ struct MPMFlags
   bool doScalarDiffusion = false;          // Flag for scalar diffusion
 };
 
+struct ICEFlags
+{
+  ICEAlgorithm algorithm = ICEAlgorithm::TOTAL_FORM;
+  ICEAdvectionAlgorithm advection = ICEAdvectionAlgorithm::SECOND_ORDER;
+  bool doCompatibleFluxes = true;
+  bool clampSpecificVolume = true;
+  float cflNumber = 0.25f;
+  int maxEquilibriumIters = 1000;
+  int minGridLevel = 0;
+  int maxGridLevel = 1000;
+
+  bool doHeatAddition = false;
+  int numberOfAddHeatMaterials = 1;
+  float addHeatStartTime = 0.0f;
+  float addHeatEndTime = 1.0e-3f;
+  std::vector<std::pair<int, float>> addHeatMaterial;
+};
+
 extern ParticleShape s_partShapeFlag;
 extern ParticleSizeDist s_sizeDist;
 extern ParticlesInRVE s_partList;
@@ -216,6 +234,7 @@ extern PhysicalConstants s_physicalConstants;
 extern OutputInformation s_output;
 extern Integration s_integration;
 extern MPMFlags s_mpmFlags;
+extern ICEFlags s_iceFlags;
 
 } // namespace VaangoUI
 
