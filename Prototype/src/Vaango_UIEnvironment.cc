@@ -4,7 +4,13 @@
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 
+#define GLFW_EXPOSE_NATIVE_X11
+#define GLFW_EXPOSE_NATIVE_GLX
+#include <GLFW/glfw3native.h>
+
 #include <imnodes.h>
+
+#include <OpenGl_GraphicDriver.hxx>
 
 #include <vector>
 #include <cmath>
@@ -13,6 +19,10 @@ using namespace VaangoUI;
 
 // Initialize static window variables
 GLFWwindow* Vaango_UIEnvironment::main_window = nullptr;
+
+Handle(Vaango_UIOcctWindow) Vaango_UIEnvironment::occt_window = nullptr;
+Handle(AIS_InteractiveContext) Vaango_UIEnvironment::occt_context = nullptr;
+Handle(V3d_View) Vaango_UIEnvironment::occt_view = nullptr;
 
 vtkSmartPointer<vtkRenderer> 
 Vaango_UIEnvironment::vtk_Renderer = vtkSmartPointer<vtkRenderer>::New();
@@ -62,6 +72,9 @@ Vaango_UIEnvironment::Vaango_UIEnvironment(const std::string& title,
     std::cout << "Error: Could not create glfw window" << std::endl;
     return;
   }
+
+  // Create a OCCT window
+  occt_window = new Vaango_UIOcctWindow(main_window);
 
   // Assign context
   glfwMakeContextCurrent(main_window);
@@ -123,6 +136,37 @@ Vaango_UIEnvironment::stopImGui()
 
   // Set flag
   d_imguiRunning = false;
+}
+
+bool 
+Vaango_UIEnvironment::setupOCCTViewer()
+{
+  if (occt_window.IsNull() || main_window == nullptr) {
+    return false;
+  }
+
+  Handle(OpenGl_GraphicDriver) graphicDriver = 
+    new OpenGl_GraphicDriver(occt_window->GetDisplay(), false);
+
+  Handle(V3d_Viewer) viewer = new V3d_Viewer(graphicDriver);
+
+  occt_view = viewer->CreateView();
+  occt_view->SetWindow(occt_window, occt_window->NativeGlContext());
+
+  occt_context = new AIS_InteractiveContext(viewer);
+
+  return true;
+}
+
+void 
+Vaango_UIEnvironment::stopOCCT()
+{
+  if (occt_view.IsNull()) {
+    occt_view->Remove();
+  }
+  if (occt_window.IsNull()) {
+    occt_window->Close();
+  }
 }
 
 void

@@ -63,6 +63,7 @@ target_link_libraries(test_UIEnvironment
                       ${GLAD_LIB}
                       ${GLFW_LIBRARIES}
                       OpenGL::GL
+                      ${OpenCASCADE_LIBRARIES}
                       ${CMAKE_DL_LIBS}
                       gtest_main)
 

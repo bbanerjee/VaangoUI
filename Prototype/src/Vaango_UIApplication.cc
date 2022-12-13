@@ -30,10 +30,12 @@ namespace VaangoUI {
 
     uiEnv.startImGui();
     uiEnv.setupImNodes();
+    uiEnv.setupOCCTViewer();
     uiEnv.setupVTK();
     uiEnv.setupVTKBuffers(1000, 1000);
     uiEnv.runMainLoop(components);
     uiEnv.deleteVTKBuffers();
+    uiEnv.stopOCCT();
     uiEnv.stopImNodes();
     uiEnv.stopImGui();
 

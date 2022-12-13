@@ -3,6 +3,11 @@
 
 #include <Vaango_UIComponentBase.h>
 
+#include <Vaango_UIOcctWindow.h>
+
+#include <AIS_InteractiveContext.hxx>
+#include <V3d_View.hxx>
+
 #include <vtkCallbackCommand.h>
 #include <vtkContourFilter.h>
 #include <vtkGenericRenderWindowInteractor.h>
@@ -29,8 +34,6 @@ class Vaango_UIEnvironment
 {
 public:
 
-  static GLFWwindow* main_window;
-
   static void error_callback(int error, const char* desc) {
     std::cout << "Error " << std::to_string(error) << ": " << desc << std::endl;
   }
@@ -47,6 +50,9 @@ public:
 
   void startImGui();
   void stopImGui();
+
+  bool setupOCCTViewer();
+  void stopOCCT();
 
   void setupVTK();
   int setupVTKBuffers(int width, int height);
@@ -69,6 +75,12 @@ private:
   std::vector<Vaango_UIComponentBase*> d_components;
 
 public:
+
+  static GLFWwindow* main_window;
+
+  static Handle(Vaango_UIOcctWindow) occt_window;
+  static Handle(V3d_View) occt_view;
+  static Handle(AIS_InteractiveContext) occt_context;
 
   static int vtk_viewportSize[2];
   static vtkSmartPointer<vtkRenderer> vtk_Renderer;

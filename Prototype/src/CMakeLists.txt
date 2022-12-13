@@ -42,6 +42,9 @@ find_package(VTK 9.1 REQUIRED COMPONENTS
     RenderingGL2PSOpenGL2
     RenderingOpenGL2
     RenderingVolume
+    DICOMParser
+    metaio
+    IOImage
     QUIET
   )
 message (STATUS "VTK_VERSION: ${VTK_VERSION}")
@@ -194,6 +197,7 @@ add_library(${VAANGO_UI_LIB}
             Vaango_UIGenerateParticlesPanel.cc
             Vaango_UIGenerateRVEParticles.cc
             Vaango_UILayout.cc
+            Vaango_UIOcctWindow.cc
             ${TINYXML2_DIR}/tinyxml2.cpp
             ${IMNODES_DIR}/imnodes.cpp
             ${VAANGO_CORE_SRC})
@@ -238,7 +242,8 @@ target_link_libraries (vaango_ui
 #                       ${RAYLIB_LIB}
 #                       ${RLIMGUI_LIB}
                        OpenGL::GL
-                       ${VTK_LIBRARIES}
+                       ${OpenCASCADE_LIBRARIES} # Contains VTK
+                       #${VTK_LIBRARIES}
                        ${CMAKE_DL_LIBS})
 
 ## Standalone tests
