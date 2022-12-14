@@ -67,6 +67,7 @@ public:
       ImGui::EndMainMenuBar();
     }
 
+
     if (d_mainPanel.d_isVisible) {
       d_mainPanel.draw("Create particle distribution", 400, 400);
       //std::cout << "Draw main panel done\n";

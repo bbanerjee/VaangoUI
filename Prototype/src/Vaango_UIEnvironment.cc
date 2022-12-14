@@ -51,6 +51,14 @@ Vaango_UIEnvironment::Vaango_UIEnvironment(const std::string& title,
                                            const int width,
                                            const int height)
 {
+  initialize(title, width, height);
+}
+
+void
+Vaango_UIEnvironment::initialize(const std::string& title,
+                                 const int width,
+                                 const int height)
+{
   // Set up error call back
   glfwSetErrorCallback(error_callback);
 
@@ -75,6 +83,7 @@ Vaango_UIEnvironment::Vaango_UIEnvironment(const std::string& title,
 
   // Create a OCCT window
   occt_window = new Vaango_UIOcctWindow(main_window);
+  glfwSetWindowUserPointer(main_window, this);
 
   // Assign context
   glfwMakeContextCurrent(main_window);
@@ -161,12 +170,18 @@ Vaango_UIEnvironment::setupOCCTViewer()
 void 
 Vaango_UIEnvironment::stopOCCT()
 {
+  auto win = glfwGetCurrentContext();
+  std::cout << "current context = " << win << "\n";
+  std::cout << "view state null? " << std::boolalpha << occt_view.IsNull() << "\n";
   if (occt_view.IsNull()) {
     occt_view->Remove();
   }
+  std::cout << "after: view state null? " << std::boolalpha << occt_view.IsNull() << "\n";
+  std::cout << "window state null? " << std::boolalpha << occt_window.IsNull() << "\n";
   if (occt_window.IsNull()) {
     occt_window->Close();
   }
+  std::cout << "after: window state null? " << std::boolalpha << occt_window.IsNull() << "\n";
 }
 
 void

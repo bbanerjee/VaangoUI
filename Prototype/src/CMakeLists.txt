@@ -202,18 +202,15 @@ add_library(${VAANGO_UI_LIB}
             ${IMNODES_DIR}/imnodes.cpp
             ${VAANGO_CORE_SRC})
 set_source_files_properties(${VAANGO_CORE_SRC} PROPERTIES 
-                            COMPILE_OPTIONS "-Wall")
+                            COMPILE_OPTIONS "-Wall;-g3")
 set_property(TARGET ${VAANGO_COR_SRC} PROPERTY CXX_STANDARD 17)
 target_include_directories(${VAANGO_UI_LIB} PRIVATE 
                            ${VAANGO_CORE_DIR}
                            ${IMGUI_FILE_DIALOG_DIR}
                            ${IMNODES_DIR}
                            ${JSON_DIR}
-#                           ${RAYLIB_INCLUDE_DIR}
-#                           ${RLIMGUI_DIR}
                            ${BOOST_INCLUDE_DIR}
                            ${CMAKE_CURRENT_SOURCE_DIR}
-#                           ${CMAKE_CURRENT_SOURCE_DIR}/Utils
                            ${IMGUI_DIR}
                            ${IMGUI_BACKEND_DIR}
                            ${GLAD_DIR})
@@ -232,6 +229,7 @@ add_executable(vaango_ui
 target_include_directories(vaango_ui PRIVATE 
                            ${IMGUI_DIR}
                            ${IMGUI_FILE_DIALOG_DIR}
+                           ${GLAD_DIR}
                            ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries (vaango_ui
                        ${VAANGO_UI_LIB}

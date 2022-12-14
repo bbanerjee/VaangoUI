@@ -3,5 +3,6 @@
 int 
 main(int argc, char** argv) 
 {
-  VaangoUI::Vaango_UIApplication::initialize();
+  VaangoUI::Vaango_UIApplication::startAndRun();
+  return 0;
 }

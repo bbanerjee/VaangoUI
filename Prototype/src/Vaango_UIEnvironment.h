@@ -40,6 +40,8 @@ public:
 
 public:
 
+  Vaango_UIEnvironment() = default;
+
   Vaango_UIEnvironment(const std::string& title,
                        const int width = 1200,
                        const int height = 1000);
@@ -47,6 +49,10 @@ public:
   ~Vaango_UIEnvironment();
 
 public:
+
+  void initialize(const std::string& title,
+                  const int width = 1200,
+                  const int height = 1000);
 
   void startImGui();
   void stopImGui();

@@ -1,6 +1,4 @@
 #include <Vaango_UIApplication.h>
-#include <Vaango_UIEnvironment.h>
-#include <Vaango_UIComponentBase.h>
 #include <Vaango_UIMainMenuComponent.h>
 #include <Vaango_UINodesComponent.h>
 //#include <Vaango_UITestComponent.h>
@@ -8,13 +6,13 @@
 namespace VaangoUI {
 
   void
-  Vaango_UIApplication::initialize()
+  Vaango_UIApplication::startAndRun()
   {
-
     // Constructor
     Vaango_UIEnvironment uiEnv("vaango_UIEnv", 800, 600);
     std::cout << "Window = " << Vaango_UIEnvironment::main_window << std::endl;
 
+    // Components
     std::vector<Vaango_UIComponentBase*> components;
 
     // Main menu component
@@ -33,7 +31,9 @@ namespace VaangoUI {
     uiEnv.setupOCCTViewer();
     uiEnv.setupVTK();
     uiEnv.setupVTKBuffers(1000, 1000);
+
     uiEnv.runMainLoop(components);
+
     uiEnv.deleteVTKBuffers();
     uiEnv.stopOCCT();
     uiEnv.stopImNodes();
