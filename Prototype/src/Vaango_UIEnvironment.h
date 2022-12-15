@@ -78,11 +78,9 @@ private:
   bool d_imguiRunning = false;
   std::vector<Vaango_UIComponentBase*> d_components;
 
-  /*
   Handle(Vaango_UIOcctWindow) d_occt_window;
   Handle(V3d_View) d_occt_view;
   Handle(AIS_InteractiveContext) d_occt_context;
-  */
 
 public:
 

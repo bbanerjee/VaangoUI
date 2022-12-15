@@ -25,6 +25,8 @@ target_include_directories(${FILENAME1} PRIVATE
 target_link_libraries(${FILENAME1} 
                       ${VAANGO_UI_LIB}
                       gtest_main)
+target_link_directories(${FILENAME1} PRIVATE 
+                        ${OpenCASCADE_LIBRARY_DIR})
 add_custom_command(TARGET ${FILENAME1}
                    POST_BUILD
                    COMMAND ${FILENAME1})
@@ -63,7 +65,6 @@ target_link_libraries(test_UIEnvironment
                       ${GLAD_LIB}
                       ${GLFW_LIBRARIES}
                       OpenGL::GL
-                      ${OpenCASCADE_LIBRARIES}
                       ${CMAKE_DL_LIBS}
                       gtest_main)
 
@@ -84,6 +85,12 @@ target_link_libraries(test_UILayout
                       OpenGL::GL
                       ${CMAKE_DL_LIBS}
                       gtest_main)
+
+# For populating VTK includes and libraries
+vtk_module_autoinit(
+  TARGETS ${FILENAME1}
+  MODULES ${VTK_LIBRARIES}
+)
 
 include(GoogleTest)
 gtest_discover_tests(${FILENAME1})

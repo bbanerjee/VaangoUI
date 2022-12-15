@@ -28,6 +28,7 @@ find_package(OpenGL REQUIRED)
 
 # For VTK (also needed by Opencascade)
 set(VTK_DIR ${PACKAGE_DIR}/VTK-9.1.0/build CACHE PATH "vtk build directory")
+set(VTK_INCLUDE_DIR ${PACKAGE_DIR}/VTK-9.1.0/install/include/vtk-9.1)
 find_package(VTK 9.1 REQUIRED COMPONENTS
     CommonCore
     CommonColor
@@ -42,8 +43,6 @@ find_package(VTK 9.1 REQUIRED COMPONENTS
     RenderingGL2PSOpenGL2
     RenderingOpenGL2
     RenderingVolume
-    DICOMParser
-    metaio
     IOImage
     QUIET
   )
@@ -58,18 +57,26 @@ message (STATUS "VTK_VERSION: ${VTK_VERSION}")
 #             ModelingAlgorithms 
 #             ModelingData
 #             DataExchange
-#             Visualization
+#             #Visualization
 #             REQUIRED)
 
-set(OpenCASCADE_INCLUDE_DIR ${PACKAGE_DIR}/OCCT-7_6_2/build/include/opencascade)
+set(OpenCASCADE_INCLUDE_DIR ${PACKAGE_DIR}/OCCT-7_6_2/install/include/opencascade)
 include_directories(${OpenCASCADE_INCLUDE_DIR})
 message(STATUS "OCC-Include-Dir: ${OpenCASCADE_INCLUDE_DIR}")
 
-set(OpenCASCADE_LIBRARY_DIR ${PACKAGE_DIR}/OCCT-7_6_2/build/lin64/gcc/lib)
+set(OpenCASCADE_LIBRARY_DIR ${PACKAGE_DIR}/OCCT-7_6_2/install/lib)
 link_directories(${OpenCASCADE_LIBRARY_DIR})
 message(STATUS "OCC-Lib-Dir: ${OpenCASCADE_LIBRARY_DIR}")
 
-set(OpenCASCADE_LIBRARIES TKernel;TKMath;TKG2d;TKG3d;TKGeomBase;TKBRep;TKGeomAlgo;TKTopAlgo;TKPrim;TKBO;TKShHealing;TKBool;TKHLR;TKFillet;TKOffset;TKFeat;TKMesh;TKXMesh;TKService;TKV3d;TKOpenGl;TKMeshVS;TKIVtk;TKCDF;TKLCAF;TKCAF;TKBinL;TKXmlL;TKBin;TKXml;TKStdL;TKStd;TKTObj;TKBinTObj;TKXmlTObj;TKVCAF;TKXSBase;TKSTEPBase;TKSTEPAttr;TKSTEP209;TKSTEP;TKIGES;TKXCAF;TKXDEIGES;TKXDESTEP;TKSTL;TKVRML;TKXmlXCAF;TKBinXCAF;TKRWMesh;TKDraw;TKTopTest;TKOpenGlTest;TKViewerTest;TKXSDRAW;TKDCAF;TKXDEDRAW;TKTObjDRAW;TKQADraw;TKIVtkDraw)
+set(OpenCASCADE_LIBRARIES TKernel;TKMath;TKG2d;TKG3d;TKGeomBase;
+                          TKBRep;TKGeomAlgo;TKTopAlgo;TKPrim;TKBO;
+                          TKShHealing;TKBool;TKHLR;TKFillet;TKOffset;
+                          TKFeat;TKMesh;TKXMesh;TKService;TKMeshVS;TKCDF;
+                          TKLCAF;TKCAF;TKBinL;TKXmlL;TKBin;TKXml;TKStdL;TKStd;
+                          TKTObj;TKBinTObj;TKXmlTObj;TKVCAF;TKXSBase;
+                          TKSTEPBase;TKSTEPAttr;TKSTEP209;TKSTEP;TKIGES;
+                          TKXCAF;TKXDEIGES;TKXDESTEP;TKSTL;TKVRML;TKXmlXCAF;
+                          TKBinXCAF;TKRWMesh;TKV3d;TKOpenGl)
 message(STATUS "OCC-Libs: ${OpenCASCADE_LIBRARIES}")
 
 # Find freetype libraries on Linux (don't know why the one provided by the static occt dep doesn't work on Linux)
@@ -83,10 +90,6 @@ IF(UNIX AND NOT APPLE)
   include_directories(${FontConfig_INCLUDE_DIRS})
   message(STATUS "${FontConfig_INCLUDE_DIRS}")
 ENDIF()
-
-# for raylib
-#set(RAYLIB_INCLUDE_DIR ${PACKAGE_DIR}/raylib-4.2.0_linux_amd64/include)
-#set(RAYLIB_LIB ${PACKAGE_DIR}/raylib-4.2.0_linux_amd64/lib/libraylib.so)
 
 # for stb image loader
 set(STB_DIR ${CMAKE_SOURCE_DIR}/../stb)
@@ -145,18 +148,6 @@ target_include_directories(imgui_backend_lib PRIVATE
 # for imnodes
 set(IMNODES_DIR ${CMAKE_SOURCE_DIR}/../imnodes)
 
-# for raylib backend for imgui
-#set(RLIMGUI_DIR ${PACKAGE_DIR}/rlImGui)
-#set(RLIMGUI_SRC
-#    ${RLIMGUI_DIR}/rlImGui.cpp)
-#set(RLIMGUI_LIB rlimgui_lib)
-
-#add_library(${RLIMGUI_LIB} ${RLIMGUI_SRC})
-#target_include_directories(${RLIMGUI_LIB} PRIVATE 
-#                           ${RAYLIB_INCLUDE_DIR}
-#                           ${IMGUI_DIR}
-#                           ${RLIMGUI_DIR})
-
 # for nlohmann JSON parser
 set(JSON_DIR ${CMAKE_SOURCE_DIR}/../nlohmann)
 
@@ -197,7 +188,7 @@ add_library(${VAANGO_UI_LIB}
             Vaango_UIGenerateParticlesPanel.cc
             Vaango_UIGenerateRVEParticles.cc
             Vaango_UILayout.cc
-            #Vaango_UIOcctWindow.cc
+            Vaango_UIOcctWindow.cc
             ${TINYXML2_DIR}/tinyxml2.cpp
             ${IMNODES_DIR}/imnodes.cpp
             ${VAANGO_CORE_SRC})
@@ -213,11 +204,15 @@ target_include_directories(${VAANGO_UI_LIB} PRIVATE
                            ${CMAKE_CURRENT_SOURCE_DIR}
                            ${IMGUI_DIR}
                            ${IMGUI_BACKEND_DIR}
-                           ${GLAD_DIR})
-target_include_directories(${VAANGO_UI_LIB} PRIVATE 
-                           ${STB_DIR})
+                           ${GLAD_DIR}
+                           ${STB_DIR}
+                           ${VTK_INCLUDE_DIR}
+                           ${OpenCASCADE_INCLUDE_DIR}
+                          )
 target_link_libraries (${VAANGO_UI_LIB}
-                       ${VTK_LIBRARIES})
+                       ${OpenCASCADE_LIBRARIES} # Contains VTK
+                       ${VTK_LIBRARIES}
+                      )
 
 # Unit tests
 add_subdirectory(UnitTests)
@@ -230,6 +225,8 @@ target_include_directories(vaango_ui PRIVATE
                            ${IMGUI_DIR}
                            ${IMGUI_FILE_DIALOG_DIR}
                            ${GLAD_DIR}
+                           ${VTK_INCLUDE_DIR}
+                           ${OpenCASCADE_INCLUDE_DIR}
                            ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries (vaango_ui
                        ${VAANGO_UI_LIB}
@@ -238,10 +235,13 @@ target_link_libraries (vaango_ui
                        ${GLAD_LIB}
                        ${GLFW_LIBRARIES}
                        OpenGL::GL
-                       #${OpenCASCADE_LIBRARIES} # Contains VTK
+                       ${OpenCASCADE_LIBRARIES} # Contains VTK
                        ${VTK_LIBRARIES}
-                       #${CMAKE_DL_LIBS}
+                       ${CMAKE_DL_LIBS}
                        )
+target_link_directories(vaango_ui PRIVATE 
+                        ${OpenCASCADE_LIBRARY_DIR})
+                         
 
 ## Standalone tests
 #add_executable (test_occ_imgui 

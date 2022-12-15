@@ -28,50 +28,51 @@ Vaango_UIOcctWindow::Vaango_UIOcctWindow(GLFWwindow* window)
       throw std::runtime_error("**ERROR** Could not get X11 display for OCCT");
     }
   } 
+  d_window = window;
 }
 
 void
-Vaango_UIOcctWindow::Close(GLFWwindow* window)
+Vaango_UIOcctWindow::Close()
 {
 }
 
 Aspect_Drawable 
-Vaango_UIOcctWindow::NativeHandle(GLFWwindow* window) const
+Vaango_UIOcctWindow::NativeHandle() const
 {
-  return (Aspect_Drawable) glfwGetX11Window(window);
+  return (Aspect_Drawable) glfwGetX11Window(d_window);
 }
 
 Aspect_RenderingContext 
-Vaango_UIOcctWindow::NativeGlContext(GLFWwindow* window) const
+Vaango_UIOcctWindow::NativeGlContext() const
 {
-  return glfwGetGLXContext(window);
+  return glfwGetGLXContext(d_window);
 }
 
 Standard_Boolean 
-Vaango_UIOcctWindow::IsMapped(GLFWwindow* window) const
+Vaango_UIOcctWindow::IsMapped() const
 {
-  return glfwGetWindowAttrib(window, GLFW_VISIBLE) != 0;
+  return glfwGetWindowAttrib(d_window, GLFW_VISIBLE) != 0;
 }
 
-void Vaango_UIOcctWindow::Map(GLFWwindow* window) const 
+void Vaango_UIOcctWindow::Map() const 
 {
-  glfwShowWindow(window);
+  glfwShowWindow(d_window);
 }
 
-void Vaango_UIOcctWindow::Unmap(GLFWwindow* window) const
+void Vaango_UIOcctWindow::Unmap() const
 {
-  glfwHideWindow(window);
+  glfwHideWindow(d_window);
 }
 
 //! Apply the resizing to the window <me>.
 Aspect_TypeOfResize 
-Vaango_UIOcctWindow::DoResize(GLFWwindow* window) 
+Vaango_UIOcctWindow::DoResize() 
 {
-  if (glfwGetWindowAttrib (window, GLFW_VISIBLE) == 1) {
+  if (glfwGetWindowAttrib (d_window, GLFW_VISIBLE) == 1) {
 
     int x_pos = 0, y_pos = 0, width = 0, height = 0;
-    glfwGetWindowPos (window, &x_pos, &y_pos);
-    glfwGetWindowSize(window, &width, &height);
+    glfwGetWindowPos (d_window, &x_pos, &y_pos);
+    glfwGetWindowSize(d_window, &width, &height);
     d_xLeft   = x_pos;
     d_xRight  = x_pos + width;
     d_yTop    = y_pos;
@@ -81,9 +82,9 @@ Vaango_UIOcctWindow::DoResize(GLFWwindow* window)
 }
 
 Graphic3d_Vec2i 
-Vaango_UIOcctWindow::CursorPosition(GLFWwindow* window) const
+Vaango_UIOcctWindow::CursorPosition() const
 {
   Graphic3d_Vec2d pos;
-  glfwGetCursorPos(window, &pos.x(), &pos.y());
+  glfwGetCursorPos(d_window, &pos.x(), &pos.y());
   return Graphic3d_Vec2i(static_cast<int>(pos.x()), static_cast<int>(pos.y()));
 }
