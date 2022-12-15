@@ -197,7 +197,7 @@ add_library(${VAANGO_UI_LIB}
             Vaango_UIGenerateParticlesPanel.cc
             Vaango_UIGenerateRVEParticles.cc
             Vaango_UILayout.cc
-            Vaango_UIOcctWindow.cc
+            #Vaango_UIOcctWindow.cc
             ${TINYXML2_DIR}/tinyxml2.cpp
             ${IMNODES_DIR}/imnodes.cpp
             ${VAANGO_CORE_SRC})
@@ -237,12 +237,11 @@ target_link_libraries (vaango_ui
                        ${IMGUI_BACKEND_LIB}
                        ${GLAD_LIB}
                        ${GLFW_LIBRARIES}
-#                       ${RAYLIB_LIB}
-#                       ${RLIMGUI_LIB}
                        OpenGL::GL
-                       ${OpenCASCADE_LIBRARIES} # Contains VTK
-                       #${VTK_LIBRARIES}
-                       ${CMAKE_DL_LIBS})
+                       #${OpenCASCADE_LIBRARIES} # Contains VTK
+                       ${VTK_LIBRARIES}
+                       #${CMAKE_DL_LIBS}
+                       )
 
 ## Standalone tests
 #add_executable (test_occ_imgui 

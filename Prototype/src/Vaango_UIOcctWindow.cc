@@ -1,6 +1,6 @@
 #include <Vaango_UIOcctWindow.h>
 
-IMPLEMENT_STANDARD_RTTIEXT(Vaango_UIOcctWindow, Aspect_Window)
+//IMPLEMENT_STANDARD_RTTIEXT(Vaango_UIOcctWindow, Aspect_Window)
 
 #define GLFW_EXPOSE_NATIVE_X11
 #define GLFW_EXPOSE_NATIVE_GLX
@@ -13,12 +13,11 @@ IMPLEMENT_STANDARD_RTTIEXT(Vaango_UIOcctWindow, Aspect_Window)
 
 Vaango_UIOcctWindow::Vaango_UIOcctWindow(GLFWwindow* window)
 {
-  d_GlfwWindow = window;
-  if (d_GlfwWindow != nullptr) {
+  if (window != nullptr) {
 
     int aWidth = 0, aHeight = 0;
-    glfwGetWindowPos (d_GlfwWindow, &d_xLeft, &d_yTop);
-    glfwGetWindowSize(d_GlfwWindow, &aWidth, &aHeight);
+    glfwGetWindowPos (window, &d_xLeft, &d_yTop);
+    glfwGetWindowSize(window, &aWidth, &aHeight);
     d_xRight  = d_xLeft + aWidth;
     d_yBottom = d_yTop + aHeight;
 
@@ -32,47 +31,47 @@ Vaango_UIOcctWindow::Vaango_UIOcctWindow(GLFWwindow* window)
 }
 
 void
-Vaango_UIOcctWindow::Close()
+Vaango_UIOcctWindow::Close(GLFWwindow* window)
 {
 }
 
 Aspect_Drawable 
-Vaango_UIOcctWindow::NativeHandle() const
+Vaango_UIOcctWindow::NativeHandle(GLFWwindow* window) const
 {
-  return (Aspect_Drawable) glfwGetX11Window(d_GlfwWindow);
+  return (Aspect_Drawable) glfwGetX11Window(window);
 }
 
 Aspect_RenderingContext 
-Vaango_UIOcctWindow::NativeGlContext() const
+Vaango_UIOcctWindow::NativeGlContext(GLFWwindow* window) const
 {
-  return glfwGetGLXContext(d_GlfwWindow);
+  return glfwGetGLXContext(window);
 }
 
 Standard_Boolean 
-Vaango_UIOcctWindow::IsMapped() const
+Vaango_UIOcctWindow::IsMapped(GLFWwindow* window) const
 {
-  return glfwGetWindowAttrib(d_GlfwWindow, GLFW_VISIBLE) != 0;
+  return glfwGetWindowAttrib(window, GLFW_VISIBLE) != 0;
 }
 
-void Vaango_UIOcctWindow::Map() const 
+void Vaango_UIOcctWindow::Map(GLFWwindow* window) const 
 {
-  glfwShowWindow(d_GlfwWindow);
+  glfwShowWindow(window);
 }
 
-void Vaango_UIOcctWindow::Unmap() const
+void Vaango_UIOcctWindow::Unmap(GLFWwindow* window) const
 {
-  glfwHideWindow(d_GlfwWindow);
+  glfwHideWindow(window);
 }
 
 //! Apply the resizing to the window <me>.
 Aspect_TypeOfResize 
-Vaango_UIOcctWindow::DoResize() 
+Vaango_UIOcctWindow::DoResize(GLFWwindow* window) 
 {
-  if (glfwGetWindowAttrib (d_GlfwWindow, GLFW_VISIBLE) == 1) {
+  if (glfwGetWindowAttrib (window, GLFW_VISIBLE) == 1) {
 
     int x_pos = 0, y_pos = 0, width = 0, height = 0;
-    glfwGetWindowPos (d_GlfwWindow, &x_pos, &y_pos);
-    glfwGetWindowSize(d_GlfwWindow, &width, &height);
+    glfwGetWindowPos (window, &x_pos, &y_pos);
+    glfwGetWindowSize(window, &width, &height);
     d_xLeft   = x_pos;
     d_xRight  = x_pos + width;
     d_yTop    = y_pos;
@@ -82,9 +81,9 @@ Vaango_UIOcctWindow::DoResize()
 }
 
 Graphic3d_Vec2i 
-Vaango_UIOcctWindow::CursorPosition() const
+Vaango_UIOcctWindow::CursorPosition(GLFWwindow* window) const
 {
   Graphic3d_Vec2d pos;
-  glfwGetCursorPos(d_GlfwWindow, &pos.x(), &pos.y());
+  glfwGetCursorPos(window, &pos.x(), &pos.y());
   return Graphic3d_Vec2i(static_cast<int>(pos.x()), static_cast<int>(pos.y()));
 }

@@ -12,56 +12,50 @@
 struct GLFWwindow;
 
 //! GLFWwindow wrapper implementing Aspect_Window interface
-class Vaango_UIOcctWindow : public Aspect_Window
+//class Vaango_UIOcctWindow : public Aspect_Window
+class Vaango_UIOcctWindow
 {
-  DEFINE_STANDARD_RTTIEXT(Vaango_UIOcctWindow, Aspect_Window)
-
 public:
 
   explicit Vaango_UIOcctWindow(GLFWwindow* window);
 
   virtual ~Vaango_UIOcctWindow() {};
 
-  void Close();
+  void Close(GLFWwindow* window);
 
   const Handle(Aspect_DisplayConnection)& GetDisplay() const 
   { 
     return d_display; 
   }
 
-  GLFWwindow* getGlfwWindow() 
-  { 
-    return d_GlfwWindow; 
-  }
+  Aspect_RenderingContext NativeGlContext(GLFWwindow* window) const;
 
-  Aspect_RenderingContext NativeGlContext() const;
-
-  Graphic3d_Vec2i CursorPosition() const;
+  Graphic3d_Vec2i CursorPosition(GLFWwindow* window) const;
 
 public:
 
-  virtual Aspect_Drawable NativeHandle() const override;
+  virtual Aspect_Drawable NativeHandle(GLFWwindow* window) const; // override;
 
-  virtual Aspect_Drawable NativeParentHandle() const override
+  virtual Aspect_Drawable NativeParentHandle(GLFWwindow* window) const // override
   {
     return 0;
   }
 
-  virtual Aspect_TypeOfResize DoResize() override;
+  virtual Aspect_TypeOfResize DoResize(GLFWwindow* window); //override;
 
-  virtual Standard_Boolean IsMapped() const override;
+  virtual Standard_Boolean IsMapped(GLFWwindow* window) const; // override;
 
-  virtual Standard_Boolean DoMapping() const override
+  virtual Standard_Boolean DoMapping(GLFWwindow* window) const //override
   {
     return Standard_True;
   }
 
-  virtual void Map() const override;
+  virtual void Map(GLFWwindow* window) const; //override;
 
-  virtual void Unmap() const override;
+  virtual void Unmap(GLFWwindow* window) const; //override;
 
   virtual void Position(Standard_Integer& x1, Standard_Integer& y1, 
-                        Standard_Integer& x2, Standard_Integer& y2) const override
+                        Standard_Integer& x2, Standard_Integer& y2) const // override
   {
     x1 = d_xLeft;
     x2 = d_xRight;
@@ -69,18 +63,18 @@ public:
     y2 = d_yBottom;
   }
 
-  virtual Standard_Real Ratio() const override
+  virtual Standard_Real Ratio() const // override
   {
     return Standard_Real (d_xRight - d_xLeft) / Standard_Real (d_yBottom - d_yTop);
   }
 
-  virtual void Size(Standard_Integer& width, Standard_Integer& height) const override
+  virtual void Size(Standard_Integer& width, Standard_Integer& height) const // override
   {
     width = d_xRight - d_xLeft;
     height = d_yBottom - d_yTop;
   }
 
-  virtual Aspect_FBConfig NativeFBConfig() const override
+  virtual Aspect_FBConfig NativeFBConfig() const // override
   {
     return nullptr;
   }
@@ -88,7 +82,6 @@ public:
 protected:
 
   Handle(Aspect_DisplayConnection) d_display;
-  GLFWwindow*      d_GlfwWindow;
   Standard_Integer d_xLeft;
   Standard_Integer d_xRight;
   Standard_Integer d_yTop;

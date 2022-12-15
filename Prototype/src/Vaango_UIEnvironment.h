@@ -40,11 +40,9 @@ public:
 
 public:
 
-  Vaango_UIEnvironment() = default;
-
-  Vaango_UIEnvironment(const std::string& title,
-                       const int width = 1200,
-                       const int height = 1000);
+  explicit Vaango_UIEnvironment(const std::string& title,
+                                const int width = 1200,
+                                const int height = 1000);
 
   ~Vaango_UIEnvironment();
 
@@ -58,7 +56,7 @@ public:
   void stopImGui();
 
   bool setupOCCTViewer();
-  void stopOCCT();
+  void stopOCCTViewer();
 
   void setupVTK();
   int setupVTKBuffers(int width, int height);
@@ -80,13 +78,15 @@ private:
   bool d_imguiRunning = false;
   std::vector<Vaango_UIComponentBase*> d_components;
 
+  /*
+  Handle(Vaango_UIOcctWindow) d_occt_window;
+  Handle(V3d_View) d_occt_view;
+  Handle(AIS_InteractiveContext) d_occt_context;
+  */
+
 public:
 
   static GLFWwindow* main_window;
-
-  static Handle(Vaango_UIOcctWindow) occt_window;
-  static Handle(V3d_View) occt_view;
-  static Handle(AIS_InteractiveContext) occt_context;
 
   static int vtk_viewportSize[2];
   static vtkSmartPointer<vtkRenderer> vtk_Renderer;

@@ -20,10 +20,6 @@ using namespace VaangoUI;
 // Initialize static window variables
 GLFWwindow* Vaango_UIEnvironment::main_window = nullptr;
 
-Handle(Vaango_UIOcctWindow) Vaango_UIEnvironment::occt_window = nullptr;
-Handle(AIS_InteractiveContext) Vaango_UIEnvironment::occt_context = nullptr;
-Handle(V3d_View) Vaango_UIEnvironment::occt_view = nullptr;
-
 vtkSmartPointer<vtkRenderer> 
 Vaango_UIEnvironment::vtk_Renderer = vtkSmartPointer<vtkRenderer>::New();
 
@@ -81,10 +77,6 @@ Vaango_UIEnvironment::initialize(const std::string& title,
     return;
   }
 
-  // Create a OCCT window
-  occt_window = new Vaango_UIOcctWindow(main_window);
-  glfwSetWindowUserPointer(main_window, this);
-
   // Assign context
   glfwMakeContextCurrent(main_window);
   //gladLoadGL();
@@ -101,6 +93,13 @@ Vaango_UIEnvironment::~Vaango_UIEnvironment()
     delete component;
   }
   d_components.clear();
+
+  auto glxcontext = glXGetCurrentContext();
+  auto glxdisplay = glXGetCurrentDisplay();
+  auto glxdrawable = glXGetCurrentDrawable();
+  std::cout << "GLX: context = " << glxcontext 
+            << " display = " << glxdisplay 
+            << " drawable = " << glxdrawable << "\n";
 
   glfwDestroyWindow(main_window);
   glfwTerminate();
@@ -150,38 +149,46 @@ Vaango_UIEnvironment::stopImGui()
 bool 
 Vaango_UIEnvironment::setupOCCTViewer()
 {
-  if (occt_window.IsNull() || main_window == nullptr) {
+  /*
+  // Create a OCCT window
+  d_occt_window = new Vaango_UIOcctWindow(main_window);
+  glfwSetWindowUserPointer(main_window, this);
+
+  if (d_occt_window.IsNull() || main_window == nullptr) {
     return false;
   }
 
   Handle(OpenGl_GraphicDriver) graphicDriver = 
-    new OpenGl_GraphicDriver(occt_window->GetDisplay(), false);
+    new OpenGl_GraphicDriver(d_occt_window->GetDisplay(), false);
 
   Handle(V3d_Viewer) viewer = new V3d_Viewer(graphicDriver);
 
-  occt_view = viewer->CreateView();
-  occt_view->SetWindow(occt_window, occt_window->NativeGlContext());
+  d_occt_view = viewer->CreateView();
+  d_occt_view->SetWindow(d_occt_window, d_occt_window->NativeGlContext());
 
-  occt_context = new AIS_InteractiveContext(viewer);
+  d_occt_context = new AIS_InteractiveContext(viewer);
+  */
 
   return true;
 }
 
 void 
-Vaango_UIEnvironment::stopOCCT()
+Vaango_UIEnvironment::stopOCCTViewer()
 {
+  /*
   auto win = glfwGetCurrentContext();
   std::cout << "current context = " << win << "\n";
-  std::cout << "view state null? " << std::boolalpha << occt_view.IsNull() << "\n";
-  if (occt_view.IsNull()) {
-    occt_view->Remove();
+  std::cout << "view state null? " << std::boolalpha << d_occt_view.IsNull() << "\n";
+  if (!d_occt_view.IsNull()) {
+    d_occt_view->Remove();
   }
-  std::cout << "after: view state null? " << std::boolalpha << occt_view.IsNull() << "\n";
-  std::cout << "window state null? " << std::boolalpha << occt_window.IsNull() << "\n";
-  if (occt_window.IsNull()) {
-    occt_window->Close();
-  }
-  std::cout << "after: window state null? " << std::boolalpha << occt_window.IsNull() << "\n";
+  std::cout << "after: view state null? " << std::boolalpha << d_occt_view.IsNull() << "\n";
+  //std::cout << "window state null? " << std::boolalpha << d_occt_window.IsNull() << "\n";
+  //if (!d_occt_window.IsNull()) {
+  //  d_occt_window->Close();
+  //}
+  //std::cout << "after: window state null? " << std::boolalpha << d_occt_window.IsNull() << "\n";
+  */
 }
 
 void
