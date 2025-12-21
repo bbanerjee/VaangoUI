@@ -112,7 +112,7 @@ public:
     
     int sync() override {
       if (!this->str().empty()) {
-        d_console->addMessage(this->str().c_str());
+        d_console->addMessage("%s", this->str().c_str());
         this->str("");
       }
       return 0;

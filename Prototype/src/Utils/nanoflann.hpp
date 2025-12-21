@@ -55,6 +55,7 @@
 #include <ostream>
 #include <stdexcept>
 #include <unordered_set>
+#include <cstdint>
 #include <vector>
 
 /** Library version: 0xMmP (M=Major,m=minor,P=patch) */
