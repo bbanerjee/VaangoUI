@@ -8,3 +8,6 @@
 [submodule "Prototype/imnodes"]
 	path = Prototype/imnodes
 	url = https://github.com/Nelarius/imnodes
+[submodule "Prototype/imguidialog"]
+	path = Prototype/imguidialog
+	url = https://github.com/aiekick/ImGuiFileDialog
