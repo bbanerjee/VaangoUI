@@ -5,3 +5,6 @@
 [submodule "Prototype/stb"]
 	path = Prototype/stb
 	url = https://github.com/nothings/stb
+[submodule "Prototype/imnodes"]
+	path = Prototype/imnodes
+	url = https://github.com/Nelarius/imnodes
