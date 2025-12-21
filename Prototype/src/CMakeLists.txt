@@ -27,8 +27,8 @@ include_directories(${GLFW_INCLUDE_DIRS})
 find_package(OpenGL REQUIRED)
 
 # For VTK (also needed by Opencascade)
-set(VTK_DIR ${PACKAGE_DIR}/VTK-9.1.0/build CACHE PATH "vtk build directory")
-set(VTK_INCLUDE_DIR ${PACKAGE_DIR}/VTK-9.1.0/install/include/vtk-9.1)
+#set(VTK_DIR ${PACKAGE_DIR}/VTK-9.1.0/build CACHE PATH "vtk build directory")
+#set(VTK_INCLUDE_DIR ${PACKAGE_DIR}/VTK-9.1.0/install/include/vtk-9.1)
 find_package(VTK 9.1 REQUIRED COMPONENTS
     CommonCore
     CommonColor
@@ -49,22 +49,26 @@ find_package(VTK 9.1 REQUIRED COMPONENTS
 message (STATUS "VTK_VERSION: ${VTK_VERSION}")
 
 # For OpenCascade
-#find_package(OpenCASCADE 7.6.2 
+#find_package(OpenCASCADE 7.9.0 
 #             PATHS 
-#             ${PACKAGE_DIR}/OCCT-7_6_2/install NO_DEFAULT_PATH
+#             ${PACKAGE_DIR}/OpenCascade/install1 NO_DEFAULT_PATH
 #             COMPONENTS 
 #             FoundationClasses 
 #             ModelingAlgorithms 
 #             ModelingData
 #             DataExchange
-#             #Visualization
+#             Visualization
 #             REQUIRED)
+find_package(OpenCASCADE 7.9.0 
+             PATHS 
+             ${PACKAGE_DIR}/OpenCascade/install1 NO_DEFAULT_PATH
+             REQUIRED)
 
-set(OpenCASCADE_INCLUDE_DIR ${PACKAGE_DIR}/OCCT-7_6_2/install/include/opencascade)
+set(OpenCASCADE_INCLUDE_DIR ${PACKAGE_DIR}/OpenCascade/install1/include/opencascade)
 include_directories(${OpenCASCADE_INCLUDE_DIR})
 message(STATUS "OCC-Include-Dir: ${OpenCASCADE_INCLUDE_DIR}")
 
-set(OpenCASCADE_LIBRARY_DIR ${PACKAGE_DIR}/OCCT-7_6_2/install/lib)
+set(OpenCASCADE_LIBRARY_DIR ${PACKAGE_DIR}/OpenCascade/install1/lib)
 link_directories(${OpenCASCADE_LIBRARY_DIR})
 message(STATUS "OCC-Lib-Dir: ${OpenCASCADE_LIBRARY_DIR}")
 

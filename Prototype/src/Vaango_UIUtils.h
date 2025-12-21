@@ -2,6 +2,7 @@
 #define __Vaango_UI_UTILS_H__
 
 #include <imgui.h>
+#include <imgui_internal.h> // Required for ImTextCharFromUtf8 if not using a custom wrapper
 #include <ImGuiFileDialog.h>
 
 namespace VaangoUI {
@@ -22,7 +23,45 @@ static void drawWindowBox(ImU32 color = IM_COL32(255, 255, 0, 255)) {
 static ImVec2 operator-(const ImVec2& l, const ImVec2& r) { return{ l.x - r.x, l.y - r.y }; }
 static ImVec2 operator+(const ImVec2& l, const ImVec2& r) { return{ l.x + r.x, l.y + r.y }; }
 
-/// Draws vertical text. The position is the bottom left of the text rect.
+static void AddTextVertical(ImDrawList* draw_list,
+                            ImFont* font,
+                            float font_size,
+                            ImVec2 pos,               // Bottom-left anchor
+                            ImU32 col,
+                            const char* text_begin,
+                            const char* text_end = nullptr)
+{
+    // Ensure the font definition is fully visible to the compiler
+    if (!font || font_size <= 0.0f || !text_begin)
+        return;
+
+    if (!text_end)
+        text_end = text_begin + strlen(text_begin);
+
+    ImVec2 cursor = pos;
+
+    for (const char* s = text_begin; s < text_end; )
+    {
+        unsigned int c;
+        int char_len = ImTextCharFromUtf8(&c, s, text_end);
+        if (char_len <= 0) break;
+
+        // 1. Draw the single character using the public AddText API
+        // This is safer than RenderChar and works with the latest ImDrawList
+        draw_list->AddText(font, font_size, cursor, col, s, s + char_len);
+
+        // 2. Calculate advance using CalcTextSizeA (Public ImFont API)
+        // This handles the scaling (font_size / font->FontSize) internally
+        // We use the X component because we are rotating the "horizontal" advance 90 degrees
+        ImVec2 char_size = font->CalcTextSizeA(font_size, FLT_MAX, 0.0f, s, s + char_len);
+        
+        // 3. Move cursor up
+        cursor.y -= char_size.x;
+
+        s += char_len;
+    }
+}
+/*
 static inline void AddTextVertical(ImDrawList* DrawList, 
                                    const ImFont* font, 
                                    float font_size,
@@ -33,7 +72,7 @@ static inline void AddTextVertical(ImDrawList* DrawList,
   char c;
   ImVec2 text_size = ImGui::CalcTextSize(text);
   while ((c = *text++)) {
-      glyph = font->FindGlyph(c);
+      glyph = font->FindGlyphNoFallback(c);
       if (!glyph) continue;
 
       DrawList->PrimReserve(6, 4);
@@ -51,6 +90,7 @@ static inline void AddTextVertical(ImDrawList* DrawList,
       pos.y -= glyph->AdvanceX;
   }
 }
+*/
 
 static bool getFileName(std::string& filePathName) {
 
@@ -81,7 +121,7 @@ static bool createOkCancelPopup(const std::string& popupTitle,
 
   bool choice = false;
   if (ImGui::BeginPopupModal(popupTitle.c_str(), NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
-    ImGui::Text(popupText.c_str());
+    ImGui::Text("%s", popupText.c_str());
     ImGui::Separator();
 
     static bool dont_ask_me_next_time = false;

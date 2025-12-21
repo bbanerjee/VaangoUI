@@ -80,7 +80,7 @@ protected:
 
     void addImGuiTooltip(const char* tipText) const {
         if (d_time_since_last_mouse_move > 0.2f && ImGui::IsItemHovered()) {
-           ImGui::SetTooltip(tipText);
+           ImGui::SetTooltip("%s", tipText);
         }
     }
 
