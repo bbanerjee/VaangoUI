@@ -1,6 +1,7 @@
 [submodule "Prototype/imgui"]
 	path = Prototype/imgui
 	url = https://github.com/ocornut/imgui
+  branch = docking
 [submodule "Prototype/stb"]
 	path = Prototype/stb
 	url = https://github.com/nothings/stb
