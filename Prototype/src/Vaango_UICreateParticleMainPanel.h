@@ -86,17 +86,22 @@ public:
           }
           ImGui::SameLine();
           if (ImGui::Button("Save")) {
+            IGFD::FileDialogConfig config;
+            config.path = ".";
+            config.fileName = ""; // Optional: provide a default filename
+            config.countSelectionMax = 1; // Set to 1 for single file selection
+            config.flags = ImGuiFileDialogFlags_ConfirmOverwrite; // Optional flags
             if (inputPartDistActive) {
               //std::cout << "saving input\n";
               ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", 
-                                                      "Choose File", ".json", ".");
+                                                      "Choose File", ".json", config);
               saveInputPartDist = true;
               saveGeneratedPartDist = false;
 
             } else if (generatePartDistActive) {
               std::cout << "saving generated\n";
               ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", 
-                                                      "Choose File", ".json", ".");
+                                                      "Choose File", ".json", config);
               saveInputPartDist = false;
               saveGeneratedPartDist = true;
             }

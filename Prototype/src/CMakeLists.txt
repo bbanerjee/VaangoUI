@@ -174,6 +174,10 @@ FetchContent_MakeAvailable(googletest)
 add_subdirectory(Utils)
 
 # Base UI
+# Tell CMake to add the link directory to the RPATH
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+
 set(VAANGO_UI_LIB vaango_ui_lib)
 set(VAANGO_CORE_DIR
     Core)
@@ -198,7 +202,7 @@ add_library(${VAANGO_UI_LIB}
             ${VAANGO_CORE_SRC})
 set_source_files_properties(${VAANGO_CORE_SRC} PROPERTIES 
                             COMPILE_OPTIONS "-Wall;-g3")
-set_property(TARGET ${VAANGO_COR_SRC} PROPERTY CXX_STANDARD 17)
+#set_property(TARGET ${VAANGO_CORE_SRC} PROPERTY CXX_STANDARD 17)
 target_include_directories(${VAANGO_UI_LIB} PRIVATE 
                            ${VAANGO_CORE_DIR}
                            ${IMGUI_FILE_DIALOG_DIR}
@@ -232,7 +236,7 @@ target_include_directories(vaango_ui PRIVATE
                            ${VTK_INCLUDE_DIR}
                            ${OpenCASCADE_INCLUDE_DIR}
                            ${CMAKE_CURRENT_SOURCE_DIR})
-target_link_libraries (vaango_ui
+target_link_libraries (vaango_ui PRIVATE
                        ${VAANGO_UI_LIB}
                        ${IMGUI_LIB}
                        ${IMGUI_BACKEND_LIB}
@@ -243,8 +247,25 @@ target_link_libraries (vaango_ui
                        ${VTK_LIBRARIES}
                        ${CMAKE_DL_LIBS}
                        )
-target_link_directories(vaango_ui PRIVATE 
-                        ${OpenCASCADE_LIBRARY_DIR})
+
+# Find the library absolute path
+set(CMAKE_INSTALL_RPATH "${OpenCASCADE_LIBRARY_DIR}")
+find_library(TKMATH_LIB NAMES TKMath.so.7.9 HINTS ${OpenCASCADE_LIBRARY_DIR})
+message(STATUS "TKMATH_LIB: ${TKMATH_LIB}")
+if(TKMATH_LIB)
+    target_link_libraries(vaango_ui PRIVATE ${TKMATH_LIB})
+    
+    # Ensure the directory of TKMATH_LIB is in the RPATH
+    get_filename_component(TKMATH_DIR ${TKMATH_LIB} DIRECTORY)
+    set_target_properties(vaango_ui PROPERTIES INSTALL_RPATH "${TKMATH_DIR}")
+    set_target_properties(vaango_ui PROPERTIES BUILD_RPATH "${TKMATH_DIR}")
+else()
+    message(FATAL_ERROR "libTKMath not found!")
+endif()
+
+#target_link_directories(vaango_ui PRIVATE 
+#                        ${OpenCASCADE_LIBRARY_DIR})
+#set_target_properties(vaango_ui PROPERTIES INSTALL_RPATH ${OPENCASCADE_LIBRARY_DIR})
                          
 
 ## Standalone tests

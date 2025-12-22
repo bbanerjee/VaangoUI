@@ -61,7 +61,12 @@ public:
     drawWindowBox();
 
     if (ImGui::Button("Read distribution from file")) {
-      ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".json", ".");
+      IGFD::FileDialogConfig config;
+      config.path = ".";
+      config.fileName = ""; // Optional: provide a default filename
+      config.countSelectionMax = 1; // Set to 1 for single file selection
+      config.flags = ImGuiFileDialogFlags_ConfirmOverwrite; // Optional flags
+      ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".json", config);
       doReading = true;
     }
 

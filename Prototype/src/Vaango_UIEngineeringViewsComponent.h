@@ -56,7 +56,7 @@ public:
       ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));
 
       ImVec2 buttonSize(32, 32);
-      auto columnWidth = ImGui::GetWindowContentRegionWidth() - ImGui::GetStyle().FramePadding.x
+      auto columnWidth = ImGui::GetContentRegionAvail().x - ImGui::GetStyle().FramePadding.x
                          - buttonSize.x - 10;
       ImGui::SetColumnOffset(1, columnWidth);
 
@@ -64,7 +64,8 @@ public:
       ImGui::SameLine();
 
       unsigned int textureID = d_icons["FrontView"].id;
-      if (ImGui::ImageButton(reinterpret_cast<ImTextureID>(textureID), buttonSize, ImVec2(0, 0), ImVec2(1, 1), 2)) {
+      //if (ImGui::ImageButton(reinterpret_cast<ImTextureID>(textureID), buttonSize, ImVec2(0, 0), ImVec2(1, 1), 2)) {
+      if(ImGui::ImageButton("MyButtonID", (ImTextureID)(uintptr_t)textureID, buttonSize)) {
         std::cout << "Button started" << std::endl;
       }
       if (ImGui::IsItemHovered()) {
