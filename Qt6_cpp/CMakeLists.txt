@@ -7,12 +7,6 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-#find_package(Qt6 REQUIRED COMPONENTS Widgets OpenGL)
-
-#add_executable(QtOpenGL33Triangle main.cpp)
-
-#target_link_libraries(QtOpenGL33Triangle Qt6::Widgets Qt6::OpenGL)
-
 find_package(Qt6 REQUIRED COMPONENTS Gui 3DCore 3DRender 3DExtras 3DAnimation)
 
 #

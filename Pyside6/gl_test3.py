@@ -3,21 +3,15 @@ import sys
 import ctypes
 
 # Force software GL and verbose Qt logging
-os.environ["LIBGL_ALWAYS_SOFTWARE"] = "1"
+#os.environ["LIBGL_ALWAYS_SOFTWARE"] = "1"
 #os.environ["QT_LOGGING_RULES"] = "*.debug=true"
 
+from OpenGL import GL
 from PySide6.QtWidgets import QApplication, QMainWindow
 from PySide6.QtOpenGLWidgets import QOpenGLWidget
 from PySide6.QtGui import QSurfaceFormat
 from PySide6.QtOpenGL import QOpenGLShaderProgram, QOpenGLShader
 
-# ---------- OpenGL 2.1 Compatibility Profile ----------
-fmt = QSurfaceFormat()
-fmt.setVersion(2, 1)
-fmt.setProfile(QSurfaceFormat.CompatibilityProfile)
-fmt.setDepthBufferSize(24)
-fmt.setSwapBehavior(QSurfaceFormat.DoubleBuffer)
-QSurfaceFormat.setDefaultFormat(fmt)
 
 
 class GLWidget(QOpenGLWidget):
@@ -35,18 +29,19 @@ class GLWidget(QOpenGLWidget):
         # Clear color: pink
         self.gl.glClearColor(0.8, 0.2, 0.5, 1.0)
 
-        # ----- Shaders (GLSL 120) -----
+        # ----- Shaders (GLSL 330) -----
         vs = """
-        #version 120
-        attribute vec2 pos;
+        #version 330 core
+        layout (location = 0) in vec2 pos;
         void main() {
             gl_Position = vec4(pos, 0.0, 1.0);
         }
         """
         fs = """
-        #version 120
+        #version 330
+        out vec4 FragColor;
         void main() {
-            gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+            FragColor = vec4(1.0, 1.0, 1.0, 1.0);
         }
         """
 
@@ -59,6 +54,8 @@ class GLWidget(QOpenGLWidget):
         print("Fragment shader ok:", ok, flush=True)
         print(self.program.log(), flush=True)
 
+        #self.program.bindAttributeLocation("pos", 0)
+
         ok = self.program.link()
         print("Program link ok:", ok, flush=True)
         print(self.program.log(), flush=True)
@@ -69,50 +66,85 @@ class GLWidget(QOpenGLWidget):
 
         print("✔ Shader program linked", flush=True)
 
-        # ----- Vertex Data (VBO) -----
-        self.vertices = (ctypes.c_float * 6)(
-            0.0,  0.6,
-           -0.6, -0.6,
-            0.6, -0.6,
+        # ----- Vertex Data (VAO+VBO) -----
+        #self.vertices = np.array([
+        #    0.0,  0.6,
+        #   -0.6, -0.6,
+        #    0.6, -0.6,
+        #], dtype=np.float32)
+        #self.vertices = [
+        #    0.0,  0.6,
+        #   -0.6, -0.6,
+        #    0.6, -0.6,
+        #]
+        vertices = (ctypes.c_float * 6)(
+             0.0,  0.6,
+            -0.6, -0.6,
+             0.6, -0.6
         )
 
-        # Create VBO
-        self.vbo = ctypes.c_uint()
-        self.gl.glGenBuffers(1, ctypes.byref(self.vbo))
-        self.gl.glBindBuffer(self.gl.GL_ARRAY_BUFFER, self.vbo)
-        self.gl.glBufferData(
-            self.gl.GL_ARRAY_BUFFER,
+        # Set up VAO
+        self.vao = GL.glGenVertexArrays(1)
+        GL.glBindVertexArray(self.vao)
+
+        # Set up VBO
+        self.vbo = GL.glGenBuffers(1)
+        GL.glBindBuffer(GL.GL_ARRAY_BUFFER, self.vbo)
+        GL.glBufferData(
+            GL.GL_ARRAY_BUFFER,
             ctypes.sizeof(self.vertices),
             self.vertices,
-            self.gl.GL_STATIC_DRAW
+            GL.GL_STATIC_DRAW
         )
 
         # Set up attribute pointer
-        loc = self.program.attributeLocation("pos")
-        self.program.enableAttributeArray(loc)
-        self.program.setAttributeBuffer(loc, self.gl.GL_FLOAT, 0, 2)
-        print("✔ VBO configured", flush=True)
+        GL.glEnableVertexAttribArray(0)
+        GL.glVertexAttribPointer(
+           0,   # location
+           2,   # vec2
+           GL.GL_FLOAT,
+           GL.GL_FALSE,
+           2 * ctypes.sizeof(ctypes.c_float),
+           ctypes.c_void_p(0)
+        )
+
+        GL.glBindBuffer(GL.GL_ARRAY_BUFFER, 0)
+        GL.glBindVertexArray(0)
+
+        print("✔ Vertex buffers initialized", flush=True)
+
 
     def paintGL(self):
-        self.gl.glClear(self.gl.GL_COLOR_BUFFER_BIT)
+        self.gl.glClear(GL.GL_COLOR_BUFFER_BIT)
 
         self.program.bind()
-        self.gl.glDrawArrays(self.gl.GL_TRIANGLES, 0, 3)
+
+        GL.glBindVertexArray(self.vao)
+        GL.glDrawArrays(GL.GL_TRIANGLES, 0, 3)
+        GL.glBindVertexArray(0)
+
         self.program.release()
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("PySide6 OpenGL 2.1 Triangle (VBO)")
+        self.setWindowTitle("PySide6 OpenGL 3.3 Triangle (VBO)")
         self.resize(600, 600)
         self.setCentralWidget(GLWidget())
-
 
 if __name__ == "__main__":
     print("Starting application", flush=True)
     app = QApplication(sys.argv)
+
+    fmt = QSurfaceFormat()
+    fmt.setVersion(3, 3)
+    fmt.setProfile(QSurfaceFormat.CoreProfile)
+    fmt.setSamples(8)
+    QSurfaceFormat.setDefaultFormat(fmt)
+
     win = MainWindow()
     win.show()
+
     sys.exit(app.exec())
 
