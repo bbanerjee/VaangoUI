@@ -169,3 +169,35 @@ class ParticleSizeDist:
             self.vol_frac_2d_calc.append(100.0 * ball['vol_2d'] / tot_vol_2d if tot_vol_2d > 0 else 0)
             self.vol_frac_3d_calc.append(100.0 * ball['vol_3d'] / tot_vol_3d if tot_vol_3d > 0 else 0)
 
+    def read_from_file(self, filepath: str):
+        import json
+        try:
+            with open(filepath, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+        except Exception as e:
+            raise
+
+        # Map file keys into current attributes if present
+        self.material_name = data.get('material_name', self.material_name)
+        self.particle_vol_frac = data.get('particle_vol_frac', self.particle_vol_frac)
+        self.max_particle_size = data.get('max_particle_size', self.max_particle_size)
+        self.num_sizes = data.get('num_sizes', len(data.get('size', self.size)))
+        self.size = list(data.get('size', self.size))
+        self.vol_frac = list(data.get('vol_frac', self.vol_frac))
+
+        # Recompute calculated distributions
+        self.calc_particle_dist()
+
+    def save_to_file(self, filepath: str):
+        import json
+        data = {
+            'material_name': self.material_name,
+            'particle_vol_frac': self.particle_vol_frac,
+            'max_particle_size': self.max_particle_size,
+            'num_sizes': self.num_sizes,
+            'size': list(self.size),
+            'vol_frac': list(self.vol_frac),
+        }
+        with open(filepath, 'w', encoding='utf-8') as f:
+            json.dump(data, f, indent=2)
+

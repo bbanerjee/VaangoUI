@@ -78,9 +78,15 @@ class Connection(QGraphicsPathItem):
     def remove(self):
         """Remove this connection from both sockets"""
         if self.start_socket:
-            self.start_socket.connections.remove(self)
+            try:
+                self.start_socket.connections.remove(self)
+            except ValueError:
+                pass
         if self.end_socket:
-            self.end_socket.connections.remove(self)
+            try:
+                self.end_socket.connections.remove(self)
+            except ValueError:
+                pass
         if self.scene():
             self.scene().removeItem(self)
 
@@ -139,14 +145,17 @@ class NodeGraphicsItem(QGraphicsItem):
     def itemChange(self, change, value):
         # Update connections when node moves
         if change == QGraphicsItem.ItemPositionHasChanged:
-            for conn in self.input_socket.connections:
+            for conn in list(self.input_socket.connections):
                 conn.update_path()
-            for conn in self.output_socket.connections:
+            for conn in list(self.output_socket.connections):
                 conn.update_path()
         
         if change == QGraphicsItem.ItemSelectedHasChanged:
             if value:  # Node was selected
-                self.scene().node_selected.emit(self.node_instance)
+                try:
+                    self.scene().node_selected.emit(self.node_instance)
+                except Exception:
+                    pass
         
         return super().itemChange(change, value)
 
@@ -200,7 +209,10 @@ class NodeEditorScene(QGraphicsScene):
         # Notify nodes
         output_node = self.start_socket.node.node_instance
         input_node = end_socket.node.node_instance
-        input_node.set_input(end_socket.index, output_node)
+        try:
+            input_node.set_input(end_socket.index, output_node)
+        except Exception:
+            pass
         
         self.start_socket = None
     
@@ -224,9 +236,9 @@ class NodeEditorScene(QGraphicsScene):
             for item in self.selectedItems():
                 if isinstance(item, NodeGraphicsItem):
                     # Remove all connections
-                    for conn in item.input_socket.connections[:]:
+                    for conn in list(item.input_socket.connections):
                         conn.remove()
-                    for conn in item.output_socket.connections[:]:
+                    for conn in list(item.output_socket.connections):
                         conn.remove()
                     self.removeItem(item)
         super().keyPressEvent(event)
@@ -289,6 +301,7 @@ class NodeEditorWidget(QGraphicsView):
         # Build a menu of available node types from pyside6.vaango_ui.nodes
         try:
             import inspect, importlib
+            # Try package-relative import first, then common package names
             nodes_pkg = None
             pkg_candidates = []
             if __package__:
@@ -325,8 +338,10 @@ class NodeEditorWidget(QGraphicsView):
                     attr = None
                 if not inspect.isclass(attr):
                     continue
+                # Accept classes that end with 'Node' or subclasses of a base Node class
                 if not attr_name.endswith('Node'):
                     continue
+                # Try to obtain a display name without raising
                 disp = attr_name
                 try:
                     inst = attr()

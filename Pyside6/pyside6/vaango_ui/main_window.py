@@ -1,9 +1,12 @@
 import sys
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout, QDockWidget, QTextEdit
 from PySide6.QtCore import Qt, QObject, Signal
+from PySide6.QtGui import QTextCursor
 
 from .visualization import Vaango3DWindow
 from .panels import GenerateParticlesPanel
+from .input_part_dist import InputPartDistDialog
+from .nodes_component import VaangoUINodesComponent
 
 class StreamRedirector(QObject):
     text_written = Signal(str)
@@ -63,9 +66,37 @@ class MainWindow(QMainWindow):
         exit_action = file_menu.addAction("Exit")
         exit_action.triggered.connect(self.close)
 
+        # Tools menu: Size distribution editor
+        tools_menu = menu_bar.addMenu("Tools")
+        size_dist_action = tools_menu.addAction("Particle Size Distribution")
+        size_dist_action.triggered.connect(self.open_size_dist_dialog)
+        nodes_action = tools_menu.addAction("Nodes")
+        nodes_action.triggered.connect(self.open_nodes_component)
+
+    def open_size_dist_dialog(self):
+        try:
+            size_dist = self.panel.generator.s_size_dist
+        except Exception:
+            # Fall back to a fresh ParticleSizeDist
+            from .particle_utils import ParticleSizeDist
+            size_dist = ParticleSizeDist()
+
+        dlg = InputPartDistDialog(size_dist, parent=self)
+        dlg.exec()
+
+    def open_nodes_component(self):
+        try:
+            comp = VaangoUINodesComponent(self)
+            dock = QDockWidget("Nodes", self)
+            dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
+            dock.setWidget(comp)
+            self.addDockWidget(Qt.LeftDockWidgetArea, dock)
+        except Exception as e:
+            print(f"Failed to open Nodes component: {e}")
+
     def update_console(self, text):
         cursor = self.console.textCursor()
-        cursor.movePosition(cursor.End)
+        cursor.movePosition(QTextCursor.End)
         cursor.insertText(text)
         self.console.setTextCursor(cursor)
         self.console.ensureCursorVisible()
