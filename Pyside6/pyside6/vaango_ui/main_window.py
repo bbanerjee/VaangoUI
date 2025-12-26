@@ -7,6 +7,14 @@ from .visualization import Vaango3DWindow
 from .panels import GenerateParticlesPanel
 from .input_part_dist import InputPartDistDialog
 from .nodes_component import VaangoUINodesComponent
+# Property editor (prefer local copy in vaango_ui.widgets, fallback to gui_app)
+try:
+    from .widgets.property_editor import PropertyEditorWidget
+except Exception:
+    try:
+        from gui_app.widgets.property_editor import PropertyEditorWidget
+    except Exception:
+        PropertyEditorWidget = None
 
 class StreamRedirector(QObject):
     text_written = Signal(str)
@@ -37,6 +45,28 @@ class MainWindow(QMainWindow):
         self.controls_dock.setAllowedAreas(Qt.RightDockWidgetArea | Qt.LeftDockWidgetArea)
         self.controls_dock.setWidget(self.panel)
         self.addDockWidget(Qt.RightDockWidgetArea, self.controls_dock)
+
+        # Property editor dock (placed below Controls)
+        try:
+            if PropertyEditorWidget is not None:
+                self.property_editor = PropertyEditorWidget()
+            else:
+                from PySide6.QtWidgets import QLabel
+                self.property_editor = QLabel("Property editor not available")
+                self.property_editor.setAlignment(Qt.AlignCenter)
+
+            self.property_dock = QDockWidget("Properties", self)
+            self.property_dock.setAllowedAreas(Qt.RightDockWidgetArea | Qt.LeftDockWidgetArea)
+            self.property_dock.setWidget(self.property_editor)
+            # Add the dock and split it vertically under the controls dock
+            self.addDockWidget(Qt.RightDockWidgetArea, self.property_dock)
+            try:
+                # Place property dock below the controls dock
+                self.splitDockWidget(self.controls_dock, self.property_dock, Qt.Vertical)
+            except Exception:
+                pass
+        except Exception as e:
+            print(f"Failed to create Property editor dock: {e}")
         
         # Console
         self.console_dock = QDockWidget("Console", self)
@@ -54,6 +84,16 @@ class MainWindow(QMainWindow):
             self.nodes_dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
             self.nodes_dock.setWidget(self.nodes_component)
             self.addDockWidget(Qt.LeftDockWidgetArea, self.nodes_dock)
+            # Connect node selection to property editor (if available)
+            try:
+                editor = getattr(self.nodes_component, 'editor', None)
+                if editor is not None and hasattr(editor, 'editor_scene') and hasattr(self, 'property_editor'):
+                    try:
+                        editor.editor_scene.node_selected.connect(self.property_editor.show_node_properties)
+                    except Exception as _e:
+                        print(f"Failed to connect node_selected signal: {_e}")
+            except Exception:
+                pass
         except Exception as e:
             print(f"Failed to create Nodes dock: {e}")
         # Redirect Stdout/Stderr

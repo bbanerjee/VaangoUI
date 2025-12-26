@@ -194,7 +194,11 @@ class VaangoUINodesComponent(QWidget):
         # Otherwise create an instance and add to the view's API
         node = factory()
         try:
+            print(f"[VaangoUINodesComponent] editor object: {repr(self.editor)}; has_add_node={hasattr(self.editor, 'add_node')}")
             self.editor.add_node(node)
             print(f"[VaangoUINodesComponent] editor.add_node succeeded for: {name}")
-        except Exception:
+        except Exception as _e:
+            import traceback
+            print(f"[VaangoUINodesComponent] Exception while adding node {name}: {_e}")
+            traceback.print_exc()
             print(f"Added node: {name} (no editor present) or editor.add_node raised an exception")

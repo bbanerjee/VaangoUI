@@ -1,4 +1,5 @@
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QComboBox, QCheckBox, QDoubleSpinBox, QSpinBox
+from PySide6.QtCore import Qt
 
 class ICEFlagsNode:
     def __init__(self):
@@ -13,22 +14,28 @@ class ICEFlagsNode:
         layout = QVBoxLayout()
         w.setLayout(layout)
 
-        layout.addWidget(QLabel("Algorithm"))
-        cb = QComboBox()
-        cb.addItems(["Total form","Rate form"])
-        cb.setCurrentText(self.algorithm)
-        cb.currentTextChanged.connect(lambda v: setattr(self,'algorithm', v))
-        layout.addWidget(cb)
+        title = QLabel(self.name)
+        title.setAlignment(Qt.AlignCenter)
+        layout.addWidget(title)
 
-        layout.addWidget(QLabel("Advection"))
-        cb2 = QComboBox()
-        cb2.addItems(["First order","Second order"])
-        cb2.setCurrentText(self.advection)
-        cb2.currentTextChanged.connect(lambda v: setattr(self,'advection', v))
-        layout.addWidget(cb2)
+        from PySide6.QtWidgets import QPushButton, QApplication
 
-        layout.addWidget(QCheckBox("Compatible fluxes?"))
-        layout.addWidget(QCheckBox("Clamp specific volume?"))
+        def open_properties():
+            try:
+                for top in QApplication.topLevelWidgets():
+                    if hasattr(top, 'property_editor'):
+                        try:
+                            top.property_editor.show_node_properties(self)
+                            if hasattr(top, 'property_dock'):
+                                top.property_dock.setVisible(True)
+                        except Exception:
+                            pass
+            except Exception:
+                pass
+
+        props_btn = QPushButton("Properties...")
+        props_btn.clicked.connect(open_properties)
+        layout.addWidget(props_btn)
 
         return w
 

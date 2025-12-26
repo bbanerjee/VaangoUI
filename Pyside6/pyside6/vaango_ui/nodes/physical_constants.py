@@ -13,22 +13,45 @@ class PhysicalConstantsNode:
         layout = QVBoxLayout()
         w.setLayout(layout)
 
-        lbl = QLabel("Reference pressure (Pa)")
-        layout.addWidget(lbl)
-        sp = QDoubleSpinBox()
-        sp.setRange(0.0, 1e9)
-        sp.setValue(self.ref_pressure)
-        sp.valueChanged.connect(lambda v: setattr(self, 'ref_pressure', float(v)))
-        layout.addWidget(sp)
+        # lbl = QLabel("Reference pressure (Pa)")
+        # layout.addWidget(lbl)
+        # sp = QDoubleSpinBox()
+        # sp.setRange(0.0, 1e9)
+        # sp.setValue(self.ref_pressure)
+        # sp.valueChanged.connect(lambda v: setattr(self, 'ref_pressure', float(v)))
+        # layout.addWidget(sp)
 
-        lblg = QLabel("Gravity (m/s2)  x, y, z")
-        lblg.setWordWrap(True)
-        layout.addWidget(lblg)
+        # lblg = QLabel("Gravity (m/s2)  x, y, z")
+        # lblg.setWordWrap(True)
+        # layout.addWidget(lblg)
 
-        # Gravity displayed as text (editing vectors may be added later)
-        gtxt = QLabel(str(self.gravity))
-        gtxt.setAlignment(Qt.AlignLeft)
-        layout.addWidget(gtxt)
+        # # Gravity displayed as text (editing vectors may be added later)
+        # gtxt = QLabel(str(self.gravity))
+        # gtxt.setAlignment(Qt.AlignLeft)
+        # layout.addWidget(gtxt)
+
+        # Properties button: open this node in the global Properties dock
+        from PySide6.QtWidgets import QPushButton, QApplication
+
+        def open_properties():
+            try:
+                # Try to find a top-level main window that has a property_editor
+                for top in QApplication.topLevelWidgets():
+                    if hasattr(top, 'property_editor'):
+                        try:
+                            top.property_editor.show_node_properties(self)
+                            # ensure dock is visible if possible
+                            if hasattr(top, 'property_dock'):
+                                top.property_dock.setVisible(True)
+                        except Exception:
+                            pass
+                # fallback: nothing
+            except Exception:
+                pass
+
+        props_btn = QPushButton("Properties...")
+        props_btn.clicked.connect(open_properties)
+        layout.addWidget(props_btn)
 
         return w
 
