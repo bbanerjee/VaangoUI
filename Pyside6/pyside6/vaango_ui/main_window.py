@@ -1,5 +1,5 @@
 import sys
-from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout, QDockWidget, QTextEdit
+from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout, QDockWidget, QTextEdit, QFileDialog, QMessageBox
 from PySide6.QtCore import Qt, QObject, Signal
 from PySide6.QtGui import QTextCursor
 
@@ -33,10 +33,10 @@ class MainWindow(QMainWindow):
         # Panel
         self.panel = GenerateParticlesPanel(self.view_3d)
         
-        dock = QDockWidget("Controls", self)
-        dock.setAllowedAreas(Qt.RightDockWidgetArea | Qt.LeftDockWidgetArea)
-        dock.setWidget(self.panel)
-        self.addDockWidget(Qt.RightDockWidgetArea, dock)
+        self.controls_dock = QDockWidget("Controls", self)
+        self.controls_dock.setAllowedAreas(Qt.RightDockWidgetArea | Qt.LeftDockWidgetArea)
+        self.controls_dock.setWidget(self.panel)
+        self.addDockWidget(Qt.RightDockWidgetArea, self.controls_dock)
         
         # Console
         self.console_dock = QDockWidget("Console", self)
@@ -47,6 +47,15 @@ class MainWindow(QMainWindow):
         self.console_dock.setWidget(self.console)
         self.addDockWidget(Qt.BottomDockWidgetArea, self.console_dock)
 
+        # Nodes component (node editor + add menu)
+        try:
+            self.nodes_component = VaangoUINodesComponent(self)
+            self.nodes_dock = QDockWidget("Nodes", self)
+            self.nodes_dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
+            self.nodes_dock.setWidget(self.nodes_component)
+            self.addDockWidget(Qt.LeftDockWidgetArea, self.nodes_dock)
+        except Exception as e:
+            print(f"Failed to create Nodes dock: {e}")
         # Redirect Stdout/Stderr
         self.stdout_redirector = StreamRedirector()
         self.stdout_redirector.text_written.connect(self.update_console)
@@ -61,17 +70,47 @@ class MainWindow(QMainWindow):
 
     def create_menu(self):
         menu_bar = self.menuBar()
+        # File menu
         file_menu = menu_bar.addMenu("File")
-        
+        read_action = file_menu.addAction("Read particle location data")
+        read_action.setShortcut("Ctrl+O")
+        read_action.triggered.connect(self.load_particle_locations)
+
+        save_action = file_menu.addAction("Save Vaango input file")
+        save_action.setShortcut("Ctrl+S")
+        save_action.triggered.connect(self.save_vaango_input)
+
         exit_action = file_menu.addAction("Exit")
+        exit_action.setShortcut("Ctrl+Q")
         exit_action.triggered.connect(self.close)
 
-        # Tools menu: Size distribution editor
-        tools_menu = menu_bar.addMenu("Tools")
-        size_dist_action = tools_menu.addAction("Particle Size Distribution")
-        size_dist_action.triggered.connect(self.open_size_dist_dialog)
-        nodes_action = tools_menu.addAction("Nodes")
-        nodes_action.triggered.connect(self.open_nodes_component)
+        # Create menu
+        create_menu = menu_bar.addMenu("Create")
+        create_particles_action = create_menu.addAction("Create particles")
+        create_particles_action.triggered.connect(self.toggle_create_panel)
+        create_input_action = create_menu.addAction("Create input data")
+        create_input_action.triggered.connect(self.open_size_dist_dialog)
+
+        # About / Help
+        about_menu = menu_bar.addMenu("About")
+        about_action = about_menu.addAction("About Vaango UI")
+        about_action.triggered.connect(self.show_about)
+
+        help_menu = menu_bar.addMenu("Help")
+        help_action = help_menu.addAction("Help")
+        help_action.triggered.connect(self.show_help)
+
+        # View menu - toggle panels like Nodes and Controls
+        view_menu = menu_bar.addMenu("View")
+        toggle_nodes_action = view_menu.addAction("Show Nodes")
+        toggle_nodes_action.setCheckable(True)
+        toggle_nodes_action.setChecked(True)
+        toggle_nodes_action.triggered.connect(self.toggle_nodes_dock)
+
+        toggle_controls_action = view_menu.addAction("Show Controls")
+        toggle_controls_action.setCheckable(True)
+        toggle_controls_action.setChecked(True)
+        toggle_controls_action.triggered.connect(self.toggle_create_panel)
 
     def open_size_dist_dialog(self):
         try:
@@ -83,6 +122,55 @@ class MainWindow(QMainWindow):
 
         dlg = InputPartDistDialog(size_dist, parent=self)
         dlg.exec()
+
+    def toggle_create_panel(self):
+        try:
+            visible = self.controls_dock.isVisible()
+            self.controls_dock.setVisible(not visible)
+        except Exception:
+            pass
+
+    def toggle_nodes_dock(self):
+        try:
+            visible = self.nodes_dock.isVisible()
+            self.nodes_dock.setVisible(not visible)
+        except Exception:
+            pass
+
+    def load_particle_locations(self):
+        fname, _ = QFileDialog.getOpenFileName(self, "Open particle locations", "", "All Files (*)")
+        if not fname:
+            return
+        # Best-effort: hand file path to generator if it has a load method
+        try:
+            gen = self.panel.generator
+            if hasattr(gen, 'load'):
+                gen.load(fname)
+                print(f"Loaded particle locations from {fname}")
+            else:
+                print(f"Selected particle file: {fname} (no loader implemented)")
+        except Exception as e:
+            print(f"Failed to load particle locations: {e}")
+
+    def save_vaango_input(self):
+        fname, _ = QFileDialog.getSaveFileName(self, "Save Vaango input file", "", "Vaango input (*.ups *.xml);;All Files (*)")
+        if not fname:
+            return
+        try:
+            # If panel has a save method, call it; otherwise just print
+            if hasattr(self.panel, 'save'):
+                self.panel.save()
+                print(f"Invoked panel.save(); choose path: {fname}")
+            else:
+                print(f"Save requested to: {fname} (no save implemented)")
+        except Exception as e:
+            print(f"Failed to save Vaango input: {e}")
+
+    def show_about(self):
+        QMessageBox.about(self, "About Vaango UI", "Vaango UI - PySide6 port\nConverted from Vaango C++ UI")
+
+    def show_help(self):
+        QMessageBox.information(self, "Help", "Help for Vaango UI is not available yet.")
 
     def open_nodes_component(self):
         try:
