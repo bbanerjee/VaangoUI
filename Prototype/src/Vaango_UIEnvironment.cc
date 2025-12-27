@@ -119,12 +119,15 @@ Vaango_UIEnvironment::startImGui()
 
   // Setup style
   ImGuiIO& io = ImGui::GetIO();
-  io.ConfigWindowsMoveFromTitleBarOnly = true; // don't drag window when clicking on image.
+  //io.ConfigWindowsMoveFromTitleBarOnly = true; // don't drag window when clicking on image.
   setupImGuiStyle();
 
   // Setup glfw and opengl backend for imgui
   ImGui_ImplGlfw_InitForOpenGL(main_window, true);
   ImGui_ImplOpenGL3_Init("#version 330");
+
+  // Set up imnodes
+  setupImNodes();
 
   // Set flag
   d_imguiRunning = true;
@@ -137,6 +140,9 @@ Vaango_UIEnvironment::stopImGui()
     std::cout << "stopImGui::ImGui is not running.  Cannot stop ImGui." << std::endl;
     return;
   }
+
+  // Shut down imnodes
+  stopImNodes();
 
   ImGui_ImplOpenGL3_Shutdown();
   ImGui_ImplGlfw_Shutdown();
@@ -357,7 +363,7 @@ Vaango_UIEnvironment::setupImGuiStyle()
 
   // Enable docking amd ,ultiple viewports
   io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-  io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;  
+  //io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;  
 
   // set up scaling for fonts
   io.Fonts->AddFontFromFileTTF("assets/Fonts/static/Ruda-Bold.ttf", 15.0f);

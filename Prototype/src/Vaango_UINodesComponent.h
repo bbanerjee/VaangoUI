@@ -160,7 +160,7 @@ public:
 
           ImNodes::BeginOutputAttribute(node_id+2);
           ImGui::Text("Output");
-          ImNodes::EndInputAttribute();
+          ImNodes::EndOutputAttribute();
 
           ImNodes::EndNode();
       }
