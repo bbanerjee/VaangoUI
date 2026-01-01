@@ -1,0 +1,1243 @@
+<?xml version='1.0' encoding='ISO-8859-1' ?>
+<Uintah_Include>
+
+  <constitutive_model              spec="REQUIRED NO_DATA"
+                                   attribute1="type REQUIRED STRING 
+                                     'comp_mooney_rivlin, 
+                                      comp_neo_hook, 
+                                      comp_neo_hook_plastic,
+                                      elastic_plastic, 
+                                      hypo_elastic, 
+                                      hypo_elastic_fortran, 
+                                      hypo_elastic_fracture, 
+                                      hypo_elastic_mms, 
+                                      elastic_plastic_hp,
+                                      ideal_gas, 
+                                      membrane, 
+                                      murnaghanMPM, 
+                                      mw_visco_elastic, 
+                                      rigid, 
+                                      shell_CNH,
+                                      trans_iso_hyper, 
+                                      visco_plastic,
+                                      visco_scram, 
+                                      visco_trans_iso_hyper, 
+                                      water, 
+                                      kayenta, 
+                                      diamm, 
+                                      cnh_mms,
+                                      cnh_damage, 
+                                      cnhp_damage, 
+                                      UCNH, 
+                                      program_burn,
+                                      jwlpp_mpm, 
+                                      p_alpha, 
+                                      nonlocal_drucker_prager, 
+                                      Arenisca, 
+                                      Arenisca3, 
+                                      arena, 
+                                      arena_mixture, 
+                                      Arenisca4, 
+                                      soil_model_brannon, 
+                                      tabular_eos, 
+                                      tabular_plasticity, 
+                                      tabular_plasticity_cap, 
+                                      mohr_coulomb,
+                                      camclay,
+                                      polar_orthotropic_hypoelastic,
+                                      viscoelastic_fortran'">
+    <A                             spec="OPTIONAL DOUBLE" />
+    <allow_no_tension              spec="OPTIONAL BOOLEAN" />
+    <alpha                         spec="OPTIONAL DOUBLE" />
+    <alpha0                        spec="OPTIONAL DOUBLE" />
+    <Pe                            spec="OPTIONAL DOUBLE" />
+    <Ps                            spec="OPTIONAL DOUBLE" />
+    <b                             spec="OPTIONAL DOUBLE" />
+    <B                             spec="OPTIONAL DOUBLE" />
+    <Beta                          spec="OPTIONAL DOUBLE" />
+    <bulk_modulus                  spec="OPTIONAL DOUBLE" />
+    <bulkPrime                     spec="OPTIONAL DOUBLE" />
+    <C                             spec="OPTIONAL DOUBLE" />
+    <Cv                            spec="OPTIONAL DOUBLE" />
+    <c1                            spec="OPTIONAL DOUBLE" />
+    <c2                            spec="OPTIONAL DOUBLE" />
+    <c3                            spec="OPTIONAL DOUBLE" />
+    <c4                            spec="OPTIONAL DOUBLE" />
+    <c5                            spec="OPTIONAL DOUBLE" />
+    <fiber_stretch                 spec="OPTIONAL DOUBLE" />
+    <max_fiber_strain              spec="OPTIONAL DOUBLE" />
+    <max_matrix_strain             spec="OPTIONAL DOUBLE" />
+    <failure_option                spec="OPTIONAL DOUBLE" />
+    <C1                            spec="OPTIONAL DOUBLE" />    <!-- FIXME: what is this? -->
+    <C2                            spec="OPTIONAL DOUBLE" />    <!-- FIXME: what is this? -->
+    <check_max_stress_failure      spec="OPTIONAL BOOLEAN" />
+    <check_TEPLA_failure_criterion spec="OPTIONAL BOOLEAN" />
+    <check_failure                 spec="OPTIONAL BOOLEAN" />
+    <failure_variable_mean         spec="OPTIONAL DOUBLE" />
+    <failure_variable_std          spec="OPTIONAL DOUBLE" />
+    <failure_variable_distrib      spec="OPTIONAL STRING" />
+
+    <Chi                           spec="OPTIONAL DOUBLE" /> <!-- FIXME: What is this? -->
+    <coeff_thermal_expansion       spec="OPTIONAL DOUBLE" />
+    <CoeffThermalExpansion         spec="OPTIONAL DOUBLE" />
+    <compute_specific_heat         spec="OPTIONAL BOOLEAN" />
+    <CrackFriction                 spec="OPTIONAL DOUBLE" />
+    <CrackParameterA               spec="OPTIONAL DOUBLE" />
+    <CrackGrowthRate               spec="OPTIONAL DOUBLE" />
+    <CrackMaxGrowthRate            spec="OPTIONAL DOUBLE" />
+    <CrackPowerValue               spec="OPTIONAL DOUBLE" />
+    <critical_porosity             spec="OPTIONAL DOUBLE" />
+    <critical_scalar_damage        spec="OPTIONAL DOUBLE" />
+    <critical_stress               spec="OPTIONAL DOUBLE" />
+    <damage_cutoff                 spec="OPTIONAL DOUBLE" />
+    <damage_model                  spec="OPTIONAL NO_DATA"
+                                     attribute1="type REQUIRED STRING 'hancock_mackenzie, johnson_cook'" >
+      <Dc                          spec="OPTIONAL DOUBLE" />  <!-- FIXME: what are these for? -->
+      <D0                          spec="OPTIONAL DOUBLE" />
+      <D1                          spec="OPTIONAL DOUBLE" />  <!-- FIXME: what is tihs?  is it really optional? -->
+      <D2                          spec="OPTIONAL DOUBLE" />
+      <D3                          spec="OPTIONAL DOUBLE" />
+      <D4                          spec="OPTIONAL DOUBLE" />
+      <D5                          spec="OPTIONAL DOUBLE" />
+    </damage_model>
+    
+    <deviatoric_stress_model       spec="OPTIONAL NO_DATA"
+                                        attribute1="type REQUIRED STRING 'hypoElastic, hypoViscoElastic'" 
+                                        need_applies_to="type elastic_plastic elastic_plastic_hp" >
+      <tau                         spec="REQUIRED MULTIPLE_DOUBLES" need_applies_to="type hypoViscoElastic" />
+      <mu                          spec="REQUIRED MULTIPLE_DOUBLES" need_applies_to="type hypoViscoElastic" /> 
+    </deviatoric_stress_model>
+        
+    <DCp_DTemperature              spec="OPTIONAL DOUBLE" />
+    <D                             spec="OPTIONAL DOUBLE" />  <!-- FIXME: what are these for? -->
+    <starting_location             spec="OPTIONAL VECTOR" />  <!-- FIXME: what are these for? -->
+    <direction_if_plane            spec="OPTIONAL VECTOR" />  <!-- FIXME: what are these for? -->
+    <delH                          spec="OPTIONAL DOUBLE" /> <!-- FIXME: what is this for? -->
+    <direction_of_symm             spec="OPTIONAL VECTOR" />
+    <do_melting                    spec="OPTIONAL BOOLEAN" />
+    <dynamic_coeff_friction        spec="OPTIONAL DOUBLE" />
+    <e_shear_modulus               spec="OPTIONAL DOUBLE" /> <!-- qwerty need_applies_to='type ALL' -->
+    <e_bulk_modulus                spec="OPTIONAL DOUBLE" /> <!-- qwerty need_applies_to='type ALL' -->
+    <ve_bulk_modulus               spec="OPTIONAL DOUBLE" /> <!-- qwerty need_applies_to='type ALL' -->
+    <ve_shear_modulus              spec="OPTIONAL DOUBLE" /> <!-- qwerty need_applies_to='type ALL' -->
+    <ve_volumetric_viscosity       spec="OPTIONAL DOUBLE" /> <!-- qwerty need_applies_to='type ALL' -->
+    <ve_deviatoric_viscosity       spec="OPTIONAL DOUBLE" /> <!-- qwerty need_applies_to='type ALL' -->
+    <EoverR                        spec="OPTIONAL DOUBLE" /> <!-- FIXME: what is this for? -->
+    <evolve_damage                 spec="OPTIONAL BOOLEAN" />
+    <evolve_porosity               spec="OPTIONAL BOOLEAN" />
+    <failure_by_stress             spec="OPTIONAL BOOLEAN" />
+    <scaling                       spec="OPTIONAL STRING 'none, kayenta'" />
+    <reference_volume              spec="OPTIONAL DOUBLE 'positive'" />
+    <failure_by_pressure           spec="OPTIONAL BOOLEAN" />
+    <fracture_toughness_curve      spec="OPTIONAL NO_DATA" 
+                                   need_applies_to="type hypo_elastic_fracture">
+      <crack_propagation_criterion spec="REQUIRED STRING 'max_hoop_stress, empirical_criterion, max_principal_stress, max_energy_release_rate, strain_energy_density'" />
+      <p                           spec="OPTIONAL DOUBLE" />
+      <q                           spec="OPTIONAL DOUBLE" />
+      <r                           spec="OPTIONAL DOUBLE" />
+      <point                       spec="OPTIONAL NO_DATA" >
+        <Vc                        spec="OPTIONAL DOUBLE" />
+        <KIc                       spec="OPTIONAL DOUBLE" />
+        <KIIc                      spec="OPTIONAL DOUBLE" />
+      </point>
+    </fracture_toughness_curve>
+    <G                             spec="OPTIONAL DOUBLE" />
+    <G1                            spec="OPTIONAL DOUBLE" />
+    <G2                            spec="OPTIONAL DOUBLE" />
+    <G3                            spec="OPTIONAL DOUBLE" />
+    <G4                            spec="OPTIONAL DOUBLE" />
+    <G5                            spec="OPTIONAL DOUBLE" />
+    <Gamma                         spec="OPTIONAL DOUBLE" />
+    <gamma                         spec="OPTIONAL DOUBLE" />
+    <reference_pressure            spec="OPTIONAL DOUBLE" />
+    <reference_temperature         spec="OPTIONAL DOUBLE" />
+    <hardening_modulus             spec="OPTIONAL DOUBLE" />
+    <he_constant_1                 spec="OPTIONAL DOUBLE 'positive'" />
+    <he_constant_2                 spec="OPTIONAL DOUBLE 'positive'" />
+    <he_PR                         spec="OPTIONAL DOUBLE 'positive'" />
+    <InitialCrackRadius            spec="OPTIONAL DOUBLE 'positive'" />
+    <initial_material_temperature  spec="OPTIONAL DOUBLE" />
+    <initial_mean_porosity         spec="OPTIONAL DOUBLE" />
+    <initial_mean_scalar_damage    spec="OPTIONAL DOUBLE" />
+    <initial_porosity_distrib      spec="OPTIONAL STRING 'constant, gauss'" />
+    <initial_scalar_damage_distrib spec="OPTIONAL STRING 'constant, gauss'" />
+    <initial_std_porosity          spec="OPTIONAL DOUBLE" />
+    <initial_std_scalar_damage     spec="OPTIONAL DOUBLE" />
+    <isothermal                    spec="OPTIONAL BOOLEAN" />
+    <K                             spec="OPTIONAL DOUBLE" />
+    <K0                            spec="OPTIONAL DOUBLE" />
+    <Ks                            spec="OPTIONAL DOUBLE" />
+    <Ku                            spec="OPTIONAL DOUBLE" />
+    <n                             spec="OPTIONAL DOUBLE" />
+    <melting_temp_model            spec="OPTIONAL NO_DATA"
+                                     attribute1="type REQUIRED STRING 'constant_Tm, linear_Tm, scg_Tm, bps_Tm'" >
+      <a                           spec="OPTIONAL DOUBLE" />
+      <b                           spec="OPTIONAL DOUBLE" />
+      <Gamma_0                     spec="OPTIONAL DOUBLE" />
+      <K_T                         spec="OPTIONAL DOUBLE" />
+      <T_m0                        spec="OPTIONAL DOUBLE" />
+    </melting_temp_model>
+    <om                            spec="OPTIONAL DOUBLE" />
+    <flow_model spec="OPTIONAL NO_DATA"
+                attribute1="type REQUIRED STRING 'linear, johnson_cook, mechanical_threshold_stress,
+                                                  preston_tonks_wallace, steinberg_cochran_guinan,
+                                                  zerilli_armstrong, zerilli_armstrong_polymer'" >
+ 
+      <!-- linear model -->
+      <K       spec="REQUIRED DOUBLE" 
+               need_applies_to="type linear zerilli_armstrong"/>
+      <sigma_0 spec="REQUIRED DOUBLE" 
+               need_applies_to="type linear, steinberg_cochran_guinan"/>
+
+      <!-- johnson_cook -->
+      <A       spec="REQUIRED DOUBLE" 
+               need_applies_to="type johnson_cook steinberg_cochran_guinan"/>
+      <B       spec="REQUIRED DOUBLE"
+               need_applies_to="type johnson_cook steinberg_cochran_guinan zerilli_armstrong"/>
+      <C       spec="REQUIRED DOUBLE"
+               need_applies_to="type johnson_cook"/>
+      <m       spec="REQUIRED DOUBLE"
+               need_applies_to="type johnson_cook"/>
+      <n       spec="REQUIRED DOUBLE"
+               need_applies_to="type johnson_cook steinberg_cochran_guinan zerilli_armstrong"/>
+      <T_r     spec="OPTIONAL DOUBLE"
+               need_applies_to="type johnson_cook"/>
+      <T_m     spec="OPTIONAL DOUBLE"
+               need_applies_to="type johnson_cook"/>
+      <epdot_0 spec="OPTIONAL DOUBLE"
+               need_applies_to="type johnson_cook"/>
+
+      <!-- steinberg_cochran_guinan -->
+      <mu_0       spec="REQUIRED DOUBLE"
+                  need_applies_to="type steinberg_cochran_guinan mechanical_threshold_stress"/>
+      <beta       spec="REQUIRED DOUBLE"
+                  need_applies_to="type steinberg_cochran_guinan preston_tonks_wallace"/>
+      <epsilon_p0 spec="REQUIRED DOUBLE"
+                  need_applies_to="type steinberg_cochran_guinan"/>
+      <Y_max      spec="REQUIRED DOUBLE"
+                  need_applies_to="type steinberg_cochran_guinan"/>
+      <T_m0       spec="REQUIRED DOUBLE"
+                  need_applies_to="type steinberg_cochran_guinan"/>
+      <a          spec="REQUIRED DOUBLE"
+                  need_applies_to="type steinberg_cochran_guinan"/>
+      <Gamma_0    spec="REQUIRED DOUBLE"
+                  need_applies_to="type steinberg_cochran_guinan"/>
+      <C1         spec="OPTIONAL DOUBLE"
+                  need_applies_to="type steinberg_cochran_guinan"/>
+      <C2         spec="OPTIONAL DOUBLE"
+                  need_applies_to="type steinberg_cochran_guinan"/>
+      <dislocation_density              spec="OPTIONAL DOUBLE"
+                                        need_applies_to="type steinberg_cochran_guinan"/>
+      <length_of_dislocation_segment    spec="OPTIONAL DOUBLE"
+                                        need_applies_to="type steinberg_cochran_guinan"/>
+      <distance_between_Peierls_valleys spec="OPTIONAL DOUBLE"
+                                        need_applies_to="type steinberg_cochran_guinan"/>
+      <length_of_Burger_vector          spec="OPTIONAL DOUBLE"
+                                        need_applies_to="type steinberg_cochran_guinan"/>
+      <Debye_frequency                  spec="OPTIONAL DOUBLE"
+                                        need_applies_to="type steinberg_cochran_guinan"/>
+      <width_of_kink_loop               spec="OPTIONAL DOUBLE"
+                                        need_applies_to="type steinberg_cochran_guinan"/>
+      <drag_coefficient                 spec="OPTIONAL DOUBLE"
+                                        need_applies_to="type steinberg_cochran_guinan"/>
+      <energy_to_form_kink_pair         spec="REQUIRED DOUBLE"
+                                        need_applies_to="type steinberg_cochran_guinan"/>
+      <Boltzmann_constant               spec="REQUIRED DOUBLE"
+                                        need_applies_to="type steinberg_cochran_guinan"/>
+      <Peierls_stress                   spec="REQUIRED DOUBLE"
+                                        need_applies_to="type steinberg_cochran_guinan"/>
+
+      <!-- zerilli_armstrong -->
+      <c_0        spec="OPTIONAL DOUBLE"
+                  need_applies_to="type zerilli_armstrong"/>
+      <sigma_g    spec="OPTIONAL DOUBLE"
+                  need_applies_to="type zerilli_armstrong zerilli_armstrong_polymer"/>
+      <k_H        spec="OPTIONAL DOUBLE"
+                  need_applies_to="type zerilli_armstrong"/>
+      <sqrt_l_inv spec="OPTIONAL DOUBLE"
+                  need_applies_to="type zerilli_armstrong"/>
+      <beta_0     spec="REQUIRED DOUBLE"
+                  need_applies_to="type zerilli_armstrong zerilli_armstrong_polymer"/>
+      <beta_1     spec="REQUIRED DOUBLE"
+                  need_applies_to="type zerilli_armstrong zerilli_armstrong_polymer"/>
+      <B_0        spec="REQUIRED DOUBLE"
+                  need_applies_to="type zerilli_armstrong"/>
+      <alpha_0    spec="REQUIRED DOUBLE"
+                  need_applies_to="type zerilli_armstrong"/>
+      <alpha_1    spec="REQUIRED DOUBLE"
+                  need_applies_to="type zerilli_armstrong"/>
+
+      <!-- mechanical_thresold_stress -->
+      <sigma_a     spec="REQUIRED DOUBLE"
+                   need_applies_to="type mechanical_threshold_stress"/>
+      <D           spec="REQUIRED DOUBLE"
+                   need_applies_to="type mechanical_threshold_stress"/>
+      <T_0         spec="REQUIRED DOUBLE"
+                   need_applies_to="type mechanical_threshold_stress zerilli_armstrong_polymer"/>
+      <koverbcubed spec="REQUIRED DOUBLE"
+                   need_applies_to="type mechanical_threshold_stress"/>
+      <g_0i        spec="REQUIRED DOUBLE"
+                   need_applies_to="type mechanical_threshold_stress"/>
+      <g_0e        spec="REQUIRED DOUBLE"
+                   need_applies_to="type mechanical_threshold_stress"/>
+      <edot_0i     spec="REQUIRED DOUBLE"
+                   need_applies_to="type mechanical_threshold_stress"/>
+      <edot_0e     spec="REQUIRED DOUBLE"
+                   need_applies_to="type mechanical_threshold_stress"/>
+      <p_i         spec="REQUIRED DOUBLE"
+                   need_applies_to="type mechanical_threshold_stress"/>
+      <q_i         spec="REQUIRED DOUBLE"
+                   need_applies_to="type mechanical_threshold_stress"/>
+      <p_e         spec="REQUIRED DOUBLE"
+                   need_applies_to="type mechanical_threshold_stress"/>
+      <q_e         spec="REQUIRED DOUBLE"
+                   need_applies_to="type mechanical_threshold_stress"/>
+      <sigma_i     spec="REQUIRED DOUBLE"
+                   need_applies_to="type mechanical_threshold_stress"/>
+      <a_0         spec="REQUIRED DOUBLE"
+                   need_applies_to="type mechanical_threshold_stress"/>
+      <a_1         spec="REQUIRED DOUBLE"
+                   need_applies_to="type mechanical_threshold_stress"/>
+      <a_2         spec="REQUIRED DOUBLE"
+                   need_applies_to="type mechanical_threshold_stress"/>
+      <a_3         spec="REQUIRED DOUBLE"
+                   need_applies_to="type mechanical_threshold_stress"/>
+      <theta_IV    spec="REQUIRED DOUBLE"
+                   need_applies_to="type mechanical_threshold_stress"/>
+      <alpha       spec="REQUIRED DOUBLE"
+                   need_applies_to="type mechanical_threshold_stress"/>
+      <edot_es0    spec="REQUIRED DOUBLE"
+                   need_applies_to="type mechanical_threshold_stress"/>
+      <g_0es       spec="REQUIRED DOUBLE"
+                   need_applies_to="type mechanical_threshold_stress"/>
+      <sigma_es0   spec="REQUIRED DOUBLE"
+                   need_applies_to="type mechanical_threshold_stress"/>
+      <T_c         spec="OPTIONAL DOUBLE"
+                   need_applies_to="type mechanical_threshold_stress"/>
+      <g_0i_c      spec="OPTIONAL DOUBLE"
+                   need_applies_to="type mechanical_threshold_stress"/>
+      <sigma_i_c   spec="OPTIONAL DOUBLE"
+                   need_applies_to="type mechanical_threshold_stress"/>
+      <g_0es_c     spec="OPTIONAL DOUBLE"
+                   need_applies_to="type mechanical_threshold_stress"/>
+      <sigma_es0_c spec="OPTIONAL DOUBLE"
+                   need_applies_to="type mechanical_threshold_stress"/>
+      <a_0_c       spec="OPTIONAL DOUBLE"
+                   need_applies_to="type mechanical_threshold_stress"/>
+      <a_3_c       spec="OPTIONAL DOUBLE"
+                   need_applies_to="type mechanical_threshold_stress"/>
+
+      <!-- preston_tonks_wallace -->
+      <theta  spec="REQUIRED DOUBLE"
+              need_applies_to="type preston_tonks_wallace"/>
+      <p      spec="REQUIRED DOUBLE"
+              need_applies_to="type preston_tonks_wallace"/>
+      <s0     spec="REQUIRED DOUBLE"
+              need_applies_to="type preston_tonks_wallace"/>
+      <sinf   spec="REQUIRED DOUBLE"
+              need_applies_to="type preston_tonks_wallace"/>
+      <kappa  spec="REQUIRED DOUBLE"
+              need_applies_to="type preston_tonks_wallace"/>
+      <gamma  spec="REQUIRED DOUBLE"
+              need_applies_to="type preston_tonks_wallace"/>
+      <y0     spec="REQUIRED DOUBLE"
+              need_applies_to="type preston_tonks_wallace"/>
+      <yinf   spec="REQUIRED DOUBLE"
+              need_applies_to="type preston_tonks_wallace"/>
+      <y1     spec="REQUIRED DOUBLE"
+              need_applies_to="type preston_tonks_wallace"/>
+      <y2     spec="REQUIRED DOUBLE"
+              need_applies_to="type preston_tonks_wallace"/>
+      <M      spec="REQUIRED DOUBLE"
+              need_applies_to="type preston_tonks_wallace"/>
+      <G0     spec="OPTIONAL DOUBLE"
+              need_applies_to="type preston_tonks_wallace"/>
+      <alphap spec="OPTIONAL DOUBLE"
+              need_applies_to="type preston_tonks_wallace"/>
+
+      <!-- zerilli_armstrong_polymer -->
+      <B_pa    spec="REQUIRED DOUBLE"
+               need_applies_to="type zerilli_armstrong_polymer"/>
+      <B_pb    spec="REQUIRED DOUBLE"
+               need_applies_to="type zerilli_armstrong_polymer"/>
+      <B_pn    spec="REQUIRED DOUBLE"
+               need_applies_to="type zerilli_armstrong_polymer"/>
+      <B_0pa   spec="REQUIRED DOUBLE"
+               need_applies_to="type zerilli_armstrong_polymer"/>
+      <B_0pb   spec="REQUIRED DOUBLE"
+               need_applies_to="type zerilli_armstrong_polymer"/>
+      <B_0pn   spec="REQUIRED DOUBLE"
+               need_applies_to="type zerilli_armstrong_polymer"/>
+      <omega_a spec="REQUIRED DOUBLE"
+               need_applies_to="type zerilli_armstrong_polymer"/>
+      <omega_b spec="REQUIRED DOUBLE"
+               need_applies_to="type zerilli_armstrong_polymer"/>
+      <omega_p spec="REQUIRED DOUBLE"
+               need_applies_to="type zerilli_armstrong_polymer"/>
+
+    </flow_model>
+    <viscoplastic_flow_model spec="OPTIONAL NO_DATA"
+                             attribute1="type REQUIRED STRING 'suvic_i'" >
+      <coeff_backstress_evol       spec="OPTIONAL DOUBLE" />
+      <exponent_backstress_evol    spec="OPTIONAL DOUBLE" />
+      <normalizing_backstress      spec="OPTIONAL DOUBLE" />
+      <coeff_saturation_backstress spec="OPTIONAL DOUBLE" />
+      <exponent_backstress         spec="OPTIONAL DOUBLE" />
+      <ref_strainrate              spec="OPTIONAL DOUBLE" />
+      <normalizing_inelastic_strainrate spec="OPTIONAL DOUBLE" />
+      <activation_energy           spec="OPTIONAL DOUBLE" />
+      <universal_gas_constant      spec="OPTIONAL DOUBLE" />
+      <temperature                 spec="OPTIONAL DOUBLE" />
+      <exponent_inelastic_strainrate spec="OPTIONAL DOUBLE" />
+      <coeff_yieldstress_saturation  spec="OPTIONAL DOUBLE" />
+      <exponent_yieldstress          spec="OPTIONAL DOUBLE" />
+      <coeff_yieldstress_evol        spec="OPTIONAL DOUBLE" />
+      <exponent_dragstress         spec="OPTIONAL DOUBLE" />
+      <coeff_dragstress_evol       spec="OPTIONAL DOUBLE" />
+      <coeff_stress_saturation     spec="OPTIONAL DOUBLE" />
+      <intial_drag                 spec="OPTIONAL DOUBLE" />
+      <initial_yield               spec="OPTIONAL DOUBLE" />
+      <integration_parameter_theta spec="OPTIONAL DOUBLE" />
+    </viscoplastic_flow_model>
+    <pressure                      spec="OPTIONAL DOUBLE" />
+    <PR                            spec="OPTIONAL DOUBLE" />
+    <remove_particles              spec="OPTIONAL BOOLEAN" />
+    <randomize_parameters          spec="OPTIONAL BOOLEAN" />
+    <reduction_factor              spec="OPTIONAL DOUBLE" />
+    <rho0                          spec="OPTIONAL DOUBLE" />
+    <rhoS                          spec="OPTIONAL DOUBLE" />
+    <R1                            spec="OPTIONAL DOUBLE" />
+    <R2                            spec="OPTIONAL DOUBLE" />
+    <RTau1                         spec="OPTIONAL DOUBLE" />
+    <RTau2                         spec="OPTIONAL DOUBLE" />
+    <RTau3                         spec="OPTIONAL DOUBLE" />
+    <RTau4                         spec="OPTIONAL DOUBLE" />
+    <RTau5                         spec="OPTIONAL DOUBLE" />
+    <shear_modulus                 spec="OPTIONAL DOUBLE" />
+    <equation_of_state             spec="OPTIONAL NO_DATA"
+                                     attribute1="type REQUIRED STRING 'default_hyper, default_hypo, mie_gruneisen, mie_gruneisen_energy, borja_pressure, air, water, granite'" >
+      <bulk_modulus                spec="REQUIRED DOUBLE" 
+                                     need_applies_to="type default_hypo, default_hyper"/> 
+      <C_0                         spec="REQUIRED DOUBLE" 
+                                     need_applies_to="type mie_gruneisen, mie_gruneisen_energy"/> 
+      <Gamma_0                     spec="REQUIRED DOUBLE" 
+                                     need_applies_to="type mie_gruneisen, mie_gruneisen_energy"/> 
+      <S_alpha                     spec="REQUIRED DOUBLE"
+                                     need_applies_to="type mie_gruneisen, mie_gruneisen_energy"/> 
+      <S_2                         spec="REQUIRED DOUBLE"
+                                     need_applies_to="type mie_gruneisen_energy"/> 
+      <S_3                         spec="REQUIRED DOUBLE"
+                                     need_applies_to="type mie_gruneisen_energy"/> 
+      <rho_0                       spec="REQUIRED DOUBLE"
+                                     need_applies_to="type mie_gruneisen, mie_gruneisen_energy"/> 
+      <p0                          spec="REQUIRED DOUBLE 'negative'" 
+                                     need_applies_to="type borja_pressure"/>
+      <alpha                       spec="REQUIRED DOUBLE 'positive'" 
+                                     need_applies_to="type borja_pressure"/>
+      <kappatilde                  spec="REQUIRED DOUBLE 'positive'" 
+                                     need_applies_to="type borja_pressure"/>
+      <epse_v0                     spec="REQUIRED DOUBLE" 
+                                     need_applies_to="type borja_pressure"/>
+    </equation_of_state>
+    <shear_modulus_model           spec="OPTIONAL NO_DATA"
+                                     attribute1="type REQUIRED STRING 'borja_shear, constant_shear, mts_shear, np_shear, ptw_shear, scg_shear'" >
+      <shear_modulus               spec="REQUIRED DOUBLE" 
+                                     need_applies_to="type constant_shear"/>
+      <mu_0                        spec="OPTIONAL DOUBLE" />
+      <A                           spec="OPTIONAL DOUBLE" />
+      <B                           spec="OPTIONAL DOUBLE" />
+      <C                           spec="OPTIONAL DOUBLE" />
+      <D                           spec="OPTIONAL DOUBLE" />
+      <m                           spec="OPTIONAL DOUBLE" />
+      <slope_mu_p_over_mu0         spec="OPTIONAL DOUBLE" />
+      <T_0                         spec="OPTIONAL DOUBLE" />
+      <zeta                        spec="OPTIONAL DOUBLE" />
+      <alpha                       spec="OPTIONAL DOUBLE" />
+      <alphap                      spec="OPTIONAL DOUBLE" />
+      <mu0                         spec="REQUIRED DOUBLE 'positive'" 
+                                     need_applies_to="type borja_shear"/>
+    </shear_modulus_model>
+    <specific_heat                 spec="OPTIONAL DOUBLE" />
+    <specific_heat_model           spec="OPTIONAL NO_DATA"
+                                     attribute1="type REQUIRED STRING 'constant_Cp, cubic_Cp, copper_Cp, steel_Cp'">
+      <T_transition                spec="OPTIONAL DOUBLE" />
+      <A_LowT                spec="OPTIONAL DOUBLE" />
+      <B_LowT                spec="OPTIONAL DOUBLE" />
+      <C_LowT                spec="OPTIONAL DOUBLE" />
+      <n_LowT                spec="OPTIONAL DOUBLE" />
+      <A_HighT               spec="OPTIONAL DOUBLE" />
+      <B_HighT               spec="OPTIONAL DOUBLE" />
+      <C_HighT               spec="OPTIONAL DOUBLE" />
+      <n_HighT               spec="OPTIONAL DOUBLE" />
+      <a                     spec="OPTIONAL DOUBLE" />
+      <b                     spec="OPTIONAL DOUBLE" />
+      <beta                  spec="OPTIONAL DOUBLE" />
+      <c0                    spec="OPTIONAL DOUBLE" />
+      <c1                    spec="OPTIONAL DOUBLE" />
+      <c2                    spec="OPTIONAL DOUBLE" />
+      <c3                    spec="OPTIONAL DOUBLE" />
+    </specific_heat_model>
+    <stability_check               spec="OPTIONAL NO_DATA"
+                                     attribute1="type REQUIRED STRING 'acoustic, becker, drucker, drucker_becker, none'" />
+    <frac_nucleation               spec="OPTIONAL DOUBLE" />
+    <meanstrain_nucleation         spec="OPTIONAL DOUBLE" />
+    <stddevstrain_nucleation       spec="OPTIONAL DOUBLE" />
+    <strain_limit                  spec="OPTIONAL DOUBLE" />
+    <StressIntensityF              spec="OPTIONAL DOUBLE" />
+    <T0                            spec="OPTIONAL DOUBLE" />
+    <T_0                           spec="OPTIONAL DOUBLE" />
+    <C_0                           spec="OPTIONAL DOUBLE" />
+    <Gamma_0                       spec="OPTIONAL DOUBLE" />
+    <S_alpha                       spec="OPTIONAL DOUBLE" />
+    <t1                            spec="OPTIONAL DOUBLE" />
+    <t2                            spec="OPTIONAL DOUBLE" />
+    <t3                            spec="OPTIONAL DOUBLE" />
+    <t4                            spec="OPTIONAL DOUBLE" />
+    <t5                            spec="OPTIONAL DOUBLE" />
+    <t6                            spec="OPTIONAL DOUBLE" />
+    <taylor_quinney_coeff          spec="OPTIONAL DOUBLE" />
+    <tolerance                     spec="OPTIONAL DOUBLE" />
+    <useDamage                     spec="OPTIONAL BOOLEAN" />
+    <useJWLEOS                     spec="OPTIONAL BOOLEAN" />
+    <useJWLCEOS                    spec="OPTIONAL BOOLEAN" />
+    <useMurnaghanEOS               spec="OPTIONAL BOOLEAN" />
+    <useBirchMurnaghanEOS          spec="OPTIONAL BOOLEAN" />
+    <useModifiedEOS                spec="OPTIONAL BOOLEAN" />
+    <useObjectiveRate              spec="OPTIONAL BOOLEAN" />        <!-- FIXME: What is the default -->
+    <usePlasticity                 spec="OPTIONAL BOOLEAN" />
+    <UseArtificialViscosity        spec="OPTIONAL BOOLEAN" />        <!-- FIXME: What is the default -->
+    <use_polar_decomposition_RMB   spec="OPTIONAL BOOLEAN" />
+    <use_time_temperature_equation spec="OPTIONAL BOOLEAN" />   <!-- FIXME: What is the default -->
+    <viscosity                     spec="OPTIONAL DOUBLE" />
+    <volfracHE                     spec="OPTIONAL DOUBLE" />
+    <yield_stress                  spec="OPTIONAL DOUBLE" />
+    <y1                            spec="OPTIONAL DOUBLE" />
+    <y2                            spec="OPTIONAL DOUBLE" />
+    <y3                            spec="OPTIONAL DOUBLE" />
+    <y4                            spec="OPTIONAL DOUBLE" />
+    <y5                            spec="OPTIONAL DOUBLE" />
+    <y6                            spec="OPTIONAL DOUBLE" />
+    <StrainEnergy                  spec="OPTIONAL STRING" />
+    <Z                             spec="OPTIONAL DOUBLE" />   <!-- FIXME: what is this for? -->
+    <zero_stress_upon_failure      spec="OPTIONAL BOOLEAN" />  <!-- FIXME: what is this for? -->
+
+  <!-- Kayenta model -->
+  <!-- IF YOU ADD  A VALUE FOR THE KAYENTA MODEL, ADD IT ALSO TO THE PERTURBED KAYENTA MODEL BELOW!!! -->
+    <hugeJ    spec="OPTIONAL DOUBLE" /> <!-- max J val before part deletion-->
+    <B0       spec="OPTIONAL DOUBLE" /> <!-- See Kayenta.cc for parameter descriptions -->
+    <B1       spec="OPTIONAL DOUBLE" />
+    <B2       spec="OPTIONAL DOUBLE" />
+    <B3       spec="OPTIONAL DOUBLE" />
+    <B4       spec="OPTIONAL DOUBLE" />
+    <G0       spec="OPTIONAL DOUBLE" />
+    <G1       spec="OPTIONAL DOUBLE" />
+    <G2       spec="OPTIONAL DOUBLE" />
+    <G3       spec="OPTIONAL DOUBLE" />
+    <G4       spec="OPTIONAL DOUBLE" />
+    <RJS      spec="OPTIONAL DOUBLE" />
+    <RKS      spec="OPTIONAL DOUBLE" />
+    <RKN      spec="OPTIONAL DOUBLE" />
+    <A1       spec="OPTIONAL DOUBLE" />
+    <A2       spec="OPTIONAL DOUBLE" />
+    <A3       spec="OPTIONAL DOUBLE" />
+    <A4       spec="OPTIONAL DOUBLE" />
+    <P0       spec="OPTIONAL DOUBLE" />
+    <P1       spec="OPTIONAL DOUBLE" />
+    <P2       spec="OPTIONAL DOUBLE" />
+    <P3       spec="OPTIONAL DOUBLE" />
+    <CR       spec="OPTIONAL DOUBLE" />
+    <RK       spec="OPTIONAL DOUBLE" />
+    <RN       spec="OPTIONAL DOUBLE" />
+    <HC       spec="OPTIONAL DOUBLE" />
+    <CTI1     spec="OPTIONAL DOUBLE" />
+    <CTPS     spec="OPTIONAL DOUBLE" />
+    <T1       spec="OPTIONAL DOUBLE" />
+    <T2       spec="OPTIONAL DOUBLE" />
+    <T3       spec="OPTIONAL DOUBLE" />
+    <T4       spec="OPTIONAL DOUBLE" />
+    <T5       spec="OPTIONAL DOUBLE" />
+    <T6       spec="OPTIONAL DOUBLE" />
+    <T7       spec="OPTIONAL DOUBLE" />
+    <J3TYPE   spec="OPTIONAL DOUBLE" />
+    <A2PF     spec="OPTIONAL DOUBLE" />
+    <A4PF     spec="OPTIONAL DOUBLE" />
+    <CRPF     spec="OPTIONAL DOUBLE" />
+    <RKPF     spec="OPTIONAL DOUBLE" />
+    <SUBX     spec="OPTIONAL DOUBLE" />
+    <DEJAVU   spec="OPTIONAL DOUBLE" />
+    <FAIL0    spec="OPTIONAL DOUBLE" />
+    <FAIL1    spec="OPTIONAL DOUBLE" />
+    <FAIL2    spec="OPTIONAL DOUBLE" />
+    <FAIL3    spec="OPTIONAL DOUBLE" />
+    <FAIL4    spec="OPTIONAL DOUBLE" />
+    <FAIL5    spec="OPTIONAL DOUBLE" />
+    <FAIL6    spec="OPTIONAL DOUBLE" />
+    <FAIL7    spec="OPTIONAL DOUBLE" />
+    <FAIL8    spec="OPTIONAL DOUBLE" />
+    <FAIL9    spec="OPTIONAL DOUBLE" />
+    <PEAKI1I  spec="OPTIONAL DOUBLE" />
+    <STRENI   spec="OPTIONAL DOUBLE" />
+    <FSLOPEI  spec="OPTIONAL DOUBLE" />
+    <PEAKI1F  spec="OPTIONAL DOUBLE" />
+    <STRENF   spec="OPTIONAL DOUBLE" />
+    <SOFTENING spec="OPTIONAL DOUBLE"/>
+    <FSLOPEF  spec="OPTIONAL DOUBLE" />
+    <FAILSTAT spec="OPTIONAL DOUBLE" />
+    <EOSID    spec="OPTIONAL DOUBLE" />
+    <USEHOSTEOS spec="OPTIONAL DOUBLE"/>
+    <DILATLIM spec="OPTIONAL DOUBLE" />
+    <FREE01   spec="OPTIONAL DOUBLE" />
+    <FREE02   spec="OPTIONAL DOUBLE" />
+    <FREE03   spec="OPTIONAL DOUBLE" />
+    <FREE04   spec="OPTIONAL DOUBLE" />
+    <FREE05   spec="OPTIONAL DOUBLE" />
+    <CTPSF    spec="OPTIONAL DOUBLE" />
+    <YSLOPEI  spec="OPTIONAL DOUBLE" />
+    <YSLOPEF  spec="OPTIONAL DOUBLE" />
+    <!-- Kayenta EOSMG input paramaters -->
+    <TMPRXP   spec="OPTIONAL DOUBLE" /> <!--  -->
+    <THERM01  spec="OPTIONAL DOUBLE" /> <!--  -->
+    <THERM02  spec="OPTIONAL DOUBLE" /> <!--  -->
+    <THERM03  spec="OPTIONAL DOUBLE" /> <!--  -->
+    <TMPRM0   spec="OPTIONAL DOUBLE" /> <!--  -->
+    <RHO0     spec="OPTIONAL DOUBLE" /> <!--  -->
+    <TMPR0    spec="OPTIONAL DOUBLE" /> <!--  -->
+    <SNDSP0   spec="OPTIONAL DOUBLE" /> <!--  -->
+    <S1MG     spec="OPTIONAL DOUBLE" /> <!--  -->
+    <GRPAR    spec="OPTIONAL DOUBLE" /> <!--  -->
+    <CV       spec="OPTIONAL DOUBLE" /> <!--  -->
+    <ESFT     spec="OPTIONAL DOUBLE" /> <!--  -->
+    <RP       spec="OPTIONAL DOUBLE" /> <!--  -->
+    <PS       spec="OPTIONAL DOUBLE" /> <!--  -->
+    <PE       spec="OPTIONAL DOUBLE" /> <!--  -->
+    <CE       spec="OPTIONAL DOUBLE" /> <!--  -->
+    <NSUB     spec="OPTIONAL DOUBLE" /> <!--  -->
+    <S2MG     spec="OPTIONAL DOUBLE" /> <!--  -->
+    <TYP      spec="OPTIONAL DOUBLE" /> <!--  -->
+    <RO       spec="OPTIONAL DOUBLE" /> <!--  -->
+    <TO       spec="OPTIONAL DOUBLE" /> <!--  -->
+    <S        spec="OPTIONAL DOUBLE" /> <!--  -->
+    <GRPARO   spec="OPTIONAL DOUBLE" /> <!--  -->
+    <B        spec="OPTIONAL DOUBLE" /> <!--  -->
+    <XB       spec="OPTIONAL DOUBLE" /> <!--  -->
+    <NB       spec="OPTIONAL DOUBLE" /> <!--  -->
+    <PWR      spec="OPTIONAL DOUBLE" /> <!--  -->
+    <!-- Kayenta EOSMG derived paramaters -->
+    <A1MG     spec="OPTIONAL DOUBLE" /> <!--  -->
+    <A2MG     spec="OPTIONAL DOUBLE" /> <!--  -->
+    <A3MG     spec="OPTIONAL DOUBLE" /> <!--  -->
+    <A4MG     spec="OPTIONAL DOUBLE" /> <!--  -->
+    <A5MG     spec="OPTIONAL DOUBLE" /> <!--  -->
+    <A0MG     spec="OPTIONAL DOUBLE" /> <!--  -->
+    <AEMG     spec="OPTIONAL DOUBLE" /> <!--  -->
+    <FK0      spec="OPTIONAL DOUBLE" /> <!--  -->
+    <AF       spec="OPTIONAL DOUBLE" /> <!--  -->
+    <PF       spec="OPTIONAL DOUBLE" /> <!--  -->
+    <XF       spec="OPTIONAL DOUBLE" /> <!--  -->
+    <CF       spec="OPTIONAL DOUBLE" /> <!--  -->
+    <RMX      spec="OPTIONAL DOUBLE" /> <!--  -->
+
+  <!-- The following are for the PERTURBED Kayenta model (DUPLICATE of KAYENTA MODEL) -->
+    <WB0       spec="OPTIONAL DOUBLE" />
+    <WB1       spec="OPTIONAL DOUBLE" />
+    <WB2       spec="OPTIONAL DOUBLE" />
+    <WB3       spec="OPTIONAL DOUBLE" />
+    <WB4       spec="OPTIONAL DOUBLE" />
+    <WG0       spec="OPTIONAL DOUBLE" />
+    <WG1       spec="OPTIONAL DOUBLE" />
+    <WG2       spec="OPTIONAL DOUBLE" />
+    <WG3       spec="OPTIONAL DOUBLE" />
+    <WG4       spec="OPTIONAL DOUBLE" />
+    <WRJS      spec="OPTIONAL DOUBLE" />
+    <WRKS      spec="OPTIONAL DOUBLE" />
+    <WRKN      spec="OPTIONAL DOUBLE" />
+    <WA1       spec="OPTIONAL DOUBLE" />
+    <WA2       spec="OPTIONAL DOUBLE" />
+    <WA3       spec="OPTIONAL DOUBLE" />
+    <WA4       spec="OPTIONAL DOUBLE" />
+    <WP0       spec="OPTIONAL DOUBLE" />
+    <WP1       spec="OPTIONAL DOUBLE" />
+    <WP2       spec="OPTIONAL DOUBLE" />
+    <WP3       spec="OPTIONAL DOUBLE" />
+    <WCR       spec="OPTIONAL DOUBLE" />
+    <WRK       spec="OPTIONAL DOUBLE" />
+    <WRN       spec="OPTIONAL DOUBLE" />
+    <WHC       spec="OPTIONAL DOUBLE" />
+    <WCTI1     spec="OPTIONAL DOUBLE" />
+    <WCTPS     spec="OPTIONAL DOUBLE" />
+    <WT1       spec="OPTIONAL DOUBLE" />
+    <WT2       spec="OPTIONAL DOUBLE" />
+    <WT3       spec="OPTIONAL DOUBLE" />
+    <WT4       spec="OPTIONAL DOUBLE" />
+    <WT5       spec="OPTIONAL DOUBLE" />
+    <WT6       spec="OPTIONAL DOUBLE" />
+    <WT7       spec="OPTIONAL DOUBLE" />
+    <WJ3TYPE   spec="OPTIONAL DOUBLE" />
+    <WA2PF     spec="OPTIONAL DOUBLE" />
+    <WA4PF     spec="OPTIONAL DOUBLE" />
+    <WCRPF     spec="OPTIONAL DOUBLE" />
+    <WRKPF     spec="OPTIONAL DOUBLE" />
+    <WSUBX     spec="OPTIONAL DOUBLE" />
+    <WDEJAVU   spec="OPTIONAL DOUBLE" />
+    <WFAIL0    spec="OPTIONAL DOUBLE" />
+    <WFAIL1    spec="OPTIONAL DOUBLE" />
+    <WFAIL2    spec="OPTIONAL DOUBLE" />
+    <WFAIL3    spec="OPTIONAL DOUBLE" />
+    <WFAIL4    spec="OPTIONAL DOUBLE" />
+    <WFAIL5    spec="OPTIONAL DOUBLE" />
+    <WFAIL6    spec="OPTIONAL DOUBLE" />
+    <WFAIL7    spec="OPTIONAL DOUBLE" />
+    <WFAIL8    spec="OPTIONAL DOUBLE" />
+    <WFAIL9    spec="OPTIONAL DOUBLE" />
+    <WPEAKI1I  spec="OPTIONAL DOUBLE" />
+    <WSTRENI   spec="OPTIONAL DOUBLE" />
+    <WFSLOPEI  spec="OPTIONAL DOUBLE" />
+    <WPEAKI1F  spec="OPTIONAL DOUBLE" />
+    <WSTRENF   spec="OPTIONAL DOUBLE" />
+    <WSOFTENING spec="OPTIONAL DOUBLE"/>
+    <WFSLOPEF  spec="OPTIONAL DOUBLE" />
+    <WFAILSTAT spec="OPTIONAL DOUBLE" />
+    <WEOSID    spec="OPTIONAL DOUBLE" />
+    <WUSEHOSTEOS spec="OPTIONAL DOUBLE"/>
+    <WDILATLIM spec="OPTIONAL DOUBLE" />
+    <WFREE01   spec="OPTIONAL DOUBLE" />
+    <WFREE02   spec="OPTIONAL DOUBLE" />
+    <WFREE03   spec="OPTIONAL DOUBLE" />
+    <WFREE04   spec="OPTIONAL DOUBLE" />
+    <WFREE05   spec="OPTIONAL DOUBLE" />
+    <WCTPSF    spec="OPTIONAL DOUBLE" />
+    <WYSLOPEI  spec="OPTIONAL DOUBLE" />
+    <WYSLOPEF  spec="OPTIONAL DOUBLE" />
+    <!-- Kayenta EOSMG input paramaters -->
+    <WTMPRXP   spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WTHERM01  spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WTHERM02  spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WTHERM03  spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WTMPRM0   spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WRHO0     spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WTMPR0    spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WSNDSP0   spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WS1MG     spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WGRPAR    spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WCV       spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WESFT     spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WRP       spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WPS       spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WPE       spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WCE       spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WNSUB     spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WS2MG     spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WTYP      spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WRO       spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WTO       spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WS        spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WGRPARO   spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WB        spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WXB       spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WNB       spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WPWR      spec="OPTIONAL DOUBLE" /> <!--  -->
+    <!-- Kayenta EOSMG derived paramaters -->
+    <WA1MG     spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WA2MG     spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WA3MG     spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WA4MG     spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WA5MG     spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WA0MG     spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WAEMG     spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WFK0      spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WAF       spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WPF       spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WXF       spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WCF       spec="OPTIONAL DOUBLE" /> <!--  -->
+    <WRMX      spec="OPTIONAL DOUBLE" /> <!--  -->
+
+    <!-- Kayenta variability plotting -->
+    <PEAKI1IDIST spec="OPTIONAL STRING" /> <!-- plotable PEAKI1I distribution variable -->
+
+  <!-- The following are for the Diamm model -->
+    <B0       spec="OPTIONAL DOUBLE" />
+    <B1       spec="OPTIONAL DOUBLE" />
+    <B2       spec="OPTIONAL DOUBLE" />
+    <G0       spec="OPTIONAL DOUBLE" />
+    <G1       spec="OPTIONAL DOUBLE" />
+    <G2       spec="OPTIONAL DOUBLE" />
+    <G3       spec="OPTIONAL DOUBLE" />
+    <A1       spec="OPTIONAL DOUBLE" />
+    <A2       spec="OPTIONAL DOUBLE" />
+    <A3       spec="OPTIONAL DOUBLE" />
+    <A4       spec="OPTIONAL DOUBLE" />
+    <A5       spec="OPTIONAL DOUBLE" />
+    <A6       spec="OPTIONAL DOUBLE" />
+    <AN       spec="OPTIONAL DOUBLE" />
+    <R0       spec="OPTIONAL DOUBLE" />
+    <T0       spec="OPTIONAL DOUBLE" />
+    <C0       spec="OPTIONAL DOUBLE" />
+    <S1       spec="OPTIONAL DOUBLE" />
+    <GP       spec="OPTIONAL DOUBLE" />
+    <CV       spec="OPTIONAL DOUBLE" />
+    <TM       spec="OPTIONAL DOUBLE" />
+    <T1       spec="OPTIONAL DOUBLE" />
+    <T2       spec="OPTIONAL DOUBLE" />
+    <T3       spec="OPTIONAL DOUBLE" />
+    <T4       spec="OPTIONAL DOUBLE" />
+    <XP       spec="OPTIONAL DOUBLE" />
+    <SC       spec="OPTIONAL DOUBLE" />
+    <IDK      spec="OPTIONAL DOUBLE" />
+    <IDG      spec="OPTIONAL DOUBLE" />
+    <A2PF     spec="OPTIONAL DOUBLE" />
+    <TQC      spec="OPTIONAL DOUBLE" />
+    <F1       spec="OPTIONAL DOUBLE" />
+    <TEST     spec="OPTIONAL DOUBLE" />
+    <DEJAVU   spec="OPTIONAL DOUBLE" />
+    <DC1      spec="OPTIONAL DOUBLE" />
+    <DC2      spec="OPTIONAL DOUBLE" />
+    <DC3      spec="OPTIONAL DOUBLE" />
+    <DC4      spec="OPTIONAL DOUBLE" />
+    <DC5      spec="OPTIONAL DOUBLE" />
+    <DC6      spec="OPTIONAL DOUBLE" />
+    <DC7      spec="OPTIONAL DOUBLE" />
+    <DC8      spec="OPTIONAL DOUBLE" />
+    <DC9      spec="OPTIONAL DOUBLE" />
+    <DC10     spec="OPTIONAL DOUBLE" />
+    <DC11     spec="OPTIONAL DOUBLE" />
+    <DC12     spec="OPTIONAL DOUBLE" />
+    <DC13     spec="OPTIONAL DOUBLE" />
+  <!--__________________________________-->  
+  <!-- The following are for the nonlocal_drucker_prager model -->
+    <alpha                spec="OPTIONAL DOUBLE"  />
+    <alpha_p              spec="OPTIONAL DOUBLE"  />
+    <k_o                  spec="OPTIONAL DOUBLE"  />
+    <k_o_dist             spec="OPTIONAL STRING"  />
+    <h_local              spec="OPTIONAL DOUBLE"  />
+    <h_nonlocal           spec="OPTIONAL DOUBLE"  />
+    <l_nonlocal           spec="OPTIONAL DOUBLE"/>
+    <minimum_yield_stress spec="OPTIONAL DOUBLE"/>
+    <initial_xstress      spec="OPTIONAL DOUBLE"/>
+    <initial_ystress      spec="OPTIONAL DOUBLE"/>
+    <initial_zstress      spec="OPTIONAL DOUBLE"/>
+
+  <!--______________________________________________________________________ -->
+  <!-- The following are for the Arenisca model -->
+    <Use_Disaggregation_Algorithm     spec="OPTIONAL BOOLEAN" need_applies_to="type Arenisca Arenisca3 Arenisca4 soil_model_brannon" />
+    <FSLOPE                           spec="OPTIONAL DOUBLE" need_applies_to="type Arenisca Arenisca3 Arenisca4 soil_model_brannon" />
+    <FSLOPE_p                         spec="OPTIONAL DOUBLE" need_applies_to="type Arenisca soil_model_brannon" />
+    <PEAKI1                           spec="OPTIONAL DOUBLE" need_applies_to="type Arenisca Arenisca3 Arenisca4 soil_model_brannon" />
+    <STREN                            spec="OPTIONAL DOUBLE" need_applies_to="type Arenisca Arenisca3 Arenisca4 soil_model_brannon" />
+    <YSLOPE                           spec="OPTIONAL DOUBLE" need_applies_to="type Arenisca Arenisca3 Arenisca4 soil_model_brannon" />
+    <BETA_nonassociativity            spec="OPTIONAL DOUBLE" need_applies_to="type Arenisca Arenisca3 Arenisca4 soil_model_brannon" />
+    <B0                               spec="OPTIONAL DOUBLE" need_applies_to="type Arenisca Arenisca3 Arenisca4 soil_model_brannon" />
+    <B01                              spec="OPTIONAL DOUBLE" need_applies_to="type Arenisca3" />
+    <B1                               spec="OPTIONAL DOUBLE" need_applies_to="type Arenisca Arenisca3 Arenisca4 soil_model_brannon" />
+    <B2                               spec="OPTIONAL DOUBLE" need_applies_to="type Arenisca Arenisca3 Arenisca4 soil_model_brannon" />
+    <B3                               spec="OPTIONAL DOUBLE" need_applies_to="type Arenisca Arenisca3 Arenisca4 soil_model_brannon" />
+    <B4                               spec="OPTIONAL DOUBLE" need_applies_to="type Arenisca Arenisca3 Arenisca4 soil_model_brannon" />
+    <G0                               spec="OPTIONAL DOUBLE" need_applies_to="type Arenisca Arenisca3 Arenisca4 soil_model_brannon" />
+    <G1                               spec="OPTIONAL DOUBLE" need_applies_to="type Arenisca Arenisca3 Arenisca4 soil_model_brannon" />
+    <G2                               spec="OPTIONAL DOUBLE" need_applies_to="type Arenisca Arenisca3 Arenisca4 soil_model_brannon" />
+    <G3                               spec="OPTIONAL DOUBLE" need_applies_to="type Arenisca Arenisca3 Arenisca4 soil_model_brannon" />
+    <G4                               spec="OPTIONAL DOUBLE" need_applies_to="type Arenisca Arenisca3 Arenisca4 soil_model_brannon" />
+    <p0_crush_curve                   spec="OPTIONAL DOUBLE" need_applies_to="type Arenisca Arenisca3 Arenisca4 soil_model_brannon" />
+    <p1_crush_curve                   spec="OPTIONAL DOUBLE" need_applies_to="type Arenisca Arenisca3 Arenisca4 soil_model_brannon" />
+    <p2_crush_curve                   spec="OPTIONAL DOUBLE" need_applies_to="type Arenisca Arenisca3 Arenisca4 soil_model_brannon" />
+    <p3_crush_curve                   spec="OPTIONAL DOUBLE" need_applies_to="type Arenisca Arenisca3 Arenisca4 soil_model_brannon" />
+    <CR                               spec="OPTIONAL DOUBLE" need_applies_to="type Arenisca Arenisca3 Arenisca4 soil_model_brannon" />
+    <T1_rate_dependence               spec="OPTIONAL DOUBLE" need_applies_to="type Arenisca Arenisca3 Arenisca4 soil_model_brannon" />
+    <T2_rate_dependence               spec="OPTIONAL DOUBLE" need_applies_to="type Arenisca Arenisca3 Arenisca4 soil_model_brannon" />
+    <kinematic_hardening_constant     spec="OPTIONAL DOUBLE" need_applies_to="type Arenisca soil_model_brannon" />
+    <fluid_B0                         spec="OPTIONAL DOUBLE" need_applies_to="type Arenisca Arenisca3 Arenisca4 soil_model_brannon" />
+    <fluid_pressure_initial           spec="OPTIONAL DOUBLE" need_applies_to="type Arenisca Arenisca3 Arenisca4 soil_model_brannon" />
+    <p4_fluid_effect                  spec="OPTIONAL DOUBLE" need_applies_to="type Arenisca soil_model_brannon" />
+    <gruneisen_parameter              spec="OPTIONAL DOUBLE" need_applies_to="type Arenisca soil_model_brannon" />
+    <subcycling_characteristic_number spec="OPTIONAL DOUBLE" need_applies_to="type Arenisca Arenisca3 arena arena_mixture Arenisca4 soil_model_brannon tabular_plasticity tabular_plasticity_cap" />
+    <J3_type                          spec="OPTIONAL INTEGER" need_applies_to="type Arenisca4" />
+	<J3_psi                           spec="OPTIONAL INTEGER" need_applies_to="type Arenisca4" />
+	<principal_stress_cutoff          spec="OPTIONAL INTEGER" need_applies_to="type Arenisca4" />			
+    <K0_Murnaghan_EOS spec="OPTIONAL DOUBLE" need_applies_to="type Arenisca3 arena" />
+    <n_Murnaghan_EOS  spec="OPTIONAL DOUBLE" need_applies_to="type Arenisca3 arena" />
+
+    <reference_porosity           spec="OPTIONAL DOUBLE" need_applies_to="type arena arena_mixture" />
+    <initial_porosity             spec="REQUIRED DOUBLE" need_applies_to="type arena arena_mixture" />
+    <initial_saturation           spec="REQUIRED DOUBLE" need_applies_to="type arena arena_mixture" />
+    <initial_fluid_pressure       spec="REQUIRED DOUBLE" need_applies_to="type arena arena_mixture" />
+    <p0                           spec="REQUIRED DOUBLE" need_applies_to="type arena" />
+    <p1                           spec="REQUIRED DOUBLE" need_applies_to="type arena" />
+    <p1_sat                       spec="REQUIRED DOUBLE" need_applies_to="type arena" />
+    <p1_density_scale_fac         spec="OPTIONAL DOUBLE" need_applies_to="type arena" />
+    <p2                           spec="REQUIRED DOUBLE" need_applies_to="type arena" />
+    <p3                           spec="REQUIRED DOUBLE" need_applies_to="type arena" />
+    <use_disaggregation_algorithm spec="OPTIONAL BOOLEAN" need_applies_to="type arena arena_mixture" />
+    <do_damage                    spec="OPTIONAL BOOLEAN" need_applies_to="type arena arena_mixture" />
+    <fspeed                       spec="OPTIONAL DOUBLE" need_applies_to="type arena arena_mixture" />
+    <time_at_failure              spec="OPTIONAL DOUBLE" need_applies_to="type arena arena_mixture" />
+    <eq_plastic_strain_at_failure spec="OPTIONAL DOUBLE" need_applies_to="type arena arena_mixture" />
+    <yield_surface_radius_scaling_factor spec="OPTIONAL DOUBLE" need_applies_to="type arena arena_mixture tabular_plasticity tabular_plasticity_cap" />
+    <consistency_bisection_tolerance spec="OPTIONAL DOUBLE" need_applies_to="type arena arena_mixture tabular_plasticity tabular_plasticity_cap" />
+    <decrease_substep_at_high_curvature spec="OPTIONAL BOOLEAN" need_applies_to="type tabular_plasticity_cap" />
+
+    <initialize_with_body_force spec="OPTIONAL BOOLEAN" need_applies_to="type Arenisca3 arena arena_mixture"/>
+    <surface_reference_point    spec="OPTIONAL VECTOR"  need_applies_to="type Arenisca3 arena arena_mixture"/>
+
+    <vol_frac.phase1   spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+    <p0.phase1         spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+    <p1.phase1         spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+    <p1_sat.phase1     spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+    <p1_density_scale_fac.phase1     spec="OPTIONAL DOUBLE" need_applies_to="type arena_mixture" />
+    <p2.phase1         spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+    <p3.phase1         spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+    <p0.phase2         spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+    <p1.phase2         spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+    <p1_sat.phase2     spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+    <p1_density_scale_fac.phase2     spec="OPTIONAL DOUBLE" need_applies_to="type arena_mixture" />
+    <p2.phase2         spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+    <p3.phase2         spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+    <K0_Murnaghan_EOS.phase1 spec="OPTIONAL DOUBLE" need_applies_to="type arena_mixture" />
+    <n_Murnaghan_EOS.phase1  spec="OPTIONAL DOUBLE" need_applies_to="type arena_mixture" />
+    <K0_Murnaghan_EOS.phase2 spec="OPTIONAL DOUBLE" need_applies_to="type arena_mixture" />
+    <n_Murnaghan_EOS.phase2  spec="OPTIONAL DOUBLE" need_applies_to="type arena_mixture" />
+
+    <!--______________________________________________________________________ -->    
+    <!-- The following are for the UCNH & JWLppMPM model initial stress -->
+    <useInitialStress                 spec="OPTIONAL BOOLEAN" />
+    <initial_pressure                 spec="OPTIONAL DOUBLE"  />
+    <yield_distrib                    spec="OPTIONAL STRING 'constant, uniform'" />
+    <yield_range                      spec="OPTIONAL DOUBLE"  />
+    <yield_seed                       spec="OPTIONAL INTEGER"  />
+    <useEOSFactory                    spec="OPTIONAL BOOLEAN" />
+
+    <!--______________________________________________________________________ -->    
+    <!-- The following are for the MurnaghanMPM model -->
+    <Kprime    spec="REQUIRED DOUBLE 'positive'" need_applies_to="type murnaghanMPM"/>
+    <!-- <K         spec="REQUIRED DOUBLE 'positive'" need_applies_to="type murnaghanMPM"/> -->
+    <!-- <pressure  spec="REQUIRED DOUBLE 'positive'" need_applies_to="type murnaghanMPM"/> -->
+    <!-- <rho0      spec="REQUIRED DOUBLE 'positive'" need_applies_to="type murnaghanMPM"/> -->
+    <!-- <viscosity spec="REQUIRED DOUBLE 'positive'" need_applies_to="type murnaghanMPM"/> -->
+
+    <!--______________________________________________________________________ -->    
+    <!-- The following are for the JWLppMPM model -->
+    <ignition_pressure  spec="REQUIRED DOUBLE 'positive'" need_applies_to="type jwlpp_mpm"/>
+    <murnaghan_K        spec="REQUIRED DOUBLE 'positive'" need_applies_to="type jwlpp_mpm"/>
+    <murnaghan_n        spec="REQUIRED DOUBLE 'positive'" need_applies_to="type jwlpp_mpm"/>
+    <jwl_A              spec="REQUIRED DOUBLE 'positive'" need_applies_to="type jwlpp_mpm"/>
+    <jwl_B              spec="REQUIRED DOUBLE 'positive'" need_applies_to="type jwlpp_mpm"/>
+    <jwl_C              spec="REQUIRED DOUBLE 'positive'" need_applies_to="type jwlpp_mpm"/>
+    <jwl_R1             spec="REQUIRED DOUBLE 'positive'" need_applies_to="type jwlpp_mpm"/>
+    <jwl_R2             spec="REQUIRED DOUBLE 'positive'" need_applies_to="type jwlpp_mpm"/>
+    <jwl_om             spec="REQUIRED DOUBLE 'positive'" need_applies_to="type jwlpp_mpm"/>
+    <jwl_rho0           spec="REQUIRED DOUBLE 'positive'" need_applies_to="type jwlpp_mpm"/>
+    <reaction_G         spec="REQUIRED DOUBLE 'positive'" need_applies_to="type jwlpp_mpm"/>
+    <reaction_b         spec="REQUIRED DOUBLE 'positive'" need_applies_to="type jwlpp_mpm"/>
+    <max_burn_timestep_size   spec="OPTIONAL DOUBLE" need_applies_to="type jwlpp_mpm" />
+    <max_burned_fraction      spec="OPTIONAL DOUBLE" need_applies_to="type jwlpp_mpm" />
+    <doFastStressCompute      spec="OPTIONAL BOOLEAN" need_applies_to="type jwlpp_mpm" />
+    <tolerance_for_Newton_iterations spec="OPTIONAL DOUBLE 'positive'" need_applies_to="type jwlpp_mpm" />
+    <max_number_of_Newton_iterations spec="OPTIONAL DOUBLE 'positive'" need_applies_to="type jwlpp_mpm" />
+    <useTaylorSeriesForDefGrad   spec="OPTIONAL BOOLEAN" need_applies_to="type jwlpp_mpm soil_model_brannon" />
+    <num_taylor_terms   spec="OPTIONAL INTEGER 'positive'" need_applies_to="type jwlpp_mpm soil_model_brannon"/>
+    
+    <!--______________________________________________________________________ -->
+    <!-- The following are for the ViscoElasticFortran model -->
+    <G00 spec="REQUIRED DOUBLE" need_applies_to="type viscoelastic_fortran" />
+    <G01 spec="REQUIRED DOUBLE" need_applies_to="type viscoelastic_fortran" />
+    <G02 spec="REQUIRED DOUBLE" need_applies_to="type viscoelastic_fortran" />
+    <G03 spec="REQUIRED DOUBLE" need_applies_to="type viscoelastic_fortran" />
+    <G04 spec="REQUIRED DOUBLE" need_applies_to="type viscoelastic_fortran" />
+    <G05 spec="OPTIONAL DOUBLE" need_applies_to="type viscoelastic_fortran" />
+    <G06 spec="OPTIONAL DOUBLE" need_applies_to="type viscoelastic_fortran" />
+    <G07 spec="OPTIONAL DOUBLE" need_applies_to="type viscoelastic_fortran" />
+    <G08 spec="OPTIONAL DOUBLE" need_applies_to="type viscoelastic_fortran" />
+    <G09 spec="OPTIONAL DOUBLE" need_applies_to="type viscoelastic_fortran" />
+    <G10 spec="OPTIONAL DOUBLE" need_applies_to="type viscoelastic_fortran" />
+    <Tau01 spec="REQUIRED DOUBLE" need_applies_to="type viscoelastic_fortran" />
+    <Tau02 spec="REQUIRED DOUBLE" need_applies_to="type viscoelastic_fortran" />
+    <Tau03 spec="REQUIRED DOUBLE" need_applies_to="type viscoelastic_fortran" />
+    <Tau04 spec="REQUIRED DOUBLE" need_applies_to="type viscoelastic_fortran" />
+    <Tau05 spec="OPTIONAL DOUBLE" need_applies_to="type viscoelastic_fortran" />
+    <Tau06 spec="OPTIONAL DOUBLE" need_applies_to="type viscoelastic_fortran" />
+    <Tau07 spec="OPTIONAL DOUBLE" need_applies_to="type viscoelastic_fortran" />
+    <Tau08 spec="OPTIONAL DOUBLE" need_applies_to="type viscoelastic_fortran" />
+    <Tau09 spec="OPTIONAL DOUBLE" need_applies_to="type viscoelastic_fortran" />
+    <Tau10 spec="OPTIONAL DOUBLE" need_applies_to="type viscoelastic_fortran" />
+    <C1_WLF spec="OPTIONAL DOUBLE" need_applies_to="type viscoelastic_fortran" />
+    <C2_WLF spec="OPTIONAL DOUBLE" need_applies_to="type viscoelastic_fortran" />
+    <Tref_WLF spec="OPTIONAL DOUBLE" need_applies_to="type viscoelastic_fortran" />
+
+    <!-- For Mohr Coulomb model -->
+    <model_type spec="REQUIRED STRING 'classic, classic_semiimplicit, sheng" 
+                need_applies_to="type mohr_coulomb" />
+    <model_parameters spec="REQUIRED NO_DATA" need_applies_to="type mohr_coulomb">
+      <shear_modulus spec="REQUIRED DOUBLE" />
+      <bulk_modulus spec="REQUIRED DOUBLE" />
+      <cohesion spec="REQUIRED DOUBLE" />
+      <angle_internal_friction spec="REQUIRED DOUBLE" />
+      <angle_dilation spec="REQUIRED DOUBLE" />
+      <max_hydrostatic_tension spec="OPTIONAL DOUBLE" />
+      <initial_suction spec="OPTIONAL DOUBLE" />
+      <phi_b spec="OPTIONAL DOUBLE" />
+      <use_water_retention spec="OPTIONAL BOOLEAN" />
+      <water_retention_param_1 spec="OPTIONAL DOUBLE" />
+      <water_retention_param_2 spec="OPTIONAL DOUBLE" />
+      <water_retention_param_3 spec="OPTIONAL DOUBLE" />
+      <water_retention_param_4 spec="OPTIONAL DOUBLE" />
+      <use_undrained_shear_transition spec="OPTIONAL BOOLEAN" />
+      <water_influence_A1 spec="OPTIONAL DOUBLE" />
+      <water_influence_B1 spec="OPTIONAL DOUBLE" />
+      <water_influence_W spec="OPTIONAL DOUBLE" />
+      <beta_strain_rate spec="OPTIONAL DOUBLE" />
+      <ref_strain_rate spec="OPTIONAL DOUBLE" />
+      <use_variable_elastic_modulus spec="OPTIONAL BOOLEAN" />
+      <variable_modulus_m spec="OPTIONAL DOUBLE" />
+      <variable_modulus_nu_y spec="OPTIONAL DOUBLE" />
+      <use_linearly_varying_cohesion spec="OPTIONAL BOOLEAN" />
+      <linear_cohesion_a spec="OPTIONAL DOUBLE" />
+      <linear_cohesion_y_ref spec="OPTIONAL DOUBLE" />
+      <linear_cohesion_depth_direction spec="OPTIONAL STRING 'x-, x+, y-, y+, z-, z+" />
+      <use_softening spec="OPTIONAL BOOLEAN" />
+      <softening_St spec="OPTIONAL DOUBLE" />
+      <softening_strain_95 spec="OPTIONAL DOUBLE" />
+      <use_regularized_nonlocal_softening spec="OPTIONAL BOOLEAN" />
+      <regularization_t_FE spec="OPTIONAL DOUBLE" />
+      <regularization_t_shear spec="OPTIONAL DOUBLE" />
+      <use_nonlocal_correction spec="OPTIONAL BOOLEAN" />
+      <nonlocal_n spec="OPTIONAL DOUBLE" />
+      <nonlocal_l spec="OPTIONAL DOUBLE" />
+      <retention_model spec="OPTIONAL STRING 'state_surface, van_genuchten, gallipoli" />
+    </model_parameters>
+
+    <integration_parameters spec="REQUIRED NO_DATA"
+                            need_applies_to="type mohr_coulomb">
+      <max_iterations_pegasus spec="OPTIONAL DOUBLE" />
+      <alpha_check_pegasus spec="OPTIONAL DOUBLE" />
+      <alpha_change_pegasus spec="OPTIONAL DOUBLE" />
+      <alpha_ratio_pegasus spec="OPTIONAL DOUBLE" />
+      <yield_tolerance spec="OPTIONAL DOUBLE" /> 
+      <integration_tolerance spec="OPTIONAL DOUBLE" />
+      <beta_safety_factor spec="OPTIONAL DOUBLE" />
+      <minimum_mean_stress spec="OPTIONAL DOUBLE" />
+      <suction_tolerance spec="OPTIONAL DOUBLE" />
+      <drift_correction_algorithm spec="OPTIONAL STRING 'none, at_begin, at_end" />
+      <tolerance_algorithm spec="OPTIONAL STRING 'relative, sloan'" />
+      <solution_algorithm spec="OPTIONAL STRING 'modified_euler, RK3, RK3_Bogacki, RK4, RK5_England,
+                                                 RK5_Cash, RK5_Dormand, RK5_Bogacki, extrapolation" />
+    </integration_parameters>
+
+    <!--______________________________________________________________________ -->    
+    <!-- For CamClay and related models developed by Biswajit for ONR_MURI -->
+    <elastic_moduli_model  spec="OPTIONAL NO_DATA"
+                     attribute1="type REQUIRED STRING 'constant  arenisca3  arena  arena_mixture  metal_iso neural_net neural_net_bulk support_vector soil_model_brannon tabular tabular_bulk tabular_bulk_pressure'"
+                     need_applies_to="type arena Arenisca3 camclay soil_model_brannon arena  arena_mixture  tabular_plasticity tabular_plasticity_cap">
+      
+      <!-- type = constant -->
+      <bulk_modulus spec="REQUIRED DOUBLE" need_applies_to="type constant" />
+      <shear_modulus spec="REQUIRED DOUBLE" need_applies_to="type constant" />
+
+      <!-- type = arenisca -->
+      <B0 spec="REQUIRED DOUBLE" need_applies_to="type arenisca3 soil_model_brannon" />
+      <B1 spec="REQUIRED DOUBLE" need_applies_to="type arenisca3 soil_model_brannon" />
+      <B2 spec="REQUIRED DOUBLE" need_applies_to="type arenisca3 soil_model_brannon" />
+      <B3 spec="REQUIRED DOUBLE" need_applies_to="type arenisca3 soil_model_brannon" />
+      <B4 spec="REQUIRED DOUBLE" need_applies_to="type arenisca3 soil_model_brannon" />
+      <G0 spec="REQUIRED DOUBLE" need_applies_to="type arenisca3 soil_model_brannon arena tabular neural_net neural_net_bulk support_vector" />
+      <G1 spec="REQUIRED DOUBLE" need_applies_to="type arenisca3 soil_model_brannon" />
+      <G2 spec="REQUIRED DOUBLE" need_applies_to="type arenisca3 soil_model_brannon" />
+      <G3 spec="REQUIRED DOUBLE" need_applies_to="type arenisca3 soil_model_brannon" />
+      <G4 spec="REQUIRED DOUBLE" need_applies_to="type arenisca3 soil_model_brannon" />
+
+      <!-- type = arena -->
+      <b0     spec="REQUIRED DOUBLE" need_applies_to="type arena" />
+      <b1     spec="REQUIRED DOUBLE" need_applies_to="type arena" />
+      <b2     spec="REQUIRED DOUBLE" need_applies_to="type arena" />
+      <b3     spec="REQUIRED DOUBLE" need_applies_to="type arena" />
+      <b4     spec="REQUIRED DOUBLE" need_applies_to="type arena" />
+      <nu1    spec="REQUIRED DOUBLE" need_applies_to="type arena" />
+      <nu2    spec="REQUIRED DOUBLE" need_applies_to="type arena" />
+
+      <!-- type = arena_mixture -->
+      <vol_frac.phase1  spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+      <b0.phase1        spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+      <b1.phase1        spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+      <b2.phase1        spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+      <b3.phase1        spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+      <b4.phase1        spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+      <G0.phase1        spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+      <nu1.phase1       spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+      <nu2.phase1       spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+      <b0.phase2        spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+      <b1.phase2        spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+      <b2.phase2        spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+      <b3.phase2        spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+      <b4.phase2        spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+      <G0.phase2        spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+      <nu1.phase2       spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+      <nu2.phase2       spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+
+      <!-- type = tabular -->
+      <filename              spec="REQUIRED STRING" need_applies_to="type tabular neural_net neural_net_bulk support_vector"/>
+      <independent_variables spec="REQUIRED STRING" need_applies_to="type tabular"/>
+      <dependent_variables   spec="REQUIRED STRING" need_applies_to="type tabular"/>
+      <interpolation         spec="REQUIRED NO_DATA" attribute1="type REQUIRED STRING 'linear, cubic'"
+                             need_applies_to="type tabular"/>
+      <nu                    spec="REQUIRED DOUBLE" need_applies_to="type tabular neural_net neural_net_bulk support_vector" />
+
+      <!-- type = neural_net -->
+      <min_strain            spec="REQUIRED DOUBLE" need_applies_to="type neural_net" />
+      <max_strain            spec="REQUIRED DOUBLE" need_applies_to="type neural_net" />
+      <min_pressure          spec="REQUIRED DOUBLE" need_applies_to="type neural_net" />
+      <max_pressure          spec="REQUIRED DOUBLE" need_applies_to="type neural_net" />
+
+      <!-- type = neural_net_bulk -->
+      <mean_elastic_strain     spec="REQUIRED DOUBLE" need_applies_to="type neural_net_bulk" />
+      <std_dev_elastic_strain  spec="REQUIRED DOUBLE" need_applies_to="type neural_net_bulk" />
+      <mean_plastic_strain     spec="REQUIRED DOUBLE" need_applies_to="type neural_net_bulk" />
+      <std_dev_plastic_strain  spec="REQUIRED DOUBLE" need_applies_to="type neural_net_bulk" />
+      <mean_bulk_modulus       spec="REQUIRED DOUBLE" need_applies_to="type neural_net_bulk" />
+      <std_dev_bulk_modulus    spec="REQUIRED DOUBLE" need_applies_to="type neural_net_bulk" />
+
+    </elastic_moduli_model>
+
+    <yield_condition  spec="REQUIRED NO_DATA"
+                      attribute1="type REQUIRED STRING 'gurson rousselier camclay arena arena_mixture tabular tabular_cap von_mises'"
+                      need_applies_to="type arena arena_mixture camclay elastic_plastic elastic_plastic_hp tabular_plasticity tabular_plasticity_cap">
+
+      <!-- type = camclay -->
+      <M spec="REQUIRED DOUBLE 'positive'" need_applies_to="type camclay"/>
+
+      <!-- type = gurson -->
+      <q1 spec="REQUIRED DOUBLE 'positive'" need_applies_to="type gurson"/>
+      <q2 spec="REQUIRED DOUBLE 'positive'" need_applies_to="type gurson"/>
+      <q3 spec="REQUIRED DOUBLE 'positive'" need_applies_to="type gurson"/>
+      <k spec="REQUIRED DOUBLE 'positive'" need_applies_to="type gurson"/>
+      <f_c spec="REQUIRED DOUBLE 'positive'" need_applies_to="type gurson"/>
+      
+      <!-- type = rousselier -->
+      <D spec="REQUIRED DOUBLE 'positive'" need_applies_to="type rousselier"/>
+      <sigma_1 spec="REQUIRED DOUBLE 'positive'" need_applies_to="type rousselier"/>
+
+      <!-- type = arena -->
+      <PEAKI1 spec="REQUIRED DOUBLE" need_applies_to="type arena" />
+      <FSLOPE spec="REQUIRED DOUBLE" need_applies_to="type arena" />
+      <STREN  spec="REQUIRED DOUBLE" need_applies_to="type arena" />
+      <YSLOPE spec="REQUIRED DOUBLE" need_applies_to="type arena" />
+      <PEAKI1_failed spec="OPTIONAL DOUBLE" need_applies_to="type arena" />
+      <FSLOPE_failed spec="OPTIONAL DOUBLE" need_applies_to="type arena" />
+      <STREN_failed  spec="OPTIONAL DOUBLE" need_applies_to="type arena" />
+      <YSLOPE_failed spec="OPTIONAL DOUBLE" need_applies_to="type arena" />
+      <BETA   spec="REQUIRED DOUBLE" need_applies_to="type arena" />
+      <CR     spec="REQUIRED DOUBLE" need_applies_to="type arena" />
+      <T1     spec="REQUIRED DOUBLE" need_applies_to="type arena" />
+      <T2     spec="REQUIRED DOUBLE" need_applies_to="type arena" />
+      <weibullDist_PEAKI1 spec="OPTIONAL STRING" need_applies_to="type arena arena_mixture" />
+      <weibullDist_FSLOPE spec="OPTIONAL STRING" need_applies_to="type arena arena_mixture" />
+      <weibullDist_STREN  spec="OPTIONAL STRING" need_applies_to="type arena arena_mixture" />
+      <weibullDist_YSLOPE spec="OPTIONAL STRING" need_applies_to="type arena arena_mixture" />
+      <weibullDist_BETA   spec="OPTIONAL STRING" need_applies_to="type arena arena_mixture" />
+      <weibullDist_CR     spec="OPTIONAL STRING" need_applies_to="type arena arena_mixture" />
+      <weibullDist_T1     spec="OPTIONAL STRING" need_applies_to="type arena arena_mixture" />
+      <weibullDist_T2     spec="OPTIONAL STRING" need_applies_to="type arena arena_mixture" />
+
+      <!-- type = arena_mixture -->
+      <vol_frac.phase1 spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+      <PEAKI1.phase1 spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+      <FSLOPE.phase1 spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+      <STREN.phase1  spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+      <YSLOPE.phase1 spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+      <PEAKI1_failed.phase1 spec="OPTIONAL DOUBLE" need_applies_to="type arena_mixture" />
+      <FSLOPE_failed.phase1 spec="OPTIONAL DOUBLE" need_applies_to="type arena_mixture" />
+      <STREN_failed.phase1  spec="OPTIONAL DOUBLE" need_applies_to="type arena_mixture" />
+      <YSLOPE_failed.phase1 spec="OPTIONAL DOUBLE" need_applies_to="type arena_mixture" />
+      <BETA.phase1   spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+      <CR.phase1     spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+      <T1.phase1     spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+      <T2.phase1     spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+      <PEAKI1.phase2 spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+      <FSLOPE.phase2 spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+      <STREN.phase2  spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+      <YSLOPE.phase2 spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+      <PEAKI1_failed.phase2 spec="OPTIONAL DOUBLE" need_applies_to="type arena_mixture" />
+      <FSLOPE_failed.phase2 spec="OPTIONAL DOUBLE" need_applies_to="type arena_mixture" />
+      <STREN_failed.phase2  spec="OPTIONAL DOUBLE" need_applies_to="type arena_mixture" />
+      <YSLOPE_failed.phase2 spec="OPTIONAL DOUBLE" need_applies_to="type arena_mixture" />
+      <BETA.phase2   spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+      <CR.phase2     spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+      <T1.phase2     spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+      <T2.phase2     spec="REQUIRED DOUBLE" need_applies_to="type arena_mixture" />
+
+      <!-- type = tabular -->
+      <filename              spec="REQUIRED STRING" need_applies_to="type tabular tabular_cap"/>
+      <independent_variables spec="REQUIRED STRING" need_applies_to="type tabular tabular_cap"/>
+      <dependent_variables   spec="REQUIRED STRING" need_applies_to="type tabular tabular_cap"/>
+      <interpolation         spec="REQUIRED NO_DATA" attribute1="type REQUIRED STRING 'linear, cubic'"
+                             need_applies_to="type tabular tabular_cap"/>
+      <cap_ellipticity_ratio spec="REQUIRED DOUBLE"  need_applies_to="type tabular_cap"/>
+    </yield_condition>
+    <internal_variable_model  spec="REQUIRED NO_DATA"
+                              attribute1="type REQUIRED STRING 'arena borja_consolidation_pressure metal_internal_var soil_model_brannon_kappa tabular_cap'"
+                              need_applies_to="type camclay elastic_plastic elastic_plastic_hp soil_model_brannon tabular_plasticity_cap">
+
+      <!-- type = arena -->
+      <p0 spec="REQUIRED DOUBLE" need_applies_to="type arena" />
+      <p1 spec="REQUIRED DOUBLE" need_applies_to="type arena" />
+      <p2 spec="REQUIRED DOUBLE" need_applies_to="type arena" />
+      <p3 spec="REQUIRED DOUBLE" need_applies_to="type arena" />
+      <use_disaggregation_algorithm spec="OPTIONAL BOOLEAN" need_applies_to="type arena" />
+
+      <!-- type = borja -->
+      <pc0 spec="REQUIRED DOUBLE 'negative'" need_applies_to="type borja_consolidation_pressure"/>
+      <lambdatilde spec="REQUIRED DOUBLE 'positive'" need_applies_to="type borja_consolidation_pressure"/>
+
+      <!-- type = metal -->
+      <vol_frac_nucleation      spec="OPTIONAL DOUBLE" need_applies_to="type metal_internal_var" />
+      <mean_strain_nucleation   spec="OPTIONAL DOUBLE" need_applies_to="type metal_internal_var" />
+      <stddev_strain_nucleation spec="OPTIONAL DOUBLE" need_applies_to="type metal_internal_var" />
+
+      <!-- type = soil_brannon -->
+      <soil_model_brannon_fSlope spec="REQUIRED DOUBLE" need_applies_to="type soil_model_brannon_kappa" />
+      <soil_model_brannon_peakI1 spec="REQUIRED DOUBLE" need_applies_to="type soil_model_brannon_kappa" />
+      <soil_model_brannon_Cr spec="REQUIRED DOUBLE" need_applies_to="type soil_model_brannon_kappa" />
+      <soil_model_brannon_B0 spec="REQUIRED DOUBLE" need_applies_to="type soil_model_brannon_kappa" />
+      <soil_model_brannon_p0 spec="REQUIRED DOUBLE" need_applies_to="type soil_model_brannon_kappa" />
+      <soil_model_brannon_p1 spec="REQUIRED DOUBLE" need_applies_to="type soil_model_brannon_kappa" />
+      <soil_model_brannon_p3 spec="REQUIRED DOUBLE" need_applies_to="type soil_model_brannon_kappa" />
+      <soil_model_brannon_p4 spec="REQUIRED DOUBLE" need_applies_to="type soil_model_brannon_kappa" />
+
+      <!-- type = tabular_cap -->
+      <filename              spec="REQUIRED STRING" need_applies_to="type tabular_cap"/>
+      <independent_variables spec="REQUIRED STRING" need_applies_to="type tabular_cap"/>
+      <dependent_variables   spec="REQUIRED STRING" need_applies_to="type tabular_cap"/>
+      <interpolation         spec="REQUIRED NO_DATA" attribute1="type REQUIRED STRING 'linear, cubic'"
+                             need_applies_to="type tabular_cap"/>
+
+    </internal_variable_model>
+    <kinematic_hardening_model  spec="OPTIONAL NO_DATA"
+                     attribute1="type REQUIRED STRING 'none, prager, armstrong_frederick, arena'"
+                     need_applies_to="type arena">
+      <fluid_pressure_initial spec="REQUIRED DOUBLE" need_applies_to="type arena" />
+    </kinematic_hardening_model>
+
+    <!-- These are for polar_orthotropic_hypoelastic -->
+    <symmetry_axis_top spec="REQUIRED VECTOR" need_applies_to="type polar_orthotropic_hypoelastic"/>
+    <symmetry_axis_bottom spec="REQUIRED VECTOR" need_applies_to="type polar_orthotropic_hypoelastic"/>
+    <E_r spec="REQUIRED DOUBLE" need_applies_to="type polar_orthotropic_hypoelastic"/>
+    <E_theta spec="REQUIRED DOUBLE" need_applies_to="type polar_orthotropic_hypoelastic"/>
+    <E_z spec="REQUIRED DOUBLE" need_applies_to="type polar_orthotropic_hypoelastic"/>
+    <nu_theta_r spec="REQUIRED DOUBLE" need_applies_to="type polar_orthotropic_hypoelastic"/>
+    <nu_z_r spec="REQUIRED DOUBLE" need_applies_to="type polar_orthotropic_hypoelastic"/>
+    <nu_z_theta spec="REQUIRED DOUBLE" need_applies_to="type polar_orthotropic_hypoelastic"/>
+    <G_theta_z spec="REQUIRED DOUBLE" need_applies_to="type polar_orthotropic_hypoelastic"/>
+    <G_z_r spec="REQUIRED DOUBLE" need_applies_to="type polar_orthotropic_hypoelastic"/>
+    <G_r_theta spec="REQUIRED DOUBLE" need_applies_to="type polar_orthotropic_hypoelastic"/>
+
+    <!-- These are for tabular_eos -->
+    <filename              spec="REQUIRED STRING" 
+                           need_applies_to="type tabular_eos"/>
+    <independent_variables spec="REQUIRED STRING" 
+                           need_applies_to="type tabular_eos"/>
+    <dependent_variables   spec="REQUIRED STRING" 
+                           need_applies_to="type tabular_eos"/>
+    <interpolation         spec="REQUIRED NO_DATA" 
+                           attribute1="type REQUIRED STRING 'linear, cubic'"
+                           need_applies_to="type tabular_eos"/>
+  </constitutive_model>
+
+
+
+</Uintah_Include>
