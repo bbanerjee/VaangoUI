@@ -80,3 +80,22 @@ class OutputInformationNode:
         layout.addWidget(QCheckBox("MPM particle variables"))
         layout.addWidget(QCheckBox("MPM grid variables"))
         layout.addWidget(QCheckBox("ICE cell-centered variables"))
+
+    def write_vaango(self, file, tab="  "):
+        if file is None:
+            return
+        tab1 = tab + "  "
+        file.write(f"{tab}<DataArchiver>\n")
+        file.write(f"{tab1}<filebase> {self.output_uda_file} </filebase>\n")
+        # Prefer timestep interval if > 0
+        if int(self.timestep_interval) > 0:
+            file.write(f"{tab1}<outputTimestepInterval> {self.timestep_interval} </outputTimestepInterval>\n")
+        else:
+            file.write(f"{tab1}<outputInterval> {self.time_interval} </outputInterval>\n")
+
+        if int(self.checkpoint_cycle) > 0:
+            file.write(f"{tab1}<checkpoint cycle=\"{self.checkpoint_cycle}\" timestepInterval=\"{self.timestep_interval}\"/>\n")
+        else:
+            file.write(f"{tab1}<checkpoint cycle=\"{self.checkpoint_cycle}\" interval=\"{self.time_interval}\"/>\n")
+
+        file.write(f"{tab}</DataArchiver>\n\n")

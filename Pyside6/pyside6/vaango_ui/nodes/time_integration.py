@@ -70,3 +70,14 @@ class TimeIntegrationNode:
         layout.addWidget(cb)
 
         layout.addWidget(QCheckBox("More settings..."))
+
+    def write_vaango(self, file, tab="  "):
+        if file is None:
+            return
+        tab1 = tab + "  "
+        file.write(f"{tab}<TimeIntegration>\n")
+        file.write(f"{tab1}<initTime> {self.start_time} </initTime>\n")
+        file.write(f"{tab1}<maxTime> {self.end_time} </maxTime>\n")
+        file.write(f"{tab1}<integration_type> {self.integration_type} </integration_type>\n")
+        file.write(f"{tab1}<multiplier> {self.multiplier} </multiplier>\n")
+        file.write(f"{tab}</TimeIntegration>\n\n")

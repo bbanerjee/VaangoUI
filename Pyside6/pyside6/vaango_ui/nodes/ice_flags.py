@@ -74,3 +74,14 @@ class ICEFlagsNode:
         layout.addWidget(chk2)
 
         layout.addWidget(QCheckBox("Advanced settings"))
+
+    def write_vaango(self, file, tab="  "):
+        if file is None:
+            return
+        tab1 = tab + "  "
+        file.write(f"{tab}<ICESettings>\n")
+        file.write(f"{tab1}<algorithm> {self.algorithm} </algorithm>\n")
+        file.write(f"{tab1}<advection> {self.advection} </advection>\n")
+        file.write(f"{tab1}<compatible_fluxes> {str(bool(self.do_compatible_fluxes)).lower()} </compatible_fluxes>\n")
+        file.write(f"{tab1}<clamp_specific_volume> {str(bool(self.clamp_specific_volume)).lower()} </clamp_specific_volume>\n")
+        file.write(f"{tab}</ICESettings>\n\n")

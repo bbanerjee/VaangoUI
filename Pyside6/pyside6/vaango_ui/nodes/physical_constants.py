@@ -88,3 +88,12 @@ class PhysicalConstantsNode:
 
     def _set_gravity(self, idx, val):
         self.gravity[idx] = float(val)
+
+    def write_vaango(self, file, tab="  "):
+        if file is None:
+            return
+        tab1 = tab + "  "
+        file.write(f"{tab}<PhysicalConstants>\n")
+        file.write(f"{tab1}<reference_pressure> {self.ref_pressure} </reference_pressure>\n")
+        file.write(f"{tab1}<gravity> [{self.gravity[0]}, {self.gravity[1]}, {self.gravity[2]}] </gravity>\n")
+        file.write(f"{tab}</PhysicalConstants>\n\n")

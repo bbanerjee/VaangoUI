@@ -69,3 +69,13 @@ class MPMFlagsNode:
         layout.addWidget(lcrit)
 
         layout.addWidget(QCheckBox("Advanced settings"))
+
+    def write_vaango(self, file, tab="  "):
+        if file is None:
+            return
+        tab1 = tab + "  "
+        file.write(f"{tab}<MPMSettings>\n")
+        file.write(f"{tab1}<problem_type> {self.simulation_dim} </problem_type>\n")
+        file.write(f"{tab1}<interpolator> {self.interpolator} </interpolator>\n")
+        file.write(f"{tab1}<cpdi_critical_length> {self.cpdi_lcrit} </cpdi_critical_length>\n")
+        file.write(f"{tab}</MPMSettings>\n\n")
