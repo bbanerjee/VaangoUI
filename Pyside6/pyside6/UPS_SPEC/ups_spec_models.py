@@ -2216,6 +2216,27 @@ class Lines(UpsElement):
             ]
         }
 
+class LineExtract(UpsElement):
+    tag_name = 'lineExtract'
+    
+    def __init__(self):
+        super().__init__()
+        # Children
+        self.line: List[Any] = []
+
+    @classmethod
+    def get_spec(cls):
+        return {
+            'tag': 'lineExtract',
+            'need_applies_to': 'name lineExtract',
+            'spec_type': 'NO_DATA',
+            'attributes': {
+            },
+            'children_spec': [
+                {'tag': 'line', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+            ]
+        }
+
 class Line(UpsElement):
     tag_name = 'line'
     
@@ -2267,6 +2288,29 @@ class Plane(UpsElement):
             ]
         }
 
+class FlatPlate_heatFlux(UpsElement):
+    tag_name = 'flatPlate_heatFlux'
+    
+    def __init__(self):
+        super().__init__()
+        # Children
+        self.startingPt: Optional[Any] = None
+        self.endingPt: Optional[Any] = None
+
+    @classmethod
+    def get_spec(cls):
+        return {
+            'tag': 'flatPlate_heatFlux',
+            'need_applies_to': 'name flatPlate_heatFlux',
+            'spec_type': 'NO_DATA',
+            'attributes': {
+            },
+            'children_spec': [
+                {'tag': 'startingPt', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'endingPt', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+            ]
+        }
+
 class Objects(UpsElement):
     tag_name = 'objects'
     
@@ -2279,6 +2323,27 @@ class Objects(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'objects',
+            'need_applies_to': 'name containerExtract',
+            'spec_type': 'NO_DATA',
+            'attributes': {
+            },
+            'children_spec': [
+                {'tag': 'geom_object', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA'}, 'need_applies_to': None},
+            ]
+        }
+
+class ContainerExtract(UpsElement):
+    tag_name = 'containerExtract'
+    
+    def __init__(self):
+        super().__init__()
+        # Children
+        self.geom_object: Optional[Any] = None
+
+    @classmethod
+    def get_spec(cls):
+        return {
+            'tag': 'containerExtract',
             'need_applies_to': 'name containerExtract',
             'spec_type': 'NO_DATA',
             'attributes': {
@@ -4609,6 +4674,58 @@ class Deviatoric_stress_model(UpsElement):
             ]
         }
 
+class Elastic_plastic(UpsElement):
+    tag_name = 'elastic_plastic'
+    
+    def __init__(self):
+        super().__init__()
+        # Attributes
+        self.type: Optional[str] = None
+        # Children
+        self.tau: Optional[Any] = None
+        self.mu: Optional[Any] = None
+
+    @classmethod
+    def get_spec(cls):
+        return {
+            'tag': 'elastic_plastic',
+            'need_applies_to': 'type elastic_plastic elastic_plastic_hp',
+            'spec_type': 'NO_DATA',
+            'attributes': {
+                'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'hypoElastic, hypoViscoElastic'},
+            },
+            'children_spec': [
+                {'tag': 'tau', 'spec': {'need': 'REQUIRED', 'type': 'MULTIPLE_DOUBLES', 'valid_values': None}, 'need_applies_to': 'type hypoViscoElastic'},
+                {'tag': 'mu', 'spec': {'need': 'REQUIRED', 'type': 'MULTIPLE_DOUBLES', 'valid_values': None}, 'need_applies_to': 'type hypoViscoElastic'},
+            ]
+        }
+
+class Elastic_plastic_hp(UpsElement):
+    tag_name = 'elastic_plastic_hp'
+    
+    def __init__(self):
+        super().__init__()
+        # Attributes
+        self.type: Optional[str] = None
+        # Children
+        self.tau: Optional[Any] = None
+        self.mu: Optional[Any] = None
+
+    @classmethod
+    def get_spec(cls):
+        return {
+            'tag': 'elastic_plastic_hp',
+            'need_applies_to': 'type elastic_plastic elastic_plastic_hp',
+            'spec_type': 'NO_DATA',
+            'attributes': {
+                'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'hypoElastic, hypoViscoElastic'},
+            },
+            'children_spec': [
+                {'tag': 'tau', 'spec': {'need': 'REQUIRED', 'type': 'MULTIPLE_DOUBLES', 'valid_values': None}, 'need_applies_to': 'type hypoViscoElastic'},
+                {'tag': 'mu', 'spec': {'need': 'REQUIRED', 'type': 'MULTIPLE_DOUBLES', 'valid_values': None}, 'need_applies_to': 'type hypoViscoElastic'},
+            ]
+        }
+
 class Fracture_toughness_curve(UpsElement):
     tag_name = 'fracture_toughness_curve'
     
@@ -4625,6 +4742,35 @@ class Fracture_toughness_curve(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'fracture_toughness_curve',
+            'need_applies_to': 'type hypo_elastic_fracture',
+            'spec_type': 'NO_DATA',
+            'attributes': {
+            },
+            'children_spec': [
+                {'tag': 'crack_propagation_criterion', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'max_hoop_stress, empirical_criterion, max_principal_stress, max_energy_release_rate, strain_energy_density'}, 'need_applies_to': None},
+                {'tag': 'p', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'q', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'r', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'point', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+            ]
+        }
+
+class Hypo_elastic_fracture(UpsElement):
+    tag_name = 'hypo_elastic_fracture'
+    
+    def __init__(self):
+        super().__init__()
+        # Children
+        self.crack_propagation_criterion: Optional[Any] = None
+        self.p: Optional[Any] = None
+        self.q: Optional[Any] = None
+        self.r: Optional[Any] = None
+        self.point: Optional[Any] = None
+
+    @classmethod
+    def get_spec(cls):
+        return {
+            'tag': 'hypo_elastic_fracture',
             'need_applies_to': 'type hypo_elastic_fracture',
             'spec_type': 'NO_DATA',
             'attributes': {
@@ -5215,6 +5361,97 @@ class Model_parameters(UpsElement):
             ]
         }
 
+class Mohr_coulomb(UpsElement):
+    tag_name = 'mohr_coulomb'
+    
+    def __init__(self):
+        super().__init__()
+        # Children
+        self.shear_modulus: Optional[Any] = None
+        self.bulk_modulus: Optional[Any] = None
+        self.cohesion: Optional[Any] = None
+        self.angle_internal_friction: Optional[Any] = None
+        self.angle_dilation: Optional[Any] = None
+        self.max_hydrostatic_tension: Optional[Any] = None
+        self.initial_suction: Optional[Any] = None
+        self.phi_b: Optional[Any] = None
+        self.use_water_retention: Optional[Any] = None
+        self.water_retention_param_1: Optional[Any] = None
+        self.water_retention_param_2: Optional[Any] = None
+        self.water_retention_param_3: Optional[Any] = None
+        self.water_retention_param_4: Optional[Any] = None
+        self.use_undrained_shear_transition: Optional[Any] = None
+        self.water_influence_A1: Optional[Any] = None
+        self.water_influence_B1: Optional[Any] = None
+        self.water_influence_W: Optional[Any] = None
+        self.beta_strain_rate: Optional[Any] = None
+        self.ref_strain_rate: Optional[Any] = None
+        self.use_variable_elastic_modulus: Optional[Any] = None
+        self.variable_modulus_m: Optional[Any] = None
+        self.variable_modulus_nu_y: Optional[Any] = None
+        self.use_linearly_varying_cohesion: Optional[Any] = None
+        self.linear_cohesion_a: Optional[Any] = None
+        self.linear_cohesion_y_ref: Optional[Any] = None
+        self.linear_cohesion_depth_direction: Optional[Any] = None
+        self.use_softening: Optional[Any] = None
+        self.softening_St: Optional[Any] = None
+        self.softening_strain_95: Optional[Any] = None
+        self.use_regularized_nonlocal_softening: Optional[Any] = None
+        self.regularization_t_FE: Optional[Any] = None
+        self.regularization_t_shear: Optional[Any] = None
+        self.use_nonlocal_correction: Optional[Any] = None
+        self.nonlocal_n: Optional[Any] = None
+        self.nonlocal_l: Optional[Any] = None
+        self.retention_model: Optional[Any] = None
+
+    @classmethod
+    def get_spec(cls):
+        return {
+            'tag': 'mohr_coulomb',
+            'need_applies_to': 'type mohr_coulomb',
+            'spec_type': 'NO_DATA',
+            'attributes': {
+            },
+            'children_spec': [
+                {'tag': 'shear_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'bulk_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'cohesion', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'angle_internal_friction', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'angle_dilation', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'max_hydrostatic_tension', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'initial_suction', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'phi_b', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'use_water_retention', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'water_retention_param_1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'water_retention_param_2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'water_retention_param_3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'water_retention_param_4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'use_undrained_shear_transition', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'water_influence_A1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'water_influence_B1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'water_influence_W', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'beta_strain_rate', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'ref_strain_rate', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'use_variable_elastic_modulus', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'variable_modulus_m', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'variable_modulus_nu_y', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'use_linearly_varying_cohesion', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'linear_cohesion_a', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'linear_cohesion_y_ref', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'linear_cohesion_depth_direction', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'x-, x+, y-, y+, z-, z+'}, 'need_applies_to': None},
+                {'tag': 'use_softening', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'softening_St', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'softening_strain_95', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'use_regularized_nonlocal_softening', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'regularization_t_FE', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'regularization_t_shear', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'use_nonlocal_correction', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'nonlocal_n', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'nonlocal_l', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'retention_model', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'state_surface, van_genuchten, gallipoli'}, 'need_applies_to': None},
+            ]
+        }
+
 class Integration_parameters(UpsElement):
     tag_name = 'integration_parameters'
     
@@ -5238,6 +5475,49 @@ class Integration_parameters(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'integration_parameters',
+            'need_applies_to': 'type mohr_coulomb',
+            'spec_type': 'NO_DATA',
+            'attributes': {
+            },
+            'children_spec': [
+                {'tag': 'max_iterations_pegasus', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'alpha_check_pegasus', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'alpha_change_pegasus', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'alpha_ratio_pegasus', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'yield_tolerance', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'integration_tolerance', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'beta_safety_factor', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'minimum_mean_stress', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'suction_tolerance', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'drift_correction_algorithm', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'none, at_begin, at_end'}, 'need_applies_to': None},
+                {'tag': 'tolerance_algorithm', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'relative, sloan'}, 'need_applies_to': None},
+                {'tag': 'solution_algorithm', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'modified_euler, RK3, RK3_Bogacki, RK4, RK5_England,                                                  RK5_Cash, RK5_Dormand, RK5_Bogacki, extrapolation'}, 'need_applies_to': None},
+            ]
+        }
+
+class Constitutive_model_Mohr_coulomb(UpsElement):
+    tag_name = 'mohr_coulomb'
+    
+    def __init__(self):
+        super().__init__()
+        # Children
+        self.max_iterations_pegasus: Optional[Any] = None
+        self.alpha_check_pegasus: Optional[Any] = None
+        self.alpha_change_pegasus: Optional[Any] = None
+        self.alpha_ratio_pegasus: Optional[Any] = None
+        self.yield_tolerance: Optional[Any] = None
+        self.integration_tolerance: Optional[Any] = None
+        self.beta_safety_factor: Optional[Any] = None
+        self.minimum_mean_stress: Optional[Any] = None
+        self.suction_tolerance: Optional[Any] = None
+        self.drift_correction_algorithm: Optional[Any] = None
+        self.tolerance_algorithm: Optional[Any] = None
+        self.solution_algorithm: Optional[Any] = None
+
+    @classmethod
+    def get_spec(cls):
+        return {
+            'tag': 'mohr_coulomb',
             'need_applies_to': 'type mohr_coulomb',
             'spec_type': 'NO_DATA',
             'attributes': {
@@ -5382,6 +5662,998 @@ class Elastic_moduli_model(UpsElement):
             ]
         }
 
+class Arena(UpsElement):
+    tag_name = 'arena'
+    
+    def __init__(self):
+        super().__init__()
+        # Attributes
+        self.type: Optional[str] = None
+        # Children
+        self.bulk_modulus: Optional[Any] = None
+        self.shear_modulus: Optional[Any] = None
+        self.B0: Optional[Any] = None
+        self.B1: Optional[Any] = None
+        self.B2: Optional[Any] = None
+        self.B3: Optional[Any] = None
+        self.B4: Optional[Any] = None
+        self.G0: Optional[Any] = None
+        self.G1: Optional[Any] = None
+        self.G2: Optional[Any] = None
+        self.G3: Optional[Any] = None
+        self.G4: Optional[Any] = None
+        self.b0: Optional[Any] = None
+        self.b1: Optional[Any] = None
+        self.b2: Optional[Any] = None
+        self.b3: Optional[Any] = None
+        self.b4: Optional[Any] = None
+        self.nu1: Optional[Any] = None
+        self.nu2: Optional[Any] = None
+        self.vol_frac_phase1: Optional[Any] = None
+        self.b0_phase1: Optional[Any] = None
+        self.b1_phase1: Optional[Any] = None
+        self.b2_phase1: Optional[Any] = None
+        self.b3_phase1: Optional[Any] = None
+        self.b4_phase1: Optional[Any] = None
+        self.G0_phase1: Optional[Any] = None
+        self.nu1_phase1: Optional[Any] = None
+        self.nu2_phase1: Optional[Any] = None
+        self.b0_phase2: Optional[Any] = None
+        self.b1_phase2: Optional[Any] = None
+        self.b2_phase2: Optional[Any] = None
+        self.b3_phase2: Optional[Any] = None
+        self.b4_phase2: Optional[Any] = None
+        self.G0_phase2: Optional[Any] = None
+        self.nu1_phase2: Optional[Any] = None
+        self.nu2_phase2: Optional[Any] = None
+        self.filename: Optional[Any] = None
+        self.independent_variables: Optional[Any] = None
+        self.dependent_variables: Optional[Any] = None
+        self.interpolation: Optional[Any] = None
+        self.nu: Optional[Any] = None
+        self.min_strain: Optional[Any] = None
+        self.max_strain: Optional[Any] = None
+        self.min_pressure: Optional[Any] = None
+        self.max_pressure: Optional[Any] = None
+        self.mean_elastic_strain: Optional[Any] = None
+        self.std_dev_elastic_strain: Optional[Any] = None
+        self.mean_plastic_strain: Optional[Any] = None
+        self.std_dev_plastic_strain: Optional[Any] = None
+        self.mean_bulk_modulus: Optional[Any] = None
+        self.std_dev_bulk_modulus: Optional[Any] = None
+
+    @classmethod
+    def get_spec(cls):
+        return {
+            'tag': 'arena',
+            'need_applies_to': 'type arena Arenisca3 camclay soil_model_brannon arena  arena_mixture  tabular_plasticity tabular_plasticity_cap',
+            'spec_type': 'NO_DATA',
+            'attributes': {
+                'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'constant  arenisca3  arena  arena_mixture  metal_iso neural_net neural_net_bulk support_vector soil_model_brannon tabular tabular_bulk tabular_bulk_pressure'},
+            },
+            'children_spec': [
+                {'tag': 'bulk_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type constant'},
+                {'tag': 'shear_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type constant'},
+                {'tag': 'B0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'B1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'B2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'B3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'B4', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'G0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon arena tabular neural_net neural_net_bulk support_vector'},
+                {'tag': 'G1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'G2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'G3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'G4', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'b0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'b1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'b2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'b3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'b4', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'nu1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'nu2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'vol_frac.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b0.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b2.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b3.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b4.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'G0.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'nu1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'nu2.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b0.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b2.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b3.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b4.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'G0.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'nu1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'nu2.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'filename', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular neural_net neural_net_bulk support_vector'},
+                {'tag': 'independent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular'},
+                {'tag': 'dependent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular'},
+                {'tag': 'interpolation', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': 'type tabular'},
+                {'tag': 'nu', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type tabular neural_net neural_net_bulk support_vector'},
+                {'tag': 'min_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net'},
+                {'tag': 'max_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net'},
+                {'tag': 'min_pressure', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net'},
+                {'tag': 'max_pressure', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net'},
+                {'tag': 'mean_elastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'std_dev_elastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'mean_plastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'std_dev_plastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'mean_bulk_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'std_dev_bulk_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+            ]
+        }
+
+class Arenisca3(UpsElement):
+    tag_name = 'Arenisca3'
+    
+    def __init__(self):
+        super().__init__()
+        # Attributes
+        self.type: Optional[str] = None
+        # Children
+        self.bulk_modulus: Optional[Any] = None
+        self.shear_modulus: Optional[Any] = None
+        self.B0: Optional[Any] = None
+        self.B1: Optional[Any] = None
+        self.B2: Optional[Any] = None
+        self.B3: Optional[Any] = None
+        self.B4: Optional[Any] = None
+        self.G0: Optional[Any] = None
+        self.G1: Optional[Any] = None
+        self.G2: Optional[Any] = None
+        self.G3: Optional[Any] = None
+        self.G4: Optional[Any] = None
+        self.b0: Optional[Any] = None
+        self.b1: Optional[Any] = None
+        self.b2: Optional[Any] = None
+        self.b3: Optional[Any] = None
+        self.b4: Optional[Any] = None
+        self.nu1: Optional[Any] = None
+        self.nu2: Optional[Any] = None
+        self.vol_frac_phase1: Optional[Any] = None
+        self.b0_phase1: Optional[Any] = None
+        self.b1_phase1: Optional[Any] = None
+        self.b2_phase1: Optional[Any] = None
+        self.b3_phase1: Optional[Any] = None
+        self.b4_phase1: Optional[Any] = None
+        self.G0_phase1: Optional[Any] = None
+        self.nu1_phase1: Optional[Any] = None
+        self.nu2_phase1: Optional[Any] = None
+        self.b0_phase2: Optional[Any] = None
+        self.b1_phase2: Optional[Any] = None
+        self.b2_phase2: Optional[Any] = None
+        self.b3_phase2: Optional[Any] = None
+        self.b4_phase2: Optional[Any] = None
+        self.G0_phase2: Optional[Any] = None
+        self.nu1_phase2: Optional[Any] = None
+        self.nu2_phase2: Optional[Any] = None
+        self.filename: Optional[Any] = None
+        self.independent_variables: Optional[Any] = None
+        self.dependent_variables: Optional[Any] = None
+        self.interpolation: Optional[Any] = None
+        self.nu: Optional[Any] = None
+        self.min_strain: Optional[Any] = None
+        self.max_strain: Optional[Any] = None
+        self.min_pressure: Optional[Any] = None
+        self.max_pressure: Optional[Any] = None
+        self.mean_elastic_strain: Optional[Any] = None
+        self.std_dev_elastic_strain: Optional[Any] = None
+        self.mean_plastic_strain: Optional[Any] = None
+        self.std_dev_plastic_strain: Optional[Any] = None
+        self.mean_bulk_modulus: Optional[Any] = None
+        self.std_dev_bulk_modulus: Optional[Any] = None
+
+    @classmethod
+    def get_spec(cls):
+        return {
+            'tag': 'Arenisca3',
+            'need_applies_to': 'type arena Arenisca3 camclay soil_model_brannon arena  arena_mixture  tabular_plasticity tabular_plasticity_cap',
+            'spec_type': 'NO_DATA',
+            'attributes': {
+                'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'constant  arenisca3  arena  arena_mixture  metal_iso neural_net neural_net_bulk support_vector soil_model_brannon tabular tabular_bulk tabular_bulk_pressure'},
+            },
+            'children_spec': [
+                {'tag': 'bulk_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type constant'},
+                {'tag': 'shear_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type constant'},
+                {'tag': 'B0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'B1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'B2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'B3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'B4', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'G0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon arena tabular neural_net neural_net_bulk support_vector'},
+                {'tag': 'G1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'G2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'G3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'G4', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'b0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'b1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'b2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'b3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'b4', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'nu1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'nu2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'vol_frac.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b0.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b2.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b3.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b4.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'G0.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'nu1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'nu2.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b0.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b2.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b3.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b4.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'G0.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'nu1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'nu2.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'filename', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular neural_net neural_net_bulk support_vector'},
+                {'tag': 'independent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular'},
+                {'tag': 'dependent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular'},
+                {'tag': 'interpolation', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': 'type tabular'},
+                {'tag': 'nu', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type tabular neural_net neural_net_bulk support_vector'},
+                {'tag': 'min_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net'},
+                {'tag': 'max_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net'},
+                {'tag': 'min_pressure', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net'},
+                {'tag': 'max_pressure', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net'},
+                {'tag': 'mean_elastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'std_dev_elastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'mean_plastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'std_dev_plastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'mean_bulk_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'std_dev_bulk_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+            ]
+        }
+
+class Camclay(UpsElement):
+    tag_name = 'camclay'
+    
+    def __init__(self):
+        super().__init__()
+        # Attributes
+        self.type: Optional[str] = None
+        # Children
+        self.bulk_modulus: Optional[Any] = None
+        self.shear_modulus: Optional[Any] = None
+        self.B0: Optional[Any] = None
+        self.B1: Optional[Any] = None
+        self.B2: Optional[Any] = None
+        self.B3: Optional[Any] = None
+        self.B4: Optional[Any] = None
+        self.G0: Optional[Any] = None
+        self.G1: Optional[Any] = None
+        self.G2: Optional[Any] = None
+        self.G3: Optional[Any] = None
+        self.G4: Optional[Any] = None
+        self.b0: Optional[Any] = None
+        self.b1: Optional[Any] = None
+        self.b2: Optional[Any] = None
+        self.b3: Optional[Any] = None
+        self.b4: Optional[Any] = None
+        self.nu1: Optional[Any] = None
+        self.nu2: Optional[Any] = None
+        self.vol_frac_phase1: Optional[Any] = None
+        self.b0_phase1: Optional[Any] = None
+        self.b1_phase1: Optional[Any] = None
+        self.b2_phase1: Optional[Any] = None
+        self.b3_phase1: Optional[Any] = None
+        self.b4_phase1: Optional[Any] = None
+        self.G0_phase1: Optional[Any] = None
+        self.nu1_phase1: Optional[Any] = None
+        self.nu2_phase1: Optional[Any] = None
+        self.b0_phase2: Optional[Any] = None
+        self.b1_phase2: Optional[Any] = None
+        self.b2_phase2: Optional[Any] = None
+        self.b3_phase2: Optional[Any] = None
+        self.b4_phase2: Optional[Any] = None
+        self.G0_phase2: Optional[Any] = None
+        self.nu1_phase2: Optional[Any] = None
+        self.nu2_phase2: Optional[Any] = None
+        self.filename: Optional[Any] = None
+        self.independent_variables: Optional[Any] = None
+        self.dependent_variables: Optional[Any] = None
+        self.interpolation: Optional[Any] = None
+        self.nu: Optional[Any] = None
+        self.min_strain: Optional[Any] = None
+        self.max_strain: Optional[Any] = None
+        self.min_pressure: Optional[Any] = None
+        self.max_pressure: Optional[Any] = None
+        self.mean_elastic_strain: Optional[Any] = None
+        self.std_dev_elastic_strain: Optional[Any] = None
+        self.mean_plastic_strain: Optional[Any] = None
+        self.std_dev_plastic_strain: Optional[Any] = None
+        self.mean_bulk_modulus: Optional[Any] = None
+        self.std_dev_bulk_modulus: Optional[Any] = None
+
+    @classmethod
+    def get_spec(cls):
+        return {
+            'tag': 'camclay',
+            'need_applies_to': 'type arena Arenisca3 camclay soil_model_brannon arena  arena_mixture  tabular_plasticity tabular_plasticity_cap',
+            'spec_type': 'NO_DATA',
+            'attributes': {
+                'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'constant  arenisca3  arena  arena_mixture  metal_iso neural_net neural_net_bulk support_vector soil_model_brannon tabular tabular_bulk tabular_bulk_pressure'},
+            },
+            'children_spec': [
+                {'tag': 'bulk_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type constant'},
+                {'tag': 'shear_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type constant'},
+                {'tag': 'B0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'B1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'B2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'B3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'B4', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'G0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon arena tabular neural_net neural_net_bulk support_vector'},
+                {'tag': 'G1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'G2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'G3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'G4', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'b0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'b1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'b2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'b3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'b4', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'nu1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'nu2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'vol_frac.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b0.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b2.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b3.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b4.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'G0.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'nu1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'nu2.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b0.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b2.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b3.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b4.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'G0.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'nu1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'nu2.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'filename', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular neural_net neural_net_bulk support_vector'},
+                {'tag': 'independent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular'},
+                {'tag': 'dependent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular'},
+                {'tag': 'interpolation', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': 'type tabular'},
+                {'tag': 'nu', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type tabular neural_net neural_net_bulk support_vector'},
+                {'tag': 'min_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net'},
+                {'tag': 'max_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net'},
+                {'tag': 'min_pressure', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net'},
+                {'tag': 'max_pressure', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net'},
+                {'tag': 'mean_elastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'std_dev_elastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'mean_plastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'std_dev_plastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'mean_bulk_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'std_dev_bulk_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+            ]
+        }
+
+class Soil_model_brannon(UpsElement):
+    tag_name = 'soil_model_brannon'
+    
+    def __init__(self):
+        super().__init__()
+        # Attributes
+        self.type: Optional[str] = None
+        # Children
+        self.bulk_modulus: Optional[Any] = None
+        self.shear_modulus: Optional[Any] = None
+        self.B0: Optional[Any] = None
+        self.B1: Optional[Any] = None
+        self.B2: Optional[Any] = None
+        self.B3: Optional[Any] = None
+        self.B4: Optional[Any] = None
+        self.G0: Optional[Any] = None
+        self.G1: Optional[Any] = None
+        self.G2: Optional[Any] = None
+        self.G3: Optional[Any] = None
+        self.G4: Optional[Any] = None
+        self.b0: Optional[Any] = None
+        self.b1: Optional[Any] = None
+        self.b2: Optional[Any] = None
+        self.b3: Optional[Any] = None
+        self.b4: Optional[Any] = None
+        self.nu1: Optional[Any] = None
+        self.nu2: Optional[Any] = None
+        self.vol_frac_phase1: Optional[Any] = None
+        self.b0_phase1: Optional[Any] = None
+        self.b1_phase1: Optional[Any] = None
+        self.b2_phase1: Optional[Any] = None
+        self.b3_phase1: Optional[Any] = None
+        self.b4_phase1: Optional[Any] = None
+        self.G0_phase1: Optional[Any] = None
+        self.nu1_phase1: Optional[Any] = None
+        self.nu2_phase1: Optional[Any] = None
+        self.b0_phase2: Optional[Any] = None
+        self.b1_phase2: Optional[Any] = None
+        self.b2_phase2: Optional[Any] = None
+        self.b3_phase2: Optional[Any] = None
+        self.b4_phase2: Optional[Any] = None
+        self.G0_phase2: Optional[Any] = None
+        self.nu1_phase2: Optional[Any] = None
+        self.nu2_phase2: Optional[Any] = None
+        self.filename: Optional[Any] = None
+        self.independent_variables: Optional[Any] = None
+        self.dependent_variables: Optional[Any] = None
+        self.interpolation: Optional[Any] = None
+        self.nu: Optional[Any] = None
+        self.min_strain: Optional[Any] = None
+        self.max_strain: Optional[Any] = None
+        self.min_pressure: Optional[Any] = None
+        self.max_pressure: Optional[Any] = None
+        self.mean_elastic_strain: Optional[Any] = None
+        self.std_dev_elastic_strain: Optional[Any] = None
+        self.mean_plastic_strain: Optional[Any] = None
+        self.std_dev_plastic_strain: Optional[Any] = None
+        self.mean_bulk_modulus: Optional[Any] = None
+        self.std_dev_bulk_modulus: Optional[Any] = None
+
+    @classmethod
+    def get_spec(cls):
+        return {
+            'tag': 'soil_model_brannon',
+            'need_applies_to': 'type arena Arenisca3 camclay soil_model_brannon arena  arena_mixture  tabular_plasticity tabular_plasticity_cap',
+            'spec_type': 'NO_DATA',
+            'attributes': {
+                'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'constant  arenisca3  arena  arena_mixture  metal_iso neural_net neural_net_bulk support_vector soil_model_brannon tabular tabular_bulk tabular_bulk_pressure'},
+            },
+            'children_spec': [
+                {'tag': 'bulk_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type constant'},
+                {'tag': 'shear_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type constant'},
+                {'tag': 'B0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'B1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'B2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'B3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'B4', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'G0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon arena tabular neural_net neural_net_bulk support_vector'},
+                {'tag': 'G1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'G2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'G3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'G4', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'b0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'b1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'b2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'b3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'b4', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'nu1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'nu2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'vol_frac.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b0.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b2.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b3.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b4.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'G0.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'nu1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'nu2.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b0.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b2.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b3.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b4.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'G0.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'nu1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'nu2.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'filename', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular neural_net neural_net_bulk support_vector'},
+                {'tag': 'independent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular'},
+                {'tag': 'dependent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular'},
+                {'tag': 'interpolation', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': 'type tabular'},
+                {'tag': 'nu', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type tabular neural_net neural_net_bulk support_vector'},
+                {'tag': 'min_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net'},
+                {'tag': 'max_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net'},
+                {'tag': 'min_pressure', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net'},
+                {'tag': 'max_pressure', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net'},
+                {'tag': 'mean_elastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'std_dev_elastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'mean_plastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'std_dev_plastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'mean_bulk_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'std_dev_bulk_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+            ]
+        }
+
+class Constitutive_model_Arena(UpsElement):
+    tag_name = 'arena'
+    
+    def __init__(self):
+        super().__init__()
+        # Attributes
+        self.type: Optional[str] = None
+        # Children
+        self.bulk_modulus: Optional[Any] = None
+        self.shear_modulus: Optional[Any] = None
+        self.B0: Optional[Any] = None
+        self.B1: Optional[Any] = None
+        self.B2: Optional[Any] = None
+        self.B3: Optional[Any] = None
+        self.B4: Optional[Any] = None
+        self.G0: Optional[Any] = None
+        self.G1: Optional[Any] = None
+        self.G2: Optional[Any] = None
+        self.G3: Optional[Any] = None
+        self.G4: Optional[Any] = None
+        self.b0: Optional[Any] = None
+        self.b1: Optional[Any] = None
+        self.b2: Optional[Any] = None
+        self.b3: Optional[Any] = None
+        self.b4: Optional[Any] = None
+        self.nu1: Optional[Any] = None
+        self.nu2: Optional[Any] = None
+        self.vol_frac_phase1: Optional[Any] = None
+        self.b0_phase1: Optional[Any] = None
+        self.b1_phase1: Optional[Any] = None
+        self.b2_phase1: Optional[Any] = None
+        self.b3_phase1: Optional[Any] = None
+        self.b4_phase1: Optional[Any] = None
+        self.G0_phase1: Optional[Any] = None
+        self.nu1_phase1: Optional[Any] = None
+        self.nu2_phase1: Optional[Any] = None
+        self.b0_phase2: Optional[Any] = None
+        self.b1_phase2: Optional[Any] = None
+        self.b2_phase2: Optional[Any] = None
+        self.b3_phase2: Optional[Any] = None
+        self.b4_phase2: Optional[Any] = None
+        self.G0_phase2: Optional[Any] = None
+        self.nu1_phase2: Optional[Any] = None
+        self.nu2_phase2: Optional[Any] = None
+        self.filename: Optional[Any] = None
+        self.independent_variables: Optional[Any] = None
+        self.dependent_variables: Optional[Any] = None
+        self.interpolation: Optional[Any] = None
+        self.nu: Optional[Any] = None
+        self.min_strain: Optional[Any] = None
+        self.max_strain: Optional[Any] = None
+        self.min_pressure: Optional[Any] = None
+        self.max_pressure: Optional[Any] = None
+        self.mean_elastic_strain: Optional[Any] = None
+        self.std_dev_elastic_strain: Optional[Any] = None
+        self.mean_plastic_strain: Optional[Any] = None
+        self.std_dev_plastic_strain: Optional[Any] = None
+        self.mean_bulk_modulus: Optional[Any] = None
+        self.std_dev_bulk_modulus: Optional[Any] = None
+
+    @classmethod
+    def get_spec(cls):
+        return {
+            'tag': 'arena',
+            'need_applies_to': 'type arena Arenisca3 camclay soil_model_brannon arena  arena_mixture  tabular_plasticity tabular_plasticity_cap',
+            'spec_type': 'NO_DATA',
+            'attributes': {
+                'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'constant  arenisca3  arena  arena_mixture  metal_iso neural_net neural_net_bulk support_vector soil_model_brannon tabular tabular_bulk tabular_bulk_pressure'},
+            },
+            'children_spec': [
+                {'tag': 'bulk_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type constant'},
+                {'tag': 'shear_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type constant'},
+                {'tag': 'B0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'B1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'B2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'B3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'B4', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'G0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon arena tabular neural_net neural_net_bulk support_vector'},
+                {'tag': 'G1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'G2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'G3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'G4', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'b0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'b1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'b2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'b3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'b4', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'nu1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'nu2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'vol_frac.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b0.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b2.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b3.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b4.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'G0.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'nu1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'nu2.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b0.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b2.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b3.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b4.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'G0.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'nu1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'nu2.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'filename', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular neural_net neural_net_bulk support_vector'},
+                {'tag': 'independent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular'},
+                {'tag': 'dependent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular'},
+                {'tag': 'interpolation', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': 'type tabular'},
+                {'tag': 'nu', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type tabular neural_net neural_net_bulk support_vector'},
+                {'tag': 'min_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net'},
+                {'tag': 'max_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net'},
+                {'tag': 'min_pressure', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net'},
+                {'tag': 'max_pressure', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net'},
+                {'tag': 'mean_elastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'std_dev_elastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'mean_plastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'std_dev_plastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'mean_bulk_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'std_dev_bulk_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+            ]
+        }
+
+class Arena_mixture(UpsElement):
+    tag_name = 'arena_mixture'
+    
+    def __init__(self):
+        super().__init__()
+        # Attributes
+        self.type: Optional[str] = None
+        # Children
+        self.bulk_modulus: Optional[Any] = None
+        self.shear_modulus: Optional[Any] = None
+        self.B0: Optional[Any] = None
+        self.B1: Optional[Any] = None
+        self.B2: Optional[Any] = None
+        self.B3: Optional[Any] = None
+        self.B4: Optional[Any] = None
+        self.G0: Optional[Any] = None
+        self.G1: Optional[Any] = None
+        self.G2: Optional[Any] = None
+        self.G3: Optional[Any] = None
+        self.G4: Optional[Any] = None
+        self.b0: Optional[Any] = None
+        self.b1: Optional[Any] = None
+        self.b2: Optional[Any] = None
+        self.b3: Optional[Any] = None
+        self.b4: Optional[Any] = None
+        self.nu1: Optional[Any] = None
+        self.nu2: Optional[Any] = None
+        self.vol_frac_phase1: Optional[Any] = None
+        self.b0_phase1: Optional[Any] = None
+        self.b1_phase1: Optional[Any] = None
+        self.b2_phase1: Optional[Any] = None
+        self.b3_phase1: Optional[Any] = None
+        self.b4_phase1: Optional[Any] = None
+        self.G0_phase1: Optional[Any] = None
+        self.nu1_phase1: Optional[Any] = None
+        self.nu2_phase1: Optional[Any] = None
+        self.b0_phase2: Optional[Any] = None
+        self.b1_phase2: Optional[Any] = None
+        self.b2_phase2: Optional[Any] = None
+        self.b3_phase2: Optional[Any] = None
+        self.b4_phase2: Optional[Any] = None
+        self.G0_phase2: Optional[Any] = None
+        self.nu1_phase2: Optional[Any] = None
+        self.nu2_phase2: Optional[Any] = None
+        self.filename: Optional[Any] = None
+        self.independent_variables: Optional[Any] = None
+        self.dependent_variables: Optional[Any] = None
+        self.interpolation: Optional[Any] = None
+        self.nu: Optional[Any] = None
+        self.min_strain: Optional[Any] = None
+        self.max_strain: Optional[Any] = None
+        self.min_pressure: Optional[Any] = None
+        self.max_pressure: Optional[Any] = None
+        self.mean_elastic_strain: Optional[Any] = None
+        self.std_dev_elastic_strain: Optional[Any] = None
+        self.mean_plastic_strain: Optional[Any] = None
+        self.std_dev_plastic_strain: Optional[Any] = None
+        self.mean_bulk_modulus: Optional[Any] = None
+        self.std_dev_bulk_modulus: Optional[Any] = None
+
+    @classmethod
+    def get_spec(cls):
+        return {
+            'tag': 'arena_mixture',
+            'need_applies_to': 'type arena Arenisca3 camclay soil_model_brannon arena  arena_mixture  tabular_plasticity tabular_plasticity_cap',
+            'spec_type': 'NO_DATA',
+            'attributes': {
+                'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'constant  arenisca3  arena  arena_mixture  metal_iso neural_net neural_net_bulk support_vector soil_model_brannon tabular tabular_bulk tabular_bulk_pressure'},
+            },
+            'children_spec': [
+                {'tag': 'bulk_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type constant'},
+                {'tag': 'shear_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type constant'},
+                {'tag': 'B0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'B1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'B2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'B3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'B4', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'G0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon arena tabular neural_net neural_net_bulk support_vector'},
+                {'tag': 'G1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'G2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'G3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'G4', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'b0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'b1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'b2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'b3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'b4', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'nu1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'nu2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'vol_frac.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b0.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b2.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b3.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b4.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'G0.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'nu1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'nu2.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b0.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b2.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b3.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b4.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'G0.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'nu1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'nu2.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'filename', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular neural_net neural_net_bulk support_vector'},
+                {'tag': 'independent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular'},
+                {'tag': 'dependent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular'},
+                {'tag': 'interpolation', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': 'type tabular'},
+                {'tag': 'nu', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type tabular neural_net neural_net_bulk support_vector'},
+                {'tag': 'min_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net'},
+                {'tag': 'max_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net'},
+                {'tag': 'min_pressure', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net'},
+                {'tag': 'max_pressure', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net'},
+                {'tag': 'mean_elastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'std_dev_elastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'mean_plastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'std_dev_plastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'mean_bulk_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'std_dev_bulk_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+            ]
+        }
+
+class Tabular_plasticity(UpsElement):
+    tag_name = 'tabular_plasticity'
+    
+    def __init__(self):
+        super().__init__()
+        # Attributes
+        self.type: Optional[str] = None
+        # Children
+        self.bulk_modulus: Optional[Any] = None
+        self.shear_modulus: Optional[Any] = None
+        self.B0: Optional[Any] = None
+        self.B1: Optional[Any] = None
+        self.B2: Optional[Any] = None
+        self.B3: Optional[Any] = None
+        self.B4: Optional[Any] = None
+        self.G0: Optional[Any] = None
+        self.G1: Optional[Any] = None
+        self.G2: Optional[Any] = None
+        self.G3: Optional[Any] = None
+        self.G4: Optional[Any] = None
+        self.b0: Optional[Any] = None
+        self.b1: Optional[Any] = None
+        self.b2: Optional[Any] = None
+        self.b3: Optional[Any] = None
+        self.b4: Optional[Any] = None
+        self.nu1: Optional[Any] = None
+        self.nu2: Optional[Any] = None
+        self.vol_frac_phase1: Optional[Any] = None
+        self.b0_phase1: Optional[Any] = None
+        self.b1_phase1: Optional[Any] = None
+        self.b2_phase1: Optional[Any] = None
+        self.b3_phase1: Optional[Any] = None
+        self.b4_phase1: Optional[Any] = None
+        self.G0_phase1: Optional[Any] = None
+        self.nu1_phase1: Optional[Any] = None
+        self.nu2_phase1: Optional[Any] = None
+        self.b0_phase2: Optional[Any] = None
+        self.b1_phase2: Optional[Any] = None
+        self.b2_phase2: Optional[Any] = None
+        self.b3_phase2: Optional[Any] = None
+        self.b4_phase2: Optional[Any] = None
+        self.G0_phase2: Optional[Any] = None
+        self.nu1_phase2: Optional[Any] = None
+        self.nu2_phase2: Optional[Any] = None
+        self.filename: Optional[Any] = None
+        self.independent_variables: Optional[Any] = None
+        self.dependent_variables: Optional[Any] = None
+        self.interpolation: Optional[Any] = None
+        self.nu: Optional[Any] = None
+        self.min_strain: Optional[Any] = None
+        self.max_strain: Optional[Any] = None
+        self.min_pressure: Optional[Any] = None
+        self.max_pressure: Optional[Any] = None
+        self.mean_elastic_strain: Optional[Any] = None
+        self.std_dev_elastic_strain: Optional[Any] = None
+        self.mean_plastic_strain: Optional[Any] = None
+        self.std_dev_plastic_strain: Optional[Any] = None
+        self.mean_bulk_modulus: Optional[Any] = None
+        self.std_dev_bulk_modulus: Optional[Any] = None
+
+    @classmethod
+    def get_spec(cls):
+        return {
+            'tag': 'tabular_plasticity',
+            'need_applies_to': 'type arena Arenisca3 camclay soil_model_brannon arena  arena_mixture  tabular_plasticity tabular_plasticity_cap',
+            'spec_type': 'NO_DATA',
+            'attributes': {
+                'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'constant  arenisca3  arena  arena_mixture  metal_iso neural_net neural_net_bulk support_vector soil_model_brannon tabular tabular_bulk tabular_bulk_pressure'},
+            },
+            'children_spec': [
+                {'tag': 'bulk_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type constant'},
+                {'tag': 'shear_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type constant'},
+                {'tag': 'B0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'B1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'B2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'B3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'B4', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'G0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon arena tabular neural_net neural_net_bulk support_vector'},
+                {'tag': 'G1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'G2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'G3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'G4', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'b0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'b1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'b2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'b3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'b4', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'nu1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'nu2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'vol_frac.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b0.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b2.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b3.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b4.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'G0.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'nu1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'nu2.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b0.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b2.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b3.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b4.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'G0.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'nu1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'nu2.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'filename', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular neural_net neural_net_bulk support_vector'},
+                {'tag': 'independent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular'},
+                {'tag': 'dependent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular'},
+                {'tag': 'interpolation', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': 'type tabular'},
+                {'tag': 'nu', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type tabular neural_net neural_net_bulk support_vector'},
+                {'tag': 'min_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net'},
+                {'tag': 'max_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net'},
+                {'tag': 'min_pressure', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net'},
+                {'tag': 'max_pressure', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net'},
+                {'tag': 'mean_elastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'std_dev_elastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'mean_plastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'std_dev_plastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'mean_bulk_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'std_dev_bulk_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+            ]
+        }
+
+class Tabular_plasticity_cap(UpsElement):
+    tag_name = 'tabular_plasticity_cap'
+    
+    def __init__(self):
+        super().__init__()
+        # Attributes
+        self.type: Optional[str] = None
+        # Children
+        self.bulk_modulus: Optional[Any] = None
+        self.shear_modulus: Optional[Any] = None
+        self.B0: Optional[Any] = None
+        self.B1: Optional[Any] = None
+        self.B2: Optional[Any] = None
+        self.B3: Optional[Any] = None
+        self.B4: Optional[Any] = None
+        self.G0: Optional[Any] = None
+        self.G1: Optional[Any] = None
+        self.G2: Optional[Any] = None
+        self.G3: Optional[Any] = None
+        self.G4: Optional[Any] = None
+        self.b0: Optional[Any] = None
+        self.b1: Optional[Any] = None
+        self.b2: Optional[Any] = None
+        self.b3: Optional[Any] = None
+        self.b4: Optional[Any] = None
+        self.nu1: Optional[Any] = None
+        self.nu2: Optional[Any] = None
+        self.vol_frac_phase1: Optional[Any] = None
+        self.b0_phase1: Optional[Any] = None
+        self.b1_phase1: Optional[Any] = None
+        self.b2_phase1: Optional[Any] = None
+        self.b3_phase1: Optional[Any] = None
+        self.b4_phase1: Optional[Any] = None
+        self.G0_phase1: Optional[Any] = None
+        self.nu1_phase1: Optional[Any] = None
+        self.nu2_phase1: Optional[Any] = None
+        self.b0_phase2: Optional[Any] = None
+        self.b1_phase2: Optional[Any] = None
+        self.b2_phase2: Optional[Any] = None
+        self.b3_phase2: Optional[Any] = None
+        self.b4_phase2: Optional[Any] = None
+        self.G0_phase2: Optional[Any] = None
+        self.nu1_phase2: Optional[Any] = None
+        self.nu2_phase2: Optional[Any] = None
+        self.filename: Optional[Any] = None
+        self.independent_variables: Optional[Any] = None
+        self.dependent_variables: Optional[Any] = None
+        self.interpolation: Optional[Any] = None
+        self.nu: Optional[Any] = None
+        self.min_strain: Optional[Any] = None
+        self.max_strain: Optional[Any] = None
+        self.min_pressure: Optional[Any] = None
+        self.max_pressure: Optional[Any] = None
+        self.mean_elastic_strain: Optional[Any] = None
+        self.std_dev_elastic_strain: Optional[Any] = None
+        self.mean_plastic_strain: Optional[Any] = None
+        self.std_dev_plastic_strain: Optional[Any] = None
+        self.mean_bulk_modulus: Optional[Any] = None
+        self.std_dev_bulk_modulus: Optional[Any] = None
+
+    @classmethod
+    def get_spec(cls):
+        return {
+            'tag': 'tabular_plasticity_cap',
+            'need_applies_to': 'type arena Arenisca3 camclay soil_model_brannon arena  arena_mixture  tabular_plasticity tabular_plasticity_cap',
+            'spec_type': 'NO_DATA',
+            'attributes': {
+                'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'constant  arenisca3  arena  arena_mixture  metal_iso neural_net neural_net_bulk support_vector soil_model_brannon tabular tabular_bulk tabular_bulk_pressure'},
+            },
+            'children_spec': [
+                {'tag': 'bulk_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type constant'},
+                {'tag': 'shear_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type constant'},
+                {'tag': 'B0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'B1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'B2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'B3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'B4', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'G0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon arena tabular neural_net neural_net_bulk support_vector'},
+                {'tag': 'G1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'G2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'G3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'G4', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'b0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'b1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'b2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'b3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'b4', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'nu1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'nu2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'vol_frac.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b0.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b2.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b3.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b4.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'G0.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'nu1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'nu2.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b0.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b2.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b3.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b4.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'G0.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'nu1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'nu2.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'filename', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular neural_net neural_net_bulk support_vector'},
+                {'tag': 'independent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular'},
+                {'tag': 'dependent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular'},
+                {'tag': 'interpolation', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': 'type tabular'},
+                {'tag': 'nu', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type tabular neural_net neural_net_bulk support_vector'},
+                {'tag': 'min_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net'},
+                {'tag': 'max_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net'},
+                {'tag': 'min_pressure', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net'},
+                {'tag': 'max_pressure', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net'},
+                {'tag': 'mean_elastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'std_dev_elastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'mean_plastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'std_dev_plastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'mean_bulk_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'std_dev_bulk_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+            ]
+        }
+
 class Interpolation(UpsElement):
     tag_name = 'interpolation'
     
@@ -5394,6 +6666,27 @@ class Interpolation(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'interpolation',
+            'need_applies_to': 'type tabular',
+            'spec_type': 'NO_DATA',
+            'attributes': {
+                'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'linear, cubic'},
+            },
+            'children_spec': [
+            ]
+        }
+
+class Tabular(UpsElement):
+    tag_name = 'tabular'
+    
+    def __init__(self):
+        super().__init__()
+        # Attributes
+        self.type: Optional[str] = None
+
+    @classmethod
+    def get_spec(cls):
+        return {
+            'tag': 'tabular',
             'need_applies_to': 'type tabular',
             'spec_type': 'NO_DATA',
             'attributes': {
@@ -5541,6 +6834,972 @@ class Yield_condition(UpsElement):
             ]
         }
 
+class Constitutive_model_Arena_2(UpsElement):
+    tag_name = 'arena'
+    
+    def __init__(self):
+        super().__init__()
+        # Attributes
+        self.type: Optional[str] = None
+        # Children
+        self.M: Optional[Any] = None
+        self.q1: Optional[Any] = None
+        self.q2: Optional[Any] = None
+        self.q3: Optional[Any] = None
+        self.k: Optional[Any] = None
+        self.f_c: Optional[Any] = None
+        self.D: Optional[Any] = None
+        self.sigma_1: Optional[Any] = None
+        self.PEAKI1: Optional[Any] = None
+        self.FSLOPE: Optional[Any] = None
+        self.STREN: Optional[Any] = None
+        self.YSLOPE: Optional[Any] = None
+        self.PEAKI1_failed: Optional[Any] = None
+        self.FSLOPE_failed: Optional[Any] = None
+        self.STREN_failed: Optional[Any] = None
+        self.YSLOPE_failed: Optional[Any] = None
+        self.BETA: Optional[Any] = None
+        self.CR: Optional[Any] = None
+        self.T1: Optional[Any] = None
+        self.T2: Optional[Any] = None
+        self.weibullDist_PEAKI1: Optional[Any] = None
+        self.weibullDist_FSLOPE: Optional[Any] = None
+        self.weibullDist_STREN: Optional[Any] = None
+        self.weibullDist_YSLOPE: Optional[Any] = None
+        self.weibullDist_BETA: Optional[Any] = None
+        self.weibullDist_CR: Optional[Any] = None
+        self.weibullDist_T1: Optional[Any] = None
+        self.weibullDist_T2: Optional[Any] = None
+        self.vol_frac_phase1: Optional[Any] = None
+        self.PEAKI1_phase1: Optional[Any] = None
+        self.FSLOPE_phase1: Optional[Any] = None
+        self.STREN_phase1: Optional[Any] = None
+        self.YSLOPE_phase1: Optional[Any] = None
+        self.PEAKI1_failed_phase1: Optional[Any] = None
+        self.FSLOPE_failed_phase1: Optional[Any] = None
+        self.STREN_failed_phase1: Optional[Any] = None
+        self.YSLOPE_failed_phase1: Optional[Any] = None
+        self.BETA_phase1: Optional[Any] = None
+        self.CR_phase1: Optional[Any] = None
+        self.T1_phase1: Optional[Any] = None
+        self.T2_phase1: Optional[Any] = None
+        self.PEAKI1_phase2: Optional[Any] = None
+        self.FSLOPE_phase2: Optional[Any] = None
+        self.STREN_phase2: Optional[Any] = None
+        self.YSLOPE_phase2: Optional[Any] = None
+        self.PEAKI1_failed_phase2: Optional[Any] = None
+        self.FSLOPE_failed_phase2: Optional[Any] = None
+        self.STREN_failed_phase2: Optional[Any] = None
+        self.YSLOPE_failed_phase2: Optional[Any] = None
+        self.BETA_phase2: Optional[Any] = None
+        self.CR_phase2: Optional[Any] = None
+        self.T1_phase2: Optional[Any] = None
+        self.T2_phase2: Optional[Any] = None
+        self.filename: Optional[Any] = None
+        self.independent_variables: Optional[Any] = None
+        self.dependent_variables: Optional[Any] = None
+        self.interpolation: Optional[Any] = None
+        self.cap_ellipticity_ratio: Optional[Any] = None
+
+    @classmethod
+    def get_spec(cls):
+        return {
+            'tag': 'arena',
+            'need_applies_to': 'type arena arena_mixture camclay elastic_plastic elastic_plastic_hp tabular_plasticity tabular_plasticity_cap',
+            'spec_type': 'NO_DATA',
+            'attributes': {
+                'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'gurson rousselier camclay arena arena_mixture tabular tabular_cap von_mises'},
+            },
+            'children_spec': [
+                {'tag': 'M', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type camclay'},
+                {'tag': 'q1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'q2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'q3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'k', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'f_c', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'D', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type rousselier'},
+                {'tag': 'sigma_1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type rousselier'},
+                {'tag': 'PEAKI1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'FSLOPE', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'STREN', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'YSLOPE', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'PEAKI1_failed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'FSLOPE_failed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'STREN_failed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'YSLOPE_failed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'BETA', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'CR', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'T1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'T2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'weibullDist_PEAKI1', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_FSLOPE', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_STREN', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_YSLOPE', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_BETA', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_CR', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_T1', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_T2', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'vol_frac.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'PEAKI1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'FSLOPE.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'STREN.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'YSLOPE.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'PEAKI1_failed.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'FSLOPE_failed.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'STREN_failed.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'YSLOPE_failed.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'BETA.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'CR.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'T1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'T2.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'PEAKI1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'FSLOPE.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'STREN.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'YSLOPE.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'PEAKI1_failed.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'FSLOPE_failed.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'STREN_failed.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'YSLOPE_failed.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'BETA.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'CR.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'T1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'T2.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'filename', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular tabular_cap'},
+                {'tag': 'independent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular tabular_cap'},
+                {'tag': 'dependent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular tabular_cap'},
+                {'tag': 'interpolation', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': 'type tabular tabular_cap'},
+                {'tag': 'cap_ellipticity_ratio', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type tabular_cap'},
+            ]
+        }
+
+class Constitutive_model_Arena_mixture(UpsElement):
+    tag_name = 'arena_mixture'
+    
+    def __init__(self):
+        super().__init__()
+        # Attributes
+        self.type: Optional[str] = None
+        # Children
+        self.M: Optional[Any] = None
+        self.q1: Optional[Any] = None
+        self.q2: Optional[Any] = None
+        self.q3: Optional[Any] = None
+        self.k: Optional[Any] = None
+        self.f_c: Optional[Any] = None
+        self.D: Optional[Any] = None
+        self.sigma_1: Optional[Any] = None
+        self.PEAKI1: Optional[Any] = None
+        self.FSLOPE: Optional[Any] = None
+        self.STREN: Optional[Any] = None
+        self.YSLOPE: Optional[Any] = None
+        self.PEAKI1_failed: Optional[Any] = None
+        self.FSLOPE_failed: Optional[Any] = None
+        self.STREN_failed: Optional[Any] = None
+        self.YSLOPE_failed: Optional[Any] = None
+        self.BETA: Optional[Any] = None
+        self.CR: Optional[Any] = None
+        self.T1: Optional[Any] = None
+        self.T2: Optional[Any] = None
+        self.weibullDist_PEAKI1: Optional[Any] = None
+        self.weibullDist_FSLOPE: Optional[Any] = None
+        self.weibullDist_STREN: Optional[Any] = None
+        self.weibullDist_YSLOPE: Optional[Any] = None
+        self.weibullDist_BETA: Optional[Any] = None
+        self.weibullDist_CR: Optional[Any] = None
+        self.weibullDist_T1: Optional[Any] = None
+        self.weibullDist_T2: Optional[Any] = None
+        self.vol_frac_phase1: Optional[Any] = None
+        self.PEAKI1_phase1: Optional[Any] = None
+        self.FSLOPE_phase1: Optional[Any] = None
+        self.STREN_phase1: Optional[Any] = None
+        self.YSLOPE_phase1: Optional[Any] = None
+        self.PEAKI1_failed_phase1: Optional[Any] = None
+        self.FSLOPE_failed_phase1: Optional[Any] = None
+        self.STREN_failed_phase1: Optional[Any] = None
+        self.YSLOPE_failed_phase1: Optional[Any] = None
+        self.BETA_phase1: Optional[Any] = None
+        self.CR_phase1: Optional[Any] = None
+        self.T1_phase1: Optional[Any] = None
+        self.T2_phase1: Optional[Any] = None
+        self.PEAKI1_phase2: Optional[Any] = None
+        self.FSLOPE_phase2: Optional[Any] = None
+        self.STREN_phase2: Optional[Any] = None
+        self.YSLOPE_phase2: Optional[Any] = None
+        self.PEAKI1_failed_phase2: Optional[Any] = None
+        self.FSLOPE_failed_phase2: Optional[Any] = None
+        self.STREN_failed_phase2: Optional[Any] = None
+        self.YSLOPE_failed_phase2: Optional[Any] = None
+        self.BETA_phase2: Optional[Any] = None
+        self.CR_phase2: Optional[Any] = None
+        self.T1_phase2: Optional[Any] = None
+        self.T2_phase2: Optional[Any] = None
+        self.filename: Optional[Any] = None
+        self.independent_variables: Optional[Any] = None
+        self.dependent_variables: Optional[Any] = None
+        self.interpolation: Optional[Any] = None
+        self.cap_ellipticity_ratio: Optional[Any] = None
+
+    @classmethod
+    def get_spec(cls):
+        return {
+            'tag': 'arena_mixture',
+            'need_applies_to': 'type arena arena_mixture camclay elastic_plastic elastic_plastic_hp tabular_plasticity tabular_plasticity_cap',
+            'spec_type': 'NO_DATA',
+            'attributes': {
+                'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'gurson rousselier camclay arena arena_mixture tabular tabular_cap von_mises'},
+            },
+            'children_spec': [
+                {'tag': 'M', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type camclay'},
+                {'tag': 'q1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'q2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'q3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'k', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'f_c', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'D', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type rousselier'},
+                {'tag': 'sigma_1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type rousselier'},
+                {'tag': 'PEAKI1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'FSLOPE', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'STREN', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'YSLOPE', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'PEAKI1_failed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'FSLOPE_failed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'STREN_failed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'YSLOPE_failed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'BETA', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'CR', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'T1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'T2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'weibullDist_PEAKI1', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_FSLOPE', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_STREN', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_YSLOPE', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_BETA', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_CR', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_T1', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_T2', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'vol_frac.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'PEAKI1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'FSLOPE.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'STREN.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'YSLOPE.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'PEAKI1_failed.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'FSLOPE_failed.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'STREN_failed.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'YSLOPE_failed.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'BETA.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'CR.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'T1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'T2.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'PEAKI1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'FSLOPE.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'STREN.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'YSLOPE.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'PEAKI1_failed.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'FSLOPE_failed.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'STREN_failed.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'YSLOPE_failed.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'BETA.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'CR.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'T1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'T2.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'filename', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular tabular_cap'},
+                {'tag': 'independent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular tabular_cap'},
+                {'tag': 'dependent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular tabular_cap'},
+                {'tag': 'interpolation', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': 'type tabular tabular_cap'},
+                {'tag': 'cap_ellipticity_ratio', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type tabular_cap'},
+            ]
+        }
+
+class Constitutive_model_Camclay(UpsElement):
+    tag_name = 'camclay'
+    
+    def __init__(self):
+        super().__init__()
+        # Attributes
+        self.type: Optional[str] = None
+        # Children
+        self.M: Optional[Any] = None
+        self.q1: Optional[Any] = None
+        self.q2: Optional[Any] = None
+        self.q3: Optional[Any] = None
+        self.k: Optional[Any] = None
+        self.f_c: Optional[Any] = None
+        self.D: Optional[Any] = None
+        self.sigma_1: Optional[Any] = None
+        self.PEAKI1: Optional[Any] = None
+        self.FSLOPE: Optional[Any] = None
+        self.STREN: Optional[Any] = None
+        self.YSLOPE: Optional[Any] = None
+        self.PEAKI1_failed: Optional[Any] = None
+        self.FSLOPE_failed: Optional[Any] = None
+        self.STREN_failed: Optional[Any] = None
+        self.YSLOPE_failed: Optional[Any] = None
+        self.BETA: Optional[Any] = None
+        self.CR: Optional[Any] = None
+        self.T1: Optional[Any] = None
+        self.T2: Optional[Any] = None
+        self.weibullDist_PEAKI1: Optional[Any] = None
+        self.weibullDist_FSLOPE: Optional[Any] = None
+        self.weibullDist_STREN: Optional[Any] = None
+        self.weibullDist_YSLOPE: Optional[Any] = None
+        self.weibullDist_BETA: Optional[Any] = None
+        self.weibullDist_CR: Optional[Any] = None
+        self.weibullDist_T1: Optional[Any] = None
+        self.weibullDist_T2: Optional[Any] = None
+        self.vol_frac_phase1: Optional[Any] = None
+        self.PEAKI1_phase1: Optional[Any] = None
+        self.FSLOPE_phase1: Optional[Any] = None
+        self.STREN_phase1: Optional[Any] = None
+        self.YSLOPE_phase1: Optional[Any] = None
+        self.PEAKI1_failed_phase1: Optional[Any] = None
+        self.FSLOPE_failed_phase1: Optional[Any] = None
+        self.STREN_failed_phase1: Optional[Any] = None
+        self.YSLOPE_failed_phase1: Optional[Any] = None
+        self.BETA_phase1: Optional[Any] = None
+        self.CR_phase1: Optional[Any] = None
+        self.T1_phase1: Optional[Any] = None
+        self.T2_phase1: Optional[Any] = None
+        self.PEAKI1_phase2: Optional[Any] = None
+        self.FSLOPE_phase2: Optional[Any] = None
+        self.STREN_phase2: Optional[Any] = None
+        self.YSLOPE_phase2: Optional[Any] = None
+        self.PEAKI1_failed_phase2: Optional[Any] = None
+        self.FSLOPE_failed_phase2: Optional[Any] = None
+        self.STREN_failed_phase2: Optional[Any] = None
+        self.YSLOPE_failed_phase2: Optional[Any] = None
+        self.BETA_phase2: Optional[Any] = None
+        self.CR_phase2: Optional[Any] = None
+        self.T1_phase2: Optional[Any] = None
+        self.T2_phase2: Optional[Any] = None
+        self.filename: Optional[Any] = None
+        self.independent_variables: Optional[Any] = None
+        self.dependent_variables: Optional[Any] = None
+        self.interpolation: Optional[Any] = None
+        self.cap_ellipticity_ratio: Optional[Any] = None
+
+    @classmethod
+    def get_spec(cls):
+        return {
+            'tag': 'camclay',
+            'need_applies_to': 'type arena arena_mixture camclay elastic_plastic elastic_plastic_hp tabular_plasticity tabular_plasticity_cap',
+            'spec_type': 'NO_DATA',
+            'attributes': {
+                'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'gurson rousselier camclay arena arena_mixture tabular tabular_cap von_mises'},
+            },
+            'children_spec': [
+                {'tag': 'M', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type camclay'},
+                {'tag': 'q1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'q2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'q3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'k', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'f_c', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'D', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type rousselier'},
+                {'tag': 'sigma_1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type rousselier'},
+                {'tag': 'PEAKI1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'FSLOPE', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'STREN', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'YSLOPE', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'PEAKI1_failed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'FSLOPE_failed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'STREN_failed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'YSLOPE_failed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'BETA', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'CR', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'T1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'T2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'weibullDist_PEAKI1', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_FSLOPE', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_STREN', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_YSLOPE', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_BETA', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_CR', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_T1', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_T2', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'vol_frac.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'PEAKI1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'FSLOPE.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'STREN.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'YSLOPE.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'PEAKI1_failed.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'FSLOPE_failed.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'STREN_failed.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'YSLOPE_failed.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'BETA.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'CR.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'T1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'T2.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'PEAKI1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'FSLOPE.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'STREN.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'YSLOPE.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'PEAKI1_failed.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'FSLOPE_failed.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'STREN_failed.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'YSLOPE_failed.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'BETA.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'CR.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'T1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'T2.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'filename', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular tabular_cap'},
+                {'tag': 'independent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular tabular_cap'},
+                {'tag': 'dependent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular tabular_cap'},
+                {'tag': 'interpolation', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': 'type tabular tabular_cap'},
+                {'tag': 'cap_ellipticity_ratio', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type tabular_cap'},
+            ]
+        }
+
+class Constitutive_model_Elastic_plastic(UpsElement):
+    tag_name = 'elastic_plastic'
+    
+    def __init__(self):
+        super().__init__()
+        # Attributes
+        self.type: Optional[str] = None
+        # Children
+        self.M: Optional[Any] = None
+        self.q1: Optional[Any] = None
+        self.q2: Optional[Any] = None
+        self.q3: Optional[Any] = None
+        self.k: Optional[Any] = None
+        self.f_c: Optional[Any] = None
+        self.D: Optional[Any] = None
+        self.sigma_1: Optional[Any] = None
+        self.PEAKI1: Optional[Any] = None
+        self.FSLOPE: Optional[Any] = None
+        self.STREN: Optional[Any] = None
+        self.YSLOPE: Optional[Any] = None
+        self.PEAKI1_failed: Optional[Any] = None
+        self.FSLOPE_failed: Optional[Any] = None
+        self.STREN_failed: Optional[Any] = None
+        self.YSLOPE_failed: Optional[Any] = None
+        self.BETA: Optional[Any] = None
+        self.CR: Optional[Any] = None
+        self.T1: Optional[Any] = None
+        self.T2: Optional[Any] = None
+        self.weibullDist_PEAKI1: Optional[Any] = None
+        self.weibullDist_FSLOPE: Optional[Any] = None
+        self.weibullDist_STREN: Optional[Any] = None
+        self.weibullDist_YSLOPE: Optional[Any] = None
+        self.weibullDist_BETA: Optional[Any] = None
+        self.weibullDist_CR: Optional[Any] = None
+        self.weibullDist_T1: Optional[Any] = None
+        self.weibullDist_T2: Optional[Any] = None
+        self.vol_frac_phase1: Optional[Any] = None
+        self.PEAKI1_phase1: Optional[Any] = None
+        self.FSLOPE_phase1: Optional[Any] = None
+        self.STREN_phase1: Optional[Any] = None
+        self.YSLOPE_phase1: Optional[Any] = None
+        self.PEAKI1_failed_phase1: Optional[Any] = None
+        self.FSLOPE_failed_phase1: Optional[Any] = None
+        self.STREN_failed_phase1: Optional[Any] = None
+        self.YSLOPE_failed_phase1: Optional[Any] = None
+        self.BETA_phase1: Optional[Any] = None
+        self.CR_phase1: Optional[Any] = None
+        self.T1_phase1: Optional[Any] = None
+        self.T2_phase1: Optional[Any] = None
+        self.PEAKI1_phase2: Optional[Any] = None
+        self.FSLOPE_phase2: Optional[Any] = None
+        self.STREN_phase2: Optional[Any] = None
+        self.YSLOPE_phase2: Optional[Any] = None
+        self.PEAKI1_failed_phase2: Optional[Any] = None
+        self.FSLOPE_failed_phase2: Optional[Any] = None
+        self.STREN_failed_phase2: Optional[Any] = None
+        self.YSLOPE_failed_phase2: Optional[Any] = None
+        self.BETA_phase2: Optional[Any] = None
+        self.CR_phase2: Optional[Any] = None
+        self.T1_phase2: Optional[Any] = None
+        self.T2_phase2: Optional[Any] = None
+        self.filename: Optional[Any] = None
+        self.independent_variables: Optional[Any] = None
+        self.dependent_variables: Optional[Any] = None
+        self.interpolation: Optional[Any] = None
+        self.cap_ellipticity_ratio: Optional[Any] = None
+
+    @classmethod
+    def get_spec(cls):
+        return {
+            'tag': 'elastic_plastic',
+            'need_applies_to': 'type arena arena_mixture camclay elastic_plastic elastic_plastic_hp tabular_plasticity tabular_plasticity_cap',
+            'spec_type': 'NO_DATA',
+            'attributes': {
+                'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'gurson rousselier camclay arena arena_mixture tabular tabular_cap von_mises'},
+            },
+            'children_spec': [
+                {'tag': 'M', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type camclay'},
+                {'tag': 'q1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'q2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'q3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'k', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'f_c', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'D', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type rousselier'},
+                {'tag': 'sigma_1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type rousselier'},
+                {'tag': 'PEAKI1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'FSLOPE', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'STREN', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'YSLOPE', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'PEAKI1_failed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'FSLOPE_failed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'STREN_failed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'YSLOPE_failed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'BETA', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'CR', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'T1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'T2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'weibullDist_PEAKI1', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_FSLOPE', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_STREN', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_YSLOPE', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_BETA', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_CR', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_T1', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_T2', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'vol_frac.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'PEAKI1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'FSLOPE.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'STREN.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'YSLOPE.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'PEAKI1_failed.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'FSLOPE_failed.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'STREN_failed.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'YSLOPE_failed.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'BETA.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'CR.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'T1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'T2.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'PEAKI1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'FSLOPE.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'STREN.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'YSLOPE.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'PEAKI1_failed.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'FSLOPE_failed.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'STREN_failed.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'YSLOPE_failed.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'BETA.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'CR.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'T1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'T2.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'filename', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular tabular_cap'},
+                {'tag': 'independent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular tabular_cap'},
+                {'tag': 'dependent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular tabular_cap'},
+                {'tag': 'interpolation', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': 'type tabular tabular_cap'},
+                {'tag': 'cap_ellipticity_ratio', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type tabular_cap'},
+            ]
+        }
+
+class Constitutive_model_Elastic_plastic_hp(UpsElement):
+    tag_name = 'elastic_plastic_hp'
+    
+    def __init__(self):
+        super().__init__()
+        # Attributes
+        self.type: Optional[str] = None
+        # Children
+        self.M: Optional[Any] = None
+        self.q1: Optional[Any] = None
+        self.q2: Optional[Any] = None
+        self.q3: Optional[Any] = None
+        self.k: Optional[Any] = None
+        self.f_c: Optional[Any] = None
+        self.D: Optional[Any] = None
+        self.sigma_1: Optional[Any] = None
+        self.PEAKI1: Optional[Any] = None
+        self.FSLOPE: Optional[Any] = None
+        self.STREN: Optional[Any] = None
+        self.YSLOPE: Optional[Any] = None
+        self.PEAKI1_failed: Optional[Any] = None
+        self.FSLOPE_failed: Optional[Any] = None
+        self.STREN_failed: Optional[Any] = None
+        self.YSLOPE_failed: Optional[Any] = None
+        self.BETA: Optional[Any] = None
+        self.CR: Optional[Any] = None
+        self.T1: Optional[Any] = None
+        self.T2: Optional[Any] = None
+        self.weibullDist_PEAKI1: Optional[Any] = None
+        self.weibullDist_FSLOPE: Optional[Any] = None
+        self.weibullDist_STREN: Optional[Any] = None
+        self.weibullDist_YSLOPE: Optional[Any] = None
+        self.weibullDist_BETA: Optional[Any] = None
+        self.weibullDist_CR: Optional[Any] = None
+        self.weibullDist_T1: Optional[Any] = None
+        self.weibullDist_T2: Optional[Any] = None
+        self.vol_frac_phase1: Optional[Any] = None
+        self.PEAKI1_phase1: Optional[Any] = None
+        self.FSLOPE_phase1: Optional[Any] = None
+        self.STREN_phase1: Optional[Any] = None
+        self.YSLOPE_phase1: Optional[Any] = None
+        self.PEAKI1_failed_phase1: Optional[Any] = None
+        self.FSLOPE_failed_phase1: Optional[Any] = None
+        self.STREN_failed_phase1: Optional[Any] = None
+        self.YSLOPE_failed_phase1: Optional[Any] = None
+        self.BETA_phase1: Optional[Any] = None
+        self.CR_phase1: Optional[Any] = None
+        self.T1_phase1: Optional[Any] = None
+        self.T2_phase1: Optional[Any] = None
+        self.PEAKI1_phase2: Optional[Any] = None
+        self.FSLOPE_phase2: Optional[Any] = None
+        self.STREN_phase2: Optional[Any] = None
+        self.YSLOPE_phase2: Optional[Any] = None
+        self.PEAKI1_failed_phase2: Optional[Any] = None
+        self.FSLOPE_failed_phase2: Optional[Any] = None
+        self.STREN_failed_phase2: Optional[Any] = None
+        self.YSLOPE_failed_phase2: Optional[Any] = None
+        self.BETA_phase2: Optional[Any] = None
+        self.CR_phase2: Optional[Any] = None
+        self.T1_phase2: Optional[Any] = None
+        self.T2_phase2: Optional[Any] = None
+        self.filename: Optional[Any] = None
+        self.independent_variables: Optional[Any] = None
+        self.dependent_variables: Optional[Any] = None
+        self.interpolation: Optional[Any] = None
+        self.cap_ellipticity_ratio: Optional[Any] = None
+
+    @classmethod
+    def get_spec(cls):
+        return {
+            'tag': 'elastic_plastic_hp',
+            'need_applies_to': 'type arena arena_mixture camclay elastic_plastic elastic_plastic_hp tabular_plasticity tabular_plasticity_cap',
+            'spec_type': 'NO_DATA',
+            'attributes': {
+                'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'gurson rousselier camclay arena arena_mixture tabular tabular_cap von_mises'},
+            },
+            'children_spec': [
+                {'tag': 'M', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type camclay'},
+                {'tag': 'q1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'q2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'q3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'k', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'f_c', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'D', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type rousselier'},
+                {'tag': 'sigma_1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type rousselier'},
+                {'tag': 'PEAKI1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'FSLOPE', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'STREN', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'YSLOPE', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'PEAKI1_failed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'FSLOPE_failed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'STREN_failed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'YSLOPE_failed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'BETA', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'CR', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'T1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'T2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'weibullDist_PEAKI1', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_FSLOPE', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_STREN', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_YSLOPE', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_BETA', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_CR', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_T1', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_T2', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'vol_frac.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'PEAKI1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'FSLOPE.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'STREN.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'YSLOPE.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'PEAKI1_failed.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'FSLOPE_failed.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'STREN_failed.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'YSLOPE_failed.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'BETA.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'CR.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'T1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'T2.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'PEAKI1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'FSLOPE.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'STREN.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'YSLOPE.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'PEAKI1_failed.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'FSLOPE_failed.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'STREN_failed.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'YSLOPE_failed.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'BETA.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'CR.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'T1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'T2.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'filename', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular tabular_cap'},
+                {'tag': 'independent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular tabular_cap'},
+                {'tag': 'dependent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular tabular_cap'},
+                {'tag': 'interpolation', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': 'type tabular tabular_cap'},
+                {'tag': 'cap_ellipticity_ratio', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type tabular_cap'},
+            ]
+        }
+
+class Constitutive_model_Tabular_plasticity(UpsElement):
+    tag_name = 'tabular_plasticity'
+    
+    def __init__(self):
+        super().__init__()
+        # Attributes
+        self.type: Optional[str] = None
+        # Children
+        self.M: Optional[Any] = None
+        self.q1: Optional[Any] = None
+        self.q2: Optional[Any] = None
+        self.q3: Optional[Any] = None
+        self.k: Optional[Any] = None
+        self.f_c: Optional[Any] = None
+        self.D: Optional[Any] = None
+        self.sigma_1: Optional[Any] = None
+        self.PEAKI1: Optional[Any] = None
+        self.FSLOPE: Optional[Any] = None
+        self.STREN: Optional[Any] = None
+        self.YSLOPE: Optional[Any] = None
+        self.PEAKI1_failed: Optional[Any] = None
+        self.FSLOPE_failed: Optional[Any] = None
+        self.STREN_failed: Optional[Any] = None
+        self.YSLOPE_failed: Optional[Any] = None
+        self.BETA: Optional[Any] = None
+        self.CR: Optional[Any] = None
+        self.T1: Optional[Any] = None
+        self.T2: Optional[Any] = None
+        self.weibullDist_PEAKI1: Optional[Any] = None
+        self.weibullDist_FSLOPE: Optional[Any] = None
+        self.weibullDist_STREN: Optional[Any] = None
+        self.weibullDist_YSLOPE: Optional[Any] = None
+        self.weibullDist_BETA: Optional[Any] = None
+        self.weibullDist_CR: Optional[Any] = None
+        self.weibullDist_T1: Optional[Any] = None
+        self.weibullDist_T2: Optional[Any] = None
+        self.vol_frac_phase1: Optional[Any] = None
+        self.PEAKI1_phase1: Optional[Any] = None
+        self.FSLOPE_phase1: Optional[Any] = None
+        self.STREN_phase1: Optional[Any] = None
+        self.YSLOPE_phase1: Optional[Any] = None
+        self.PEAKI1_failed_phase1: Optional[Any] = None
+        self.FSLOPE_failed_phase1: Optional[Any] = None
+        self.STREN_failed_phase1: Optional[Any] = None
+        self.YSLOPE_failed_phase1: Optional[Any] = None
+        self.BETA_phase1: Optional[Any] = None
+        self.CR_phase1: Optional[Any] = None
+        self.T1_phase1: Optional[Any] = None
+        self.T2_phase1: Optional[Any] = None
+        self.PEAKI1_phase2: Optional[Any] = None
+        self.FSLOPE_phase2: Optional[Any] = None
+        self.STREN_phase2: Optional[Any] = None
+        self.YSLOPE_phase2: Optional[Any] = None
+        self.PEAKI1_failed_phase2: Optional[Any] = None
+        self.FSLOPE_failed_phase2: Optional[Any] = None
+        self.STREN_failed_phase2: Optional[Any] = None
+        self.YSLOPE_failed_phase2: Optional[Any] = None
+        self.BETA_phase2: Optional[Any] = None
+        self.CR_phase2: Optional[Any] = None
+        self.T1_phase2: Optional[Any] = None
+        self.T2_phase2: Optional[Any] = None
+        self.filename: Optional[Any] = None
+        self.independent_variables: Optional[Any] = None
+        self.dependent_variables: Optional[Any] = None
+        self.interpolation: Optional[Any] = None
+        self.cap_ellipticity_ratio: Optional[Any] = None
+
+    @classmethod
+    def get_spec(cls):
+        return {
+            'tag': 'tabular_plasticity',
+            'need_applies_to': 'type arena arena_mixture camclay elastic_plastic elastic_plastic_hp tabular_plasticity tabular_plasticity_cap',
+            'spec_type': 'NO_DATA',
+            'attributes': {
+                'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'gurson rousselier camclay arena arena_mixture tabular tabular_cap von_mises'},
+            },
+            'children_spec': [
+                {'tag': 'M', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type camclay'},
+                {'tag': 'q1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'q2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'q3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'k', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'f_c', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'D', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type rousselier'},
+                {'tag': 'sigma_1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type rousselier'},
+                {'tag': 'PEAKI1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'FSLOPE', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'STREN', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'YSLOPE', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'PEAKI1_failed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'FSLOPE_failed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'STREN_failed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'YSLOPE_failed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'BETA', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'CR', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'T1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'T2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'weibullDist_PEAKI1', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_FSLOPE', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_STREN', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_YSLOPE', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_BETA', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_CR', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_T1', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_T2', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'vol_frac.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'PEAKI1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'FSLOPE.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'STREN.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'YSLOPE.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'PEAKI1_failed.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'FSLOPE_failed.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'STREN_failed.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'YSLOPE_failed.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'BETA.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'CR.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'T1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'T2.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'PEAKI1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'FSLOPE.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'STREN.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'YSLOPE.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'PEAKI1_failed.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'FSLOPE_failed.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'STREN_failed.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'YSLOPE_failed.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'BETA.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'CR.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'T1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'T2.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'filename', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular tabular_cap'},
+                {'tag': 'independent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular tabular_cap'},
+                {'tag': 'dependent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular tabular_cap'},
+                {'tag': 'interpolation', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': 'type tabular tabular_cap'},
+                {'tag': 'cap_ellipticity_ratio', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type tabular_cap'},
+            ]
+        }
+
+class Constitutive_model_Tabular_plasticity_cap(UpsElement):
+    tag_name = 'tabular_plasticity_cap'
+    
+    def __init__(self):
+        super().__init__()
+        # Attributes
+        self.type: Optional[str] = None
+        # Children
+        self.M: Optional[Any] = None
+        self.q1: Optional[Any] = None
+        self.q2: Optional[Any] = None
+        self.q3: Optional[Any] = None
+        self.k: Optional[Any] = None
+        self.f_c: Optional[Any] = None
+        self.D: Optional[Any] = None
+        self.sigma_1: Optional[Any] = None
+        self.PEAKI1: Optional[Any] = None
+        self.FSLOPE: Optional[Any] = None
+        self.STREN: Optional[Any] = None
+        self.YSLOPE: Optional[Any] = None
+        self.PEAKI1_failed: Optional[Any] = None
+        self.FSLOPE_failed: Optional[Any] = None
+        self.STREN_failed: Optional[Any] = None
+        self.YSLOPE_failed: Optional[Any] = None
+        self.BETA: Optional[Any] = None
+        self.CR: Optional[Any] = None
+        self.T1: Optional[Any] = None
+        self.T2: Optional[Any] = None
+        self.weibullDist_PEAKI1: Optional[Any] = None
+        self.weibullDist_FSLOPE: Optional[Any] = None
+        self.weibullDist_STREN: Optional[Any] = None
+        self.weibullDist_YSLOPE: Optional[Any] = None
+        self.weibullDist_BETA: Optional[Any] = None
+        self.weibullDist_CR: Optional[Any] = None
+        self.weibullDist_T1: Optional[Any] = None
+        self.weibullDist_T2: Optional[Any] = None
+        self.vol_frac_phase1: Optional[Any] = None
+        self.PEAKI1_phase1: Optional[Any] = None
+        self.FSLOPE_phase1: Optional[Any] = None
+        self.STREN_phase1: Optional[Any] = None
+        self.YSLOPE_phase1: Optional[Any] = None
+        self.PEAKI1_failed_phase1: Optional[Any] = None
+        self.FSLOPE_failed_phase1: Optional[Any] = None
+        self.STREN_failed_phase1: Optional[Any] = None
+        self.YSLOPE_failed_phase1: Optional[Any] = None
+        self.BETA_phase1: Optional[Any] = None
+        self.CR_phase1: Optional[Any] = None
+        self.T1_phase1: Optional[Any] = None
+        self.T2_phase1: Optional[Any] = None
+        self.PEAKI1_phase2: Optional[Any] = None
+        self.FSLOPE_phase2: Optional[Any] = None
+        self.STREN_phase2: Optional[Any] = None
+        self.YSLOPE_phase2: Optional[Any] = None
+        self.PEAKI1_failed_phase2: Optional[Any] = None
+        self.FSLOPE_failed_phase2: Optional[Any] = None
+        self.STREN_failed_phase2: Optional[Any] = None
+        self.YSLOPE_failed_phase2: Optional[Any] = None
+        self.BETA_phase2: Optional[Any] = None
+        self.CR_phase2: Optional[Any] = None
+        self.T1_phase2: Optional[Any] = None
+        self.T2_phase2: Optional[Any] = None
+        self.filename: Optional[Any] = None
+        self.independent_variables: Optional[Any] = None
+        self.dependent_variables: Optional[Any] = None
+        self.interpolation: Optional[Any] = None
+        self.cap_ellipticity_ratio: Optional[Any] = None
+
+    @classmethod
+    def get_spec(cls):
+        return {
+            'tag': 'tabular_plasticity_cap',
+            'need_applies_to': 'type arena arena_mixture camclay elastic_plastic elastic_plastic_hp tabular_plasticity tabular_plasticity_cap',
+            'spec_type': 'NO_DATA',
+            'attributes': {
+                'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'gurson rousselier camclay arena arena_mixture tabular tabular_cap von_mises'},
+            },
+            'children_spec': [
+                {'tag': 'M', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type camclay'},
+                {'tag': 'q1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'q2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'q3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'k', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'f_c', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'D', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type rousselier'},
+                {'tag': 'sigma_1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type rousselier'},
+                {'tag': 'PEAKI1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'FSLOPE', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'STREN', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'YSLOPE', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'PEAKI1_failed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'FSLOPE_failed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'STREN_failed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'YSLOPE_failed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'BETA', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'CR', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'T1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'T2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'weibullDist_PEAKI1', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_FSLOPE', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_STREN', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_YSLOPE', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_BETA', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_CR', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_T1', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_T2', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'vol_frac.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'PEAKI1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'FSLOPE.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'STREN.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'YSLOPE.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'PEAKI1_failed.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'FSLOPE_failed.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'STREN_failed.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'YSLOPE_failed.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'BETA.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'CR.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'T1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'T2.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'PEAKI1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'FSLOPE.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'STREN.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'YSLOPE.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'PEAKI1_failed.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'FSLOPE_failed.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'STREN_failed.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'YSLOPE_failed.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'BETA.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'CR.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'T1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'T2.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'filename', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular tabular_cap'},
+                {'tag': 'independent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular tabular_cap'},
+                {'tag': 'dependent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular tabular_cap'},
+                {'tag': 'interpolation', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': 'type tabular tabular_cap'},
+                {'tag': 'cap_ellipticity_ratio', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type tabular_cap'},
+            ]
+        }
+
 class Yield_condition_Interpolation(UpsElement):
     tag_name = 'interpolation'
     
@@ -5553,6 +7812,48 @@ class Yield_condition_Interpolation(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'interpolation',
+            'need_applies_to': 'type tabular tabular_cap',
+            'spec_type': 'NO_DATA',
+            'attributes': {
+                'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'linear, cubic'},
+            },
+            'children_spec': [
+            ]
+        }
+
+class Yield_condition_Tabular(UpsElement):
+    tag_name = 'tabular'
+    
+    def __init__(self):
+        super().__init__()
+        # Attributes
+        self.type: Optional[str] = None
+
+    @classmethod
+    def get_spec(cls):
+        return {
+            'tag': 'tabular',
+            'need_applies_to': 'type tabular tabular_cap',
+            'spec_type': 'NO_DATA',
+            'attributes': {
+                'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'linear, cubic'},
+            },
+            'children_spec': [
+            ]
+        }
+
+class Tabular_cap(UpsElement):
+    tag_name = 'tabular_cap'
+    
+    def __init__(self):
+        super().__init__()
+        # Attributes
+        self.type: Optional[str] = None
+
+    @classmethod
+    def get_spec(cls):
+        return {
+            'tag': 'tabular_cap',
             'need_applies_to': 'type tabular tabular_cap',
             'spec_type': 'NO_DATA',
             'attributes': {
@@ -5628,6 +7929,336 @@ class Internal_variable_model(UpsElement):
             ]
         }
 
+class Constitutive_model_Camclay_2(UpsElement):
+    tag_name = 'camclay'
+    
+    def __init__(self):
+        super().__init__()
+        # Attributes
+        self.type: Optional[str] = None
+        # Children
+        self.p0: Optional[Any] = None
+        self.p1: Optional[Any] = None
+        self.p2: Optional[Any] = None
+        self.p3: Optional[Any] = None
+        self.use_disaggregation_algorithm: Optional[Any] = None
+        self.pc0: Optional[Any] = None
+        self.lambdatilde: Optional[Any] = None
+        self.vol_frac_nucleation: Optional[Any] = None
+        self.mean_strain_nucleation: Optional[Any] = None
+        self.stddev_strain_nucleation: Optional[Any] = None
+        self.soil_model_brannon_fSlope: Optional[Any] = None
+        self.soil_model_brannon_peakI1: Optional[Any] = None
+        self.soil_model_brannon_Cr: Optional[Any] = None
+        self.soil_model_brannon_B0: Optional[Any] = None
+        self.soil_model_brannon_p0: Optional[Any] = None
+        self.soil_model_brannon_p1: Optional[Any] = None
+        self.soil_model_brannon_p3: Optional[Any] = None
+        self.soil_model_brannon_p4: Optional[Any] = None
+        self.filename: Optional[Any] = None
+        self.independent_variables: Optional[Any] = None
+        self.dependent_variables: Optional[Any] = None
+        self.interpolation: Optional[Any] = None
+
+    @classmethod
+    def get_spec(cls):
+        return {
+            'tag': 'camclay',
+            'need_applies_to': 'type camclay elastic_plastic elastic_plastic_hp soil_model_brannon tabular_plasticity_cap',
+            'spec_type': 'NO_DATA',
+            'attributes': {
+                'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'arena borja_consolidation_pressure metal_internal_var soil_model_brannon_kappa tabular_cap'},
+            },
+            'children_spec': [
+                {'tag': 'p0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'p1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'p2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'p3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'use_disaggregation_algorithm', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'pc0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'negative'}, 'need_applies_to': 'type borja_consolidation_pressure'},
+                {'tag': 'lambdatilde', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type borja_consolidation_pressure'},
+                {'tag': 'vol_frac_nucleation', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type metal_internal_var'},
+                {'tag': 'mean_strain_nucleation', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type metal_internal_var'},
+                {'tag': 'stddev_strain_nucleation', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type metal_internal_var'},
+                {'tag': 'soil_model_brannon_fSlope', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_peakI1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_Cr', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_B0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_p0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_p1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_p3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_p4', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'filename', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular_cap'},
+                {'tag': 'independent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular_cap'},
+                {'tag': 'dependent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular_cap'},
+                {'tag': 'interpolation', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': 'type tabular_cap'},
+            ]
+        }
+
+class Constitutive_model_Elastic_plastic_2(UpsElement):
+    tag_name = 'elastic_plastic'
+    
+    def __init__(self):
+        super().__init__()
+        # Attributes
+        self.type: Optional[str] = None
+        # Children
+        self.p0: Optional[Any] = None
+        self.p1: Optional[Any] = None
+        self.p2: Optional[Any] = None
+        self.p3: Optional[Any] = None
+        self.use_disaggregation_algorithm: Optional[Any] = None
+        self.pc0: Optional[Any] = None
+        self.lambdatilde: Optional[Any] = None
+        self.vol_frac_nucleation: Optional[Any] = None
+        self.mean_strain_nucleation: Optional[Any] = None
+        self.stddev_strain_nucleation: Optional[Any] = None
+        self.soil_model_brannon_fSlope: Optional[Any] = None
+        self.soil_model_brannon_peakI1: Optional[Any] = None
+        self.soil_model_brannon_Cr: Optional[Any] = None
+        self.soil_model_brannon_B0: Optional[Any] = None
+        self.soil_model_brannon_p0: Optional[Any] = None
+        self.soil_model_brannon_p1: Optional[Any] = None
+        self.soil_model_brannon_p3: Optional[Any] = None
+        self.soil_model_brannon_p4: Optional[Any] = None
+        self.filename: Optional[Any] = None
+        self.independent_variables: Optional[Any] = None
+        self.dependent_variables: Optional[Any] = None
+        self.interpolation: Optional[Any] = None
+
+    @classmethod
+    def get_spec(cls):
+        return {
+            'tag': 'elastic_plastic',
+            'need_applies_to': 'type camclay elastic_plastic elastic_plastic_hp soil_model_brannon tabular_plasticity_cap',
+            'spec_type': 'NO_DATA',
+            'attributes': {
+                'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'arena borja_consolidation_pressure metal_internal_var soil_model_brannon_kappa tabular_cap'},
+            },
+            'children_spec': [
+                {'tag': 'p0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'p1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'p2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'p3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'use_disaggregation_algorithm', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'pc0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'negative'}, 'need_applies_to': 'type borja_consolidation_pressure'},
+                {'tag': 'lambdatilde', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type borja_consolidation_pressure'},
+                {'tag': 'vol_frac_nucleation', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type metal_internal_var'},
+                {'tag': 'mean_strain_nucleation', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type metal_internal_var'},
+                {'tag': 'stddev_strain_nucleation', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type metal_internal_var'},
+                {'tag': 'soil_model_brannon_fSlope', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_peakI1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_Cr', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_B0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_p0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_p1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_p3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_p4', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'filename', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular_cap'},
+                {'tag': 'independent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular_cap'},
+                {'tag': 'dependent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular_cap'},
+                {'tag': 'interpolation', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': 'type tabular_cap'},
+            ]
+        }
+
+class Constitutive_model_Elastic_plastic_hp_2(UpsElement):
+    tag_name = 'elastic_plastic_hp'
+    
+    def __init__(self):
+        super().__init__()
+        # Attributes
+        self.type: Optional[str] = None
+        # Children
+        self.p0: Optional[Any] = None
+        self.p1: Optional[Any] = None
+        self.p2: Optional[Any] = None
+        self.p3: Optional[Any] = None
+        self.use_disaggregation_algorithm: Optional[Any] = None
+        self.pc0: Optional[Any] = None
+        self.lambdatilde: Optional[Any] = None
+        self.vol_frac_nucleation: Optional[Any] = None
+        self.mean_strain_nucleation: Optional[Any] = None
+        self.stddev_strain_nucleation: Optional[Any] = None
+        self.soil_model_brannon_fSlope: Optional[Any] = None
+        self.soil_model_brannon_peakI1: Optional[Any] = None
+        self.soil_model_brannon_Cr: Optional[Any] = None
+        self.soil_model_brannon_B0: Optional[Any] = None
+        self.soil_model_brannon_p0: Optional[Any] = None
+        self.soil_model_brannon_p1: Optional[Any] = None
+        self.soil_model_brannon_p3: Optional[Any] = None
+        self.soil_model_brannon_p4: Optional[Any] = None
+        self.filename: Optional[Any] = None
+        self.independent_variables: Optional[Any] = None
+        self.dependent_variables: Optional[Any] = None
+        self.interpolation: Optional[Any] = None
+
+    @classmethod
+    def get_spec(cls):
+        return {
+            'tag': 'elastic_plastic_hp',
+            'need_applies_to': 'type camclay elastic_plastic elastic_plastic_hp soil_model_brannon tabular_plasticity_cap',
+            'spec_type': 'NO_DATA',
+            'attributes': {
+                'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'arena borja_consolidation_pressure metal_internal_var soil_model_brannon_kappa tabular_cap'},
+            },
+            'children_spec': [
+                {'tag': 'p0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'p1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'p2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'p3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'use_disaggregation_algorithm', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'pc0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'negative'}, 'need_applies_to': 'type borja_consolidation_pressure'},
+                {'tag': 'lambdatilde', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type borja_consolidation_pressure'},
+                {'tag': 'vol_frac_nucleation', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type metal_internal_var'},
+                {'tag': 'mean_strain_nucleation', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type metal_internal_var'},
+                {'tag': 'stddev_strain_nucleation', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type metal_internal_var'},
+                {'tag': 'soil_model_brannon_fSlope', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_peakI1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_Cr', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_B0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_p0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_p1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_p3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_p4', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'filename', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular_cap'},
+                {'tag': 'independent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular_cap'},
+                {'tag': 'dependent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular_cap'},
+                {'tag': 'interpolation', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': 'type tabular_cap'},
+            ]
+        }
+
+class Constitutive_model_Soil_model_brannon(UpsElement):
+    tag_name = 'soil_model_brannon'
+    
+    def __init__(self):
+        super().__init__()
+        # Attributes
+        self.type: Optional[str] = None
+        # Children
+        self.p0: Optional[Any] = None
+        self.p1: Optional[Any] = None
+        self.p2: Optional[Any] = None
+        self.p3: Optional[Any] = None
+        self.use_disaggregation_algorithm: Optional[Any] = None
+        self.pc0: Optional[Any] = None
+        self.lambdatilde: Optional[Any] = None
+        self.vol_frac_nucleation: Optional[Any] = None
+        self.mean_strain_nucleation: Optional[Any] = None
+        self.stddev_strain_nucleation: Optional[Any] = None
+        self.soil_model_brannon_fSlope: Optional[Any] = None
+        self.soil_model_brannon_peakI1: Optional[Any] = None
+        self.soil_model_brannon_Cr: Optional[Any] = None
+        self.soil_model_brannon_B0: Optional[Any] = None
+        self.soil_model_brannon_p0: Optional[Any] = None
+        self.soil_model_brannon_p1: Optional[Any] = None
+        self.soil_model_brannon_p3: Optional[Any] = None
+        self.soil_model_brannon_p4: Optional[Any] = None
+        self.filename: Optional[Any] = None
+        self.independent_variables: Optional[Any] = None
+        self.dependent_variables: Optional[Any] = None
+        self.interpolation: Optional[Any] = None
+
+    @classmethod
+    def get_spec(cls):
+        return {
+            'tag': 'soil_model_brannon',
+            'need_applies_to': 'type camclay elastic_plastic elastic_plastic_hp soil_model_brannon tabular_plasticity_cap',
+            'spec_type': 'NO_DATA',
+            'attributes': {
+                'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'arena borja_consolidation_pressure metal_internal_var soil_model_brannon_kappa tabular_cap'},
+            },
+            'children_spec': [
+                {'tag': 'p0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'p1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'p2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'p3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'use_disaggregation_algorithm', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'pc0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'negative'}, 'need_applies_to': 'type borja_consolidation_pressure'},
+                {'tag': 'lambdatilde', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type borja_consolidation_pressure'},
+                {'tag': 'vol_frac_nucleation', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type metal_internal_var'},
+                {'tag': 'mean_strain_nucleation', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type metal_internal_var'},
+                {'tag': 'stddev_strain_nucleation', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type metal_internal_var'},
+                {'tag': 'soil_model_brannon_fSlope', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_peakI1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_Cr', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_B0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_p0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_p1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_p3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_p4', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'filename', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular_cap'},
+                {'tag': 'independent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular_cap'},
+                {'tag': 'dependent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular_cap'},
+                {'tag': 'interpolation', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': 'type tabular_cap'},
+            ]
+        }
+
+class Constitutive_model_Tabular_plasticity_cap_2(UpsElement):
+    tag_name = 'tabular_plasticity_cap'
+    
+    def __init__(self):
+        super().__init__()
+        # Attributes
+        self.type: Optional[str] = None
+        # Children
+        self.p0: Optional[Any] = None
+        self.p1: Optional[Any] = None
+        self.p2: Optional[Any] = None
+        self.p3: Optional[Any] = None
+        self.use_disaggregation_algorithm: Optional[Any] = None
+        self.pc0: Optional[Any] = None
+        self.lambdatilde: Optional[Any] = None
+        self.vol_frac_nucleation: Optional[Any] = None
+        self.mean_strain_nucleation: Optional[Any] = None
+        self.stddev_strain_nucleation: Optional[Any] = None
+        self.soil_model_brannon_fSlope: Optional[Any] = None
+        self.soil_model_brannon_peakI1: Optional[Any] = None
+        self.soil_model_brannon_Cr: Optional[Any] = None
+        self.soil_model_brannon_B0: Optional[Any] = None
+        self.soil_model_brannon_p0: Optional[Any] = None
+        self.soil_model_brannon_p1: Optional[Any] = None
+        self.soil_model_brannon_p3: Optional[Any] = None
+        self.soil_model_brannon_p4: Optional[Any] = None
+        self.filename: Optional[Any] = None
+        self.independent_variables: Optional[Any] = None
+        self.dependent_variables: Optional[Any] = None
+        self.interpolation: Optional[Any] = None
+
+    @classmethod
+    def get_spec(cls):
+        return {
+            'tag': 'tabular_plasticity_cap',
+            'need_applies_to': 'type camclay elastic_plastic elastic_plastic_hp soil_model_brannon tabular_plasticity_cap',
+            'spec_type': 'NO_DATA',
+            'attributes': {
+                'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'arena borja_consolidation_pressure metal_internal_var soil_model_brannon_kappa tabular_cap'},
+            },
+            'children_spec': [
+                {'tag': 'p0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'p1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'p2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'p3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'use_disaggregation_algorithm', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'pc0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'negative'}, 'need_applies_to': 'type borja_consolidation_pressure'},
+                {'tag': 'lambdatilde', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type borja_consolidation_pressure'},
+                {'tag': 'vol_frac_nucleation', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type metal_internal_var'},
+                {'tag': 'mean_strain_nucleation', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type metal_internal_var'},
+                {'tag': 'stddev_strain_nucleation', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type metal_internal_var'},
+                {'tag': 'soil_model_brannon_fSlope', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_peakI1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_Cr', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_B0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_p0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_p1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_p3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_p4', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'filename', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular_cap'},
+                {'tag': 'independent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular_cap'},
+                {'tag': 'dependent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular_cap'},
+                {'tag': 'interpolation', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': 'type tabular_cap'},
+            ]
+        }
+
 class Internal_variable_model_Interpolation(UpsElement):
     tag_name = 'interpolation'
     
@@ -5640,6 +8271,27 @@ class Internal_variable_model_Interpolation(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'interpolation',
+            'need_applies_to': 'type tabular_cap',
+            'spec_type': 'NO_DATA',
+            'attributes': {
+                'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'linear, cubic'},
+            },
+            'children_spec': [
+            ]
+        }
+
+class Internal_variable_model_Tabular_cap(UpsElement):
+    tag_name = 'tabular_cap'
+    
+    def __init__(self):
+        super().__init__()
+        # Attributes
+        self.type: Optional[str] = None
+
+    @classmethod
+    def get_spec(cls):
+        return {
+            'tag': 'tabular_cap',
             'need_applies_to': 'type tabular_cap',
             'spec_type': 'NO_DATA',
             'attributes': {
@@ -5673,6 +8325,30 @@ class Kinematic_hardening_model(UpsElement):
             ]
         }
 
+class Constitutive_model_Arena_3(UpsElement):
+    tag_name = 'arena'
+    
+    def __init__(self):
+        super().__init__()
+        # Attributes
+        self.type: Optional[str] = None
+        # Children
+        self.fluid_pressure_initial: Optional[Any] = None
+
+    @classmethod
+    def get_spec(cls):
+        return {
+            'tag': 'arena',
+            'need_applies_to': 'type arena',
+            'spec_type': 'NO_DATA',
+            'attributes': {
+                'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'none, prager, armstrong_frederick, arena'},
+            },
+            'children_spec': [
+                {'tag': 'fluid_pressure_initial', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+            ]
+        }
+
 class Constitutive_model_Interpolation(UpsElement):
     tag_name = 'interpolation'
     
@@ -5685,6 +8361,27 @@ class Constitutive_model_Interpolation(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'interpolation',
+            'need_applies_to': 'type tabular_eos',
+            'spec_type': 'NO_DATA',
+            'attributes': {
+                'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'linear, cubic'},
+            },
+            'children_spec': [
+            ]
+        }
+
+class Tabular_eos(UpsElement):
+    tag_name = 'tabular_eos'
+    
+    def __init__(self):
+        super().__init__()
+        # Attributes
+        self.type: Optional[str] = None
+
+    @classmethod
+    def get_spec(cls):
+        return {
+            'tag': 'tabular_eos',
             'need_applies_to': 'type tabular_eos',
             'spec_type': 'NO_DATA',
             'attributes': {

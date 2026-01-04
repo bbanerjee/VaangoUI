@@ -12,22 +12,34 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import Qt
 
-# Import the generated models
-import ups_spec_models
+# Import the generated classes package
+import ups_classes
+from ups_classes import base as ups_base
 
 class ClassRegistry:
     """Helper to map tag names to Python classes."""
     def __init__(self):
-        self.tag_map: Dict[str, Type[ups_spec_models.UpsElement]] = {}
+        self.tag_map: Dict[str, Type[ups_base.UpsElement]] = {}
         self._build_registry()
 
     def _build_registry(self):
-        for name, obj in inspect.getmembers(ups_spec_models):
-            if inspect.isclass(obj) and issubclass(obj, ups_spec_models.UpsElement) and obj is not ups_spec_models.UpsElement:
+        # Prefer TAG_MAP exported by the generated package
+        try:
+            for tag, cls in getattr(ups_classes, 'TAG_MAP', {}).items():
+                self.tag_map[tag] = cls
+            if self.tag_map:
+                return
+        except Exception:
+            pass
+
+        # Fallback: inspect package members
+        base_cls = ups_base.UpsElement
+        for name, obj in inspect.getmembers(ups_classes):
+            if inspect.isclass(obj) and issubclass(obj, base_cls) and obj is not base_cls:
                 if hasattr(obj, 'tag_name'):
                     self.tag_map[obj.tag_name] = obj
 
-    def get_class_for_tag(self, tag: str) -> Optional[Type[ups_spec_models.UpsElement]]:
+    def get_class_for_tag(self, tag: str) -> Optional[Type[ups_base.UpsElement]]:
         return self.tag_map.get(tag)
 
 class UpsWidgetFactory:
@@ -36,7 +48,7 @@ class UpsWidgetFactory:
     def __init__(self, registry: ClassRegistry):
         self.registry = registry
 
-    def create_widget(self, element_class: Type[ups_spec_models.UpsElement], parent_spec_context=None) -> QWidget:
+    def create_widget(self, element_class: Type[ups_base.UpsElement], parent_spec_context=None) -> QWidget:
         """Creates a form widget for a given UPS Element Class."""
         spec = element_class.get_spec()
         
@@ -84,6 +96,8 @@ class UpsWidgetFactory:
             layout.addWidget(val_group)
 
         # 3. Children Section
+        # Ensure we have a parent context for evaluating need_applies_to conditions
+        local_parent_context = parent_spec_context or {'class': element_class, 'attr_widgets': attr_widgets}
         if spec['children_spec']:
             children_area = QWidget()
             children_layout = QVBoxLayout()
@@ -111,9 +125,8 @@ class UpsWidgetFactory:
                     # attach condition metadata
                     if parsed_need:
                         list_manager.setProperty('need_applies_to', parsed_need)
-                    # evaluate initial visibility if parent context available
-                    if parent_spec_context is not None:
-                        self._evaluate_child_visibility(list_manager, parsed_need, parent_spec_context, attr_widgets)
+                    # evaluate initial visibility using local parent context
+                    self._evaluate_child_visibility(list_manager, parsed_need, local_parent_context, attr_widgets)
                     children_layout.addWidget(list_manager)
                 else:
                     # Single Instance (Optional or Required)
@@ -127,7 +140,7 @@ class UpsWidgetFactory:
                     
                     if is_complex:
                         # Recursive call; pass parent context for conditional logic
-                        child_widget = self.create_widget(child_class, parent_spec_context={'class': element_class, 'attr_widgets': attr_widgets})
+                        child_widget = self.create_widget(child_class, parent_spec_context=local_parent_context)
                         # attach condition metadata
                         if parsed_need:
                             child_widget.setProperty('need_applies_to', parsed_need)
@@ -138,12 +151,12 @@ class UpsWidgetFactory:
                             except Exception:
                                 pass
                         # evaluate initial visibility
-                        self._evaluate_child_visibility(child_widget, parsed_need, {'class': element_class, 'attr_widgets': attr_widgets}, attr_widgets)
+                        self._evaluate_child_visibility(child_widget, parsed_need, local_parent_context, attr_widgets)
                         children_layout.addWidget(child_widget)
                     else:
                         # It's simple, maybe render it inline?
                         # For now, stick to consistent GroupBox approach
-                        child_widget = self.create_widget(child_class, parent_spec_context={'class': element_class, 'attr_widgets': attr_widgets})
+                        child_widget = self.create_widget(child_class, parent_spec_context=local_parent_context)
                         if parsed_need:
                             child_widget.setProperty('need_applies_to', parsed_need)
                         if child_req['need'] == 'OPTIONAL':
@@ -152,7 +165,7 @@ class UpsWidgetFactory:
                                 child_widget.setChecked(False)
                             except Exception:
                                 pass
-                        self._evaluate_child_visibility(child_widget, parsed_need, {'class': element_class, 'attr_widgets': attr_widgets}, attr_widgets)
+                        self._evaluate_child_visibility(child_widget, parsed_need, local_parent_context, attr_widgets)
                         children_layout.addWidget(child_widget)
 
             layout.addWidget(children_area)
@@ -207,10 +220,14 @@ class UpsWidgetFactory:
         values = parsed_need.get('values', [])
 
         visible = False
-        # 'name' checks parent's tag name
+        # 'name' checks parent's tag name. Also accept 'type' checks against the element's own tag
+        parent_class = parent_context.get('class') if parent_context else None
         if key == 'name':
-            parent_class = parent_context.get('class') if parent_context else None
             if parent_class and parent_class.tag_name in values:
+                visible = True
+        # Some need_applies_to use 'type' to reference a variant name; allow matching against the element's tag_name
+        if key == 'type':
+            if parent_class and getattr(parent_class, 'tag_name', None) in values:
                 visible = True
         else:
             # assume key is an attribute name on parent (e.g., 'type' or 'var')

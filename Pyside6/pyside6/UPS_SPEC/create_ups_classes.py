@@ -7,6 +7,7 @@ import keyword
 # --- Configuration ---
 ROOT_FILE = 'ups_spec.xml'
 OUTPUT_FILE = 'ups_spec_models.py'
+OUTPUT_DIR = 'ups_classes'
 
 # --- Parsing Helpers ---
 
@@ -102,6 +103,25 @@ def parse_spec_attribute(spec_str):
         valid_values = valid_values.strip("'\"")
         
     return {'need': need, 'type': dtype, 'valid_values': valid_values}
+
+
+def parse_need_applies_to(raw: str):
+    """Parse a need_applies_to string like 'type a b' or 'name x,y' into {'key': key, 'values': [...]}."""
+    if not raw:
+        return None
+    raw = raw.strip()
+    parts = raw.split(None, 1)
+    if len(parts) == 1:
+        key = parts[0]
+        vals = []
+    else:
+        key = parts[0]
+        vals = parts[1]
+        if ',' in vals:
+            vals = [v.strip() for v in vals.split(',') if v.strip()]
+        else:
+            vals = [v.strip() for v in vals.split() if v.strip()]
+    return {'key': key, 'values': vals}
 
 # --- Class Modeling ---
 
@@ -257,30 +277,75 @@ class ClassGenerator:
             else:
                 # Definition
                 cname = self.generate_class_name(child.tag, context)
-                self.classes[cname] = TagDefinition(child.tag, child)
-                
-                # If unique so far, map it?
+                td = TagDefinition(child.tag, child)
+                self.classes[cname] = td
+
+                # If unique so far, map the xml tag name to this class
                 if child.tag not in self.tag_to_class_map:
                     self.tag_to_class_map[child.tag] = cname
+
+                # If this tag has need_applies_to, create variant classes for each listed value
+                if td.need_applies_to:
+                    parsed = parse_need_applies_to(td.need_applies_to)
+                    if parsed and parsed.get('values'):
+                        # Only handle simple cases where key is 'type' or 'name' or 'var'
+                        for val in parsed['values']:
+                            # Create a new TagDefinition that uses the variant name
+                            new_td = TagDefinition(val, child)
+                            # Generate a class name for this variant
+                            cname2 = self.generate_class_name(val, context)
+                            # Only add if not already present
+                            if cname2 not in self.classes:
+                                self.classes[cname2] = new_td
+                                # Map the variant tag/name to this class for lookups
+                                if val not in self.tag_to_class_map:
+                                    self.tag_to_class_map[val] = cname2
                 
                 # Recurse
                 self._traverse_and_collect(child, context + [child.tag])
 
-    def write_python_file(self, filename):
-        with open(filename, 'w') as f:
-            f.write("from typing import List, Optional, Union, Dict, Any\n")
-            f.write("\n")
-            f.write("# Base Class for all UPS Elements\n")
-            f.write("class UpsElement:\n")
-            f.write("    def __init__(self):\n")
-            f.write("        self.tag_name = None\n")
-            f.write("        self.attributes = {}\n")
-            f.write("        self.children = []\n")
-            f.write("        self.content = None # For text content if any\n")
-            f.write("\n")
-            
-            for class_name, definition in self.classes.items():
-                self.write_class(f, class_name, definition)
+    def write_classes_package(self, dirname):
+        # Create package dir
+        os.makedirs(dirname, exist_ok=True)
+
+        # 1) Write base class
+        base_path = os.path.join(dirname, 'base.py')
+        with open(base_path, 'w') as bf:
+            bf.write('from typing import List, Optional, Any\n\n')
+            bf.write('class UpsElement:\n')
+            bf.write('    def __init__(self):\n')
+            bf.write('        self.tag_name = None\n')
+            bf.write('        self.attributes = {}\n')
+            bf.write('        self.children = []\n')
+            bf.write('        self.content = None # For text content if any\n')
+
+        # 2) Write each class to its own module
+        for class_name, definition in self.classes.items():
+            file_path = os.path.join(dirname, f"{class_name}.py")
+            with open(file_path, 'w') as cf:
+                cf.write("from typing import List, Optional, Union, Dict, Any\n")
+                cf.write("from .base import UpsElement\n\n")
+                # Use existing writer to emit class body into this file
+                self.write_class(cf, class_name, definition)
+
+        # 3) Write __init__.py to re-export classes and build tag map
+        init_path = os.path.join(dirname, '__init__.py')
+        with open(init_path, 'w') as initf:
+            # import all classes
+            for class_name in self.classes.keys():
+                initf.write(f"from .{class_name} import {class_name}\n")
+            initf.write('\n')
+            # __all__
+            all_list = ', '.join([f"'{n}'" for n in self.classes.keys()])
+            initf.write(f"__all__ = [{all_list}]\n\n")
+            initf.write("# Build a mapping from tag name to class for convenience\n")
+            initf.write("TAG_MAP = {}\n")
+            initf.write("for _n in __all__:\n")
+            initf.write("    _cls = globals()[_n]\n")
+            initf.write("    try:\n")
+            initf.write("        TAG_MAP[_cls.tag_name] = _cls\n")
+            initf.write("    except Exception:\n")
+            initf.write("        pass\n")
 
     def write_class(self, f, class_name, definition: TagDefinition):
         f.write(f"class {class_name}(UpsElement):\n")
@@ -362,8 +427,8 @@ def main():
     generator = ClassGenerator()
     generator.collect_definitions(root)
     
-    print(f"Generating {len(generator.classes)} classes to {OUTPUT_FILE}...")
-    generator.write_python_file(OUTPUT_FILE)
+    print(f"Generating {len(generator.classes)} classes into package {OUTPUT_DIR}...")
+    generator.write_classes_package(OUTPUT_DIR)
     print("Done.")
 
 if __name__ == "__main__":
