@@ -111,6 +111,7 @@ class TagDefinition:
         self.node = node
         self.path_hint = path_hint
         self.spec = parse_spec_attribute(node.get('spec', ''))
+        self.need_applies_to = node.get('need_applies_to')
         self.attributes = {} # name -> spec_dict
         self.children_rules = {} # index -> string (e.g. children1="...")
         self.explicit_children = [] # List of TagDefinitions (nested)
@@ -161,7 +162,8 @@ class TagDefinition:
                 'tag': child.tag,
                 'is_definition': is_def,
                 'node': child,
-                'spec': child_spec
+                'spec': child_spec,
+                'need_applies_to': child.get('need_applies_to')
             })
 
 # --- Generator ---
@@ -319,6 +321,7 @@ class ClassGenerator:
         f.write("    def get_spec(cls):\n")
         f.write("        return {\n")
         f.write(f"            'tag': '{definition.name}',\n")
+        f.write(f"            'need_applies_to': {repr(definition.need_applies_to)},\n")
         f.write(f"            'spec_type': '{definition.spec['type']}',\n")
         f.write("            'attributes': {\n")
         for aname, aspec in definition.attributes.items():
@@ -326,7 +329,7 @@ class ClassGenerator:
         f.write("            },\n")
         f.write("            'children_spec': [\n")
         for child_info in definition.explicit_children:
-             f.write(f"                {{'tag': '{child_info['tag']}', 'spec': {child_info['spec']}}},\n")
+            f.write(f"                {{'tag': '{child_info['tag']}', 'spec': {child_info['spec']}, 'need_applies_to': {repr(child_info.get('need_applies_to'))}}},\n")
         f.write("            ]\n")
         f.write("        }\n")
         f.write("\n")
@@ -349,7 +352,7 @@ class ClassGenerator:
 def main():
     print(f"Loading {ROOT_FILE}...")
     root = load_xml(ROOT_FILE)
-    if not root:
+    if root is None:
         return
 
     print("Resolving includes...")

@@ -44,6 +44,9 @@ class UpsWidgetFactory:
         layout = QVBoxLayout()
         container.setLayout(layout)
 
+        # Keep track of attribute widgets for dynamic conditional logic
+        attr_widgets: Dict[str, QWidget] = {}
+
         # 1. Attributes Section
         if spec['attributes']:
             attr_group = QGroupBox("Attributes")
@@ -52,6 +55,8 @@ class UpsWidgetFactory:
             
             for name, attr_spec in spec['attributes'].items():
                 input_widget = self._create_input_control(attr_spec)
+                # store widget for potential need_applies_to conditions
+                attr_widgets[name] = input_widget
                 label_text = f"{name} ({'Req' if attr_spec['need'] == 'REQUIRED' else 'Opt'}):"
                 attr_layout.addRow(label_text, input_widget)
             
@@ -87,6 +92,10 @@ class UpsWidgetFactory:
             for child_info in spec['children_spec']:
                 child_tag = child_info['tag']
                 child_req = child_info['spec'] # {'need': ..., 'type': ...}
+                need_applies_to = child_info.get('need_applies_to')
+                parsed_need = None
+                if need_applies_to:
+                    parsed_need = self.parse_need_applies_to(need_applies_to)
                 
                 child_class = self.registry.get_class_for_tag(child_tag)
                 
@@ -99,6 +108,12 @@ class UpsWidgetFactory:
                 if child_req['need'] == 'MULTIPLE':
                     # List Manager
                     list_manager = UpsListManager(child_tag, child_class, self)
+                    # attach condition metadata
+                    if parsed_need:
+                        list_manager.setProperty('need_applies_to', parsed_need)
+                    # evaluate initial visibility if parent context available
+                    if parent_spec_context is not None:
+                        self._evaluate_child_visibility(list_manager, parsed_need, parent_spec_context, attr_widgets)
                     children_layout.addWidget(list_manager)
                 else:
                     # Single Instance (Optional or Required)
@@ -111,19 +126,33 @@ class UpsWidgetFactory:
                     is_complex = bool(child_static_spec['children_spec'])
                     
                     if is_complex:
-                        # Recursive call
-                        child_widget = self.create_widget(child_class)
+                        # Recursive call; pass parent context for conditional logic
+                        child_widget = self.create_widget(child_class, parent_spec_context={'class': element_class, 'attr_widgets': attr_widgets})
+                        # attach condition metadata
+                        if parsed_need:
+                            child_widget.setProperty('need_applies_to', parsed_need)
                         if child_req['need'] == 'OPTIONAL':
-                            child_widget.setCheckable(True)
-                            child_widget.setChecked(False)
+                            try:
+                                child_widget.setCheckable(True)
+                                child_widget.setChecked(False)
+                            except Exception:
+                                pass
+                        # evaluate initial visibility
+                        self._evaluate_child_visibility(child_widget, parsed_need, {'class': element_class, 'attr_widgets': attr_widgets}, attr_widgets)
                         children_layout.addWidget(child_widget)
                     else:
                         # It's simple, maybe render it inline?
                         # For now, stick to consistent GroupBox approach
-                        child_widget = self.create_widget(child_class)
+                        child_widget = self.create_widget(child_class, parent_spec_context={'class': element_class, 'attr_widgets': attr_widgets})
+                        if parsed_need:
+                            child_widget.setProperty('need_applies_to', parsed_need)
                         if child_req['need'] == 'OPTIONAL':
-                            child_widget.setCheckable(True)
-                            child_widget.setChecked(False)
+                            try:
+                                child_widget.setCheckable(True)
+                                child_widget.setChecked(False)
+                            except Exception:
+                                pass
+                        self._evaluate_child_visibility(child_widget, parsed_need, {'class': element_class, 'attr_widgets': attr_widgets}, attr_widgets)
                         children_layout.addWidget(child_widget)
 
             layout.addWidget(children_area)
@@ -131,6 +160,88 @@ class UpsWidgetFactory:
         # Add stretch to keep things compact at top
         layout.addStretch()
         return container
+
+    # --- Conditional logic helpers ---
+    def parse_need_applies_to(self, raw: str):
+        """Parse strings like 'type steadyBurn' or 'name a,b' into structured dict."""
+        if not raw:
+            return None
+        raw = raw.strip()
+        parts = raw.split(None, 1)
+        if len(parts) == 1:
+            key = parts[0]
+            vals = []
+        else:
+            key = parts[0]
+            vals = parts[1]
+            # split by comma or whitespace
+            if ',' in vals:
+                vals = [v.strip() for v in vals.split(',') if v.strip()]
+            else:
+                vals = [v.strip() for v in vals.split() if v.strip()]
+        return {'key': key, 'values': vals}
+
+    def _read_attr_widget_value(self, widget: QWidget):
+        # Read current value from common input widgets
+        try:
+            if isinstance(widget, QLineEdit):
+                return widget.text()
+            if isinstance(widget, QComboBox):
+                return widget.currentText()
+            if isinstance(widget, QCheckBox):
+                return widget.isChecked()
+            if isinstance(widget, QSpinBox) or isinstance(widget, QDoubleSpinBox):
+                return widget.value()
+        except Exception:
+            pass
+        return None
+
+    def _evaluate_child_visibility(self, child_widget: QWidget, parsed_need, parent_context, attr_widgets):
+        """Show or hide child_widget based on parsed_need and parent_context."""
+        if not parsed_need:
+            # No condition -> visible
+            child_widget.setVisible(True)
+            return
+
+        key = parsed_need.get('key')
+        values = parsed_need.get('values', [])
+
+        visible = False
+        # 'name' checks parent's tag name
+        if key == 'name':
+            parent_class = parent_context.get('class') if parent_context else None
+            if parent_class and parent_class.tag_name in values:
+                visible = True
+        else:
+            # assume key is an attribute name on parent (e.g., 'type' or 'var')
+            parent_attrs = parent_context.get('attr_widgets') if parent_context else {}
+            w = parent_attrs.get(key)
+            if w is not None:
+                val = self._read_attr_widget_value(w)
+                # compare as string for simplicity
+                sval = str(val) if val is not None else ''
+                for v in values:
+                    if sval == v:
+                        visible = True
+                        break
+
+        child_widget.setVisible(visible)
+
+        # If parent has attribute widgets, connect signals to update visibility dynamically
+        if parent_context and parent_context.get('attr_widgets'):
+            for attr_name, w in parent_context['attr_widgets'].items():
+                try:
+                    # connect common change signals
+                    if isinstance(w, QLineEdit):
+                        w.textChanged.connect(lambda _v, cw=child_widget, pn=parsed_need: self._evaluate_child_visibility(cw, pn, parent_context, parent_context['attr_widgets']))
+                    elif isinstance(w, QComboBox):
+                        w.currentIndexChanged.connect(lambda _i, cw=child_widget, pn=parsed_need: self._evaluate_child_visibility(cw, pn, parent_context, parent_context['attr_widgets']))
+                    elif isinstance(w, QCheckBox):
+                        w.toggled.connect(lambda _s, cw=child_widget, pn=parsed_need: self._evaluate_child_visibility(cw, pn, parent_context, parent_context['attr_widgets']))
+                    elif isinstance(w, QSpinBox) or isinstance(w, QDoubleSpinBox):
+                        w.valueChanged.connect(lambda _v, cw=child_widget, pn=parsed_need: self._evaluate_child_visibility(cw, pn, parent_context, parent_context['attr_widgets']))
+                except Exception:
+                    pass
 
     def _create_input_control(self, spec: Dict) -> QWidget:
         dtype = spec.get('type', 'STRING')

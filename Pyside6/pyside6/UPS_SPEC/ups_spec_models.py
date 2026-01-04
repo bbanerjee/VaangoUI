@@ -23,13 +23,14 @@ class Box(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'box',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'label': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None},
             },
             'children_spec': [
-                {'tag': 'min', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'max', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
+                {'tag': 'min', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'max', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -50,15 +51,16 @@ class Cone(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'cone',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'label': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None},
             },
             'children_spec': [
-                {'tag': 'bottom', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'bottom_radius', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'top', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'top_radius', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
+                {'tag': 'bottom', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'bottom_radius', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'top', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'top_radius', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -81,17 +83,18 @@ class Cylinder(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'cylinder',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'label': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None},
             },
             'children_spec': [
-                {'tag': 'bottom', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'top', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'radius', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'cylinder_end', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'axisymmetric_end', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'axisymmetric_side', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
+                {'tag': 'bottom', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'top', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'radius', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'cylinder_end', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'axisymmetric_end', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'axisymmetric_side', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -112,15 +115,16 @@ class Torus(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'torus',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'label': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None},
             },
             'children_spec': [
-                {'tag': 'center', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'axis_vector', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'major_radius', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'minor_radius', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
+                {'tag': 'center', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'axis_vector', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'major_radius', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'minor_radius', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
             ]
         }
 
@@ -141,15 +145,16 @@ class Parallelepiped(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'parallelepiped',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'label': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None},
             },
             'children_spec': [
-                {'tag': 'p1', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'p2', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'p3', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'p4', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
+                {'tag': 'p1', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'p2', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'p3', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'p4', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -168,13 +173,14 @@ class Sphere(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'sphere',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'label': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None},
             },
             'children_spec': [
-                {'tag': 'origin', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'radius', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
+                {'tag': 'origin', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'radius', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
             ]
         }
 
@@ -198,18 +204,19 @@ class Ellipsoid(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'ellipsoid',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'label': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None},
             },
             'children_spec': [
-                {'tag': 'origin', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'r1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'r2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'r3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'v1', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'v2', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'v3', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
+                {'tag': 'origin', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'r1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'r2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'r3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'v1', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'v2', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'v3', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -231,16 +238,17 @@ class Sphere_membrane(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'sphere_membrane',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'label': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None},
             },
             'children_spec': [
-                {'tag': 'origin', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'radius', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'thickness', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'num_lat', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'num_long', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
+                {'tag': 'origin', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'radius', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'thickness', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'num_lat', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'num_long', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
             ]
         }
 
@@ -262,16 +270,17 @@ class Sphere_shell(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'sphere_shell',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'label': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None},
             },
             'children_spec': [
-                {'tag': 'origin', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'radius', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'thickness', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'num_lat', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'num_long', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
+                {'tag': 'origin', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'radius', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'thickness', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'num_lat', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'num_long', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
             ]
         }
 
@@ -294,17 +303,18 @@ class Cylinder_shell(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'cylinder_shell',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'label': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None},
             },
             'children_spec': [
-                {'tag': 'top', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'bottom', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'radius', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'thickness', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'num_axis', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'num_circum', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
+                {'tag': 'top', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'bottom', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'radius', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'thickness', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'num_axis', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'num_circum', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
             ]
         }
 
@@ -326,16 +336,17 @@ class Plane_shell(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'plane_shell',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'label': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None},
             },
             'children_spec': [
-                {'tag': 'center', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'normal', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'radius', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'thickness', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'num_radius', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
+                {'tag': 'center', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'normal', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'radius', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'thickness', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'num_radius', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
             ]
         }
 
@@ -360,19 +371,20 @@ class Smoothcyl(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'smoothcyl',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'label': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None},
             },
             'children_spec': [
-                {'tag': 'bottom', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'top', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'radius', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'thickness', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'endcap_thickness', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'arc_start_angle_degree', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'arc_angle_degree', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'output_file', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
+                {'tag': 'bottom', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'top', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'radius', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'thickness', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'endcap_thickness', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'arc_start_angle_degree', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'arc_angle_degree', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'output_file', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -395,17 +407,18 @@ class Smooth_sphere(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'smooth_sphere',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'label': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None},
             },
             'children_spec': [
-                {'tag': 'center', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'outer_radius', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'inner_radius', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'num_radial_pts', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'algorithm', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'spiral, equal_area'}},
-                {'tag': 'output_file', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
+                {'tag': 'center', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'outer_radius', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'inner_radius', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'num_radial_pts', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'algorithm', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'spiral, equal_area'}, 'need_applies_to': None},
+                {'tag': 'output_file', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -428,17 +441,18 @@ class Tri(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'tri',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'label': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None},
             },
             'children_spec': [
-                {'tag': 'file_name_prefix', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'file_type', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'scaling_factor', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'translation_vector', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'reflection_vector', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'axis_sequence', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
+                {'tag': 'file_name_prefix', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'file_type', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'scaling_factor', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'translation_vector', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'reflection_vector', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'axis_sequence', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -465,21 +479,22 @@ class Abaqus_mesh(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'abaqus_mesh',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'label': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None},
             },
             'children_spec': [
-                {'tag': 'file_name', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'scaling_factor', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'translation_vector', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'reflection_vector', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'axis_sequence', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'rotation_matrix_row0', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'rotation_matrix_row1', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'rotation_matrix_row2', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'use_gauss_points', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'num_gauss_points', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}},
+                {'tag': 'file_name', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'scaling_factor', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'translation_vector', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'reflection_vector', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'axis_sequence', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'rotation_matrix_row0', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'rotation_matrix_row1', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'rotation_matrix_row2', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'use_gauss_points', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'num_gauss_points', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -493,6 +508,7 @@ class Difference(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'difference',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
@@ -510,6 +526,7 @@ class Union(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'union',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
@@ -527,6 +544,7 @@ class Intersection(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'intersection',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
@@ -562,26 +580,27 @@ class Union_2(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'union',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'label': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None},
             },
             'children_spec': [
-                {'tag': 'box', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'cone', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'cylinder', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'torus', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'difference', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'intersection', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'ellipsoid', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'sphere', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'sphere_membrane', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'sphere_shell', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'cylinder_shell', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'plane_shell', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'tri', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'union', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'parallelepiped', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'box', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'cone', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'cylinder', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'torus', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'difference', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'intersection', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'ellipsoid', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'sphere', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'sphere_membrane', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'sphere_shell', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'cylinder_shell', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'plane_shell', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'tri', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'union', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'parallelepiped', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -613,26 +632,27 @@ class Difference_2(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'difference',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'label': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None},
             },
             'children_spec': [
-                {'tag': 'box', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'cone', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'cylinder', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'torus', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'difference', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'intersection', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'ellipsoid', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'sphere', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'sphere_membrane', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'sphere_shell', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'cylinder_shell', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'plane_shell', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'tri', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'union', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'parallelepiped', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'box', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'cone', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'cylinder', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'torus', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'difference', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'intersection', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'ellipsoid', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'sphere', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'sphere_membrane', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'sphere_shell', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'cylinder_shell', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'plane_shell', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'tri', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'union', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'parallelepiped', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -664,26 +684,27 @@ class Intersection_2(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'intersection',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'label': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None},
             },
             'children_spec': [
-                {'tag': 'box', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'cone', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'cylinder', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'torus', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'difference', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'intersection', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'ellipsoid', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'sphere', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'sphere_membrane', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'sphere_shell', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'cylinder_shell', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'plane_shell', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'tri', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'union', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'parallelepiped', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'box', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'cone', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'cylinder', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'torus', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'difference', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'intersection', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'ellipsoid', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'sphere', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'sphere_membrane', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'sphere_shell', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'cylinder_shell', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'plane_shell', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'tri', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'union', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'parallelepiped', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -744,55 +765,56 @@ class Geom_object(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'geom_object',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'name': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None},
             },
             'children_spec': [
-                {'tag': 'box', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'cone', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'cylinder', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'torus', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'difference', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'intersection', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'ellipsoid', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'sphere', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'sphere_membrane', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'sphere_shell', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'cylinder_shell', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'plane_shell', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'smoothcyl', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'smooth_sphere', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'tri', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'abaqus_mesh', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'union', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'parallelepiped', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'file', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'image', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'res', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'velocity', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'level', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'temperature', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'color', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'density', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'pressure', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'moment', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'volumeFraction', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'affineTransformation_A0', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'affineTransformation_A1', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'affineTransformation_A2', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'affineTransformation_b', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'null', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'corrugated', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'coeff', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'cubicInitialize', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'exponentialInitialize_1D', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'freq', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'linearInitialize', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'scalar', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'sinusoidalInitialize', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'slope', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'triangularInitialize', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
+                {'tag': 'box', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'cone', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'cylinder', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'torus', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'difference', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'intersection', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'ellipsoid', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'sphere', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'sphere_membrane', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'sphere_shell', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'cylinder_shell', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'plane_shell', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'smoothcyl', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'smooth_sphere', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'tri', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'abaqus_mesh', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'union', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'parallelepiped', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'file', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'image', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'res', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'velocity', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'level', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'temperature', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'color', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'density', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'pressure', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'moment', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'volumeFraction', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'affineTransformation_A0', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'affineTransformation_A1', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'affineTransformation_A2', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'affineTransformation_b', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'null', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'corrugated', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'coeff', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'cubicInitialize', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'exponentialInitialize_1D', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'freq', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'linearInitialize', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'scalar', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'sinusoidalInitialize', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'slope', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'triangularInitialize', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -811,13 +833,14 @@ class SimulationComponent(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'SimulationComponent',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'burger, ice, impm, mpm, mpm_usl, uofu_mpm,                                                                       mpmf, mpmice, amrmpm,                                                                       peridynamics,                                                                       reduce_uda,                                                                       advectslabs, advectslabsgpu, gpuschedulertest, unifiedschedulertest, poissongpu1,                                                                       poisson1, poisson2, poisson3, poisson4, benchmark, rigidmpmice, reduce_uda, combine_patches,                                                                        rmpmice, smpm, smpmice, switcher, wave, solvertest, particletest'},
             },
             'children_spec': [
-                {'tag': 'carry_over', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'subcomponent', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'carry_over', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'subcomponent', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -855,33 +878,34 @@ class CommonTags(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'CommonTags',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'box', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'cone', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'cylinder', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'torus', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'parallelepiped', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'sphere', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'ellipsoid', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'sphere_membrane', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'sphere_shell', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'cylinder_shell', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'plane_shell', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'smoothcyl', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'smooth_sphere', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'tri', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'abaqus_mesh', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'difference', 'spec': {'need': 'FORWARD_DECLARATION', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'union', 'spec': {'need': 'FORWARD_DECLARATION', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'intersection', 'spec': {'need': 'FORWARD_DECLARATION', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'union', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'difference', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'intersection', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'geom_object', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'SimulationComponent', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'box', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'cone', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'cylinder', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'torus', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'parallelepiped', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'sphere', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'ellipsoid', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'sphere_membrane', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'sphere_shell', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'cylinder_shell', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'plane_shell', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'smoothcyl', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'smooth_sphere', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'tri', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'abaqus_mesh', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'difference', 'spec': {'need': 'FORWARD_DECLARATION', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'union', 'spec': {'need': 'FORWARD_DECLARATION', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'intersection', 'spec': {'need': 'FORWARD_DECLARATION', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'union', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'difference', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'intersection', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'geom_object', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'SimulationComponent', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -898,12 +922,13 @@ class Meta(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'Meta',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'title', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'info', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
+                {'tag': 'title', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'info', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -919,6 +944,7 @@ class Unit(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'Unit',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'name': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'KG^2'},
@@ -950,22 +976,23 @@ class Time(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'Time',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'maxTime', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'max_timesteps', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': 'positive'}},
-                {'tag': 'end_on_max_time_exactly', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'initTime', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'delt_min', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'delt_max', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'delt_init', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'max_delt_increase', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'max_initial_delt', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'initial_delt_range', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'override_restart_delt', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'timestep_multiplier', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
+                {'tag': 'maxTime', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'max_timesteps', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'end_on_max_time_exactly', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'initTime', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'delt_min', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'delt_max', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'delt_init', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'max_delt_increase', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'max_initial_delt', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'initial_delt_range', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'override_restart_delt', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'timestep_multiplier', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
             ]
         }
 
@@ -989,19 +1016,20 @@ class DataArchiver(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'DataArchiver',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'checkpoint', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'compression', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'gzip'}},
-                {'tag': 'filebase', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'outputInterval', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'outputInitTimestep', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'outputTimestepInterval', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': 'positive'}},
-                {'tag': 'save', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'save_crack_geometry', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'outputDoubleAsFloat', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'checkpoint', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'compression', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'gzip'}, 'need_applies_to': None},
+                {'tag': 'filebase', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'outputInterval', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'outputInitTimestep', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'outputTimestepInterval', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'save', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'save_crack_geometry', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'outputDoubleAsFloat', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -1021,6 +1049,7 @@ class Checkpoint(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'checkpoint',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'interval': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'},
@@ -1043,6 +1072,7 @@ class OutputInitTimestep(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'outputInitTimestep',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
@@ -1065,6 +1095,7 @@ class Save(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'save',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'label': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None},
@@ -1086,6 +1117,7 @@ class OutputDoubleAsFloat(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'outputDoubleAsFloat',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
@@ -1117,23 +1149,24 @@ class Debug(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'Debug',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'dbg_timeStart', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'dbg_timeStop', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'dbg_outputInterval', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'dbg_BeginIndex', 'spec': {'need': 'REQUIRED', 'type': 'MULTIPLE_VECTORS', 'valid_values': None}},
-                {'tag': 'dbg_EndIndex', 'spec': {'need': 'REQUIRED', 'type': 'MULTIPLE_VECTORS', 'valid_values': None}},
-                {'tag': 'dbg_Matls', 'spec': {'need': 'REQUIRED', 'type': 'MULTIPLE_INTEGERS', 'valid_values': None}},
-                {'tag': 'dbg_SigFigs', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': '1, 20'}},
-                {'tag': 'dbg_Level', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': '0, 20'}},
-                {'tag': 'dbg_SymmetryPlanes', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': '1, 3'}},
-                {'tag': 'dbg_Sym_absolute_tol', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'dbg_Sym_relative_tol', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'dbg_Sym_cutoff_value', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'debug', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'dbg_timeStart', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'dbg_timeStop', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'dbg_outputInterval', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'dbg_BeginIndex', 'spec': {'need': 'REQUIRED', 'type': 'MULTIPLE_VECTORS', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'dbg_EndIndex', 'spec': {'need': 'REQUIRED', 'type': 'MULTIPLE_VECTORS', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'dbg_Matls', 'spec': {'need': 'REQUIRED', 'type': 'MULTIPLE_INTEGERS', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'dbg_SigFigs', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': '1, 20'}, 'need_applies_to': None},
+                {'tag': 'dbg_Level', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': '0, 20'}, 'need_applies_to': None},
+                {'tag': 'dbg_SymmetryPlanes', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': '1, 3'}, 'need_applies_to': None},
+                {'tag': 'dbg_Sym_absolute_tol', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'dbg_Sym_relative_tol', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'dbg_Sym_cutoff_value', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'debug', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -1149,6 +1182,7 @@ class Debug_Debug(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'debug',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'label': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'switchTestConservation_abc,                                                                    switchDebug_Initialize,                                                                    switchDebug_equil_press,                                                                    switchDebug_PressDiffRF,                                                                    switchDebug_vel_FC,                                                                    switchDebug_Temp_FC,                                                                    switchDebug_Exchange_FC,                                                                    switchDebug_explicit_press,                                                                    switchDebug_setupMatrix,                                                                    switchDebug_setupRHS,                                                                    switchDebug_updatePressure,                                                                    switchDebug_computeDelP,                                                                    switchDebug_PressFC,                                                                    switchDebug_LagrangianValues,                                                                    switchDebug_LagrangianSpecificVol,                                                                    switchDebug_LagrangianTransportedVars,                                                                    switchDebug_MomentumExchange_CC,                                                                    switchDebug_Source_Sink,                                                                    switchDebug_advance_advect,                                                                    switchDebug_conserved_primitive,                                                                    switchDebug_AMR_refine,                                                                    switchDebug_AMR_refineInterface,                                                                    switchDebug_AMR_coarsen,                                                                    switchDebug_AMR_reflux,                                                                    switchDebug_InterpolateNCToCC_0,                                                                    switchDebug_InterpolateCCToNC,                                                                    switchDebug_InterpolatePAndGradP'},
@@ -1171,13 +1205,14 @@ class InitialConditions(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'InitialConditions',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'MPM', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'ARCHES', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'Peridynamics', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'MPM', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'ARCHES', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'Peridynamics', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -1191,6 +1226,7 @@ class MPM(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'MPM',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
@@ -1208,6 +1244,7 @@ class ARCHES(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'ARCHES',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
@@ -1225,6 +1262,7 @@ class Peridynamics(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'Peridynamics',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
@@ -1245,12 +1283,13 @@ class Grid(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'Grid',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'BoundaryConditions', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'Level', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'BoundaryConditions', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'Level', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -1269,14 +1308,15 @@ class BoundaryConditions(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'BoundaryConditions',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'LODI', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'SINE_BC', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'microSlip', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'Face', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'LODI', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'SINE_BC', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'microSlip', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'Face', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -1295,14 +1335,15 @@ class LODI(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'LODI',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'press_infinity', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'sigma', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': '0, 3.15'}},
-                {'tag': 'Li_scale', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': '0, 1.0'}},
-                {'tag': 'material', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}},
+                {'tag': 'press_infinity', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'sigma', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': '0, 3.15'}, 'need_applies_to': None},
+                {'tag': 'Li_scale', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': '0, 1.0'}, 'need_applies_to': None},
+                {'tag': 'material', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -1321,14 +1362,15 @@ class SINE_BC(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'SINE_BC',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'omega', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'A', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'reference_pressure', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'reference_velocity', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': 'positive'}},
+                {'tag': 'omega', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'A', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'reference_pressure', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'reference_velocity', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': 'positive'}, 'need_applies_to': None},
             ]
         }
 
@@ -1345,12 +1387,13 @@ class MicroSlip(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'microSlip',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'alpha_momentum', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'alpha_temperature', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
+                {'tag': 'alpha_momentum', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'alpha_temperature', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
             ]
         }
 
@@ -1382,6 +1425,7 @@ class Face(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'Face',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'annulus': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'x-, x+, y-, y+, z-, z+'},
@@ -1401,7 +1445,7 @@ class Face(UpsElement):
                 'name': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None},
             },
             'children_spec': [
-                {'tag': 'BCType', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'BCType', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -1427,6 +1471,7 @@ class BCType(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'BCType',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'id': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': '0,1,2,3,4,5,6,all'},
@@ -1434,13 +1479,13 @@ class BCType(UpsElement):
                 'label': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None},
             },
             'children_spec': [
-                {'tag': 'value', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'functor_name', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'inputfile', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'period', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': 'positive'}},
-                {'tag': 'timeperiod', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'swirl_no', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'swirl_centroid', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
+                {'tag': 'value', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'var Neumann Dirichlet LODI computeFromDensity Sine creep slip Custom                                                                       MassFlowInlet Swirl VelocityInlet, TurbulentInlet, Tabulated'},
+                {'tag': 'functor_name', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'var Neumann Dirichlet'},
+                {'tag': 'inputfile', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'var VelocityFileInput, FromFile, TurbulentInlet'},
+                {'tag': 'period', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': 'positive'}, 'need_applies_to': 'var TurbulentInlet'},
+                {'tag': 'timeperiod', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'var TurbulentInlet'},
+                {'tag': 'swirl_no', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'var Swirl'},
+                {'tag': 'swirl_centroid', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': 'var Swirl'},
             ]
         }
 
@@ -1459,14 +1504,15 @@ class Level(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'Level',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'Box', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'spacing', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'periodic', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': 'positive'}},
-                {'tag': 'Stretch', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'Box', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'spacing', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'periodic', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'Stretch', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -1489,17 +1535,18 @@ class Level_Box(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'Box',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'label': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None},
             },
             'children_spec': [
-                {'tag': 'autoPatch', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': 'positive'}},
-                {'tag': 'lower', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'upper', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'resolution', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'patches', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'extraCells', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
+                {'tag': 'autoPatch', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'lower', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'upper', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'resolution', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'patches', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'extraCells', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -1518,13 +1565,14 @@ class Stretch(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'Stretch',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'axis': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None},
             },
             'children_spec': [
-                {'tag': 'linear', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'uniform', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'linear', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'uniform', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -1542,6 +1590,7 @@ class Linear(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'linear',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'to': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None},
@@ -1565,6 +1614,7 @@ class Uniform(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'uniform',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'to': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None},
@@ -1589,14 +1639,15 @@ class PhysicalConstants(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'PhysicalConstants',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'gravity', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'reference_pressure', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'reference_point', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'viscosity', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
+                {'tag': 'gravity', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'reference_pressure', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'reference_point', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'viscosity', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -1613,12 +1664,13 @@ class MPMICE(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'MPMICE',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'use_simple_equilibration_algorithm', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'vol_frac_convergence_tolerance', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
+                {'tag': 'use_simple_equilibration_algorithm', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'vol_frac_convergence_tolerance', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -1636,13 +1688,14 @@ class CFD(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'CFD',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'CanAddICEMaterial', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'cfl', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': 'positive'}},
-                {'tag': 'ICE', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'CanAddICEMaterial', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'cfl', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'ICE', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -1666,19 +1719,20 @@ class ICE(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'ICE',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'advection', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'ADD_HEAT', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'ClampSpecificVolume', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'turbulence', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'customInitialization', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'ImplicitSolver', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'max_iteration_equilibration', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': 'positive'}},
-                {'tag': 'solution', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'TimestepControl', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'advection', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'ADD_HEAT', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'ClampSpecificVolume', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'turbulence', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'customInitialization', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'ImplicitSolver', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'max_iteration_equilibration', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'solution', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'TimestepControl', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -1696,6 +1750,7 @@ class Advection(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'advection',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'FirstOrder, FirstOrderGPU, SecondOrder'},
@@ -1721,14 +1776,15 @@ class ADD_HEAT(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'ADD_HEAT',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'add_heat_matls', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'add_heat_coeff', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'add_heat_t_start', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'add_heat_t_final', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
+                {'tag': 'add_heat_matls', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'add_heat_coeff', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'add_heat_t_start', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'add_heat_t_final', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -1748,14 +1804,15 @@ class Turbulence(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'turbulence',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'model': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'Smagorinsky Germano'},
             },
             'children_spec': [
-                {'tag': 'model_constant', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'filter_width', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': '0,1'}},
-                {'tag': 'turb_Pr', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': '0,1'}},
+                {'tag': 'model_constant', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'filter_width', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': '0,1'}, 'need_applies_to': None},
+                {'tag': 'turb_Pr', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': '0,1'}, 'need_applies_to': None},
             ]
         }
 
@@ -1774,14 +1831,15 @@ class CustomInitialization(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'customInitialization',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'manufacturedSolution', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'vortices', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'gaussianTemperature', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'counterflow', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'manufacturedSolution', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'vortices', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'gaussianTemperature', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'counterflow', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -1800,13 +1858,14 @@ class ManufacturedSolution(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'manufacturedSolution',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'mms_1 mms_2 mms_3'},
             },
             'children_spec': [
-                {'tag': 'A', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'angle', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
+                {'tag': 'A', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'angle', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -1822,11 +1881,12 @@ class Vortices(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'vortices',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'vortex', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'vortex', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -1844,13 +1904,14 @@ class Vortex(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'vortex',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'origin', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'strength', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'radius', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
+                {'tag': 'origin', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'strength', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'radius', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
             ]
         }
 
@@ -1869,14 +1930,15 @@ class GaussianTemperature(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'gaussianTemperature',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'origin', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'spread_x', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'spread_y', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'amplitude', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
+                {'tag': 'origin', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'spread_x', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'spread_y', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'amplitude', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
             ]
         }
 
@@ -1893,12 +1955,13 @@ class Counterflow(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'counterflow',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'strainRate', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'referenceCell', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
+                {'tag': 'strainRate', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'referenceCell', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -1917,14 +1980,15 @@ class ImplicitSolver(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'ImplicitSolver',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'max_outer_iterations', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': 'positive'}},
-                {'tag': 'outer_iteration_tolerance', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'iters_before_timestep_restart', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': 'positive'}},
-                {'tag': 'Parameters', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'max_outer_iterations', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'outer_iteration_tolerance', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'iters_before_timestep_restart', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'Parameters', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -1956,26 +2020,27 @@ class Parameters(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'Parameters',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'variable': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'implicitPressure'},
             },
             'children_spec': [
-                {'tag': 'initial_tolerance', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'criteria', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'Absolute relative'}},
-                {'tag': 'jump', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'logging', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': 'positive'}},
-                {'tag': 'maxiterations', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': 'positive'}},
-                {'tag': 'norm', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'LInfinity linfinity L1 l1 L2 l2'}},
-                {'tag': 'npost', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'npre', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'preconditioner', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'none, pfmg, smg'}},
-                {'tag': 'outputEquations', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'skip', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'setupFrequency', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'solver', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'smg, SMG, PFMG, pfmg, SparseMSG, sparsemsg, CG, cg, Hybrid, hybrid, GMRES, gmres amg'}},
-                {'tag': 'tolerance', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'relax_type', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': '0,3'}},
+                {'tag': 'initial_tolerance', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'criteria', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'Absolute relative'}, 'need_applies_to': None},
+                {'tag': 'jump', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'logging', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'maxiterations', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'norm', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'LInfinity linfinity L1 l1 L2 l2'}, 'need_applies_to': None},
+                {'tag': 'npost', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'npre', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'preconditioner', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'none, pfmg, smg'}, 'need_applies_to': None},
+                {'tag': 'outputEquations', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'skip', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'setupFrequency', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'solver', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'smg, SMG, PFMG, pfmg, SparseMSG, sparsemsg, CG, cg, Hybrid, hybrid, GMRES, gmres amg'}, 'need_applies_to': None},
+                {'tag': 'tolerance', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'relax_type', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': '0,3'}, 'need_applies_to': None},
             ]
         }
 
@@ -1991,6 +2056,7 @@ class Solution(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'solution',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'technique': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'EqForm'},
@@ -2012,12 +2078,13 @@ class TimestepControl(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'TimestepControl',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'Scheme_for_delT_calc', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'aggressive, conservative'}},
-                {'tag': 'knob_for_speedSound', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': '0,1'}},
+                {'tag': 'Scheme_for_delT_calc', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'aggressive, conservative'}, 'need_applies_to': None},
+                {'tag': 'knob_for_speedSound', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': '0,1'}, 'need_applies_to': None},
             ]
         }
 
@@ -2033,11 +2100,12 @@ class DataAnalysis(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'DataAnalysis',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'Module', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'Module', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -2064,21 +2132,22 @@ class Module(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'Module',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'name': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'lineExtract, containerExtract, particleExtract flatPlate_heatFlux'},
             },
             'children_spec': [
-                {'tag': 'material', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'materialIndex', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'samplingFrequency', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'timeStart', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'timeStop', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'colorThreshold', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'Variables', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'lines', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'plane', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'objects', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'material', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'materialIndex', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'samplingFrequency', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'name lineExtract, containerExtract, particleExtract'},
+                {'tag': 'timeStart', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': 'name lineExtract, containerExtract, particleExtract'},
+                {'tag': 'timeStop', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': 'name lineExtract, containerExtract, particleExtract'},
+                {'tag': 'colorThreshold', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'name particleExtract'},
+                {'tag': 'Variables', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'lines', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': 'name lineExtract'},
+                {'tag': 'plane', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': 'name flatPlate_heatFlux'},
+                {'tag': 'objects', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': 'name containerExtract'},
             ]
         }
 
@@ -2094,11 +2163,12 @@ class Variables(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'Variables',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'analyze', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'analyze', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -2115,6 +2185,7 @@ class Analyze(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'analyze',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'label': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None},
@@ -2136,11 +2207,12 @@ class Lines(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'lines',
+            'need_applies_to': 'name lineExtract',
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'line', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'line', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -2160,14 +2232,15 @@ class Line(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'line',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'name': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None},
             },
             'children_spec': [
-                {'tag': 'startingPt', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'endingPt', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'stepSize', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
+                {'tag': 'startingPt', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'endingPt', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'stepSize', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
             ]
         }
 
@@ -2184,12 +2257,13 @@ class Plane(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'plane',
+            'need_applies_to': 'name flatPlate_heatFlux',
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'startingPt', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'endingPt', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
+                {'tag': 'startingPt', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'endingPt', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -2205,11 +2279,12 @@ class Objects(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'objects',
+            'need_applies_to': 'name containerExtract',
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'geom_object', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA'}},
+                {'tag': 'geom_object', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA'}, 'need_applies_to': None},
             ]
         }
 
@@ -2225,11 +2300,12 @@ class Objects_Geom_object(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'geom_object',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'extract', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'extract', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -2246,6 +2322,7 @@ class Extract(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'extract',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'var': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None},
@@ -2271,15 +2348,16 @@ class AMR(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'AMR',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'doMultiTaskgraphing', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'useLockStep', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'ICE', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'MPM', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'Regridder', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'doMultiTaskgraphing', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'useLockStep', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'ICE', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'MPM', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'Regridder', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -2299,15 +2377,16 @@ class AMR_ICE(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'ICE',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'orderOfInterpolation', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': 'positive'}},
-                {'tag': 'orderOf_CFI_Interpolation', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': 'positive'}},
-                {'tag': 'do_Refluxing', 'spec': {'need': 'REQUIRED', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'Refinement_Criteria_Thresholds', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'ClampSpecificVolume', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
+                {'tag': 'orderOfInterpolation', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'orderOf_CFI_Interpolation', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'do_Refluxing', 'spec': {'need': 'REQUIRED', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'Refinement_Criteria_Thresholds', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'ClampSpecificVolume', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -2323,11 +2402,12 @@ class Refinement_Criteria_Thresholds(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'Refinement_Criteria_Thresholds',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'Variable', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'Variable', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -2345,6 +2425,7 @@ class Variable(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'Variable',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'name': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None},
@@ -2370,14 +2451,15 @@ class AMR_MPM(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'MPM',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'min_grid_level', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'max_grid_level', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'manual_grid', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'Refine_Regions', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'min_grid_level', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'max_grid_level', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'manual_grid', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'Refine_Regions', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -2393,11 +2475,12 @@ class Refine_Regions(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'Refine_Regions',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'geom_object', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'geom_object', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -2432,29 +2515,30 @@ class Regridder(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'Regridder',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'BNR, Hierarchical, Tiled'},
             },
             'children_spec': [
-                {'tag': 'adaptive', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'max_levels', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': 'positive'}},
-                {'tag': 'cell_refinement_ratio', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'min_boundary_cells', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'amr_overhead_high', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': '0,1'}},
-                {'tag': 'amr_overhead_low', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': '0,1'}},
-                {'tag': 'cell_stability_dilation', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'cell_regrid_dilation', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'dynamic_dilation', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'max_dilation', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'max_timestep_interval', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'min_timestep_interval', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'min_patch_size', 'spec': {'need': 'REQUIRED', 'type': 'MULTIPLE_VECTORS', 'valid_values': None}},
-                {'tag': 'patch_split_tolerance', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': '0,1'}},
-                {'tag': 'patch_combine_tolerance', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': '0,1'}},
-                {'tag': 'patch_ratio_to_target', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': '0,1'}},
-                {'tag': 'patches_per_level_per_proc', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'lattice_refinement_ratio', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}},
+                {'tag': 'adaptive', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'max_levels', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'cell_refinement_ratio', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'min_boundary_cells', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'amr_overhead_high', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': '0,1'}, 'need_applies_to': None},
+                {'tag': 'amr_overhead_low', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': '0,1'}, 'need_applies_to': None},
+                {'tag': 'cell_stability_dilation', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'cell_regrid_dilation', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'dynamic_dilation', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'max_dilation', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'max_timestep_interval', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'min_timestep_interval', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'min_patch_size', 'spec': {'need': 'REQUIRED', 'type': 'MULTIPLE_VECTORS', 'valid_values': None}, 'need_applies_to': 'type BNR Tiled'},
+                {'tag': 'patch_split_tolerance', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': '0,1'}, 'need_applies_to': 'type BNR'},
+                {'tag': 'patch_combine_tolerance', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': '0,1'}, 'need_applies_to': 'type BNR'},
+                {'tag': 'patch_ratio_to_target', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': '0,1'}, 'need_applies_to': 'type BNR'},
+                {'tag': 'patches_per_level_per_proc', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type BNR Tiled'},
+                {'tag': 'lattice_refinement_ratio', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type Hierarchical'},
             ]
         }
 
@@ -2474,14 +2558,15 @@ class Scheduler(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'Scheduler',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'type': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'MPI DynamicMPI ThreadedMPI ThreadedMPI2 GPUThreadedMPI Unified'},
             },
             'children_spec': [
-                {'tag': 'small_messages', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'taskReadyQueueAlg', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'MostChildren LeastChildren MostAllChildren LeastAllChildren MostL2Children LeastL2Children PatchOrder PatchOrderRandom MostMessages LeastMessages Random FCFS Stack'}},
-                {'tag': 'VarTracker', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'small_messages', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'taskReadyQueueAlg', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'MostChildren LeastChildren MostAllChildren LeastAllChildren MostL2Children LeastL2Children PatchOrder PatchOrderRandom MostMessages LeastMessages Random FCFS Stack'}, 'need_applies_to': None},
+                {'tag': 'VarTracker', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -2504,18 +2589,19 @@ class VarTracker(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'VarTracker',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'start_time', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'end_time', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'level', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'start_index', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'end_index', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'var', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'locations', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'task', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'start_time', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'end_time', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'level', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'start_index', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'end_index', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'var', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'locations', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'task', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -2532,6 +2618,7 @@ class Var(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'var',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'label': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None},
@@ -2555,6 +2642,7 @@ class Locations(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'locations',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'before_comm': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None},
@@ -2577,6 +2665,7 @@ class Task(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'task',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'name': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None},
@@ -2597,11 +2686,12 @@ class PreprocessTools(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'PreprocessTools',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'rawToUniqueGrains', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'rawToUniqueGrains', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -2622,16 +2712,17 @@ class RawToUniqueGrains(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'rawToUniqueGrains',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'image', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'ppc', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': 'positive'}},
-                {'tag': 'res', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': 'positive'}},
-                {'tag': 'outputBasename', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'matl', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'uniqueGrains', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'image', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'ppc', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'res', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'outputBasename', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'matl', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'uniqueGrains', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -2649,12 +2740,13 @@ class Matl(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'matl',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'index': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None},
             },
             'children_spec': [
-                {'tag': 'threshold', 'spec': {'need': 'REQUIRED', 'type': 'MULTIPLE_DOUBLES', 'valid_values': None}},
+                {'tag': 'threshold', 'spec': {'need': 'REQUIRED', 'type': 'MULTIPLE_DOUBLES', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -2671,12 +2763,13 @@ class UniqueGrains(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'uniqueGrains',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'matlIndex', 'spec': {'need': 'REQUIRED', 'type': 'MULTIPLE_DOUBLES', 'valid_values': None}},
-                {'tag': 'threshold', 'spec': {'need': 'REQUIRED', 'type': 'MULTIPLE_DOUBLES', 'valid_values': None}},
+                {'tag': 'matlIndex', 'spec': {'need': 'REQUIRED', 'type': 'MULTIPLE_DOUBLES', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'threshold', 'spec': {'need': 'REQUIRED', 'type': 'MULTIPLE_DOUBLES', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -2708,26 +2801,27 @@ class LoadBalancer(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'LoadBalancer',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'DLB PLB SimpleLoadBalancer'},
             },
             'children_spec': [
-                {'tag': 'costAlgorithm', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'Model,ModelLS,Kalman,Memory'}},
-                {'tag': 'dynamicAlgorithm', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'particle3, patchFactor, patchFactorParticles, random, Zoltan'}},
-                {'tag': 'doSpaceCurve', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'hasParticles', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'timestepInterval', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': 'positive'}},
-                {'tag': 'profileTimestepWindow', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': 'positive'}},
-                {'tag': 'gainThreshold', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': '0,1'}},
-                {'tag': 'levelIndependent', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'outputNthProc', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': 'positive'}},
-                {'tag': 'zoltanAlgorithm', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'HSFC RIB RCB'}},
-                {'tag': 'zoltanIMBTol', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'cellCost', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'particleCost', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'patchCost', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'extraCellCost', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
+                {'tag': 'costAlgorithm', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'Model,ModelLS,Kalman,Memory'}, 'need_applies_to': None},
+                {'tag': 'dynamicAlgorithm', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'particle3, patchFactor, patchFactorParticles, random, Zoltan'}, 'need_applies_to': None},
+                {'tag': 'doSpaceCurve', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'hasParticles', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'timestepInterval', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'profileTimestepWindow', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'gainThreshold', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': '0,1'}, 'need_applies_to': None},
+                {'tag': 'levelIndependent', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'outputNthProc', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'zoltanAlgorithm', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'HSFC RIB RCB'}, 'need_applies_to': None},
+                {'tag': 'zoltanIMBTol', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'cellCost', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'particleCost', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'patchCost', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'extraCellCost', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
             ]
         }
 
@@ -2754,22 +2848,23 @@ class Multimaterial(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'Multimaterial',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'fluidThermalConductivity', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'heatExchange', 'spec': {'need': 'REQUIRED', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'turbulentPrandtNo', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'fluidHeatCapacity', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'IfCutCell', 'spec': {'need': 'REQUIRED', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'StationarySolid', 'spec': {'need': 'REQUIRED', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'inviscid', 'spec': {'need': 'REQUIRED', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'restart', 'spec': {'need': 'REQUIRED', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'fixedCellType', 'spec': {'need': 'REQUIRED', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'fixedTemp', 'spec': {'need': 'REQUIRED', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'TestCutCells', 'spec': {'need': 'REQUIRED', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'stairstep', 'spec': {'need': 'REQUIRED', 'type': 'BOOLEAN', 'valid_values': None}},
+                {'tag': 'fluidThermalConductivity', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'heatExchange', 'spec': {'need': 'REQUIRED', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'turbulentPrandtNo', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'fluidHeatCapacity', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'IfCutCell', 'spec': {'need': 'REQUIRED', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'StationarySolid', 'spec': {'need': 'REQUIRED', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'inviscid', 'spec': {'need': 'REQUIRED', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'restart', 'spec': {'need': 'REQUIRED', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'fixedCellType', 'spec': {'need': 'REQUIRED', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'fixedTemp', 'spec': {'need': 'REQUIRED', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'TestCutCells', 'spec': {'need': 'REQUIRED', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'stairstep', 'spec': {'need': 'REQUIRED', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -2847,73 +2942,74 @@ class MPM_2(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'MPM',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'refine_particles', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'use_gradient_enhanced_velocity_projection', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'deformation_gradient', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'artificial_damping_coeff', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'artificial_viscosity', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'artificial_viscosity_heating', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'artificial_viscosity_coeff1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'artificial_viscosity_coeff2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'axisymmetric', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'can_add_MPM_material', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'create_new_particles', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'do_contact_friction_heating', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'collinear_bimaterial_contact_normals', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'do_grid_reset', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'do_explicit_heat_conduction', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'do_pressure_stabilization', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'do_thermal_expansion', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'compute_nodal_heat_flux', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'erosion', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'delete_rogue_particles', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'forceBC_force_increment_factor', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'manual_new_material', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'num_iters_to_decrease_delT', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'num_iters_to_increase_delT', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'iters_before_timestep_restart', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'boundary_traction_faces', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'interpolate_particle_temp_to_grid_every_step', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'time_integrator', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'explicit, fracture, implicit'}},
-                {'tag': 'interpolator', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'linear, gimp, cpdi, cpti, 3rdorderBS, 4thorderBS'}},
-                {'tag': 'cpdi_lcrit', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'minimum_particle_mass', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'minimum_mass_for_acc', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'maximum_particle_velocity', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'temperature_solve', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'test_for_neg_temps_mpm', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'use_load_curves', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'use_CBDI_boundary_condition', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'use_cohesive_zones', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'use_volume_integral', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'use_prescribed_deformation', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'prescribed_deformation_file', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'exact_deformation', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'insert_particles', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'insert_particles_file', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'with_color', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'dynamic', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'solver', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'petsc, simple'}},
-                {'tag': 'convergence_criteria_disp', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'convergence_criteria_energy', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'do_implicit_heat_conduction', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'do_mechanics', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'do_transient_implicit_heat_conduction', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'delT_decrease_factor', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'delT_increase_factor', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'dadx', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'smooth_crack_front', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'calculate_fracture_parameters', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'do_crack_propagation', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'run_MMS_problem', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'AxisAligned, GeneralizedVortex , ExpandingRing, AxisAligned3L, UniaxialStrainHarmonic, UniaxialStrainHomogeneousLinear, UniaxialStrainHomogeneousQuadratic'}},
-                {'tag': 'minimum_subcycles_for_F', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'rotating_coordinate_system', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'initialize_stress_using_body_force', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'use_momentum_form', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
+                {'tag': 'refine_particles', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'use_gradient_enhanced_velocity_projection', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'deformation_gradient', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'artificial_damping_coeff', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'artificial_viscosity', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'artificial_viscosity_heating', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'artificial_viscosity_coeff1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'artificial_viscosity_coeff2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'axisymmetric', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'can_add_MPM_material', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'create_new_particles', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'do_contact_friction_heating', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'collinear_bimaterial_contact_normals', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'do_grid_reset', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'do_explicit_heat_conduction', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'do_pressure_stabilization', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'do_thermal_expansion', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'compute_nodal_heat_flux', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'erosion', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'delete_rogue_particles', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'forceBC_force_increment_factor', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'manual_new_material', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'num_iters_to_decrease_delT', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'num_iters_to_increase_delT', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'iters_before_timestep_restart', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'boundary_traction_faces', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'interpolate_particle_temp_to_grid_every_step', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'time_integrator', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'explicit, fracture, implicit'}, 'need_applies_to': None},
+                {'tag': 'interpolator', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'linear, gimp, cpdi, cpti, 3rdorderBS, 4thorderBS'}, 'need_applies_to': None},
+                {'tag': 'cpdi_lcrit', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'minimum_particle_mass', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'minimum_mass_for_acc', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'maximum_particle_velocity', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'temperature_solve', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'test_for_neg_temps_mpm', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'use_load_curves', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'use_CBDI_boundary_condition', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'use_cohesive_zones', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'use_volume_integral', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'use_prescribed_deformation', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'prescribed_deformation_file', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'exact_deformation', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'insert_particles', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'insert_particles_file', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'with_color', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'dynamic', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'solver', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'petsc, simple'}, 'need_applies_to': None},
+                {'tag': 'convergence_criteria_disp', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'convergence_criteria_energy', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'do_implicit_heat_conduction', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'do_mechanics', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'do_transient_implicit_heat_conduction', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'delT_decrease_factor', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'delT_increase_factor', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'dadx', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'smooth_crack_front', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'calculate_fracture_parameters', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'do_crack_propagation', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'run_MMS_problem', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'AxisAligned, GeneralizedVortex , ExpandingRing, AxisAligned3L, UniaxialStrainHarmonic, UniaxialStrainHomogeneousLinear, UniaxialStrainHomogeneousQuadratic'}, 'need_applies_to': None},
+                {'tag': 'minimum_subcycles_for_F', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'rotating_coordinate_system', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'initialize_stress_using_body_force', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'use_momentum_form', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -2931,12 +3027,13 @@ class Deformation_gradient(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'deformation_gradient',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'algorithm': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'first_order, subcycling, taylor_series, cayley_hamilton'},
             },
             'children_spec': [
-                {'tag': 'num_terms', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}},
+                {'tag': 'num_terms', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -2952,6 +3049,7 @@ class Erosion(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'erosion',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'algorithm': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'none, AllowNoTension, KeepStress, ZeroStress, RemoveMass, AllowNoShear, BrittleDamage, FailureCriterion'},
@@ -2975,14 +3073,15 @@ class Rotating_coordinate_system(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'rotating_coordinate_system',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'rotation_center', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'rotation_axis', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'rotation_speed_angular', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'body_reference_point', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
+                {'tag': 'rotation_center', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'rotation_axis', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'rotation_speed_angular', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'body_reference_point', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -3001,14 +3100,15 @@ class Peridynamics_2(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'Peridynamics',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'gravity', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'time_integrator', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'forward_euler, velocity_verlet, backward_euler'}},
-                {'tag': 'num_cells_in_horizon', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'interpolator', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'linear, gimp, cpdi, 3rdorderBS, 4thorderBS'}},
+                {'tag': 'gravity', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'time_integrator', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'forward_euler, velocity_verlet, backward_euler'}, 'need_applies_to': None},
+                {'tag': 'num_cells_in_horizon', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'interpolator', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'linear, gimp, cpdi, 3rdorderBS, 4thorderBS'}, 'need_applies_to': None},
             ]
         }
 
@@ -3028,14 +3128,15 @@ class MaterialProperties(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'MaterialProperties',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'add': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None},
             },
             'children_spec': [
-                {'tag': 'MPM', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'ICE', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'Peridynamics', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'MPM', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'ICE', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'Peridynamics', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -3054,14 +3155,15 @@ class MaterialProperties_MPM(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'MPM',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'contact', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'material', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'cohesive_zone', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'thermal_contact', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'contact', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'material', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'cohesive_zone', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'thermal_contact', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -3094,28 +3196,29 @@ class Contact(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'contact',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'direction', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'myu', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'use_svf', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'mu', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'volume_constraint', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'separation_factor', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'one_or_two_step', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': 'positive'}},
-                {'tag': 'use_hardcoded_normals', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'hardcoded_normal', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'materials', 'spec': {'need': 'OPTIONAL', 'type': 'MULTIPLE_INTEGERS', 'valid_values': None}},
-                {'tag': 'stop_time', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'type', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'null, nodal_svf, single_velocity, rigid, specified, friction, friction_bard, friction_LR, approach'}},
-                {'tag': 'vel_fields', 'spec': {'need': 'OPTIONAL', 'type': 'MULTIPLE_INTEGERS', 'valid_values': None}},
-                {'tag': 'velocity_after_stop', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'filename', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'master_material', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'master_material_is_rigid', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'normal_only', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
+                {'tag': 'direction', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'myu', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'use_svf', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'mu', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'volume_constraint', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'separation_factor', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'one_or_two_step', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'use_hardcoded_normals', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'hardcoded_normal', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'materials', 'spec': {'need': 'OPTIONAL', 'type': 'MULTIPLE_INTEGERS', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'stop_time', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'type', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'null, nodal_svf, single_velocity, rigid, specified, friction, friction_bard, friction_LR, approach'}, 'need_applies_to': None},
+                {'tag': 'vel_fields', 'spec': {'need': 'OPTIONAL', 'type': 'MULTIPLE_INTEGERS', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'velocity_after_stop', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'filename', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'master_material', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'master_material_is_rigid', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'normal_only', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -3132,12 +3235,13 @@ class Hardcoded_normal(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'hardcoded_normal',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'material_index', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'coordinate_system', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'material_index', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'coordinate_system', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -3156,13 +3260,14 @@ class Coordinate_system(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'coordinate_system',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'cylindrical, spherical, cartesian'},
             },
             'children_spec': [
-                {'tag': 'axis', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'center', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
+                {'tag': 'axis', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'center', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -3210,42 +3315,43 @@ class Material(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'material',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'name': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None},
             },
             'children_spec': [
-                {'tag': 'density', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'constitutive_model', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'specific_heat', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'thermal_conductivity', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'geom_object', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'is_rigid', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'C_p', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'include_flow_work', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'melt_temp', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'room_temp', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'do_basic_damage', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'failure_criterion', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'MaximumPrincipalStress, MaximumPrincipalStrain, MohrCoulomb'}},
-                {'tag': 'tensile_cutoff_fraction_of_cohesion', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'friction_angle', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'failure_mean', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'failure_std', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'failure_distrib', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'constant, gauss, weibull, uniform'}},
-                {'tag': 'scaling', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'none, kayenta'}},
-                {'tag': 'exponent', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'failure_seed', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'char_time', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'brittle_damage_modulus', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'brittle_damage_initial_threshold', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'brittle_damage_fracture_energy', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'brittle_damage_constant_D', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'brittle_damage_max_damage_increment', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'brittle_damage_allowRecovery', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'brittle_damage_recoveryCoeff', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'brittle_damage_printDamage', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'fracture', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'crack', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'density', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'constitutive_model', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'specific_heat', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'thermal_conductivity', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'geom_object', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'is_rigid', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'C_p', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'include_flow_work', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'melt_temp', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'room_temp', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'do_basic_damage', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'failure_criterion', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'MaximumPrincipalStress, MaximumPrincipalStrain, MohrCoulomb'}, 'need_applies_to': None},
+                {'tag': 'tensile_cutoff_fraction_of_cohesion', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'friction_angle', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'failure_mean', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'failure_std', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'failure_distrib', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'constant, gauss, weibull, uniform'}, 'need_applies_to': None},
+                {'tag': 'scaling', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'none, kayenta'}, 'need_applies_to': None},
+                {'tag': 'exponent', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'failure_seed', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'char_time', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'brittle_damage_modulus', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'brittle_damage_initial_threshold', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'brittle_damage_fracture_energy', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'brittle_damage_constant_D', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'brittle_damage_max_damage_increment', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'brittle_damage_allowRecovery', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'brittle_damage_recoveryCoeff', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'brittle_damage_printDamage', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'fracture', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'crack', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -3847,596 +3953,597 @@ class Constitutive_model(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'constitutive_model',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'comp_mooney_rivlin,                                        comp_neo_hook,                                        comp_neo_hook_plastic,                                       elastic_plastic,                                        hypo_elastic,                                        hypo_elastic_fortran,                                        hypo_elastic_fracture,                                        hypo_elastic_mms,                                        elastic_plastic_hp,                                       ideal_gas,                                        membrane,                                        murnaghanMPM,                                        mw_visco_elastic,                                        rigid,                                        shell_CNH,                                       trans_iso_hyper,                                        visco_plastic,                                       visco_scram,                                        visco_trans_iso_hyper,                                        water,                                        kayenta,                                        diamm,                                        cnh_mms,                                       cnh_damage,                                        cnhp_damage,                                        UCNH,                                        program_burn,                                       jwlpp_mpm,                                        p_alpha,                                        nonlocal_drucker_prager,                                        Arenisca,                                        Arenisca3,                                        arena,                                        arena_mixture,                                        Arenisca4,                                        soil_model_brannon,                                        tabular_eos,                                        tabular_plasticity,                                        tabular_plasticity_cap,                                        mohr_coulomb,                                       camclay,                                       polar_orthotropic_hypoelastic,                                       viscoelastic_fortran'},
             },
             'children_spec': [
-                {'tag': 'A', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'allow_no_tension', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'alpha', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'alpha0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'Pe', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'Ps', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'b', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'B', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'Beta', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'bulk_modulus', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'bulkPrime', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'C', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'Cv', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'c1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'c2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'c3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'c4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'c5', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'fiber_stretch', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'max_fiber_strain', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'max_matrix_strain', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'failure_option', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'C1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'C2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'check_max_stress_failure', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'check_TEPLA_failure_criterion', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'check_failure', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'failure_variable_mean', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'failure_variable_std', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'failure_variable_distrib', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'Chi', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'coeff_thermal_expansion', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'CoeffThermalExpansion', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'compute_specific_heat', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'CrackFriction', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'CrackParameterA', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'CrackGrowthRate', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'CrackMaxGrowthRate', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'CrackPowerValue', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'critical_porosity', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'critical_scalar_damage', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'critical_stress', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'damage_cutoff', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'damage_model', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'deviatoric_stress_model', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'DCp_DTemperature', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'D', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'starting_location', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'direction_if_plane', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'delH', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'direction_of_symm', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'do_melting', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'dynamic_coeff_friction', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'e_shear_modulus', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'e_bulk_modulus', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 've_bulk_modulus', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 've_shear_modulus', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 've_volumetric_viscosity', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 've_deviatoric_viscosity', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'EoverR', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'evolve_damage', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'evolve_porosity', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'failure_by_stress', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'scaling', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'none, kayenta'}},
-                {'tag': 'reference_volume', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'failure_by_pressure', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'fracture_toughness_curve', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'G', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G5', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'Gamma', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'gamma', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'reference_pressure', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'reference_temperature', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'hardening_modulus', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'he_constant_1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'he_constant_2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'he_PR', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'InitialCrackRadius', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'initial_material_temperature', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'initial_mean_porosity', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'initial_mean_scalar_damage', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'initial_porosity_distrib', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'constant, gauss'}},
-                {'tag': 'initial_scalar_damage_distrib', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'constant, gauss'}},
-                {'tag': 'initial_std_porosity', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'initial_std_scalar_damage', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'isothermal', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'K', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'K0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'Ks', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'Ku', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'n', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'melting_temp_model', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'om', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'flow_model', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'viscoplastic_flow_model', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'pressure', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'PR', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'remove_particles', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'randomize_parameters', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'reduction_factor', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'rho0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'rhoS', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'R1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'R2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'RTau1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'RTau2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'RTau3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'RTau4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'RTau5', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'shear_modulus', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'equation_of_state', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'shear_modulus_model', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'specific_heat', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'specific_heat_model', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'stability_check', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'frac_nucleation', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'meanstrain_nucleation', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'stddevstrain_nucleation', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'strain_limit', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'StressIntensityF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'T0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'T_0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'C_0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'Gamma_0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'S_alpha', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 't1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 't2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 't3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 't4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 't5', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 't6', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'taylor_quinney_coeff', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'tolerance', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'useDamage', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'useJWLEOS', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'useJWLCEOS', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'useMurnaghanEOS', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'useBirchMurnaghanEOS', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'useModifiedEOS', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'useObjectiveRate', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'usePlasticity', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'UseArtificialViscosity', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'use_polar_decomposition_RMB', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'use_time_temperature_equation', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'viscosity', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'volfracHE', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'yield_stress', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'y1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'y2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'y3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'y4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'y5', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'y6', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'StrainEnergy', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'Z', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'zero_stress_upon_failure', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'hugeJ', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'B0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'B1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'B2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'B3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'B4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'RJS', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'RKS', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'RKN', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'A1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'A2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'A3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'A4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'P0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'P1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'P2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'P3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'CR', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'RK', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'RN', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'HC', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'CTI1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'CTPS', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'T1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'T2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'T3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'T4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'T5', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'T6', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'T7', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'J3TYPE', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'A2PF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'A4PF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'CRPF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'RKPF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'SUBX', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'DEJAVU', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'FAIL0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'FAIL1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'FAIL2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'FAIL3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'FAIL4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'FAIL5', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'FAIL6', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'FAIL7', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'FAIL8', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'FAIL9', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'PEAKI1I', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'STRENI', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'FSLOPEI', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'PEAKI1F', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'STRENF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'SOFTENING', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'FSLOPEF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'FAILSTAT', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'EOSID', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'USEHOSTEOS', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'DILATLIM', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'FREE01', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'FREE02', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'FREE03', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'FREE04', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'FREE05', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'CTPSF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'YSLOPEI', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'YSLOPEF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'TMPRXP', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'THERM01', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'THERM02', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'THERM03', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'TMPRM0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'RHO0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'TMPR0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'SNDSP0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'S1MG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'GRPAR', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'CV', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'ESFT', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'RP', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'PS', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'PE', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'CE', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'NSUB', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'S2MG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'TYP', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'RO', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'TO', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'S', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'GRPARO', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'B', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'XB', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'NB', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'PWR', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'A1MG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'A2MG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'A3MG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'A4MG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'A5MG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'A0MG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'AEMG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'FK0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'AF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'PF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'XF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'CF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'RMX', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WB0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WB1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WB2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WB3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WB4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WG0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WG1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WG2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WG3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WG4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WRJS', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WRKS', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WRKN', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WA1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WA2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WA3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WA4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WP0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WP1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WP2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WP3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WCR', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WRK', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WRN', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WHC', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WCTI1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WCTPS', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WT1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WT2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WT3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WT4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WT5', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WT6', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WT7', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WJ3TYPE', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WA2PF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WA4PF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WCRPF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WRKPF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WSUBX', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WDEJAVU', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WFAIL0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WFAIL1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WFAIL2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WFAIL3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WFAIL4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WFAIL5', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WFAIL6', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WFAIL7', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WFAIL8', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WFAIL9', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WPEAKI1I', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WSTRENI', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WFSLOPEI', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WPEAKI1F', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WSTRENF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WSOFTENING', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WFSLOPEF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WFAILSTAT', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WEOSID', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WUSEHOSTEOS', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WDILATLIM', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WFREE01', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WFREE02', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WFREE03', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WFREE04', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WFREE05', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WCTPSF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WYSLOPEI', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WYSLOPEF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WTMPRXP', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WTHERM01', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WTHERM02', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WTHERM03', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WTMPRM0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WRHO0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WTMPR0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WSNDSP0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WS1MG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WGRPAR', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WCV', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WESFT', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WRP', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WPS', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WPE', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WCE', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WNSUB', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WS2MG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WTYP', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WRO', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WTO', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WS', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WGRPARO', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WB', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WXB', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WNB', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WPWR', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WA1MG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WA2MG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WA3MG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WA4MG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WA5MG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WA0MG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WAEMG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WFK0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WAF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WPF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WXF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WCF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'WRMX', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'PEAKI1IDIST', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'B0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'B1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'B2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'A1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'A2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'A3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'A4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'A5', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'A6', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'AN', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'R0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'T0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'C0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'S1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'GP', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'CV', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'TM', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'T1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'T2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'T3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'T4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'XP', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'SC', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'IDK', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'IDG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'A2PF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'TQC', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'F1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'TEST', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'DEJAVU', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'DC1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'DC2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'DC3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'DC4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'DC5', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'DC6', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'DC7', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'DC8', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'DC9', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'DC10', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'DC11', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'DC12', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'DC13', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'alpha', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'alpha_p', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'k_o', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'k_o_dist', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'h_local', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'h_nonlocal', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'l_nonlocal', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'minimum_yield_stress', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'initial_xstress', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'initial_ystress', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'initial_zstress', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'Use_Disaggregation_Algorithm', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'FSLOPE', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'FSLOPE_p', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'PEAKI1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'STREN', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'YSLOPE', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'BETA_nonassociativity', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'B0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'B01', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'B1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'B2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'B3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'B4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'p0_crush_curve', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'p1_crush_curve', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'p2_crush_curve', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'p3_crush_curve', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'CR', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'T1_rate_dependence', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'T2_rate_dependence', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'kinematic_hardening_constant', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'fluid_B0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'fluid_pressure_initial', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'p4_fluid_effect', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'gruneisen_parameter', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'subcycling_characteristic_number', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'J3_type', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'J3_psi', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'principal_stress_cutoff', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'K0_Murnaghan_EOS', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'n_Murnaghan_EOS', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'reference_porosity', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'initial_porosity', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'initial_saturation', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'initial_fluid_pressure', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'p0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'p1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'p1_sat', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'p1_density_scale_fac', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'p2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'p3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'use_disaggregation_algorithm', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'do_damage', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'fspeed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'time_at_failure', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'eq_plastic_strain_at_failure', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'yield_surface_radius_scaling_factor', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'consistency_bisection_tolerance', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'decrease_substep_at_high_curvature', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'initialize_with_body_force', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'surface_reference_point', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'vol_frac.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'p0.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'p1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'p1_sat.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'p1_density_scale_fac.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'p2.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'p3.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'p0.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'p1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'p1_sat.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'p1_density_scale_fac.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'p2.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'p3.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'K0_Murnaghan_EOS.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'n_Murnaghan_EOS.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'K0_Murnaghan_EOS.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'n_Murnaghan_EOS.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'useInitialStress', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'initial_pressure', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'yield_distrib', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'constant, uniform'}},
-                {'tag': 'yield_range', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'yield_seed', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'useEOSFactory', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'Kprime', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'ignition_pressure', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'murnaghan_K', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'murnaghan_n', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'jwl_A', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'jwl_B', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'jwl_C', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'jwl_R1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'jwl_R2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'jwl_om', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'jwl_rho0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'reaction_G', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'reaction_b', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'max_burn_timestep_size', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'max_burned_fraction', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'doFastStressCompute', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'tolerance_for_Newton_iterations', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'max_number_of_Newton_iterations', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'useTaylorSeriesForDefGrad', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'num_taylor_terms', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': 'positive'}},
-                {'tag': 'G00', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G01', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G02', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G03', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G04', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G05', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G06', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G07', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G08', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G09', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G10', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'Tau01', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'Tau02', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'Tau03', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'Tau04', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'Tau05', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'Tau06', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'Tau07', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'Tau08', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'Tau09', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'Tau10', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'C1_WLF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'C2_WLF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'Tref_WLF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'model_type', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'classic, classic_semiimplicit, sheng'}},
-                {'tag': 'model_parameters', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'integration_parameters', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'elastic_moduli_model', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'yield_condition', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'internal_variable_model', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'kinematic_hardening_model', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'symmetry_axis_top', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'symmetry_axis_bottom', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'E_r', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'E_theta', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'E_z', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'nu_theta_r', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'nu_z_r', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'nu_z_theta', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G_theta_z', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G_z_r', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G_r_theta', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'filename', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'independent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'dependent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'interpolation', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'A', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'allow_no_tension', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'alpha', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'alpha0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'Pe', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'Ps', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'b', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'B', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'Beta', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'bulk_modulus', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'bulkPrime', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'C', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'Cv', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'c1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'c2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'c3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'c4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'c5', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'fiber_stretch', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'max_fiber_strain', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'max_matrix_strain', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'failure_option', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'C1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'C2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'check_max_stress_failure', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'check_TEPLA_failure_criterion', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'check_failure', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'failure_variable_mean', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'failure_variable_std', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'failure_variable_distrib', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'Chi', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'coeff_thermal_expansion', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'CoeffThermalExpansion', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'compute_specific_heat', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'CrackFriction', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'CrackParameterA', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'CrackGrowthRate', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'CrackMaxGrowthRate', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'CrackPowerValue', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'critical_porosity', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'critical_scalar_damage', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'critical_stress', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'damage_cutoff', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'damage_model', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'deviatoric_stress_model', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': 'type elastic_plastic elastic_plastic_hp'},
+                {'tag': 'DCp_DTemperature', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'D', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'starting_location', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'direction_if_plane', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'delH', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'direction_of_symm', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'do_melting', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'dynamic_coeff_friction', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'e_shear_modulus', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'e_bulk_modulus', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 've_bulk_modulus', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 've_shear_modulus', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 've_volumetric_viscosity', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 've_deviatoric_viscosity', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'EoverR', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'evolve_damage', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'evolve_porosity', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'failure_by_stress', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'scaling', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'none, kayenta'}, 'need_applies_to': None},
+                {'tag': 'reference_volume', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'failure_by_pressure', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'fracture_toughness_curve', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': 'type hypo_elastic_fracture'},
+                {'tag': 'G', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'G1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'G2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'G3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'G4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'G5', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'Gamma', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'gamma', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'reference_pressure', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'reference_temperature', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'hardening_modulus', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'he_constant_1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'he_constant_2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'he_PR', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'InitialCrackRadius', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'initial_material_temperature', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'initial_mean_porosity', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'initial_mean_scalar_damage', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'initial_porosity_distrib', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'constant, gauss'}, 'need_applies_to': None},
+                {'tag': 'initial_scalar_damage_distrib', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'constant, gauss'}, 'need_applies_to': None},
+                {'tag': 'initial_std_porosity', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'initial_std_scalar_damage', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'isothermal', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'K', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'K0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'Ks', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'Ku', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'n', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'melting_temp_model', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'om', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'flow_model', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'viscoplastic_flow_model', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'pressure', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'PR', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'remove_particles', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'randomize_parameters', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'reduction_factor', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'rho0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'rhoS', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'R1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'R2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'RTau1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'RTau2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'RTau3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'RTau4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'RTau5', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'shear_modulus', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'equation_of_state', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'shear_modulus_model', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'specific_heat', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'specific_heat_model', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'stability_check', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'frac_nucleation', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'meanstrain_nucleation', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'stddevstrain_nucleation', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'strain_limit', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'StressIntensityF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'T0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'T_0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'C_0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'Gamma_0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'S_alpha', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 't1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 't2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 't3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 't4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 't5', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 't6', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'taylor_quinney_coeff', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'tolerance', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'useDamage', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'useJWLEOS', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'useJWLCEOS', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'useMurnaghanEOS', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'useBirchMurnaghanEOS', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'useModifiedEOS', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'useObjectiveRate', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'usePlasticity', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'UseArtificialViscosity', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'use_polar_decomposition_RMB', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'use_time_temperature_equation', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'viscosity', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'volfracHE', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'yield_stress', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'y1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'y2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'y3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'y4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'y5', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'y6', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'StrainEnergy', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'Z', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'zero_stress_upon_failure', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'hugeJ', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'B0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'B1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'B2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'B3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'B4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'G0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'G1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'G2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'G3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'G4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'RJS', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'RKS', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'RKN', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'A1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'A2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'A3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'A4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'P0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'P1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'P2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'P3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'CR', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'RK', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'RN', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'HC', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'CTI1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'CTPS', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'T1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'T2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'T3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'T4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'T5', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'T6', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'T7', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'J3TYPE', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'A2PF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'A4PF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'CRPF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'RKPF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'SUBX', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'DEJAVU', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'FAIL0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'FAIL1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'FAIL2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'FAIL3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'FAIL4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'FAIL5', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'FAIL6', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'FAIL7', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'FAIL8', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'FAIL9', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'PEAKI1I', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'STRENI', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'FSLOPEI', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'PEAKI1F', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'STRENF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'SOFTENING', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'FSLOPEF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'FAILSTAT', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'EOSID', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'USEHOSTEOS', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'DILATLIM', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'FREE01', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'FREE02', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'FREE03', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'FREE04', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'FREE05', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'CTPSF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'YSLOPEI', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'YSLOPEF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'TMPRXP', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'THERM01', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'THERM02', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'THERM03', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'TMPRM0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'RHO0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'TMPR0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'SNDSP0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'S1MG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'GRPAR', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'CV', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'ESFT', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'RP', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'PS', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'PE', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'CE', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'NSUB', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'S2MG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'TYP', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'RO', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'TO', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'S', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'GRPARO', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'B', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'XB', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'NB', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'PWR', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'A1MG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'A2MG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'A3MG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'A4MG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'A5MG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'A0MG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'AEMG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'FK0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'AF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'PF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'XF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'CF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'RMX', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WB0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WB1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WB2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WB3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WB4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WG0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WG1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WG2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WG3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WG4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WRJS', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WRKS', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WRKN', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WA1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WA2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WA3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WA4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WP0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WP1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WP2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WP3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WCR', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WRK', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WRN', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WHC', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WCTI1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WCTPS', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WT1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WT2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WT3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WT4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WT5', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WT6', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WT7', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WJ3TYPE', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WA2PF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WA4PF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WCRPF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WRKPF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WSUBX', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WDEJAVU', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WFAIL0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WFAIL1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WFAIL2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WFAIL3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WFAIL4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WFAIL5', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WFAIL6', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WFAIL7', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WFAIL8', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WFAIL9', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WPEAKI1I', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WSTRENI', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WFSLOPEI', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WPEAKI1F', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WSTRENF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WSOFTENING', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WFSLOPEF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WFAILSTAT', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WEOSID', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WUSEHOSTEOS', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WDILATLIM', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WFREE01', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WFREE02', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WFREE03', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WFREE04', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WFREE05', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WCTPSF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WYSLOPEI', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WYSLOPEF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WTMPRXP', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WTHERM01', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WTHERM02', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WTHERM03', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WTMPRM0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WRHO0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WTMPR0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WSNDSP0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WS1MG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WGRPAR', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WCV', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WESFT', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WRP', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WPS', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WPE', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WCE', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WNSUB', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WS2MG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WTYP', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WRO', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WTO', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WS', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WGRPARO', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WB', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WXB', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WNB', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WPWR', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WA1MG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WA2MG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WA3MG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WA4MG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WA5MG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WA0MG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WAEMG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WFK0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WAF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WPF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WXF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WCF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'WRMX', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'PEAKI1IDIST', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'B0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'B1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'B2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'G0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'G1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'G2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'G3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'A1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'A2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'A3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'A4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'A5', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'A6', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'AN', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'R0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'T0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'C0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'S1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'GP', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'CV', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'TM', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'T1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'T2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'T3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'T4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'XP', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'SC', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'IDK', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'IDG', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'A2PF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'TQC', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'F1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'TEST', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'DEJAVU', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'DC1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'DC2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'DC3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'DC4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'DC5', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'DC6', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'DC7', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'DC8', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'DC9', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'DC10', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'DC11', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'DC12', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'DC13', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'alpha', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'alpha_p', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'k_o', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'k_o_dist', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'h_local', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'h_nonlocal', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'l_nonlocal', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'minimum_yield_stress', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'initial_xstress', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'initial_ystress', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'initial_zstress', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'Use_Disaggregation_Algorithm', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': 'type Arenisca Arenisca3 Arenisca4 soil_model_brannon'},
+                {'tag': 'FSLOPE', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type Arenisca Arenisca3 Arenisca4 soil_model_brannon'},
+                {'tag': 'FSLOPE_p', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type Arenisca soil_model_brannon'},
+                {'tag': 'PEAKI1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type Arenisca Arenisca3 Arenisca4 soil_model_brannon'},
+                {'tag': 'STREN', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type Arenisca Arenisca3 Arenisca4 soil_model_brannon'},
+                {'tag': 'YSLOPE', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type Arenisca Arenisca3 Arenisca4 soil_model_brannon'},
+                {'tag': 'BETA_nonassociativity', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type Arenisca Arenisca3 Arenisca4 soil_model_brannon'},
+                {'tag': 'B0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type Arenisca Arenisca3 Arenisca4 soil_model_brannon'},
+                {'tag': 'B01', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type Arenisca3'},
+                {'tag': 'B1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type Arenisca Arenisca3 Arenisca4 soil_model_brannon'},
+                {'tag': 'B2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type Arenisca Arenisca3 Arenisca4 soil_model_brannon'},
+                {'tag': 'B3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type Arenisca Arenisca3 Arenisca4 soil_model_brannon'},
+                {'tag': 'B4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type Arenisca Arenisca3 Arenisca4 soil_model_brannon'},
+                {'tag': 'G0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type Arenisca Arenisca3 Arenisca4 soil_model_brannon'},
+                {'tag': 'G1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type Arenisca Arenisca3 Arenisca4 soil_model_brannon'},
+                {'tag': 'G2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type Arenisca Arenisca3 Arenisca4 soil_model_brannon'},
+                {'tag': 'G3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type Arenisca Arenisca3 Arenisca4 soil_model_brannon'},
+                {'tag': 'G4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type Arenisca Arenisca3 Arenisca4 soil_model_brannon'},
+                {'tag': 'p0_crush_curve', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type Arenisca Arenisca3 Arenisca4 soil_model_brannon'},
+                {'tag': 'p1_crush_curve', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type Arenisca Arenisca3 Arenisca4 soil_model_brannon'},
+                {'tag': 'p2_crush_curve', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type Arenisca Arenisca3 Arenisca4 soil_model_brannon'},
+                {'tag': 'p3_crush_curve', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type Arenisca Arenisca3 Arenisca4 soil_model_brannon'},
+                {'tag': 'CR', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type Arenisca Arenisca3 Arenisca4 soil_model_brannon'},
+                {'tag': 'T1_rate_dependence', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type Arenisca Arenisca3 Arenisca4 soil_model_brannon'},
+                {'tag': 'T2_rate_dependence', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type Arenisca Arenisca3 Arenisca4 soil_model_brannon'},
+                {'tag': 'kinematic_hardening_constant', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type Arenisca soil_model_brannon'},
+                {'tag': 'fluid_B0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type Arenisca Arenisca3 Arenisca4 soil_model_brannon'},
+                {'tag': 'fluid_pressure_initial', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type Arenisca Arenisca3 Arenisca4 soil_model_brannon'},
+                {'tag': 'p4_fluid_effect', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type Arenisca soil_model_brannon'},
+                {'tag': 'gruneisen_parameter', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type Arenisca soil_model_brannon'},
+                {'tag': 'subcycling_characteristic_number', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type Arenisca Arenisca3 arena arena_mixture Arenisca4 soil_model_brannon tabular_plasticity tabular_plasticity_cap'},
+                {'tag': 'J3_type', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': 'type Arenisca4'},
+                {'tag': 'J3_psi', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': 'type Arenisca4'},
+                {'tag': 'principal_stress_cutoff', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': 'type Arenisca4'},
+                {'tag': 'K0_Murnaghan_EOS', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type Arenisca3 arena'},
+                {'tag': 'n_Murnaghan_EOS', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type Arenisca3 arena'},
+                {'tag': 'reference_porosity', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'initial_porosity', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'initial_saturation', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'initial_fluid_pressure', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'p0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'p1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'p1_sat', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'p1_density_scale_fac', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'p2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'p3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'use_disaggregation_algorithm', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'do_damage', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'fspeed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'time_at_failure', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'eq_plastic_strain_at_failure', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'yield_surface_radius_scaling_factor', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture tabular_plasticity tabular_plasticity_cap'},
+                {'tag': 'consistency_bisection_tolerance', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture tabular_plasticity tabular_plasticity_cap'},
+                {'tag': 'decrease_substep_at_high_curvature', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': 'type tabular_plasticity_cap'},
+                {'tag': 'initialize_with_body_force', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': 'type Arenisca3 arena arena_mixture'},
+                {'tag': 'surface_reference_point', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': 'type Arenisca3 arena arena_mixture'},
+                {'tag': 'vol_frac.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'p0.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'p1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'p1_sat.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'p1_density_scale_fac.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'p2.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'p3.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'p0.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'p1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'p1_sat.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'p1_density_scale_fac.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'p2.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'p3.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'K0_Murnaghan_EOS.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'n_Murnaghan_EOS.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'K0_Murnaghan_EOS.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'n_Murnaghan_EOS.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'useInitialStress', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'initial_pressure', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'yield_distrib', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'constant, uniform'}, 'need_applies_to': None},
+                {'tag': 'yield_range', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'yield_seed', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'useEOSFactory', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'Kprime', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type murnaghanMPM'},
+                {'tag': 'ignition_pressure', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type jwlpp_mpm'},
+                {'tag': 'murnaghan_K', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type jwlpp_mpm'},
+                {'tag': 'murnaghan_n', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type jwlpp_mpm'},
+                {'tag': 'jwl_A', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type jwlpp_mpm'},
+                {'tag': 'jwl_B', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type jwlpp_mpm'},
+                {'tag': 'jwl_C', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type jwlpp_mpm'},
+                {'tag': 'jwl_R1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type jwlpp_mpm'},
+                {'tag': 'jwl_R2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type jwlpp_mpm'},
+                {'tag': 'jwl_om', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type jwlpp_mpm'},
+                {'tag': 'jwl_rho0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type jwlpp_mpm'},
+                {'tag': 'reaction_G', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type jwlpp_mpm'},
+                {'tag': 'reaction_b', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type jwlpp_mpm'},
+                {'tag': 'max_burn_timestep_size', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type jwlpp_mpm'},
+                {'tag': 'max_burned_fraction', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type jwlpp_mpm'},
+                {'tag': 'doFastStressCompute', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': 'type jwlpp_mpm'},
+                {'tag': 'tolerance_for_Newton_iterations', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type jwlpp_mpm'},
+                {'tag': 'max_number_of_Newton_iterations', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type jwlpp_mpm'},
+                {'tag': 'useTaylorSeriesForDefGrad', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': 'type jwlpp_mpm soil_model_brannon'},
+                {'tag': 'num_taylor_terms', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': 'positive'}, 'need_applies_to': 'type jwlpp_mpm soil_model_brannon'},
+                {'tag': 'G00', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type viscoelastic_fortran'},
+                {'tag': 'G01', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type viscoelastic_fortran'},
+                {'tag': 'G02', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type viscoelastic_fortran'},
+                {'tag': 'G03', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type viscoelastic_fortran'},
+                {'tag': 'G04', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type viscoelastic_fortran'},
+                {'tag': 'G05', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type viscoelastic_fortran'},
+                {'tag': 'G06', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type viscoelastic_fortran'},
+                {'tag': 'G07', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type viscoelastic_fortran'},
+                {'tag': 'G08', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type viscoelastic_fortran'},
+                {'tag': 'G09', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type viscoelastic_fortran'},
+                {'tag': 'G10', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type viscoelastic_fortran'},
+                {'tag': 'Tau01', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type viscoelastic_fortran'},
+                {'tag': 'Tau02', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type viscoelastic_fortran'},
+                {'tag': 'Tau03', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type viscoelastic_fortran'},
+                {'tag': 'Tau04', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type viscoelastic_fortran'},
+                {'tag': 'Tau05', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type viscoelastic_fortran'},
+                {'tag': 'Tau06', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type viscoelastic_fortran'},
+                {'tag': 'Tau07', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type viscoelastic_fortran'},
+                {'tag': 'Tau08', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type viscoelastic_fortran'},
+                {'tag': 'Tau09', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type viscoelastic_fortran'},
+                {'tag': 'Tau10', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type viscoelastic_fortran'},
+                {'tag': 'C1_WLF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type viscoelastic_fortran'},
+                {'tag': 'C2_WLF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type viscoelastic_fortran'},
+                {'tag': 'Tref_WLF', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type viscoelastic_fortran'},
+                {'tag': 'model_type', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'classic, classic_semiimplicit, sheng'}, 'need_applies_to': 'type mohr_coulomb'},
+                {'tag': 'model_parameters', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': 'type mohr_coulomb'},
+                {'tag': 'integration_parameters', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': 'type mohr_coulomb'},
+                {'tag': 'elastic_moduli_model', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': 'type arena Arenisca3 camclay soil_model_brannon arena  arena_mixture  tabular_plasticity tabular_plasticity_cap'},
+                {'tag': 'yield_condition', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture camclay elastic_plastic elastic_plastic_hp tabular_plasticity tabular_plasticity_cap'},
+                {'tag': 'internal_variable_model', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': 'type camclay elastic_plastic elastic_plastic_hp soil_model_brannon tabular_plasticity_cap'},
+                {'tag': 'kinematic_hardening_model', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'symmetry_axis_top', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': 'type polar_orthotropic_hypoelastic'},
+                {'tag': 'symmetry_axis_bottom', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': 'type polar_orthotropic_hypoelastic'},
+                {'tag': 'E_r', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type polar_orthotropic_hypoelastic'},
+                {'tag': 'E_theta', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type polar_orthotropic_hypoelastic'},
+                {'tag': 'E_z', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type polar_orthotropic_hypoelastic'},
+                {'tag': 'nu_theta_r', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type polar_orthotropic_hypoelastic'},
+                {'tag': 'nu_z_r', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type polar_orthotropic_hypoelastic'},
+                {'tag': 'nu_z_theta', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type polar_orthotropic_hypoelastic'},
+                {'tag': 'G_theta_z', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type polar_orthotropic_hypoelastic'},
+                {'tag': 'G_z_r', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type polar_orthotropic_hypoelastic'},
+                {'tag': 'G_r_theta', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type polar_orthotropic_hypoelastic'},
+                {'tag': 'filename', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular_eos'},
+                {'tag': 'independent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular_eos'},
+                {'tag': 'dependent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular_eos'},
+                {'tag': 'interpolation', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': 'type tabular_eos'},
             ]
         }
 
@@ -4460,18 +4567,19 @@ class Damage_model(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'damage_model',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'hancock_mackenzie, johnson_cook'},
             },
             'children_spec': [
-                {'tag': 'Dc', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'D0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'D1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'D2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'D3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'D4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'D5', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
+                {'tag': 'Dc', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'D0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'D1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'D2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'D3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'D4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'D5', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -4490,13 +4598,14 @@ class Deviatoric_stress_model(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'deviatoric_stress_model',
+            'need_applies_to': 'type elastic_plastic elastic_plastic_hp',
             'spec_type': 'NO_DATA',
             'attributes': {
                 'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'hypoElastic, hypoViscoElastic'},
             },
             'children_spec': [
-                {'tag': 'tau', 'spec': {'need': 'REQUIRED', 'type': 'MULTIPLE_DOUBLES', 'valid_values': None}},
-                {'tag': 'mu', 'spec': {'need': 'REQUIRED', 'type': 'MULTIPLE_DOUBLES', 'valid_values': None}},
+                {'tag': 'tau', 'spec': {'need': 'REQUIRED', 'type': 'MULTIPLE_DOUBLES', 'valid_values': None}, 'need_applies_to': 'type hypoViscoElastic'},
+                {'tag': 'mu', 'spec': {'need': 'REQUIRED', 'type': 'MULTIPLE_DOUBLES', 'valid_values': None}, 'need_applies_to': 'type hypoViscoElastic'},
             ]
         }
 
@@ -4516,15 +4625,16 @@ class Fracture_toughness_curve(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'fracture_toughness_curve',
+            'need_applies_to': 'type hypo_elastic_fracture',
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'crack_propagation_criterion', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'max_hoop_stress, empirical_criterion, max_principal_stress, max_energy_release_rate, strain_energy_density'}},
-                {'tag': 'p', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'q', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'r', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'point', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'crack_propagation_criterion', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'max_hoop_stress, empirical_criterion, max_principal_stress, max_energy_release_rate, strain_energy_density'}, 'need_applies_to': None},
+                {'tag': 'p', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'q', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'r', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'point', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -4542,13 +4652,14 @@ class Point(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'point',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'Vc', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'KIc', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'KIIc', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
+                {'tag': 'Vc', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'KIc', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'KIIc', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -4570,16 +4681,17 @@ class Melting_temp_model(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'melting_temp_model',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'constant_Tm, linear_Tm, scg_Tm, bps_Tm'},
             },
             'children_spec': [
-                {'tag': 'a', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'b', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'Gamma_0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'K_T', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'T_m0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
+                {'tag': 'a', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'b', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'Gamma_0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'K_T', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'T_m0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -4685,100 +4797,101 @@ class Flow_model(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'flow_model',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'linear, johnson_cook, mechanical_threshold_stress,                                                   preston_tonks_wallace, steinberg_cochran_guinan,                                                   zerilli_armstrong, zerilli_armstrong_polymer'},
             },
             'children_spec': [
-                {'tag': 'K', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'sigma_0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'A', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'B', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'C', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'm', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'n', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'T_r', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'T_m', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'epdot_0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'mu_0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'beta', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'epsilon_p0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'Y_max', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'T_m0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'a', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'Gamma_0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'C1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'C2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'dislocation_density', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'length_of_dislocation_segment', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'distance_between_Peierls_valleys', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'length_of_Burger_vector', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'Debye_frequency', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'width_of_kink_loop', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'drag_coefficient', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'energy_to_form_kink_pair', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'Boltzmann_constant', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'Peierls_stress', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'c_0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'sigma_g', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'k_H', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'sqrt_l_inv', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'beta_0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'beta_1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'B_0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'alpha_0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'alpha_1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'sigma_a', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'D', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'T_0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'koverbcubed', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'g_0i', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'g_0e', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'edot_0i', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'edot_0e', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'p_i', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'q_i', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'p_e', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'q_e', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'sigma_i', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'a_0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'a_1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'a_2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'a_3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'theta_IV', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'alpha', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'edot_es0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'g_0es', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'sigma_es0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'T_c', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'g_0i_c', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'sigma_i_c', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'g_0es_c', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'sigma_es0_c', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'a_0_c', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'a_3_c', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'theta', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'p', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 's0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'sinf', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'kappa', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'gamma', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'y0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'yinf', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'y1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'y2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'M', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'alphap', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'B_pa', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'B_pb', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'B_pn', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'B_0pa', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'B_0pb', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'B_0pn', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'omega_a', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'omega_b', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'omega_p', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
+                {'tag': 'K', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type linear zerilli_armstrong'},
+                {'tag': 'sigma_0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type linear, steinberg_cochran_guinan'},
+                {'tag': 'A', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type johnson_cook steinberg_cochran_guinan'},
+                {'tag': 'B', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type johnson_cook steinberg_cochran_guinan zerilli_armstrong'},
+                {'tag': 'C', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type johnson_cook'},
+                {'tag': 'm', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type johnson_cook'},
+                {'tag': 'n', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type johnson_cook steinberg_cochran_guinan zerilli_armstrong'},
+                {'tag': 'T_r', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type johnson_cook'},
+                {'tag': 'T_m', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type johnson_cook'},
+                {'tag': 'epdot_0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type johnson_cook'},
+                {'tag': 'mu_0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type steinberg_cochran_guinan mechanical_threshold_stress'},
+                {'tag': 'beta', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type steinberg_cochran_guinan preston_tonks_wallace'},
+                {'tag': 'epsilon_p0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type steinberg_cochran_guinan'},
+                {'tag': 'Y_max', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type steinberg_cochran_guinan'},
+                {'tag': 'T_m0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type steinberg_cochran_guinan'},
+                {'tag': 'a', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type steinberg_cochran_guinan'},
+                {'tag': 'Gamma_0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type steinberg_cochran_guinan'},
+                {'tag': 'C1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type steinberg_cochran_guinan'},
+                {'tag': 'C2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type steinberg_cochran_guinan'},
+                {'tag': 'dislocation_density', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type steinberg_cochran_guinan'},
+                {'tag': 'length_of_dislocation_segment', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type steinberg_cochran_guinan'},
+                {'tag': 'distance_between_Peierls_valleys', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type steinberg_cochran_guinan'},
+                {'tag': 'length_of_Burger_vector', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type steinberg_cochran_guinan'},
+                {'tag': 'Debye_frequency', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type steinberg_cochran_guinan'},
+                {'tag': 'width_of_kink_loop', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type steinberg_cochran_guinan'},
+                {'tag': 'drag_coefficient', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type steinberg_cochran_guinan'},
+                {'tag': 'energy_to_form_kink_pair', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type steinberg_cochran_guinan'},
+                {'tag': 'Boltzmann_constant', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type steinberg_cochran_guinan'},
+                {'tag': 'Peierls_stress', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type steinberg_cochran_guinan'},
+                {'tag': 'c_0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type zerilli_armstrong'},
+                {'tag': 'sigma_g', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type zerilli_armstrong zerilli_armstrong_polymer'},
+                {'tag': 'k_H', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type zerilli_armstrong'},
+                {'tag': 'sqrt_l_inv', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type zerilli_armstrong'},
+                {'tag': 'beta_0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type zerilli_armstrong zerilli_armstrong_polymer'},
+                {'tag': 'beta_1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type zerilli_armstrong zerilli_armstrong_polymer'},
+                {'tag': 'B_0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type zerilli_armstrong'},
+                {'tag': 'alpha_0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type zerilli_armstrong'},
+                {'tag': 'alpha_1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type zerilli_armstrong'},
+                {'tag': 'sigma_a', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mechanical_threshold_stress'},
+                {'tag': 'D', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mechanical_threshold_stress'},
+                {'tag': 'T_0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mechanical_threshold_stress zerilli_armstrong_polymer'},
+                {'tag': 'koverbcubed', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mechanical_threshold_stress'},
+                {'tag': 'g_0i', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mechanical_threshold_stress'},
+                {'tag': 'g_0e', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mechanical_threshold_stress'},
+                {'tag': 'edot_0i', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mechanical_threshold_stress'},
+                {'tag': 'edot_0e', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mechanical_threshold_stress'},
+                {'tag': 'p_i', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mechanical_threshold_stress'},
+                {'tag': 'q_i', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mechanical_threshold_stress'},
+                {'tag': 'p_e', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mechanical_threshold_stress'},
+                {'tag': 'q_e', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mechanical_threshold_stress'},
+                {'tag': 'sigma_i', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mechanical_threshold_stress'},
+                {'tag': 'a_0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mechanical_threshold_stress'},
+                {'tag': 'a_1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mechanical_threshold_stress'},
+                {'tag': 'a_2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mechanical_threshold_stress'},
+                {'tag': 'a_3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mechanical_threshold_stress'},
+                {'tag': 'theta_IV', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mechanical_threshold_stress'},
+                {'tag': 'alpha', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mechanical_threshold_stress'},
+                {'tag': 'edot_es0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mechanical_threshold_stress'},
+                {'tag': 'g_0es', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mechanical_threshold_stress'},
+                {'tag': 'sigma_es0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mechanical_threshold_stress'},
+                {'tag': 'T_c', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mechanical_threshold_stress'},
+                {'tag': 'g_0i_c', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mechanical_threshold_stress'},
+                {'tag': 'sigma_i_c', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mechanical_threshold_stress'},
+                {'tag': 'g_0es_c', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mechanical_threshold_stress'},
+                {'tag': 'sigma_es0_c', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mechanical_threshold_stress'},
+                {'tag': 'a_0_c', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mechanical_threshold_stress'},
+                {'tag': 'a_3_c', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mechanical_threshold_stress'},
+                {'tag': 'theta', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type preston_tonks_wallace'},
+                {'tag': 'p', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type preston_tonks_wallace'},
+                {'tag': 's0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type preston_tonks_wallace'},
+                {'tag': 'sinf', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type preston_tonks_wallace'},
+                {'tag': 'kappa', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type preston_tonks_wallace'},
+                {'tag': 'gamma', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type preston_tonks_wallace'},
+                {'tag': 'y0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type preston_tonks_wallace'},
+                {'tag': 'yinf', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type preston_tonks_wallace'},
+                {'tag': 'y1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type preston_tonks_wallace'},
+                {'tag': 'y2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type preston_tonks_wallace'},
+                {'tag': 'M', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type preston_tonks_wallace'},
+                {'tag': 'G0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type preston_tonks_wallace'},
+                {'tag': 'alphap', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type preston_tonks_wallace'},
+                {'tag': 'B_pa', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type zerilli_armstrong_polymer'},
+                {'tag': 'B_pb', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type zerilli_armstrong_polymer'},
+                {'tag': 'B_pn', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type zerilli_armstrong_polymer'},
+                {'tag': 'B_0pa', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type zerilli_armstrong_polymer'},
+                {'tag': 'B_0pb', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type zerilli_armstrong_polymer'},
+                {'tag': 'B_0pn', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type zerilli_armstrong_polymer'},
+                {'tag': 'omega_a', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type zerilli_armstrong_polymer'},
+                {'tag': 'omega_b', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type zerilli_armstrong_polymer'},
+                {'tag': 'omega_p', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type zerilli_armstrong_polymer'},
             ]
         }
 
@@ -4815,31 +4928,32 @@ class Viscoplastic_flow_model(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'viscoplastic_flow_model',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'suvic_i'},
             },
             'children_spec': [
-                {'tag': 'coeff_backstress_evol', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'exponent_backstress_evol', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'normalizing_backstress', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'coeff_saturation_backstress', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'exponent_backstress', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'ref_strainrate', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'normalizing_inelastic_strainrate', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'activation_energy', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'universal_gas_constant', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'temperature', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'exponent_inelastic_strainrate', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'coeff_yieldstress_saturation', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'exponent_yieldstress', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'coeff_yieldstress_evol', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'exponent_dragstress', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'coeff_dragstress_evol', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'coeff_stress_saturation', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'intial_drag', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'initial_yield', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'integration_parameter_theta', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
+                {'tag': 'coeff_backstress_evol', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'exponent_backstress_evol', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'normalizing_backstress', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'coeff_saturation_backstress', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'exponent_backstress', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'ref_strainrate', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'normalizing_inelastic_strainrate', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'activation_energy', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'universal_gas_constant', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'temperature', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'exponent_inelastic_strainrate', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'coeff_yieldstress_saturation', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'exponent_yieldstress', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'coeff_yieldstress_evol', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'exponent_dragstress', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'coeff_dragstress_evol', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'coeff_stress_saturation', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'intial_drag', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'initial_yield', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'integration_parameter_theta', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -4867,22 +4981,23 @@ class Equation_of_state(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'equation_of_state',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'default_hyper, default_hypo, mie_gruneisen, mie_gruneisen_energy, borja_pressure, air, water, granite'},
             },
             'children_spec': [
-                {'tag': 'bulk_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'C_0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'Gamma_0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'S_alpha', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'S_2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'S_3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'rho_0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'p0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'negative'}},
-                {'tag': 'alpha', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'kappatilde', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'epse_v0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
+                {'tag': 'bulk_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type default_hypo, default_hyper'},
+                {'tag': 'C_0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mie_gruneisen, mie_gruneisen_energy'},
+                {'tag': 'Gamma_0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mie_gruneisen, mie_gruneisen_energy'},
+                {'tag': 'S_alpha', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mie_gruneisen, mie_gruneisen_energy'},
+                {'tag': 'S_2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mie_gruneisen_energy'},
+                {'tag': 'S_3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mie_gruneisen_energy'},
+                {'tag': 'rho_0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mie_gruneisen, mie_gruneisen_energy'},
+                {'tag': 'p0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'negative'}, 'need_applies_to': 'type borja_pressure'},
+                {'tag': 'alpha', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type borja_pressure'},
+                {'tag': 'kappatilde', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type borja_pressure'},
+                {'tag': 'epse_v0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type borja_pressure'},
             ]
         }
 
@@ -4912,24 +5027,25 @@ class Shear_modulus_model(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'shear_modulus_model',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'borja_shear, constant_shear, mts_shear, np_shear, ptw_shear, scg_shear'},
             },
             'children_spec': [
-                {'tag': 'shear_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'mu_0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'A', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'B', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'C', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'D', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'm', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'slope_mu_p_over_mu0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'T_0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'zeta', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'alpha', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'alphap', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'mu0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
+                {'tag': 'shear_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type constant_shear'},
+                {'tag': 'mu_0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'A', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'B', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'C', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'D', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'm', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'slope_mu_p_over_mu0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'T_0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'zeta', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'alpha', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'alphap', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'mu0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type borja_shear'},
             ]
         }
 
@@ -4962,27 +5078,28 @@ class Specific_heat_model(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'specific_heat_model',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'constant_Cp, cubic_Cp, copper_Cp, steel_Cp'},
             },
             'children_spec': [
-                {'tag': 'T_transition', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'A_LowT', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'B_LowT', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'C_LowT', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'n_LowT', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'A_HighT', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'B_HighT', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'C_HighT', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'n_HighT', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'a', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'b', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'beta', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'c0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'c1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'c2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'c3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
+                {'tag': 'T_transition', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'A_LowT', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'B_LowT', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'C_LowT', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'n_LowT', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'A_HighT', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'B_HighT', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'C_HighT', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'n_HighT', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'a', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'b', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'beta', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'c0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'c1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'c2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'c3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -4998,6 +5115,7 @@ class Stability_check(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'stability_check',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'acoustic, becker, drucker, drucker_becker, none'},
@@ -5053,46 +5171,47 @@ class Model_parameters(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'model_parameters',
+            'need_applies_to': 'type mohr_coulomb',
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'shear_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'bulk_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'cohesion', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'angle_internal_friction', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'angle_dilation', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'max_hydrostatic_tension', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'initial_suction', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'phi_b', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'use_water_retention', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'water_retention_param_1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'water_retention_param_2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'water_retention_param_3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'water_retention_param_4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'use_undrained_shear_transition', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'water_influence_A1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'water_influence_B1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'water_influence_W', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'beta_strain_rate', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'ref_strain_rate', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'use_variable_elastic_modulus', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'variable_modulus_m', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'variable_modulus_nu_y', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'use_linearly_varying_cohesion', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'linear_cohesion_a', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'linear_cohesion_y_ref', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'linear_cohesion_depth_direction', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'x-, x+, y-, y+, z-, z+'}},
-                {'tag': 'use_softening', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'softening_St', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'softening_strain_95', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'use_regularized_nonlocal_softening', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'regularization_t_FE', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'regularization_t_shear', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'use_nonlocal_correction', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'nonlocal_n', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'nonlocal_l', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'retention_model', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'state_surface, van_genuchten, gallipoli'}},
+                {'tag': 'shear_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'bulk_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'cohesion', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'angle_internal_friction', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'angle_dilation', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'max_hydrostatic_tension', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'initial_suction', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'phi_b', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'use_water_retention', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'water_retention_param_1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'water_retention_param_2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'water_retention_param_3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'water_retention_param_4', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'use_undrained_shear_transition', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'water_influence_A1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'water_influence_B1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'water_influence_W', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'beta_strain_rate', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'ref_strain_rate', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'use_variable_elastic_modulus', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'variable_modulus_m', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'variable_modulus_nu_y', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'use_linearly_varying_cohesion', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'linear_cohesion_a', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'linear_cohesion_y_ref', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'linear_cohesion_depth_direction', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'x-, x+, y-, y+, z-, z+'}, 'need_applies_to': None},
+                {'tag': 'use_softening', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'softening_St', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'softening_strain_95', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'use_regularized_nonlocal_softening', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'regularization_t_FE', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'regularization_t_shear', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'use_nonlocal_correction', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'nonlocal_n', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'nonlocal_l', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'retention_model', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'state_surface, van_genuchten, gallipoli'}, 'need_applies_to': None},
             ]
         }
 
@@ -5119,22 +5238,23 @@ class Integration_parameters(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'integration_parameters',
+            'need_applies_to': 'type mohr_coulomb',
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'max_iterations_pegasus', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'alpha_check_pegasus', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'alpha_change_pegasus', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'alpha_ratio_pegasus', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'yield_tolerance', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'integration_tolerance', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'beta_safety_factor', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'minimum_mean_stress', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'suction_tolerance', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'drift_correction_algorithm', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'none, at_begin, at_end'}},
-                {'tag': 'tolerance_algorithm', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'relative, sloan'}},
-                {'tag': 'solution_algorithm', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'modified_euler, RK3, RK3_Bogacki, RK4, RK5_England,                                                  RK5_Cash, RK5_Dormand, RK5_Bogacki, extrapolation'}},
+                {'tag': 'max_iterations_pegasus', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'alpha_check_pegasus', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'alpha_change_pegasus', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'alpha_ratio_pegasus', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'yield_tolerance', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'integration_tolerance', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'beta_safety_factor', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'minimum_mean_stress', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'suction_tolerance', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'drift_correction_algorithm', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'none, at_begin, at_end'}, 'need_applies_to': None},
+                {'tag': 'tolerance_algorithm', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'relative, sloan'}, 'need_applies_to': None},
+                {'tag': 'solution_algorithm', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'modified_euler, RK3, RK3_Bogacki, RK4, RK5_England,                                                  RK5_Cash, RK5_Dormand, RK5_Bogacki, extrapolation'}, 'need_applies_to': None},
             ]
         }
 
@@ -5202,62 +5322,63 @@ class Elastic_moduli_model(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'elastic_moduli_model',
+            'need_applies_to': 'type arena Arenisca3 camclay soil_model_brannon arena  arena_mixture  tabular_plasticity tabular_plasticity_cap',
             'spec_type': 'NO_DATA',
             'attributes': {
                 'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'constant  arenisca3  arena  arena_mixture  metal_iso neural_net neural_net_bulk support_vector soil_model_brannon tabular tabular_bulk tabular_bulk_pressure'},
             },
             'children_spec': [
-                {'tag': 'bulk_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'shear_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'B0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'B1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'B2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'B3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'B4', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G4', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'b0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'b1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'b2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'b3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'b4', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'nu1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'nu2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'vol_frac.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'b0.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'b1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'b2.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'b3.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'b4.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G0.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'nu1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'nu2.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'b0.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'b1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'b2.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'b3.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'b4.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G0.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'nu1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'nu2.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'filename', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'independent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'dependent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'interpolation', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'nu', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'min_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'max_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'min_pressure', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'max_pressure', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'mean_elastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'std_dev_elastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'mean_plastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'std_dev_plastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'mean_bulk_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'std_dev_bulk_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
+                {'tag': 'bulk_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type constant'},
+                {'tag': 'shear_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type constant'},
+                {'tag': 'B0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'B1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'B2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'B3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'B4', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'G0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon arena tabular neural_net neural_net_bulk support_vector'},
+                {'tag': 'G1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'G2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'G3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'G4', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arenisca3 soil_model_brannon'},
+                {'tag': 'b0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'b1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'b2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'b3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'b4', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'nu1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'nu2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'vol_frac.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b0.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b2.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b3.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b4.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'G0.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'nu1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'nu2.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b0.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b2.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b3.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'b4.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'G0.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'nu1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'nu2.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'filename', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular neural_net neural_net_bulk support_vector'},
+                {'tag': 'independent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular'},
+                {'tag': 'dependent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular'},
+                {'tag': 'interpolation', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': 'type tabular'},
+                {'tag': 'nu', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type tabular neural_net neural_net_bulk support_vector'},
+                {'tag': 'min_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net'},
+                {'tag': 'max_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net'},
+                {'tag': 'min_pressure', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net'},
+                {'tag': 'max_pressure', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net'},
+                {'tag': 'mean_elastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'std_dev_elastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'mean_plastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'std_dev_plastic_strain', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'mean_bulk_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
+                {'tag': 'std_dev_bulk_modulus', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type neural_net_bulk'},
             ]
         }
 
@@ -5273,6 +5394,7 @@ class Interpolation(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'interpolation',
+            'need_applies_to': 'type tabular',
             'spec_type': 'NO_DATA',
             'attributes': {
                 'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'linear, cubic'},
@@ -5352,69 +5474,70 @@ class Yield_condition(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'yield_condition',
+            'need_applies_to': 'type arena arena_mixture camclay elastic_plastic elastic_plastic_hp tabular_plasticity tabular_plasticity_cap',
             'spec_type': 'NO_DATA',
             'attributes': {
                 'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'gurson rousselier camclay arena arena_mixture tabular tabular_cap von_mises'},
             },
             'children_spec': [
-                {'tag': 'M', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'q1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'q2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'q3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'k', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'f_c', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'D', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'sigma_1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'PEAKI1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'FSLOPE', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'STREN', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'YSLOPE', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'PEAKI1_failed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'FSLOPE_failed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'STREN_failed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'YSLOPE_failed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'BETA', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'CR', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'T1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'T2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'weibullDist_PEAKI1', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'weibullDist_FSLOPE', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'weibullDist_STREN', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'weibullDist_YSLOPE', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'weibullDist_BETA', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'weibullDist_CR', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'weibullDist_T1', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'weibullDist_T2', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'vol_frac.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'PEAKI1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'FSLOPE.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'STREN.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'YSLOPE.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'PEAKI1_failed.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'FSLOPE_failed.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'STREN_failed.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'YSLOPE_failed.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'BETA.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'CR.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'T1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'T2.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'PEAKI1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'FSLOPE.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'STREN.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'YSLOPE.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'PEAKI1_failed.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'FSLOPE_failed.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'STREN_failed.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'YSLOPE_failed.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'BETA.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'CR.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'T1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'T2.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'filename', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'independent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'dependent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'interpolation', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'cap_ellipticity_ratio', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
+                {'tag': 'M', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type camclay'},
+                {'tag': 'q1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'q2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'q3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'k', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'f_c', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type gurson'},
+                {'tag': 'D', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type rousselier'},
+                {'tag': 'sigma_1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type rousselier'},
+                {'tag': 'PEAKI1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'FSLOPE', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'STREN', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'YSLOPE', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'PEAKI1_failed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'FSLOPE_failed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'STREN_failed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'YSLOPE_failed', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'BETA', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'CR', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'T1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'T2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'weibullDist_PEAKI1', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_FSLOPE', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_STREN', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_YSLOPE', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_BETA', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_CR', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_T1', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'weibullDist_T2', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type arena arena_mixture'},
+                {'tag': 'vol_frac.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'PEAKI1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'FSLOPE.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'STREN.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'YSLOPE.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'PEAKI1_failed.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'FSLOPE_failed.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'STREN_failed.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'YSLOPE_failed.phase1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'BETA.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'CR.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'T1.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'T2.phase1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'PEAKI1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'FSLOPE.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'STREN.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'YSLOPE.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'PEAKI1_failed.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'FSLOPE_failed.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'STREN_failed.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'YSLOPE_failed.phase2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'BETA.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'CR.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'T1.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'T2.phase2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena_mixture'},
+                {'tag': 'filename', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular tabular_cap'},
+                {'tag': 'independent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular tabular_cap'},
+                {'tag': 'dependent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular tabular_cap'},
+                {'tag': 'interpolation', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': 'type tabular tabular_cap'},
+                {'tag': 'cap_ellipticity_ratio', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type tabular_cap'},
             ]
         }
 
@@ -5430,6 +5553,7 @@ class Yield_condition_Interpolation(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'interpolation',
+            'need_applies_to': 'type tabular tabular_cap',
             'spec_type': 'NO_DATA',
             'attributes': {
                 'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'linear, cubic'},
@@ -5473,33 +5597,34 @@ class Internal_variable_model(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'internal_variable_model',
+            'need_applies_to': 'type camclay elastic_plastic elastic_plastic_hp soil_model_brannon tabular_plasticity_cap',
             'spec_type': 'NO_DATA',
             'attributes': {
                 'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'arena borja_consolidation_pressure metal_internal_var soil_model_brannon_kappa tabular_cap'},
             },
             'children_spec': [
-                {'tag': 'p0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'p1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'p2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'p3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'use_disaggregation_algorithm', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'pc0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'negative'}},
-                {'tag': 'lambdatilde', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'vol_frac_nucleation', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'mean_strain_nucleation', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'stddev_strain_nucleation', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'soil_model_brannon_fSlope', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'soil_model_brannon_peakI1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'soil_model_brannon_Cr', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'soil_model_brannon_B0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'soil_model_brannon_p0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'soil_model_brannon_p1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'soil_model_brannon_p3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'soil_model_brannon_p4', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'filename', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'independent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'dependent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'interpolation', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'p0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'p1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'p2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'p3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'use_disaggregation_algorithm', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': 'type arena'},
+                {'tag': 'pc0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'negative'}, 'need_applies_to': 'type borja_consolidation_pressure'},
+                {'tag': 'lambdatilde', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type borja_consolidation_pressure'},
+                {'tag': 'vol_frac_nucleation', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type metal_internal_var'},
+                {'tag': 'mean_strain_nucleation', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type metal_internal_var'},
+                {'tag': 'stddev_strain_nucleation', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type metal_internal_var'},
+                {'tag': 'soil_model_brannon_fSlope', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_peakI1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_Cr', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_B0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_p0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_p1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_p3', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'soil_model_brannon_p4', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type soil_model_brannon_kappa'},
+                {'tag': 'filename', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular_cap'},
+                {'tag': 'independent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular_cap'},
+                {'tag': 'dependent_variables', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': 'type tabular_cap'},
+                {'tag': 'interpolation', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': 'type tabular_cap'},
             ]
         }
 
@@ -5515,6 +5640,7 @@ class Internal_variable_model_Interpolation(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'interpolation',
+            'need_applies_to': 'type tabular_cap',
             'spec_type': 'NO_DATA',
             'attributes': {
                 'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'linear, cubic'},
@@ -5537,12 +5663,13 @@ class Kinematic_hardening_model(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'kinematic_hardening_model',
+            'need_applies_to': 'type arena',
             'spec_type': 'NO_DATA',
             'attributes': {
                 'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'none, prager, armstrong_frederick, arena'},
             },
             'children_spec': [
-                {'tag': 'fluid_pressure_initial', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
+                {'tag': 'fluid_pressure_initial', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type arena'},
             ]
         }
 
@@ -5558,6 +5685,7 @@ class Constitutive_model_Interpolation(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'interpolation',
+            'need_applies_to': 'type tabular_eos',
             'spec_type': 'NO_DATA',
             'attributes': {
                 'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'linear, cubic'},
@@ -5580,12 +5708,13 @@ class Fracture(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'fracture',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'normal'},
             },
             'children_spec': [
-                {'tag': 'constraint', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
+                {'tag': 'constraint', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -5603,13 +5732,14 @@ class Crack(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'crack',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'type', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'friction'}},
-                {'tag': 'mu', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'crack_segments', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'type', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'friction'}, 'need_applies_to': None},
+                {'tag': 'mu', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'crack_segments', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -5628,14 +5758,15 @@ class Crack_segments(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'crack_segments',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'quad', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'curved_quad', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'partial_ellipse', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'ellipse', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'quad', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'curved_quad', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'partial_ellipse', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'ellipse', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -5657,17 +5788,18 @@ class Quad(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'quad',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'p1', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'p2', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'p3', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'p4', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'resolution_p1_p2', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'resolution_p2_p3', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'crack_front_sides', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'NYNN'}},
+                {'tag': 'p1', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'p2', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'p3', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'p4', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'resolution_p1_p2', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'resolution_p2_p3', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'crack_front_sides', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'NYNN'}, 'need_applies_to': None},
             ]
         }
 
@@ -5692,20 +5824,21 @@ class Curved_quad(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'curved_quad',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'p1', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'p2', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'p3', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'p4', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'resolution_straight_sides', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'points_curved_side2', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'points_curved_side4', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'crack_front_sides', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'repetition', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'offset', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
+                {'tag': 'p1', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'p2', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'p3', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'p4', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'resolution_straight_sides', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'points_curved_side2', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'points_curved_side4', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'crack_front_sides', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'repetition', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'offset', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -5727,17 +5860,18 @@ class Points_curved_side2(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'points_curved_side2',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'point', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'point', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'point', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'point', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'point', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'point', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'point', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'point', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'point', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'point', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'point', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'point', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'point', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'point', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -5753,11 +5887,12 @@ class Points_curved_side2_Point(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'point',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'val', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
+                {'tag': 'val', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -5773,11 +5908,12 @@ class Points_curved_side2_Point_2(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'point',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'val', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
+                {'tag': 'val', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -5793,11 +5929,12 @@ class Points_curved_side2_Point_3(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'point',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'val', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
+                {'tag': 'val', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -5813,11 +5950,12 @@ class Points_curved_side2_Point_4(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'point',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'val', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
+                {'tag': 'val', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -5833,11 +5971,12 @@ class Points_curved_side2_Point_5(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'point',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'val', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
+                {'tag': 'val', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -5853,11 +5992,12 @@ class Points_curved_side2_Point_6(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'point',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'val', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
+                {'tag': 'val', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -5873,11 +6013,12 @@ class Points_curved_side2_Point_7(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'point',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'val', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
+                {'tag': 'val', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -5899,17 +6040,18 @@ class Points_curved_side4(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'points_curved_side4',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'point', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'point', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'point', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'point', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'point', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'point', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'point', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'point', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'point', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'point', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'point', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'point', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'point', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'point', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -5925,11 +6067,12 @@ class Points_curved_side4_Point(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'point',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'val', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
+                {'tag': 'val', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -5945,11 +6088,12 @@ class Points_curved_side4_Point_2(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'point',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'val', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
+                {'tag': 'val', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -5965,11 +6109,12 @@ class Points_curved_side4_Point_3(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'point',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'val', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
+                {'tag': 'val', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -5985,11 +6130,12 @@ class Points_curved_side4_Point_4(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'point',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'val', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
+                {'tag': 'val', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -6005,11 +6151,12 @@ class Points_curved_side4_Point_5(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'point',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'val', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
+                {'tag': 'val', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -6025,11 +6172,12 @@ class Points_curved_side4_Point_6(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'point',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'val', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
+                {'tag': 'val', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -6045,11 +6193,12 @@ class Points_curved_side4_Point_7(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'point',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'val', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
+                {'tag': 'val', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -6069,15 +6218,16 @@ class Partial_ellipse(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'partial_ellipse',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'center', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'point_axis1', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'point_axis2', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'extent', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'resolution_circumference', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}},
+                {'tag': 'center', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'point_axis1', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'point_axis2', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'extent', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'resolution_circumference', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -6096,14 +6246,15 @@ class Ellipse(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'ellipse',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'point1_axis1', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'point_axis2', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'point2_axis1', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'resolution_circumference', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}},
+                {'tag': 'point1_axis1', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'point_axis2', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'point2_axis1', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'resolution_circumference', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -6126,17 +6277,18 @@ class Cohesive_zone(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'cohesive_zone',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'name': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None},
             },
             'children_spec': [
-                {'tag': 'delta_n', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'delta_t', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'sig_max', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'tau_max', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'cz_filename', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'do_rotation', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
+                {'tag': 'delta_n', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'delta_t', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'sig_max', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'tau_max', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'cz_filename', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'do_rotation', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -6150,6 +6302,7 @@ class Thermal_contact(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'thermal_contact',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
@@ -6169,11 +6322,12 @@ class MaterialProperties_ICE(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'ICE',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'material', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'material', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -6200,21 +6354,22 @@ class ICE_Material(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'material',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'name': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None},
             },
             'children_spec': [
-                {'tag': 'dynamic_viscosity', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'EOS', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'SpecificHeatModel', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'gamma', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'tiny_rho', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'geom_object', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'includeFlowWork', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'isSurroundingMatl', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'specific_heat', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'thermal_conductivity', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
+                {'tag': 'dynamic_viscosity', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'EOS', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'SpecificHeatModel', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'gamma', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'tiny_rho', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'geom_object', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'includeFlowWork', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'isSurroundingMatl', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'specific_heat', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'thermal_conductivity', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
             ]
         }
 
@@ -6274,54 +6429,55 @@ class EOS(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'EOS',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'ideal_gas, hard_sphere_gas, TST, Thomsen_Hartka_water, JWL, JWLC, Murnaghan, BirchMurnaghan, Gruneisen, Tillotson, KnaussSeaWater, KumariDass'},
             },
             'children_spec': [
-                {'tag': 'a', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'a', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'b', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'b', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'Gamma', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'u', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'w', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'gas_constant', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'A', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'B', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'C', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'R1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'R2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'om', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'rho0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'rho0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'n', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'K', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'rho0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'B0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'B0prime', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'lambda', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'useSpecificHeatModel', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'c0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'c1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'c2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'c3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'K', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'P0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'T0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'T0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'S0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'S', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'co', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'ko', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'To', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'L', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'vo', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'E0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'Es', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'Esp', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'alpha', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'beta', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
+                {'tag': 'a', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type  TST, Thomsen_Hartka_water Tillotson'},
+                {'tag': 'a', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type  KnaussSeaWater BirchMurnaghan'},
+                {'tag': 'b', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type  TST, Thomsen_Hartka_water Tillotson'},
+                {'tag': 'b', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type  KnaussSeaWater BirchMurnaghan'},
+                {'tag': 'Gamma', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type  TST'},
+                {'tag': 'u', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type  TST'},
+                {'tag': 'w', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type  TST'},
+                {'tag': 'gas_constant', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type  ideal_gas'},
+                {'tag': 'A', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type JWL JWLC Gruneisen Tillotson'},
+                {'tag': 'B', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type JWL JWLC Gruneisen Tillotson'},
+                {'tag': 'C', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type     JWLC'},
+                {'tag': 'R1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type JWL JWLC'},
+                {'tag': 'R2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type JWL JWLC'},
+                {'tag': 'om', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type JWL JWLC'},
+                {'tag': 'rho0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type JWL JWLC Murnaghan Gruneisen Tillotson'},
+                {'tag': 'rho0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type KnaussSeaWater'},
+                {'tag': 'n', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type Murnaghan'},
+                {'tag': 'K', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type Murnaghan'},
+                {'tag': 'rho0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type KumariDass'},
+                {'tag': 'B0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type KumariDass'},
+                {'tag': 'B0prime', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type KumariDass'},
+                {'tag': 'lambda', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type KumariDass'},
+                {'tag': 'useSpecificHeatModel', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': 'type BirchMurnaghan'},
+                {'tag': 'c0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type  BirchMurnaghan'},
+                {'tag': 'c1', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type  BirchMurnaghan'},
+                {'tag': 'c2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type  BirchMurnaghan'},
+                {'tag': 'c3', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type  BirchMurnaghan'},
+                {'tag': 'K', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type KnaussSeaWater'},
+                {'tag': 'P0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type Murnaghan Gruneisen'},
+                {'tag': 'T0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type Gruneisen'},
+                {'tag': 'T0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type KnaussSeaWater'},
+                {'tag': 'S0', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type KnaussSeaWater'},
+                {'tag': 'S', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type KnaussSeaWater'},
+                {'tag': 'co', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type Thomsen_Hartka_water'},
+                {'tag': 'ko', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type Thomsen_Hartka_water'},
+                {'tag': 'To', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type Thomsen_Hartka_water'},
+                {'tag': 'L', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type Thomsen_Hartka_water'},
+                {'tag': 'vo', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type Thomsen_Hartka_water'},
+                {'tag': 'E0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type Tillotson'},
+                {'tag': 'Es', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type Tillotson'},
+                {'tag': 'Esp', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type Tillotson'},
+                {'tag': 'alpha', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type Tillotson'},
+                {'tag': 'beta', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type Tillotson'},
             ]
         }
 
@@ -6354,27 +6510,28 @@ class SpecificHeatModel(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'SpecificHeatModel',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'Debye Component Polynomial'},
             },
             'children_spec': [
-                {'tag': 'Atoms', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': 'positive'}},
-                {'tag': 'DebyeTemperature', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'XCO2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'XCO', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'XH2O', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'XO2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'XN2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'XOH', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'XNO', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'XO', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'XH', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'XH2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'MaxOrder', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': 'positive'}},
-                {'tag': 'Tmin', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'Tmax', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'coefficient', 'spec': {'need': 'OPTIONAL', 'type': 'MULTIPLE_DOUBLES', 'valid_values': None}},
+                {'tag': 'Atoms', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': 'positive'}, 'need_applies_to': 'type Debye'},
+                {'tag': 'DebyeTemperature', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type Debye'},
+                {'tag': 'XCO2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type Component'},
+                {'tag': 'XCO', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type Component'},
+                {'tag': 'XH2O', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type Component'},
+                {'tag': 'XO2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type Component'},
+                {'tag': 'XN2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type Component'},
+                {'tag': 'XOH', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type Component'},
+                {'tag': 'XNO', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type Component'},
+                {'tag': 'XO', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type Component'},
+                {'tag': 'XH', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type Component'},
+                {'tag': 'XH2', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type Component'},
+                {'tag': 'MaxOrder', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': 'positive'}, 'need_applies_to': 'type Polynomial'},
+                {'tag': 'Tmin', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type Polynomial'},
+                {'tag': 'Tmax', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type Polynomial'},
+                {'tag': 'coefficient', 'spec': {'need': 'OPTIONAL', 'type': 'MULTIPLE_DOUBLES', 'valid_values': None}, 'need_applies_to': 'type Polynomial'},
             ]
         }
 
@@ -6391,12 +6548,13 @@ class MaterialProperties_Peridynamics(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'Peridynamics',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'material', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'ContactModel', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'material', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'ContactModel', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -6417,15 +6575,16 @@ class Peridynamics_Material(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'material',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'name': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None},
             },
             'children_spec': [
-                {'tag': 'density', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'material_model', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'damage_model', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'geom_object', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'density', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'material_model', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'damage_model', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'geom_object', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -6457,26 +6616,27 @@ class Material_model(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'material_model',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'linear_elastic_bond, elastic_neo_hookean_state, polar_orthotropic_linear_elastic_state'},
             },
             'children_spec': [
-                {'tag': 'young_modulus', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'poisson_ratio', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'shear_modulus', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'bulk_modulus', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'symm_axis_top', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'symm_axis_bottom', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'E_r', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'E_theta', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'E_z', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'nu_theta_r', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'nu_z_r', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'nu_z_theta', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G_theta_z', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G_z_r', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G_r_theta', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
+                {'tag': 'young_modulus', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type elastic_neo_hookean_state'},
+                {'tag': 'poisson_ratio', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type elastic_neo_hookean_state'},
+                {'tag': 'shear_modulus', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type elastic_neo_hookean_state'},
+                {'tag': 'bulk_modulus', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type elastic_neo_hookean_state'},
+                {'tag': 'symm_axis_top', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': 'type polar_orthotropic_linear_elastic_state'},
+                {'tag': 'symm_axis_bottom', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': 'type polar_orthotropic_linear_elastic_state'},
+                {'tag': 'E_r', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type polar_orthotropic_linear_elastic_state'},
+                {'tag': 'E_theta', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type polar_orthotropic_linear_elastic_state'},
+                {'tag': 'E_z', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type polar_orthotropic_linear_elastic_state'},
+                {'tag': 'nu_theta_r', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type polar_orthotropic_linear_elastic_state'},
+                {'tag': 'nu_z_r', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type polar_orthotropic_linear_elastic_state'},
+                {'tag': 'nu_z_theta', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type polar_orthotropic_linear_elastic_state'},
+                {'tag': 'G_theta_z', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type polar_orthotropic_linear_elastic_state'},
+                {'tag': 'G_z_r', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type polar_orthotropic_linear_elastic_state'},
+                {'tag': 'G_r_theta', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type polar_orthotropic_linear_elastic_state'},
             ]
         }
 
@@ -6494,12 +6654,13 @@ class Material_Damage_model(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'damage_model',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'spherical_strain_energy'},
             },
             'children_spec': [
-                {'tag': 'G_Ic', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
+                {'tag': 'G_Ic', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type spherical_strain_energy'},
             ]
         }
 
@@ -6516,12 +6677,13 @@ class ContactModel(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'ContactModel',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'type', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'null, single_velocity'}},
-                {'tag': 'materials', 'spec': {'need': 'OPTIONAL', 'type': 'MULTIPLE_INTEGERS', 'valid_values': None}},
+                {'tag': 'type', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'null, single_velocity'}, 'need_applies_to': None},
+                {'tag': 'materials', 'spec': {'need': 'OPTIONAL', 'type': 'MULTIPLE_INTEGERS', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -6537,11 +6699,12 @@ class Models(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'Models',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'Model', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'Model', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -6621,74 +6784,75 @@ class Model(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'Model',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'SimpleRxn, AdiabaticTable, Gruneisen, hard_sphere_gas, IandG, JWL, JWLC, JWLpp, ZeroOrder, LightTime, Radiation, Simple_Burn, Steady_Burn, Test, Unsteady_Burn, mass_momentum_energy_src, Murnaghan PassiveScalar Thomsen_Hartka_water Tillotson, flameSheet_rxn, DDT0, DDT1, SolidReactionModel, MesoBurn'},
             },
             'children_spec': [
-                {'tag': 'Active', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'b', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'E0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'energy_src', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'G', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'mass_src', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'momentum_src', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'mme_src_t_start', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'mme_src_t_final', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'rate', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'Test', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'LightTime', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'SimpleRxn', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'AfterMelting', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'ActEnergyCondPh', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'BoundaryParticles', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'BurnCoeff', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'burnMaterial', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'BurnrateModCoef', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'CondPhaseHeat', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'CondUnsteadyCoef', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'CrackVolThreshold', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'Cv', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'Enthalpy', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'fromMaterial', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'GasPhaseHeat', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'GasUnsteadyCoef', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'Gcrack', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'HeatConductGasPh', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'HeatConductCondPh', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'IdealGasConst', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'IgnitionTemp', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'k', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'material', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'MoleWeightGasPh', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'nCrack', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'PreExpCondPh', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'PreExpGasPh', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'RadiationModel', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'SolidReactionModel', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'refPressure', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'rho0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'scalar', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'SpecificHeatBoth', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'Ta', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'table', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'tableValue', 'spec': {'need': 'MULTIPLE', 'type': 'STRING', 'valid_values': 'CO2, H2O, Temp, density'}},
-                {'tag': 'toMaterial', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'ThresholdPressure', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'ThresholdvolFrac', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'ThresholdPressureJWL', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'ThresholdPressureSB', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'ThresholdTemp', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'ThresholdVolFrac', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'varianceMax', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'varianceScale', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'useCrackModel', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'useInductionTime', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'IgnitionConst', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'PressureShift', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'ExponentialConst', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'PreexpoConst', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'IandG', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'Active', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': 'type JWLpp ZeroOrder Simple_Burn DDT0 SolidReactionModel'},
+                {'tag': 'b', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type hard_sphere_gas JWLpp ZeroOrder Thomsen_Hartka_water Tillotson'},
+                {'tag': 'E0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type JWLpp ZeroOrder Tillotson'},
+                {'tag': 'energy_src', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mass_momentum_energy_src'},
+                {'tag': 'G', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type JWLpp ZeroOrder'},
+                {'tag': 'mass_src', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mass_momentum_energy_src'},
+                {'tag': 'momentum_src', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': 'type mass_momentum_energy_src'},
+                {'tag': 'mme_src_t_start', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mass_momentum_energy_src'},
+                {'tag': 'mme_src_t_final', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type mass_momentum_energy_src'},
+                {'tag': 'rate', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'Test', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'LightTime', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'SimpleRxn', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'AfterMelting', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'ActEnergyCondPh', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'BoundaryParticles', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'BurnCoeff', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'burnMaterial', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'BurnrateModCoef', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'CondPhaseHeat', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'CondUnsteadyCoef', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'CrackVolThreshold', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'Cv', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'Enthalpy', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'fromMaterial', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'GasPhaseHeat', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'GasUnsteadyCoef', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'Gcrack', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'HeatConductGasPh', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'HeatConductCondPh', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'IdealGasConst', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'IgnitionTemp', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'k', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'material', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'MoleWeightGasPh', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'nCrack', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'PreExpCondPh', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'PreExpGasPh', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'RadiationModel', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'SolidReactionModel', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'refPressure', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'rho0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type Gruneisen JWL JWLC JWLpp Murnaghan Tillotson'},
+                {'tag': 'scalar', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'SpecificHeatBoth', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'Ta', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'table', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'tableValue', 'spec': {'need': 'MULTIPLE', 'type': 'STRING', 'valid_values': 'CO2, H2O, Temp, density'}, 'need_applies_to': None},
+                {'tag': 'toMaterial', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'ThresholdPressure', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type DDT1 JWLpp Simple_Burn Steady_Burn Unsteady_Burn ZeroOrder'},
+                {'tag': 'ThresholdvolFrac', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'ThresholdPressureJWL', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type DDT1'},
+                {'tag': 'ThresholdPressureSB', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type DDT1'},
+                {'tag': 'ThresholdTemp', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'ThresholdVolFrac', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'varianceMax', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'varianceScale', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'useCrackModel', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': 'type DDT1'},
+                {'tag': 'useInductionTime', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': 'type DDT1'},
+                {'tag': 'IgnitionConst', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type DDT1'},
+                {'tag': 'PressureShift', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type DDT1'},
+                {'tag': 'ExponentialConst', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type DDT1'},
+                {'tag': 'PreexpoConst', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': 'type DDT1'},
+                {'tag': 'IandG', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -6707,14 +6871,15 @@ class Test(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'Test',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'fromMaterial', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'toMaterial', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'rate', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'startTime', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
+                {'tag': 'fromMaterial', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'toMaterial', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'rate', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'startTime', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
             ]
         }
 
@@ -6736,17 +6901,18 @@ class LightTime(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'LightTime',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'fromMaterial', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'toMaterial', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'D', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'E0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'starting_location', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'react_mixed_cells', 'spec': {'need': 'REQUIRED', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'direction_if_plane', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
+                {'tag': 'fromMaterial', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'toMaterial', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'D', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'E0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'starting_location', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'react_mixed_cells', 'spec': {'need': 'REQUIRED', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'direction_if_plane', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -6763,12 +6929,13 @@ class SimpleRxn(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'SimpleRxn',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'material', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'scalar', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'material', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'scalar', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -6788,14 +6955,15 @@ class Scalar(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'scalar',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'name': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None},
             },
             'children_spec': [
-                {'tag': 'constants', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'geom_object', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'test_conservation', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
+                {'tag': 'constants', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'geom_object', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'test_conservation', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -6823,23 +6991,24 @@ class Constants(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'constants',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'f_stoichometric', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': '0,1'}},
-                {'tag': 'diffusivity', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'rho_air', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'rho_fuel', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'cv_air', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'cv_fuel', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'R_air', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'R_fuel', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'thermalCond_air', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'thermalCond_fuel', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'viscosity_air', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'viscosity_fuel', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'initialize_diffusion_knob', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
+                {'tag': 'f_stoichometric', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': '0,1'}, 'need_applies_to': None},
+                {'tag': 'diffusivity', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'rho_air', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'rho_fuel', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'cv_air', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'cv_fuel', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'R_air', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'R_fuel', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'thermalCond_air', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'thermalCond_fuel', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'viscosity_air', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'viscosity_fuel', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'initialize_diffusion_knob', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
             ]
         }
 
@@ -6862,18 +7031,19 @@ class RadiationModel(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'RadiationModel',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'radiatingGas', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'absorbingSolid', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'calcFreq', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'calcInterval', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'table_or_ice_temp_density', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'ice table'}},
-                {'tag': 'useTableValues', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'DORadiationModel', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'geom_object', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'radiatingGas', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'absorbingSolid', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'calcFreq', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'calcInterval', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'table_or_ice_temp_density', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'ice table'}, 'need_applies_to': None},
+                {'tag': 'useTableValues', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'DORadiationModel', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'geom_object', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -6896,18 +7066,19 @@ class DORadiationModel(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'DORadiationModel',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'ordinates', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': '2,8'}},
-                {'tag': 'opl', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': '0,1'}},
-                {'tag': 'property_model', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'radcoef patchmean wsggm'}},
-                {'tag': 'spherical_harmonics', 'spec': {'need': 'REQUIRED', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'test_problem', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'test_problem_number', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'linear_solver', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'hypre petsc'}},
-                {'tag': 'LinearSolver', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'ordinates', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': '2,8'}, 'need_applies_to': None},
+                {'tag': 'opl', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': '0,1'}, 'need_applies_to': None},
+                {'tag': 'property_model', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'radcoef patchmean wsggm'}, 'need_applies_to': None},
+                {'tag': 'spherical_harmonics', 'spec': {'need': 'REQUIRED', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'test_problem', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'test_problem_number', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'linear_solver', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'hypre petsc'}, 'need_applies_to': None},
+                {'tag': 'LinearSolver', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -6926,14 +7097,15 @@ class LinearSolver(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'LinearSolver',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'solver', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'gmres'}},
-                {'tag': 'preconditioner', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'jacobi'}},
-                {'tag': 'max_iter', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': 'positive'}},
-                {'tag': 'tolerance', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
+                {'tag': 'solver', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'gmres'}, 'need_applies_to': None},
+                {'tag': 'preconditioner', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'jacobi'}, 'need_applies_to': None},
+                {'tag': 'max_iter', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'tolerance', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
             ]
         }
 
@@ -6950,12 +7122,13 @@ class SolidReactionModel(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'SolidReactionModel',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'RateConstantModel', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'RateModel', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'RateConstantModel', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'RateModel', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -6975,14 +7148,15 @@ class RateConstantModel(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'RateConstantModel',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'Arrhenius, ModifiedArrhenius'},
             },
             'children_spec': [
-                {'tag': 'A', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'Ea', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'b', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
+                {'tag': 'A', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'Ea', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'b', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type ModifiedArrhenius'},
             ]
         }
 
@@ -7006,18 +7180,19 @@ class RateModel(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'RateModel',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'AvaramiErofeev, ContractingCylinder, ContractingSphere, Diffusion,                                                                        NthOrder, Power, ProutTompkins'},
             },
             'children_spec': [
-                {'tag': 'a', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'b', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'dimension', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'n', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'q', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'p', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'm', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
+                {'tag': 'a', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type AvaramiErofeev Power'},
+                {'tag': 'b', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type AvaramiErofeev Power'},
+                {'tag': 'dimension', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type Diffusion'},
+                {'tag': 'n', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type NthOrder ProutTompkins'},
+                {'tag': 'q', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type ProutTompkins'},
+                {'tag': 'p', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'm', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': 'type ProutTompkins'},
             ]
         }
 
@@ -7040,17 +7215,18 @@ class Model_Scalar(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'scalar',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'name': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None},
             },
             'children_spec': [
-                {'tag': 'material', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'test_conservation', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'doTableTest', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'constants', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'reaction_constants', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'geom_object', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'material', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'test_conservation', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'doTableTest', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'constants', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'reaction_constants', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'geom_object', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -7068,13 +7244,14 @@ class Scalar_Constants(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'constants',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'AMR_Refinement_Criteria', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'diffusivity', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'initialize_diffusion_knob', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
+                {'tag': 'AMR_Refinement_Criteria', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'diffusivity', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'initialize_diffusion_knob', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -7094,15 +7271,16 @@ class Reaction_constants(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'reaction_constants',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'f_stoichometric', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'delta_H_combustion', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'oxidizer_temp_infinity', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'initial_fuel_temp', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'diffusivity', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
+                {'tag': 'f_stoichometric', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'delta_H_combustion', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'oxidizer_temp_infinity', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'initial_fuel_temp', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'diffusivity', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -7124,16 +7302,17 @@ class Table(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'table',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'name': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'adiabatic'},
                 'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'Arches'},
             },
             'children_spec': [
-                {'tag': 'defaultValue', 'spec': {'need': 'MULTIPLE', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'derivedValue', 'spec': {'need': 'MULTIPLE', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'constantValue', 'spec': {'need': 'MULTIPLE', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'filename', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}},
+                {'tag': 'defaultValue', 'spec': {'need': 'MULTIPLE', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'derivedValue', 'spec': {'need': 'MULTIPLE', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'constantValue', 'spec': {'need': 'MULTIPLE', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'filename', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -7150,6 +7329,7 @@ class DefaultValue(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'defaultValue',
+            'need_applies_to': None,
             'spec_type': 'DOUBLE',
             'attributes': {
                 'name': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'heat_loss, mixture_fraction_variance'},
@@ -7171,6 +7351,7 @@ class DerivedValue(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'derivedValue',
+            'need_applies_to': None,
             'spec_type': 'STRING',
             'attributes': {
                 'name': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'heat_capac_Cv, gamma, reference_heat_capac_Cp,                                                                    reference_mixture_molecular_weight, reference_heat_capac_Cv, reference_gamma'},
@@ -7192,6 +7373,7 @@ class ConstantValue(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'constantValue',
+            'need_applies_to': None,
             'spec_type': 'DOUBLE',
             'attributes': {
                 'name': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'viscosity, thermal_conductivity, reference_Temp'},
@@ -7231,30 +7413,31 @@ class IandG(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'IandG',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'fromMaterial', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'toMaterial', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'I', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'G1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'G2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'a', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'b', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'c', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'd', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'e', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'g', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'x', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'y', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'z', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'Figmax', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'FG1max', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'FG2min', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'rho0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'E0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'ThresholdPressure', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
+                {'tag': 'fromMaterial', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'toMaterial', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'I', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'G1', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'G2', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'a', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'b', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'c', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'd', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'e', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'g', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'x', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'y', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'z', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'Figmax', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'FG1max', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'FG2min', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'rho0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'E0', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'ThresholdPressure', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
             ]
         }
 
@@ -7270,11 +7453,12 @@ class PhysicalBC(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'PhysicalBC',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'MPM', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'MPM', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -7295,16 +7479,17 @@ class PhysicalBC_MPM(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'MPM',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'arches_heat_flux', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'force', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'pressure', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'velocity', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'moment', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'heat_flux', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'arches_heat_flux', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'force', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'pressure', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'velocity', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'moment', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'heat_flux', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -7322,13 +7507,14 @@ class Arches_heat_flux(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'arches_heat_flux',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'geom_object', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA'}},
-                {'tag': 'load_curve', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'polynomial_data', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'geom_object', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA'}, 'need_applies_to': None},
+                {'tag': 'load_curve', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'polynomial_data', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -7345,12 +7531,13 @@ class Load_curve(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'load_curve',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'id', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'time_point', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'id', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'time_point', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -7367,12 +7554,13 @@ class Time_point(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'time_point',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'time', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'load', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
+                {'tag': 'time', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'load', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -7388,11 +7576,12 @@ class Polynomial_data(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'polynomial_data',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'file', 'spec': {'need': 'MULTIPLE', 'type': 'STRING', 'valid_values': None}},
+                {'tag': 'file', 'spec': {'need': 'MULTIPLE', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -7410,13 +7599,14 @@ class Force(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'force',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'lower', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'upper', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'force_density', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
+                {'tag': 'lower', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'upper', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'force_density', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -7437,16 +7627,17 @@ class Pressure(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'pressure',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'geom_object', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA'}},
-                {'tag': 'outward_normal', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'load_curve', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'res', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'volume_fraction_inside_domain', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'load_curve_scaling_function', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
+                {'tag': 'geom_object', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA'}, 'need_applies_to': None},
+                {'tag': 'outward_normal', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'load_curve', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'res', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'volume_fraction_inside_domain', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'load_curve_scaling_function', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -7463,12 +7654,13 @@ class Pressure_Load_curve(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'load_curve',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'id', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'time_point', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'id', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'time_point', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -7485,12 +7677,13 @@ class Load_curve_Time_point(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'time_point',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'time', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'load', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
+                {'tag': 'time', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'load', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -7509,14 +7702,15 @@ class Velocity(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'velocity',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'geom_object', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA'}},
-                {'tag': 'load_curve', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'res', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'load_curve_scaling_function', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
+                {'tag': 'geom_object', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA'}, 'need_applies_to': None},
+                {'tag': 'load_curve', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'res', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'load_curve_scaling_function', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -7533,12 +7727,13 @@ class Velocity_Load_curve(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'load_curve',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'id', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'time_point', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'id', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'time_point', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -7555,12 +7750,13 @@ class Load_curve_Time_point_2(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'time_point',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'time', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'load', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
+                {'tag': 'time', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'load', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -7580,15 +7776,16 @@ class Moment(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'moment',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'geom_object', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA'}},
-                {'tag': 'outward_normal', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'load_curve', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'normal_plane', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'res', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}},
+                {'tag': 'geom_object', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA'}, 'need_applies_to': None},
+                {'tag': 'outward_normal', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'load_curve', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'normal_plane', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'res', 'spec': {'need': 'OPTIONAL', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -7605,12 +7802,13 @@ class Moment_Load_curve(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'load_curve',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'id', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'time_point', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'id', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'time_point', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -7627,12 +7825,13 @@ class Load_curve_Time_point_3(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'time_point',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'time', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'load', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
+                {'tag': 'time', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'load', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -7649,12 +7848,13 @@ class Normal_plane(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'normal_plane',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'normal', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
-                {'tag': 'point', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}},
+                {'tag': 'normal', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'point', 'spec': {'need': 'REQUIRED', 'type': 'VECTOR', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -7671,12 +7871,13 @@ class Heat_flux(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'heat_flux',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'geom_object', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA'}},
-                {'tag': 'load_curve', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'geom_object', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA'}, 'need_applies_to': None},
+                {'tag': 'load_curve', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -7693,12 +7894,13 @@ class Heat_flux_Load_curve(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'load_curve',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'id', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'time_point', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'id', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'time_point', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -7715,12 +7917,13 @@ class Load_curve_Time_point_4(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'time_point',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'time', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'load', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}},
+                {'tag': 'time', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'load', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -7736,11 +7939,12 @@ class ParticleBC(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'ParticleBC',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'Load', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'Load', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -7756,11 +7960,12 @@ class Load(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'Load',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'force', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'force', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -7777,12 +7982,13 @@ class Load_Force(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'force',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'geom_object', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA'}},
-                {'tag': 'load_curve', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'geom_object', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA'}, 'need_applies_to': None},
+                {'tag': 'load_curve', 'spec': {'need': 'REQUIRED', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -7799,12 +8005,13 @@ class Force_Load_curve(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'load_curve',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'id', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'time_point', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'id', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'time_point', 'spec': {'need': 'MULTIPLE', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -7821,12 +8028,13 @@ class Load_curve_Time_point_5(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'time_point',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'time', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'load', 'spec': {'need': 'REQUIRED', 'type': 'MULTIPLE_DOUBLES', 'valid_values': None}},
+                {'tag': 'time', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'load', 'spec': {'need': 'REQUIRED', 'type': 'MULTIPLE_DOUBLES', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -7842,6 +8050,7 @@ class Solver(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'Solver',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'type': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'CGSolver, direct, hypre, hypreamr'},
@@ -7862,11 +8071,12 @@ class Burger(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'Burger',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'delt', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
+                {'tag': 'delt', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
             ]
         }
 
@@ -7883,12 +8093,13 @@ class Poisson(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'Poisson',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'delt', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'maxresidual', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
+                {'tag': 'delt', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'maxresidual', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -7904,11 +8115,12 @@ class AdvectSlabs(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'AdvectSlabs',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'delt', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
+                {'tag': 'delt', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -7924,11 +8136,12 @@ class AdvectSlabsGPU(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'AdvectSlabsGPU',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'delt', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
+                {'tag': 'delt', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -7945,12 +8158,13 @@ class GPUSchedulerTest(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'GPUSchedulerTest',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'delt', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'maxresidual', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
+                {'tag': 'delt', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'maxresidual', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -7967,12 +8181,13 @@ class UnifiedSchedulerTest(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'UnifiedSchedulerTest',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'delt', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'maxresidual', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
+                {'tag': 'delt', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'maxresidual', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -7989,12 +8204,13 @@ class ParticleTest1(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'ParticleTest1',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'doOutput', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'doGhostCells', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}},
+                {'tag': 'doOutput', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'doGhostCells', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -8013,14 +8229,15 @@ class Wave(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'Wave',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'radius', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'initial_condition', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'integration', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}},
-                {'tag': 'refine_threshold', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}},
+                {'tag': 'radius', 'spec': {'need': 'OPTIONAL', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'initial_condition', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'integration', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'refine_threshold', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -8040,15 +8257,16 @@ class SolverTest(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'SolverTest',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
             'children_spec': [
-                {'tag': 'delt', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}},
-                {'tag': 'X_Laplacian', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'Y_Laplacian', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'Z_Laplacian', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
-                {'tag': 'Parameters', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}},
+                {'tag': 'delt', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'X_Laplacian', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'Y_Laplacian', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'Z_Laplacian', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'Parameters', 'spec': {'need': 'OPTIONAL', 'type': 'NO_DATA', 'valid_values': None}, 'need_applies_to': None},
             ]
         }
 
@@ -8062,6 +8280,7 @@ class X_Laplacian(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'X_Laplacian',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
@@ -8079,6 +8298,7 @@ class Y_Laplacian(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'Y_Laplacian',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
@@ -8096,6 +8316,7 @@ class Z_Laplacian(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'Z_Laplacian',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
             },
@@ -8130,25 +8351,26 @@ class SolverTest_Parameters(UpsElement):
     def get_spec(cls):
         return {
             'tag': 'Parameters',
+            'need_applies_to': None,
             'spec_type': 'NO_DATA',
             'attributes': {
                 'variable': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'implicitPressure'},
             },
             'children_spec': [
-                {'tag': 'criteria', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'Absolute relative'}},
-                {'tag': 'jump', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'logging', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': 'positive'}},
-                {'tag': 'maxiterations', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': 'positive'}},
-                {'tag': 'norm', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'LInfinity linfinity L1 l1 L2 l2'}},
-                {'tag': 'npost', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'npre', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'preconditioner', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'none, pfmg, smg'}},
-                {'tag': 'outputEquations', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}},
-                {'tag': 'skip', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'setupFrequency', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}},
-                {'tag': 'solver', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'smg, SMG, PFMG, pfmg, SparseMSG, sparsemsg, CG, cg, Hybrid, hybrid, GMRES, gmres amg'}},
-                {'tag': 'tolerance', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}},
-                {'tag': 'relax_type', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': '0,3'}},
+                {'tag': 'criteria', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'Absolute relative'}, 'need_applies_to': None},
+                {'tag': 'jump', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'logging', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'maxiterations', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': 'positive'}, 'need_applies_to': None},
+                {'tag': 'norm', 'spec': {'need': 'OPTIONAL', 'type': 'STRING', 'valid_values': 'LInfinity linfinity L1 l1 L2 l2'}, 'need_applies_to': None},
+                {'tag': 'npost', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'npre', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'preconditioner', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'none, pfmg, smg'}, 'need_applies_to': None},
+                {'tag': 'outputEquations', 'spec': {'need': 'OPTIONAL', 'type': 'BOOLEAN', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'skip', 'spec': {'need': 'REQUIRED', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'setupFrequency', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'solver', 'spec': {'need': 'REQUIRED', 'type': 'STRING', 'valid_values': 'smg, SMG, PFMG, pfmg, SparseMSG, sparsemsg, CG, cg, Hybrid, hybrid, GMRES, gmres amg'}, 'need_applies_to': None},
+                {'tag': 'tolerance', 'spec': {'need': 'REQUIRED', 'type': 'DOUBLE', 'valid_values': None}, 'need_applies_to': None},
+                {'tag': 'relax_type', 'spec': {'need': 'OPTIONAL', 'type': 'INTEGER', 'valid_values': '0,3'}, 'need_applies_to': None},
             ]
         }
 
