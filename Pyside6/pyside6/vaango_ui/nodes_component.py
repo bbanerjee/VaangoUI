@@ -3,12 +3,12 @@ from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QPushButton,
 from PySide6.QtGui import QAction
 from PySide6.QtCore import Qt
 
-# Import only the local node editor; avoid gui_app and pyside6_java fallbacks
+# Import the local node editor
 try:
-    from vaango_ui.node_editor import NodeEditorWidget
+    from vaango_ui.widgets.node_editor import NodeEditorWidget
 except Exception:
     try:
-        from pyside6.vaango_ui.node_editor import NodeEditorWidget
+        from pyside6.vaango_ui.widgets.node_editor import NodeEditorWidget
     except Exception:
         NodeEditorWidget = None
 
@@ -152,7 +152,7 @@ class VaangoUINodesComponent(QWidget):
         if NodeEditorWidget is not None:
             self.editor = NodeEditorWidget()
         else:
-            self.editor = QLabel("Node editor not available (gui_app.widgets.node_editor missing)")
+            self.editor = QLabel("Node editor not available (pyside6.vaango_ui.widgets.node_editor missing)")
             self.editor.setAlignment(Qt.AlignCenter)
 
         # Build node factories from discovered nodes for Add menu and programmatic adds
