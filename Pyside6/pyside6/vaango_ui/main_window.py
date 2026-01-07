@@ -1,9 +1,20 @@
 import sys
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout, QDockWidget, QTextEdit, QFileDialog, QMessageBox
 from PySide6.QtCore import Qt, QObject, Signal
+from PySide6.QtGui import QTextCursor, QWindow
 from PySide6.QtGui import QTextCursor
 
-from .visualization import Vaango3DWindow
+# Prefer PyVista-based backend when available (viz_pyvista), fall back to Qt3D
+try:
+    from .viz_pyvista import Vaango3DWindow  # type: ignore
+    print("Vaango UI: using viz_pyvista backend for 3D view")
+except Exception:
+    try:
+        from .visualization import Vaango3DWindow
+        print("Vaango UI: using Qt3D backend for 3D view")
+    except Exception:
+        # Let import error propagate if neither backend is available
+        raise
 from .panels import GenerateParticlesPanel
 from .input_part_dist import InputPartDistDialog
 from .nodes_component import VaangoUINodesComponent
@@ -33,10 +44,62 @@ class MainWindow(QMainWindow):
         
         self.create_menu()
         
-        # 3D View
+        # 3D View (hosted in a dock so other docks can be stacked beneath it)
         self.view_3d = Vaango3DWindow()
-        container = QWidget.createWindowContainer(self.view_3d)
-        self.setCentralWidget(container)
+
+        # If the backend provides a QWidget (pyvista), embed directly; if it is a QWindow (Qt3D),
+        # create a window container.
+        view_widget = None
+        try:
+            if isinstance(self.view_3d, QWidget):
+                view_widget = self.view_3d
+                try:
+                    view_widget.setMinimumSize(400, 500)
+                except Exception:
+                    pass
+                try:
+                    view_widget.setFocusPolicy(Qt.StrongFocus)
+                except Exception:
+                    pass
+                try:
+                    view_widget.show()
+                except Exception:
+                    pass
+            else:
+                # Assume QWindow-like
+                try:
+                    view_widget = QWidget.createWindowContainer(self.view_3d)
+                    try:
+                        view_widget.setMinimumSize(400, 500)
+                    except Exception:
+                        pass
+                    try:
+                        view_widget.setFocusPolicy(Qt.StrongFocus)
+                    except Exception:
+                        pass
+                    try:
+                        self.view_3d.show()
+                    except Exception:
+                        pass
+                except Exception:
+                    # Last resort: attempt to use the view_3d directly
+                    view_widget = getattr(self.view_3d, 'widget', None) or getattr(self.view_3d, 'parent', None) or None
+
+        except Exception:
+            view_widget = None
+
+        # Place the 3D view inside a left dock so we can stack the nodes dock below it
+        self.view_dock = QDockWidget("3D View", self)
+        self.view_dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
+        if view_widget is not None:
+            self.view_dock.setWidget(view_widget)
+        else:
+            # Fallback empty label
+            from PySide6.QtWidgets import QLabel
+            lbl = QLabel("3D view unavailable")
+            lbl.setAlignment(Qt.AlignCenter)
+            self.view_dock.setWidget(lbl)
+        self.addDockWidget(Qt.LeftDockWidgetArea, self.view_dock)
         
         # Panel
         self.panel = GenerateParticlesPanel(self.view_3d)
@@ -84,6 +147,12 @@ class MainWindow(QMainWindow):
             self.nodes_dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
             self.nodes_dock.setWidget(self.nodes_component)
             self.addDockWidget(Qt.LeftDockWidgetArea, self.nodes_dock)
+            # Place the nodes dock below the 3D view dock (vertical split)
+            try:
+                if hasattr(self, 'view_dock'):
+                    self.splitDockWidget(self.view_dock, self.nodes_dock, Qt.Vertical)
+            except Exception:
+                pass
             # Connect node selection to property editor (if available)
             try:
                 editor = getattr(self.nodes_component, 'editor', None)

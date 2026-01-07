@@ -36,9 +36,11 @@ try:
                 print(f"[VaangoUINodesComponent] error inspecting {nm}: {_ex}")
     except Exception as _e:
         print(f"[VaangoUINodesComponent] dir(nodes_pkg) error: {_e}")
+
     _discovered_nodes = {}
     for attr_name in dir(nodes_pkg):
         attr = getattr(nodes_pkg, attr_name)
+        print(f"[VaangoUINodesComponent] inspecting attribute: {attr_name} type={type(attr)}")
         if inspect.isclass(attr) and attr_name.endswith('Node'):
             # Try instantiate to get display name, otherwise use class name
             try:
@@ -47,7 +49,9 @@ try:
             except Exception:
                 disp = attr_name
             _discovered_nodes[disp] = attr
-except Exception:
+
+except Exception as err :
+    print(f"[VaangoUINodesComponent] Exception during node discovery: {err}")
     _discovered_nodes = {}
 
 # Defensive normalization: ensure _discovered_nodes is a dict (avoid None or other types)
