@@ -69,7 +69,7 @@ class PointGeneratorAxisAligned:
             # Generate random point in bounding box
             point = np.random.uniform(min_bounds, max_bounds)
             
-            if PointGenerator.is_point_inside_mesh(point, vertices, faces):
+            if PointGeneratorAxisAligned.is_point_inside_mesh(point, vertices, faces):
                 interior_points.append(point)
             
             attempts += 1

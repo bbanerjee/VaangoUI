@@ -45,6 +45,7 @@ class Vaango3DWindow(QWidget):
             self.plotter = None
             self._domain_actor = None
             self._mesh_actor = None
+            self._points_actor = None
             self._particle_actors = []
             return
 
@@ -91,6 +92,7 @@ class Vaango3DWindow(QWidget):
         self._particle_actors = []
         self._domain_actor = None
         self._mesh_actor = None
+        self._points_actor = None
 
         # initial camera setup
         try:
@@ -257,7 +259,7 @@ class Vaango3DWindow(QWidget):
                     mesh, 
                     color='lightblue', 
                     smooth_shading=True,
-                    opacity=1.0,
+                    opacity=0.5,
                     name='mesh'
                 )
                 
@@ -266,6 +268,37 @@ class Vaango3DWindow(QWidget):
                 
         except Exception as e:
             print(f"Error updating mesh: {e}")
+
+    def add_interior_points(self, points):
+        """Add interior points as small spheres."""
+        if not _HAS_PYVISTA or self.plotter is None:
+            return
+        print(f"[Vaango3DWindow] add_interior_points called with {len(points)} points")
+
+        try:
+            # Remove existing points
+            if self._points_actor is not None:
+                self.plotter.remove_actor(self._points_actor)
+                self._points_actor = None
+
+            if len(points) > 0:
+                # Create point cloud
+                point_cloud = pv.PolyData(points)
+                
+                # Add points as spheres
+                self._points_actor = self.plotter.add_mesh(
+                    point_cloud,
+                    style='points_gaussian',
+                    color='red',
+                    point_size=5,
+                    render_points_as_spheres=True,
+                    name='interior_points'
+                )
+                
+        except Exception as e:
+            print(f"Error updating points: {e}")
+    
+
 
 if __name__ == '__main__':
     # Tiny demo when run directly
