@@ -44,6 +44,7 @@ class Vaango3DWindow(QWidget):
             layout.addWidget(lbl)
             self.plotter = None
             self._domain_actor = None
+            self._mesh_actor = None
             self._particle_actors = []
             return
 
@@ -89,6 +90,7 @@ class Vaango3DWindow(QWidget):
         # store references so we can remove later
         self._particle_actors = []
         self._domain_actor = None
+        self._mesh_actor = None
 
         # initial camera setup
         try:
@@ -218,6 +220,52 @@ class Vaango3DWindow(QWidget):
         except Exception:
             pass
 
+    def add_stl_mesh(self, vertices, faces):
+        """Add an STL mesh given vertices and faces arrays."""
+        if not _HAS_PYVISTA or self.plotter is None:
+            return
+        print(f"[Vaango3DWindow] add_stl_mesh called with {len(vertices)} vertices and {len(faces)} faces")
+
+        try:
+            import numpy as np
+
+            # Remove existing mesh
+            if self._mesh_actor is not None:
+                self.plotter.remove_actor(self._mesh_actor)
+            
+            if len(vertices) > 0 and len(faces) > 0:
+                # Create PyVista mesh
+                # Convert faces to PyVista format (prepend triangle count)
+                pv_faces = []
+                for face in faces:
+                    pv_faces.extend([3, face[0], face[1], face[2]])
+                
+                mesh = pv.PolyData(vertices, np.array(pv_faces))
+                
+                # Add mesh with wireframe and surface
+                #self._mesh_actor = self.plotter.add_mesh(
+                #    mesh, 
+                #    color='lightblue', 
+                #    show_edges=True,
+                #    edge_color='white',
+                #    opacity=0.7,
+                #    name='mesh'
+                #)
+
+                # Shaded surface
+                self._mesh_actor = self.plotter.add_mesh(
+                    mesh, 
+                    color='lightblue', 
+                    smooth_shading=True,
+                    opacity=1.0,
+                    name='mesh'
+                )
+                
+                # Fit camera to mesh
+                self.plotter.reset_camera()
+                
+        except Exception as e:
+            print(f"Error updating mesh: {e}")
 
 if __name__ == '__main__':
     # Tiny demo when run directly

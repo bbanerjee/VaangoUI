@@ -303,3 +303,65 @@ class Vaango3DWindow(Qt3DExtras.Qt3DWindow):
         except Exception:
             pass
 
+    def add_stl_mesh(self, vertices, faces, color="lightgray", opacity=1.0):
+        """Add an STL mesh given vertices and faces arrays."""
+        print(f"[Vaango3DWindow] add_stl_mesh called with {len(vertices)} vertices and {len(faces)} faces")
+        try:
+            import struct
+            mesh_entity = Qt3DCore.QEntity(self.root)
+
+            # Create custom mesh
+            mesh = Qt3DRender.QGeometryMesh()
+            geometry = Qt3DRender.QGeometry(mesh)
+
+            # Vertex buffer
+            vertex_data = bytearray()
+            for v in vertices:
+                vertex_data += struct.pack('fff', v[0], v[1], v[2])
+            vertex_buffer = Qt3DRender.QBuffer()
+            vertex_buffer.setData(vertex_data)
+
+            # Position attribute
+            position_attribute = Qt3DRender.QAttribute()
+            position_attribute.setName(Qt3DRender.QAttribute.defaultPositionAttributeName())
+            position_attribute.setVertexBaseType(Qt3DRender.QAttribute.Float)
+            position_attribute.setVertexSize(3)
+            position_attribute.setAttributeType(Qt3DRender.QAttribute.VertexAttribute)
+            position_attribute.setBuffer(vertex_buffer)
+            position_attribute.setByteStride(12)
+            position_attribute.setCount(len(vertices))
+
+            geometry.addAttribute(position_attribute)
+
+            # Index buffer
+            index_data = bytearray()
+            for f in faces:
+                index_data += struct.pack('III', f[0], f[1], f[2])
+            index_buffer = Qt3DRender.QBuffer()
+            index_buffer.setData(index_data)
+
+            # Index attribute
+            index_attribute = Qt3DRender.QAttribute()
+            index_attribute.setName(Qt3DRender.QAttribute.defaultIndexAttributeName())
+            index_attribute.setVertexBaseType(Qt3DRender.QAttribute.UnsignedInt)
+            index_attribute.setAttributeType(Qt3DRender.QAttribute.IndexAttribute)
+            index_attribute.setBuffer(index_buffer)
+            index_attribute.setCount(len(faces) * 3)
+
+            geometry.addAttribute(index_attribute)
+
+            mesh.setGeometry(geometry)
+            mesh.setPrimitiveType(Qt3DRender.QGeometryRenderer.Triangles)
+
+            mesh_entity.addComponent(mesh)
+
+            # Material
+            material = Qt3DExtras.QPhongMaterial()
+            mat_color = QColor(color)
+            mat_color.setAlphaF(opacity)
+            material.setDiffuse(mat_color)
+            mesh_entity.addComponent(material)
+
+        except Exception as e:
+            print(f"[Vaango3DWindow] failed to add STL mesh: {e}")
+
